@@ -1,0 +1,8 @@
+package Arcusical.LocalMusicStore;
+
+import "CachedSong.proto";
+
+message CachedSongList
+{
+	repeated CachedSong songs = 1;
+}

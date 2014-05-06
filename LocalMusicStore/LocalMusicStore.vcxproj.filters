@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tga;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="include">
+      <UniqueIdentifier>{147e2003-3a3b-4d03-b77f-39a63bd5281e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src">
+      <UniqueIdentifier>{9116e40b-9c9a-4dab-9a46-deedac52360c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="protoc">
+      <UniqueIdentifier>{99e6a4f5-0e01-4cc3-aa85-711614ba7447}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\targetver.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="protoc\impl\GUID.pb.h">
+      <Filter>protoc</Filter>
+    </ClInclude>
+    <ClInclude Include="protoc\impl\CachedSong.pb.h">
+      <Filter>protoc</Filter>
+    </ClInclude>
+    <ClInclude Include="protoc\impl\CachedSongList.pb.h">
+      <Filter>protoc</Filter>
+    </ClInclude>
+    <ClInclude Include="protoc\impl\CachedAlbum.pb.h">
+      <Filter>protoc</Filter>
+    </ClInclude>
+    <ClInclude Include="protoc\impl\CachedAlbumList.pb.h">
+      <Filter>protoc</Filter>
+    </ClInclude>
+    <ClInclude Include="include\MusicFinder.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\LocalMusicCache.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="protoc\impl\GUID.pb.cc">
+      <Filter>protoc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\LocalMusicCache.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="protoc\impl\CachedSong.pb.cc">
+      <Filter>protoc</Filter>
+    </ClCompile>
+    <ClCompile Include="protoc\impl\CachedSongList.pb.cc">
+      <Filter>protoc</Filter>
+    </ClCompile>
+    <ClCompile Include="protoc\impl\CachedAlbum.pb.cc">
+      <Filter>protoc</Filter>
+    </ClCompile>
+    <ClCompile Include="protoc\impl\CachedAlbumList.pb.cc">
+      <Filter>protoc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MusicFinder.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

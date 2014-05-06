@@ -1,0 +1,196 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ExpressionBlendVersion>12.0.41002.1</ExpressionBlendVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <Filter Include="Common">
+      <UniqueIdentifier>73b3a6c0-2ec9-4dfa-9b73-d0cf2179bcb9</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Assets">
+      <UniqueIdentifier>a3e508b6-c40e-401e-ae1e-774832045272</UniqueIdentifier>
+      <Extensions>bmp;fbx;gif;jpg;jpeg;tga;tiff;tif;png</Extensions>
+    </Filter>
+    <Image Include="Assets\Logo.scale-100.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\SmallLogo.scale-100.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\StoreLogo.scale-100.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\SplashScreen.scale-100.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Filter Include="Controls">
+      <UniqueIdentifier>{c58080e6-797f-47ba-9ae1-591b8041aed1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SampleData">
+      <UniqueIdentifier>268d0f26-c4b2-493f-8d71-15eb2901cd52</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ViewModels">
+      <UniqueIdentifier>{59d7e893-2cb2-4ad6-87d3-36254d2a772b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utility">
+      <UniqueIdentifier>{c1bb24c2-5a68-4eb9-9b6e-bb1254107da1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pages">
+      <UniqueIdentifier>{e21f87e7-d547-4de9-ab3d-847d8640a477}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Themes">
+      <UniqueIdentifier>{cc3909fe-57d7-4bf1-9a68-7ad1773c1c5a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Assets\Icons">
+      <UniqueIdentifier>{6cc0adc9-6005-456d-969c-f575cc1edfb9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Styles">
+      <UniqueIdentifier>{8f76c218-587e-4eed-b77b-dea853ed827c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Commands">
+      <UniqueIdentifier>{900c3221-00bb-4d14-9fd5-7edf7096454b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Converters">
+      <UniqueIdentifier>{45894702-a8ea-42a7-85aa-7be06133e59d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Events">
+      <UniqueIdentifier>{79e0332e-97cb-4762-afbb-d6d179050887}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="App.xaml.cpp" />
+    <ClCompile Include="pch.cpp" />
+    <ClCompile Include="Controls\AlbumListControl.xaml.cpp" />
+    <ClCompile Include="Controls\SongListControl.xaml.cpp" />
+    <ClCompile Include="Pages\MainPage.xaml.cpp" />
+    <ClCompile Include="Utility\DispatcherHelper.cpp">
+      <Filter>Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="ViewModels\AlbumListVM.cpp">
+      <Filter>ViewModels</Filter>
+    </ClCompile>
+    <ClCompile Include="ViewModels\AlbumVM.cpp">
+      <Filter>ViewModels</Filter>
+    </ClCompile>
+    <ClCompile Include="ViewModels\SongListControlVM.cpp">
+      <Filter>ViewModels</Filter>
+    </ClCompile>
+    <ClCompile Include="ViewModels\SongListVM.cpp">
+      <Filter>ViewModels</Filter>
+    </ClCompile>
+    <ClCompile Include="ViewModels\SongVM.cpp">
+      <Filter>ViewModels</Filter>
+    </ClCompile>
+    <ClCompile Include="Controls\SongPlayer.xaml.cpp" />
+    <ClCompile Include="Commands\PlaySongCommand.cpp">
+      <Filter>Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="Converters\IsPlayingToIcon.cpp">
+      <Filter>Converters</Filter>
+    </ClCompile>
+    <ClCompile Include="Commands\CommandWrapper.cpp">
+      <Filter>Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="Events\SongSelectedEvent.cpp">
+      <Filter>Events</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="pch.h" />
+    <ClInclude Include="App.xaml.h" />
+    <ClInclude Include="Controls\AlbumListControl.xaml.h" />
+    <ClInclude Include="Controls\SongListControl.xaml.h" />
+    <ClInclude Include="Pages\MainPage.xaml.h" />
+    <ClInclude Include="Utility\DispatcherHelper.hpp">
+      <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility\XamlMacros.hpp">
+      <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="ViewModels\AlbumListControlVM.hpp">
+      <Filter>ViewModels</Filter>
+    </ClInclude>
+    <ClInclude Include="ViewModels\AlbumListVM.hpp">
+      <Filter>ViewModels</Filter>
+    </ClInclude>
+    <ClInclude Include="ViewModels\AlbumVM.hpp">
+      <Filter>ViewModels</Filter>
+    </ClInclude>
+    <ClInclude Include="ViewModels\SongListControlVM.hpp">
+      <Filter>ViewModels</Filter>
+    </ClInclude>
+    <ClInclude Include="ViewModels\SongListVM.hpp">
+      <Filter>ViewModels</Filter>
+    </ClInclude>
+    <ClInclude Include="ViewModels\SongVM.hpp">
+      <Filter>ViewModels</Filter>
+    </ClInclude>
+    <ClInclude Include="Controls\SongPlayer.xaml.h" />
+    <ClInclude Include="Commands\CommandBase.hpp">
+      <Filter>Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="Commands\PlaySongCommand.hpp">
+      <Filter>Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="Converters\IsPlayingToIconPath.hpp">
+      <Filter>Converters</Filter>
+    </ClInclude>
+    <ClInclude Include="Commands\CommandWrapper.hpp">
+      <Filter>Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="Events\EventService.hpp">
+      <Filter>Events</Filter>
+    </ClInclude>
+    <ClInclude Include="Events\SongSelectedEvent.hpp">
+      <Filter>Events</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <AppxManifest Include="Package.appxmanifest" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Arcusical_TemporaryKey.pfx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="Controls\AlbumListControl.xaml">
+      <Filter>Controls</Filter>
+    </Page>
+    <Page Include="Controls\SongListControl.xaml">
+      <Filter>Controls</Filter>
+    </Page>
+    <Page Include="Pages\MainPage.xaml">
+      <Filter>Pages</Filter>
+    </Page>
+    <Page Include="Themes\Generic.xaml">
+      <Filter>Themes</Filter>
+    </Page>
+    <Page Include="Controls\SongPlayer.xaml">
+      <Filter>Controls</Filter>
+    </Page>
+    <Page Include="Styles\ButtonStyles.xaml">
+      <Filter>Styles</Filter>
+    </Page>
+    <Page Include="Converters\Converters.xaml">
+      <Filter>Converters</Filter>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <DesignData Include="SampleData\AlbumListControlVMSampleData.xaml">
+      <Filter>SampleData</Filter>
+    </DesignData>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Assets\TwinNote.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\Icons\Pause.png">
+      <Filter>Assets\Icons</Filter>
+    </Image>
+    <Image Include="Assets\Icons\Play.png">
+      <Filter>Assets\Icons</Filter>
+    </Image>
+  </ItemGroup>
+</Project>

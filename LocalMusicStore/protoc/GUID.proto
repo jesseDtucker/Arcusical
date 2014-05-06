@@ -1,0 +1,6 @@
+package Arcusical.LocalMusicStore;
+
+message GUID
+{
+	required bytes rawData = 1;
+}

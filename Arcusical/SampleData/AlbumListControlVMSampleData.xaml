@@ -1,0 +1,58 @@
+﻿<ViewModel:AlbumListControlVM xmlns:ViewModel="using:Arcusical.ViewModel">
+	<ViewModel:AlbumListControlVM.List>
+		<ViewModel:AlbumListVM>
+			<ViewModel:AlbumListVM.Albums>
+				<ViewModel:AlbumVM Artist="Curabitur vestibulum class aliquam adipiscing" Title="Phasellus curae integer donec nam">
+					<ViewModel:AlbumVM.Songs>
+						<ViewModel:SongListVM/>
+					</ViewModel:AlbumVM.Songs>
+				</ViewModel:AlbumVM>
+				<ViewModel:AlbumVM Artist="Cras consequat sed" Title="Quisque aenean maecenas vivamus">
+					<ViewModel:AlbumVM.Songs>
+						<ViewModel:SongListVM/>
+					</ViewModel:AlbumVM.Songs>
+				</ViewModel:AlbumVM>
+				<ViewModel:AlbumVM Artist="Etiam convallis parturient dis aliquam" Title="Est duis fusce nunc aliquet">
+					<ViewModel:AlbumVM.Songs>
+						<ViewModel:SongListVM/>
+					</ViewModel:AlbumVM.Songs>
+				</ViewModel:AlbumVM>
+				<ViewModel:AlbumVM Artist="Blandit hac lorem" Title="Mauris praesent morbi amet">
+					<ViewModel:AlbumVM.Songs>
+						<ViewModel:SongListVM/>
+					</ViewModel:AlbumVM.Songs>
+				</ViewModel:AlbumVM>
+				<ViewModel:AlbumVM Artist="Commodo conubia nullam" Title="Leo cubilia">
+					<ViewModel:AlbumVM.Songs>
+						<ViewModel:SongListVM/>
+					</ViewModel:AlbumVM.Songs>
+				</ViewModel:AlbumVM>
+				<ViewModel:AlbumVM Artist="Vestibulum nulla" Title="Dignissim ante aptent accumsan dapibus">
+					<ViewModel:AlbumVM.Songs>
+						<ViewModel:SongListVM/>
+					</ViewModel:AlbumVM.Songs>
+				</ViewModel:AlbumVM>
+				<ViewModel:AlbumVM Artist="Bibendum egestas" Title="Auctor elementum euismod dictumst">
+					<ViewModel:AlbumVM.Songs>
+						<ViewModel:SongListVM/>
+					</ViewModel:AlbumVM.Songs>
+				</ViewModel:AlbumVM>
+				<ViewModel:AlbumVM Artist="Vestibulum mus congue" Title="Proin adipiscing arcu augue">
+					<ViewModel:AlbumVM.Songs>
+						<ViewModel:SongListVM/>
+					</ViewModel:AlbumVM.Songs>
+				</ViewModel:AlbumVM>
+				<ViewModel:AlbumVM Artist="Eleifend dolor facilisi cursus" Title="Nec faucibus feugiat">
+					<ViewModel:AlbumVM.Songs>
+						<ViewModel:SongListVM/>
+					</ViewModel:AlbumVM.Songs>
+				</ViewModel:AlbumVM>
+				<ViewModel:AlbumVM Artist="Gravida facilisis parturient fermentum fames" Title="Dictum habitant vestibulum inceptos diam">
+					<ViewModel:AlbumVM.Songs>
+						<ViewModel:SongListVM/>
+					</ViewModel:AlbumVM.Songs>
+				</ViewModel:AlbumVM>
+			</ViewModel:AlbumListVM.Albums>
+		</ViewModel:AlbumListVM>
+	</ViewModel:AlbumListControlVM.List>
+</ViewModel:AlbumListControlVM>

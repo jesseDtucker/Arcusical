@@ -1,0 +1,12 @@
+package Arcusical.LocalMusicStore;
+
+import "GUID.proto";
+
+message CachedAlbum
+{
+	required GUID id = 1;
+	required string title = 2;
+	required string artist = 3;
+	required string imageFile = 4;
+	repeated GUID songList = 5;
+}

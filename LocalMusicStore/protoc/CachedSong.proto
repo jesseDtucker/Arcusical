@@ -1,0 +1,30 @@
+package Arcusical.LocalMusicStore;
+
+import "GUID.proto";
+
+enum Encoding
+{
+	UNKNOWN = 0;
+	AAC = 1;
+	ALAC = 2;
+	MP3 = 3;
+	FLAC = 4;
+}
+
+message SongFile
+{
+	required Encoding encoding = 1;
+	required string file = 2;
+	required int32 bitRate = 3;
+	required int32 sampleSize = 4;
+	required int32 channelCount = 5;
+}
+
+message CachedSong
+{
+	required GUID id = 1;
+	required string title = 2;
+	required string artist = 4;
+	required int64 length = 5;
+	repeated SongFile files = 6;
+}

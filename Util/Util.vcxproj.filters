@@ -1,0 +1,63 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="include">
+      <UniqueIdentifier>{f017d0dc-9fa5-46ba-ad14-eb9b7091a052}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src">
+      <UniqueIdentifier>{a7834beb-8df0-46de-b359-4b0c074d4243}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\pch.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\targetver.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\PropertyHelper.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Export.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Util.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Subscription.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Delegate.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\MulticastDelegate.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Arc_Assert.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\InterfaceWrapper.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Stream.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CheckedCasts.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RawParser.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\pch.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Subscription.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Stream.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
