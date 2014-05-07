@@ -22,5 +22,6 @@ namespace Arcusical
 		static DependencyProperty^ d_songs;
 
 		void SongClicked(Platform::Object^ sender, Windows::UI::Xaml::Controls::ItemClickEventArgs^ e);
+		void StackPanel_DoubleTapped(Platform::Object^ sender, Windows::UI::Xaml::Input::DoubleTappedRoutedEventArgs^ e);
 	};
 }

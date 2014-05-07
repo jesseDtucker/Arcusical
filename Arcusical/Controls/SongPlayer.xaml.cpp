@@ -45,6 +45,21 @@ SongPlayer::SongPlayer()
 	m_songSelectedSubscription = Events::EventService<Events::SongSelectedEvent>::RegisterListener(songSelectedCallback);
 }
 
+void SongPlayer::PlayPauseButton_Clicked(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
+{
+	if (m_currentSong != nullptr)
+	{
+		if (m_currentSong->IsPlaying)
+		{
+			m_currentSong->PauseSong().Execute();
+		}
+		else
+		{
+			m_currentSong->PlaySong().Execute();
+		}
+	}
+}
+
 void SongPlayer::OnSongSelected(const Events::SongSelectedEvent& selectedSongEvent)
 {
 	ARC_ASSERT(selectedSongEvent.GetSelectedSong() != nullptr);

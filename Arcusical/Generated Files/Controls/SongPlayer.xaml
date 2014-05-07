@@ -20,11 +20,11 @@
 		<StackPanel Orientation="Vertical">
 			<Rectangle Fill="WhiteSmoke" Stretch="Fill"/>
 			<StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center">
-				<Button Style="{StaticResource IconStyle}"  BorderThickness="0" Width="100" Height="100" 
+				<Button x:ConnectionId='1' Style="{StaticResource IconStyle}"  BorderThickness="0" Width="100" Height="100" 
 						HorizontalAlignment="Center" VerticalAlignment="Center"
-						Command="{Binding Path=PlayPauseSong}" CommandParameter="{Binding}">
+						                               >
 					<Grid>
-						<Image Source="{Binding Converter={StaticResource IconConverter}}" Stretch="Fill"/>
+						<Image Source="{Binding Path=IsPlaying, Converter={StaticResource IconConverter}}" Stretch="Fill"/>
 					</Grid>
 				</Button>
 				<TextBlock Text="{Binding Path=Title}" FontSize="24" Foreground="DarkGray"/>

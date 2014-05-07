@@ -57,6 +57,7 @@ namespace Player
 
 		std::shared_ptr<Model::Song> m_currentSong;
 		MediaEngineNotify m_mediaEngineNotify;
+		bool m_isCurrentSongSetForPlay;
 
 		CComPtr<IMFMediaEngineClassFactory> m_factory;
 		CComPtr<IMFAttributes> m_attributes;

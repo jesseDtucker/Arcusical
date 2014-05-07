@@ -38,3 +38,19 @@ void Arcusical::SongListControl::SongClicked(Platform::Object^ sender, Windows::
 		Events::EventService<Events::SongSelectedEvent>::BroadcastEvent(selectedEvent);
 	}
 }
+
+
+void Arcusical::SongListControl::StackPanel_DoubleTapped(Platform::Object^ sender, Windows::UI::Xaml::Input::DoubleTappedRoutedEventArgs^ e)
+{
+	Windows::UI::Xaml::Controls::StackPanel^ container = dynamic_cast<Windows::UI::Xaml::Controls::StackPanel^>(sender);
+	ARC_ASSERT(container != nullptr);
+	if (container != nullptr)
+	{
+		ViewModel::SongVM^ song = dynamic_cast<ViewModel::SongVM^>(container->DataContext);
+		ARC_ASSERT(song != nullptr);
+		if (song != nullptr)
+		{
+			song->PlaySong().Execute();
+		}
+	}
+}

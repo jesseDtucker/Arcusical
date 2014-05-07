@@ -22,6 +22,7 @@ namespace Player
 		, m_mediaEngine(nullptr)
 		, m_factory(nullptr)
 		, m_attributes(nullptr)
+		, m_isCurrentSongSetForPlay(false)
 	{
 		ComPtr<IMFMediaEngine> engine;
 
@@ -83,34 +84,48 @@ namespace Player
 
 	void Win8Player::PlayNativeSong(Model::SongStream& stream)
 	{
-		auto file = create_task(Windows::Storage::StorageFile::GetFileFromPathAsync(ref new Platform::String(stream.songData.filePath.c_str()))).get();
-		auto nativeStream = create_task(file->OpenReadAsync()).get();
+		HRESULT result = S_OK;
 
-		// this is kinda nasty...
-		ComPtr<IUnknown> pStreamUnk = reinterpret_cast<IUnknown*>(nativeStream);
-		ComPtr<IMFByteStream> pMFStream;
+		if (!m_isCurrentSongSetForPlay)
+		{
+			auto file = create_task(Windows::Storage::StorageFile::GetFileFromPathAsync(ref new Platform::String(stream.songData.filePath.c_str()))).get();
+			auto nativeStream = create_task(file->OpenReadAsync()).get();
 
-		auto result = ::MFCreateMFByteStreamOnStreamEx(pStreamUnk.Get(), &pMFStream);
-		ARC_ThrowIfFailed(result);
+			// this is kinda nasty...
+			ComPtr<IUnknown> pStreamUnk = reinterpret_cast<IUnknown*>(nativeStream);
+			ComPtr<IMFByteStream> pMFStream;
 
-		CComBSTR path = stream.songData.filePath.c_str();
-		result = m_mediaEngine->SetSourceFromByteStream(pMFStream.Get(), path);
-		ARC_ThrowIfFailed(result);
+			result = ::MFCreateMFByteStreamOnStreamEx(pStreamUnk.Get(), &pMFStream);
+			ARC_ThrowIfFailed(result);
+
+			CComBSTR path = stream.songData.filePath.c_str();
+			result = m_mediaEngine->SetSourceFromByteStream(pMFStream.Get(), path);
+			ARC_ThrowIfFailed(result);
+		}
 
 		result = m_mediaEngine->Play();
 		ARC_ThrowIfFailed(result);
+
+		m_IsPlaying = true;
+		m_isCurrentSongSetForPlay = true;
 	}
 
 	void Win8Player::Stop()
 	{
 		auto result = m_mediaEngine->Pause();
 		ARC_ThrowIfFailed(result);
+
+		m_IsPlaying = false;
 	}
 
 	void Win8Player::SetSong(std::shared_ptr<Model::Song> song)
 	{
-		m_currentSong = song;
-		Stop();
+		if (m_currentSong != song)
+		{
+			m_currentSong = song;
+			m_isCurrentSongSetForPlay = false;
+			Stop();
+		}
 	}
 
 	std::shared_ptr<Model::Song> Win8Player::GetCurrentSong()

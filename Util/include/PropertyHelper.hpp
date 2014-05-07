@@ -15,7 +15,7 @@
 #define COMMA ,
 
 #define PROP_GET_EX(dataType, externalName, internalName)	\
-private:													\
+protected:													\
 dataType internalName;										\
 public:														\
 const dataType& Get ## externalName()	const				\

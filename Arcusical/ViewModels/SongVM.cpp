@@ -8,6 +8,7 @@
 #include "Commands/CommandWrapper.hpp"
 #include "Song.hpp"
 #include "SongVM.hpp"
+#include "Utility/DispatcherHelper.hpp"
 
 using namespace Windows::UI::Xaml::Data;
 
@@ -24,23 +25,27 @@ namespace ViewModel {
 
 	SongVM::SongVM()
 		: m_playSongCommand([](SongVM^){})
+		, m_pauseSongCommand([](SongVM^){})
 		, m_song(nullptr)
 	{
 		Title = "";
 		Artist = "";
 		Length = 0;
 		Format = AudioFormat::UNKNOWN;
-		PlayPauseSong = ref new Commands::CommandWrapper(m_playSongCommand);
+		PlaySongCmd = ref new Commands::CommandWrapper(m_playSongCommand);
+		PauseSongCmd = ref new Commands::CommandWrapper(m_pauseSongCommand);
 	}
 
 	SongVM::SongVM(std::shared_ptr<Model::Song> song)
 		: m_song(song)
 		, m_playSongCommand([this](SongVM^ selectedSong){ ARC_ASSERT( selectedSong == nullptr || selectedSong == this); this->Play(); })
+		, m_pauseSongCommand([this](SongVM^ selectedSong){ ARC_ASSERT(selectedSong == nullptr || selectedSong == this); this->Pause(); })
 	{
 		Title = ref new Platform::String(m_song->GetTitle().c_str());
 		Artist = ref new Platform::String(m_song->GetArtist().c_str());
 		Length = m_song->GetLength();
-		PlayPauseSong = ref new Commands::CommandWrapper(m_playSongCommand);
+		PlaySongCmd = ref new Commands::CommandWrapper(m_playSongCommand);
+		PauseSongCmd = ref new Commands::CommandWrapper(m_pauseSongCommand);
 	}
 
 	std::shared_ptr<Model::Song> SongVM::GetModel()
@@ -51,6 +56,11 @@ namespace ViewModel {
 	Commands::PlaySongCommand& SongVM::PlaySong()
 	{
 		return m_playSongCommand;
+	}
+
+	Commands::PlaySongCommand& SongVM::PauseSong()
+	{
+		return m_pauseSongCommand;
 	}
 
 	SongStreamVM^ SongVM::GetMediaStream()
@@ -74,16 +84,32 @@ namespace ViewModel {
 			ARC_ASSERT(player != nullptr)
 			if (player != nullptr)
 			{
-			if (player->GetCurrentSong() == m_song)
-			{
-				player->Stop();
-			}
-			else
-			{
 				player->SetSong(m_song);
 				player->Play();
 			}
+
+			DispatchToUI([this]()
+			{
+				this->OnPropertyChanged("IsPlaying");
+			});
+		});
+	}
+
+	void SongVM::Pause()
+	{
+		std::async([this]()
+		{
+			auto player = Player::PlayerLocator::ResolveService().lock();
+			ARC_ASSERT(player != nullptr)
+			if (player != nullptr)
+			{
+				player->Stop();
 			}
+
+			DispatchToUI([this]()
+			{
+				this->OnPropertyChanged("IsPlaying");
+			});
 		});
 	}
 
@@ -96,7 +122,7 @@ namespace ViewModel {
 			ARC_ASSERT(player != nullptr);
 			if (player != nullptr)
 			{
-				isPlaying = player->GetCurrentSong() == this->GetModel();
+				isPlaying = player->GetIsPlaying() && player->GetCurrentSong() == this->GetModel();
 			}
 		}
 

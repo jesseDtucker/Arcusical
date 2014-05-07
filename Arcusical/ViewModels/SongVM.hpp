@@ -56,7 +56,8 @@ namespace Arcusical{ namespace ViewModel {
 		PROP_SET_AND_GET_WINRT(Platform::String^, Artist);
 		PROP_SET_AND_GET_WINRT(unsigned long long, Length);
 		PROP_SET_AND_GET_WINRT(AudioFormat, Format);
-		PROP_SET_AND_GET_WINRT(Commands::CommandWrapper^, PlayPauseSong);
+		PROP_SET_AND_GET_WINRT(Commands::CommandWrapper^, PlaySongCmd);
+		PROP_SET_AND_GET_WINRT(Commands::CommandWrapper^, PauseSongCmd);
 		
 		property Platform::Boolean IsPlaying
 		{
@@ -72,13 +73,16 @@ namespace Arcusical{ namespace ViewModel {
 		std::shared_ptr<Model::Song> GetModel();
 
 		Commands::PlaySongCommand& PlaySong();
+		Commands::PlaySongCommand& PauseSong();
 		
 	private:
 		SongVM();
 		void Play();
+		void Pause();
 
 		std::shared_ptr<Model::Song> m_song;
 		Commands::PlaySongCommand m_playSongCommand;
+		Commands::PlaySongCommand m_pauseSongCommand;
 	};
 
 } /* ViewModel */

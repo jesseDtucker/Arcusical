@@ -11,10 +11,10 @@ namespace Converters
 
 	Platform::Object^ IsPlayingToIconPath::Convert(Platform::Object^ value, Windows::UI::Xaml::Interop::TypeName targetType, Platform::Object^ parameter, Platform::String^ language)
 	{
-		ViewModel::SongVM^ song = (ViewModel::SongVM^)(value);
-		if (song != nullptr)
+		auto isPlaying = dynamic_cast<Platform::Box<bool>^>(value);
+		if (isPlaying != nullptr)
 		{
-			return song->IsPlaying ? PAUSE_ICON : PLAY_ICON;
+			return isPlaying ? PAUSE_ICON : PLAY_ICON;
 		}
 		else
 		{
