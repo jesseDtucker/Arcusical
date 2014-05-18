@@ -9,8 +9,8 @@
 
 	<Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 		<StackPanel Orientation="Horizontal">
-			<local:SongListControl x:Name="v_songListControl"/>
-			<local:AlbumListControl x:Name="v_albumListControl"/>
+			<local:SongListControl x:Name="v_songListControl" Width="600"/>
+			<local:AlbumListControl x:Name="v_albumListControl" Width="1400"/>
 		</StackPanel>
 		<StackPanel HorizontalAlignment="Center" VerticalAlignment="Bottom" 
 					Margin="0,0,0,40" Background="White" Width="800" Height="100">
