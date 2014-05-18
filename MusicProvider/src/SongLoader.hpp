@@ -18,6 +18,7 @@ namespace Arcusical
 namespace Model
 {
 	class Song;
+	class Album;
 }
 }
 
@@ -25,20 +26,26 @@ namespace Arcusical
 {
 namespace MusicProvider
 {
-	
-		class SongLoader final
-		{
-		public:
-			SongLoader() = default;
-			SongLoader(const SongLoader&) = delete;
+	class SongIdMapper;
 
-			std::shared_ptr<Model::Song> LoadSong(std::shared_ptr<FileSystem::IFile> file);
+	class SongLoader final
+	{
+	public:
+		SongLoader() = default;
+		SongLoader(const SongLoader&) = delete;
 
-		private:
-			MPEG4::MPEG4_Parser m_mpegParser;
+		std::shared_ptr<Model::Song> LoadSong(std::shared_ptr<FileSystem::IFile> file);
+		std::shared_ptr<Model::Album> CreateAlbum(std::wstring name, std::shared_ptr<Model::Song> song, std::shared_ptr<SongIdMapper>& mapper);
 
-			boost::uuids::random_generator m_idGenerator;
-		};
+	private:
+		std::shared_ptr<Model::Song> LoadMpeg4Song(std::shared_ptr<FileSystem::IFile> file);
+		std::shared_ptr<Model::Song> LoadMP3(std::shared_ptr<FileSystem::IFile> file);
+		std::shared_ptr<Model::Song> LoadWav(std::shared_ptr<FileSystem::IFile> file);
+
+		MPEG4::MPEG4_Parser m_mpegParser;
+
+		boost::uuids::random_generator m_idGenerator;
+	};
 }
 }
 

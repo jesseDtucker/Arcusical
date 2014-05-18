@@ -288,6 +288,7 @@
     </ClCompile>
     <ClCompile Include="Converters\IsPlayingToIcon.cpp" />
     <ClCompile Include="Events\SongSelectedEvent.cpp" />
+    <ClCompile Include="ViewModels\AlbumListControlVM.cpp" />
     <ClCompile Include="ViewModels\AlbumListVM.cpp" />
     <ClCompile Include="ViewModels\AlbumVM.cpp" />
     <ClCompile Include="App.xaml.cpp">

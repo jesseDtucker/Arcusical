@@ -1,11 +1,15 @@
+#pragma once
+
 #ifndef ALBUM_LIST_CONTROL_VM_HPP
 #define ALBUM_LIST_CONTROL_VM_HPP
 
-#include "ViewModels/AlbumListVM.hpp"
+#include "IMusicProvider.hpp"
 #include "PropertyHelper.hpp"
 #include "Utility/XamlMacros.hpp"
+#include "ViewModels/AlbumListVM.hpp"
 
 namespace Arcusical {
+
 namespace ViewModel{
 
 	[Windows::UI::Xaml::Data::Bindable]
@@ -14,10 +18,17 @@ namespace ViewModel{
 	public:
 		NOTIFY_PROPERTY_CHANGED_IMPL;
 
-		PROP_SET_AND_GET_WINRT(AlbumListVM^, List);
+		PROP_SET_AND_GET_WINRT(AlbumListVM^, AlbumList);
 	internal:
 
+		AlbumListControlVM(MusicProvider::MusicProviderLocator::ServiceRef providerService);
+
 	private:
+
+		void AlbumCallback(MusicProvider::AlbumListPtr albums);
+
+		MusicProvider::MusicProviderLocator::ServiceRef m_providerService;
+		MusicProvider::MusicProviderSubscription m_albumSubscription;
 	};
 
 }

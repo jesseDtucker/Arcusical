@@ -97,6 +97,9 @@
     <ClCompile Include="Events\SongSelectedEvent.cpp">
       <Filter>Events</Filter>
     </ClCompile>
+    <ClCompile Include="ViewModels\AlbumListControlVM.cpp">
+      <Filter>ViewModels</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />

@@ -2,6 +2,7 @@
 // 
 
 #include <algorithm>
+#include <future>
 #include <ppltasks.h>
 #include <string>
 
@@ -15,11 +16,25 @@ using namespace concurrency;
 
 namespace FileSystem
 {
-#ifdef __cplusplus_winrt
+	IFolder* Storage::s_musicFolder = nullptr;
+	IFolder* Storage::s_applicationFolder = nullptr;
 
+	static std::mutex s_loadingLock;
+
+#ifdef __cplusplus_winrt
+	
 	IFolder& Storage::MusicFolder()
 	{
-		static Folder folder(Windows::Storage::KnownFolders::MusicLibrary);
+		if (s_musicFolder == nullptr)
+		{
+			std::unique_lock<std::mutex> lockguard(s_loadingLock);
+			if (s_musicFolder == nullptr)
+			{
+				s_musicFolder = new Folder(Windows::Storage::KnownFolders::MusicLibrary);
+			}
+		}
+
+		auto& folder = *s_musicFolder;
 
 #ifdef _DEBUG
 		static std::shared_ptr<IFolder> debugFolder = nullptr;
@@ -29,6 +44,7 @@ namespace FileSystem
 			if (f->GetName() == L"Test")
 			{
 				debugFolder = f;
+				break;
 			}
 		}
 
@@ -43,9 +59,16 @@ namespace FileSystem
 
 	IFolder& Storage::ApplicationFolder()
 	{
-		static Folder folder(Windows::Storage::ApplicationData::Current->LocalFolder);
+		if (s_applicationFolder == nullptr)
+		{
+			std::unique_lock<std::mutex> lockguard(s_loadingLock);
+			if (s_applicationFolder == nullptr)
+			{
+				s_applicationFolder = new Folder(Windows::Storage::ApplicationData::Current->LocalFolder);
+			}
+		}
 
-		return folder;
+		return *s_applicationFolder;
 	}
 
 	std::shared_ptr<IFileReader> Storage::GetReader(std::shared_ptr<IFile> file)

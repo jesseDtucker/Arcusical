@@ -1,3 +1,5 @@
+#pragma once
+
 #ifndef SONG_HPP
 #define SONG_HPP
 
@@ -57,6 +59,7 @@ namespace Model
 		PROP_SET_AND_GET(boost::uuids::uuid, Id);
 		PROP_SET_AND_GET(std::wstring, Artist);
 		PROP_SET_AND_GET(unsigned long long, Length);
+		PROP_SET_AND_GET(std::wstring, AlbumName);
 
 		PROP_GET(std::vector<AudioFormat>, AvailableFormats);
 		PROP_GET(std::unordered_map<AudioFormat COMMA SongFile>, Files);

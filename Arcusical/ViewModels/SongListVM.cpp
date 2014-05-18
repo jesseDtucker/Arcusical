@@ -9,7 +9,7 @@
 namespace Arcusical{
 namespace ViewModel{
 
-	SongListVM::SongListVM(std::weak_ptr<std::unordered_map<boost::uuids::uuid, std::shared_ptr<Model::Song>>> songs)
+	SongListVM::SongListVM(MusicProvider::SongListPtr songs)
 	{
 		List = ref new Platform::Collections::Vector<SongVM^>();
 

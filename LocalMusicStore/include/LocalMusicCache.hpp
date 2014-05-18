@@ -31,8 +31,9 @@ namespace LocalMusicStore
 	public:
 		LocalMusicCache(std::shared_ptr<Model::IAlbumToSongMapper>& songMapper);
 
-		std::future<std::weak_ptr<std::unordered_map<boost::uuids::uuid, std::shared_ptr<Model::Song>>>> GetLocalSongs();
-		std::future<std::weak_ptr<std::unordered_map<boost::uuids::uuid, std::shared_ptr<Model::Album>>>> GetLocalAlbums();
+		// TODO::JT must modify this to take a callback instead. This has some thread safety issues atm
+		std::future<std::weak_ptr<const std::unordered_map<boost::uuids::uuid, std::shared_ptr<Model::Song>>>> GetLocalSongs();
+		std::future<std::weak_ptr<const std::unordered_map<boost::uuids::uuid, std::shared_ptr<Model::Album>>>> GetLocalAlbums();
 
 		void ClearCache();
 		void AddToCache(const std::vector<std::shared_ptr<Model::Album>>& albums);

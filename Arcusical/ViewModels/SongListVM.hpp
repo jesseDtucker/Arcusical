@@ -5,6 +5,7 @@
 #include "boost\uuid\uuid.hpp"
 #include <unordered_map>
 
+#include "IMusicProvider.hpp"
 #include "ViewModels/SongVM.hpp"
 #include "Utility/XamlMacros.hpp"
 
@@ -24,7 +25,7 @@ namespace ViewModel
 		PROP_SET_AND_GET_WINRT(Windows::Foundation::Collections::IVector<ViewModel::SongVM^>^, List);
 
 	internal:
-		SongListVM(std::weak_ptr<std::unordered_map<boost::uuids::uuid, std::shared_ptr<Model::Song>>> songs);
+		SongListVM(MusicProvider::SongListPtr songs);
 	private:
 		
 	};

@@ -31,7 +31,7 @@ namespace MusicProvider
 			{
 				if (localSongs->find(id) != localSongs->end())
 				{
-					results[id] = (*localSongs)[id];
+					results[id] = localSongs->at(id);
 				}
 			}
 		}

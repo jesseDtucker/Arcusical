@@ -1,16 +1,16 @@
 #include "pch.h"
 
+#include <memory>
 #include <future>
 
-#include "MusicProvider.hpp"
-
-#include "Storage.hpp"
-
+#include "Album.hpp"
 #include "IFile.hpp"
-#include "SongIdMapper.hpp"
 #include "LocalMusicCache.hpp"
 #include "MusicFinder.hpp"
+#include "MusicProvider.hpp"
 #include "Song.hpp"
+#include "SongIdMapper.hpp"
+#include "Storage.hpp"
 
 const std::string Arcusical::MusicProvider::IMusicProvider::ServiceName("MusicProvider");
 
@@ -19,7 +19,7 @@ namespace Arcusical
 namespace MusicProvider
 {
 	MusicProvider::MusicProvider()
-		: m_callbackSet()
+		: m_songCallbackSet()
 	{
 		SongIdMapper::GetSongsCall getLocalSongs = [this]()
 		{ 
@@ -35,43 +35,68 @@ namespace MusicProvider
 		m_musicCache = std::make_shared<LocalMusicStore::LocalMusicCache>(std::shared_ptr<Arcusical::Model::IAlbumToSongMapper>(m_songMapper));
 	}
 
-	MusicProviderSubscription MusicProvider::Subscribe(MusicChangedCallback callback)
+	MusicProviderSubscription MusicProvider::SubscribeSongs(SongsChangedCallback callback)
 	{
+		std::unique_lock<std::mutex> callbackLock(m_songCallbackLock);
+
 		std::function<void()> unsubscribeCallback = [callback, this](){ this->Unsubscribe(callback); };
 		auto subscription = std::make_shared<Util::Subscription>(unsubscribeCallback);
-		m_callbackSet.insert(callback);
+		m_songCallbackSet.insert(callback);
 
 		{
 			std::unique_lock<std::mutex> loadingLock(m_isLoadingLock);
 
-			if (!m_hasLoadingBegun)
+			if (!m_hasSongLoadingBegun)
 			{
-				m_hasLoadingBegun = true;
+				m_hasSongLoadingBegun = true;
 				std::async([this](){ LoadSongs(); });
 			}
-		}
-
-		std::async([this, callback]()
-		{
+			else
 			{
-				std::unique_lock<std::mutex> loadingLock(m_isLoadingLock);
-
-				if (m_isLoading)
-				{
-					return;
-				}
+				// TODO::JT this could be problematic for the UI thread...
+				callback(m_musicCache->GetLocalSongs().get(), m_hackRemoteList);
 			}
-
-			auto localSongs = m_musicCache->GetLocalSongs().get();
-			callback(localSongs, SongListPtr(m_hackRemoteList));
-		});
+		}
 
 		return subscription;
 	}
 
-	void MusicProvider::Unsubscribe(MusicChangedCallback callback)
+	MusicProviderSubscription MusicProvider::SubscribeAlbums(AlbumsChangedCallback callback)
 	{
-		m_callbackSet.erase(callback);
+		std::unique_lock<std::mutex> callbackLock(m_albumCallbackLock);
+
+		std::function<void()> unsubscribeCallback = [callback, this]() { this->Unsubscribe(callback); };
+		auto subscription = std::make_shared<Util::Subscription>(unsubscribeCallback);
+		m_albumCallbackSet.insert(callback);
+
+		{
+			std::unique_lock<std::mutex> loadingLock(m_isLoadingLock);
+
+			if (!m_hasAlbumLoadingBegun)
+			{
+				m_hasAlbumLoadingBegun = true;
+				std::async([this](){ this->LoadAlbums(); });
+			}
+			else
+			{
+				// TODO::JT this could be problematic for the UI thread...
+				callback(m_musicCache->GetLocalAlbums().get());
+			}
+		}
+
+		return subscription;
+	}
+
+	void MusicProvider::Unsubscribe(SongsChangedCallback callback)
+	{
+		std::unique_lock<std::mutex> callbackLock(m_songCallbackLock);
+		m_songCallbackSet.erase(callback);
+	}
+
+	void MusicProvider::Unsubscribe(AlbumsChangedCallback callback)
+	{
+		std::unique_lock<std::mutex> callbackLock(m_albumCallbackLock);
+		m_albumCallbackSet.erase(callback);
 	}
 
 	void MusicProvider::LoadSongs()
@@ -90,7 +115,8 @@ namespace MusicProvider
 		Publish(cachedSongs, m_hackRemoteList);
 
 		auto musicFinderResults = musicFinderFuture.get();
-		if (MergeSongCollections(*cachedSongs.lock(), musicFinderResults) == true)
+		auto songs = cachedSongs.lock();
+		if (MergeSongCollections(*songs, musicFinderResults) == true)
 		{
 			// then some songs were merged, we need to republish!
 			Publish(cachedSongs, m_hackRemoteList);
@@ -99,10 +125,23 @@ namespace MusicProvider
 
 	void MusicProvider::LoadAlbums()
 	{
-		
+		auto cachedAlbums = m_musicCache->GetLocalAlbums().get();
+		Publish(cachedAlbums);
+
+		// now subscribe to the music search service
+		std::function<void(SongListPtr, SongListPtr)> songsCallback = [this, cachedAlbums](SongListPtr localSongs, SongListPtr remoteSongs)
+		{
+			auto albums = cachedAlbums.lock();
+			if (MergeAlbumCollections(*albums, localSongs))
+			{
+				Publish(cachedAlbums);
+			}
+		};
+
+		m_albumSubscription = this->SubscribeSongs(songsCallback);
 	}
 
-	bool MusicProvider::MergeSongCollections(std::unordered_map<boost::uuids::uuid, std::shared_ptr<Model::Song>>& existingSongs, std::vector<std::shared_ptr<FileSystem::IFile>>& locatedFiles)
+	bool MusicProvider::MergeSongCollections(const std::unordered_map<boost::uuids::uuid, std::shared_ptr<Model::Song>>& existingSongs, std::vector<std::shared_ptr<FileSystem::IFile>>& locatedFiles)
 	{
 		bool haveFilesBeenAdded = false;
 
@@ -174,6 +213,106 @@ namespace MusicProvider
 		return haveFilesBeenAdded;
 	}
 
+	bool MusicProvider::MergeAlbumCollections(const std::unordered_map<boost::uuids::uuid, std::shared_ptr<Model::Album>>& existingAlbums, SongListPtr songs)
+	{
+		using namespace boost::uuids;
+
+		// map a title to a possible list of uuids, we need a list as there could be multiple albums with the same name
+		std::unordered_map<std::wstring, std::vector<uuid>> albumLookup;
+		std::unordered_map<boost::uuids::uuid, std::shared_ptr<Model::Album>> newAlbums;
+		auto allSongs = songs.lock();
+		bool newContentAdded = false;
+		
+		// first build up a map of song names to their uuids
+		for(auto& albumPair : existingAlbums)
+		{
+			albumLookup[albumPair.second->GetTitle()].push_back(albumPair.first);
+		}
+
+		// now for each of the located files we need to look up their album and see if they are in there
+		for (auto& songPair : *allSongs)
+		{
+			auto& song = songPair.second;
+			auto albumName = song->GetAlbumName();
+			
+			if (albumName.length() == 0)
+			{
+				albumName = L"Unknown Album";
+			}
+
+			auto albumLookupItr = albumLookup.find(albumName);
+
+			if (albumLookupItr != std::end(albumLookup))
+			{
+				ARC_ASSERT(albumLookupItr->second.size() > 0);
+
+				// we now have a list of albums ids, start by assuming it is the first one and if any matches are found in artist assume it is actually that one
+				// for finding the album: it may be in the existing albums or the new albums lists
+				auto albumItr = existingAlbums.find(albumLookupItr->second[0]);
+				if (albumItr == std::end(existingAlbums))
+				{
+					albumItr = newAlbums.find(albumLookupItr->second[0]);
+					ARC_ASSERT(albumItr != std::end(newAlbums));
+				}
+
+				auto album = albumItr->second;
+				
+				for (auto& possibleAlbumId : albumLookupItr->second)
+				{
+					auto possibleAlbumItr = existingAlbums.find(possibleAlbumId);
+					if (possibleAlbumItr == std::end(existingAlbums))
+					{
+						possibleAlbumItr = newAlbums.find(possibleAlbumId);
+						ARC_ASSERT(possibleAlbumItr != std::end(newAlbums));
+					}
+
+					auto& possibleAlbum = possibleAlbumItr->second;
+					if (possibleAlbum->GetArtist() == song->GetArtist())
+					{
+						// we found an album that has a matching artist
+						// given that the artist and album name are the same we will assume they are the same album
+						album = possibleAlbum;
+						break;
+					}
+				}
+
+				if (!newContentAdded)
+				{
+					// if we haven't added anything new yet check if we are adding something new now
+					auto& albumIds = album->GetMutableSongIds();
+					newContentAdded = albumIds.find(song->GetId()) == std::end(albumIds);
+				}
+
+				// id's is a set so inserting duplicates is a non issue
+				album->GetMutableSongIds().insert(song->GetId());
+			}
+			else
+			{
+				// we don't have this album yet, so we need to create a new one
+				auto newAlbum = m_songLoader.CreateAlbum(albumName, song, m_songMapper);
+				newContentAdded = true;
+				newAlbums[newAlbum->GetId()] = newAlbum;
+				albumLookup[newAlbum->GetTitle()].push_back(newAlbum->GetId());
+			}
+		}
+
+		if (newContentAdded)
+		{
+			// need to convert the map into a vector
+			std::vector<std::shared_ptr<Model::Album>> newAlbumsVec;
+
+			for (auto& albumPair : newAlbums)
+			{
+				newAlbumsVec.push_back(albumPair.second);
+			}
+
+			m_musicCache->AddToCache(newAlbumsVec);
+			m_musicCache->SaveCache();
+		}
+
+		return newContentAdded;
+	}
+
 	void MusicProvider::AddNewSongToExisting(std::shared_ptr<Model::Song> newSong, std::shared_ptr<Model::Song> existingSong, std::wstring fullPath)
 	{
 		auto& newSongFormats = newSong->GetAvailableFormats();
@@ -201,9 +340,19 @@ namespace MusicProvider
 
 	void MusicProvider::Publish(SongListPtr localSongs, SongListPtr remoteSongs)
 	{
-		for (auto& callback : m_callbackSet)
+		std::unique_lock<std::mutex> callbackLock(m_songCallbackLock);
+		for (auto& callback : m_songCallbackSet)
 		{
 			callback(localSongs, remoteSongs);
+		}
+	}
+
+	void MusicProvider::Publish(AlbumListPtr albums)
+	{
+		std::unique_lock<std::mutex> callbackLock(m_albumCallbackLock);
+		for (auto& callback : m_albumCallbackSet)
+		{
+			callback(albums);
 		}
 	}
 }

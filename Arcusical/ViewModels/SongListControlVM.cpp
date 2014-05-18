@@ -16,7 +16,7 @@ namespace ViewModel{
 	{
 		auto service = providerService.lock();
 		ARC_ASSERT(service != nullptr);
-		m_subscription = service->Subscribe(
+		m_subscription = service->SubscribeSongs(
 			std::function<void(MusicProvider::SongListPtr, MusicProvider::SongListPtr)>(
 		[this](MusicProvider::SongListPtr localSongs, MusicProvider::SongListPtr remoteSongs)
 		{

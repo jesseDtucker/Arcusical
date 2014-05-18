@@ -1,3 +1,5 @@
+#pragma once
+
 #ifndef MUSIC_PROVIDER_HPP
 #define MUSIC_PROVIDER_HPP
 
@@ -41,24 +43,36 @@ namespace MusicProvider
 	{
 	public:
 		MusicProvider();
-		virtual MusicProviderSubscription Subscribe(MusicChangedCallback callback) override;
+		virtual MusicProviderSubscription SubscribeSongs(SongsChangedCallback callback) override;
+		virtual MusicProviderSubscription SubscribeAlbums(AlbumsChangedCallback callback) override;
 	private:
 
-		void Unsubscribe(MusicChangedCallback callback);
+		void Unsubscribe(SongsChangedCallback callback);
+		void Unsubscribe(AlbumsChangedCallback callback);
 		void LoadSongs();
 		void LoadAlbums();
 		void Publish(SongListPtr localSongs, SongListPtr remoteSongs);
+		void Publish(AlbumListPtr albums);
 
-		bool MergeSongCollections(std::unordered_map<boost::uuids::uuid, std::shared_ptr<Arcusical::Model::Song>>& existingSongs, std::vector<std::shared_ptr<FileSystem::IFile>>& locatedFiles);
+		bool MergeSongCollections(const std::unordered_map<boost::uuids::uuid, std::shared_ptr<Arcusical::Model::Song>>& existingSongs, std::vector<std::shared_ptr<FileSystem::IFile>>& locatedFiles);
 		void AddNewSongToExisting(std::shared_ptr<Model::Song> newSong, std::shared_ptr<Model::Song> existingSong, std::wstring fullPath);
 
-		std::set<MusicChangedCallback> m_callbackSet;
+		bool MergeAlbumCollections(const std::unordered_map<boost::uuids::uuid, std::shared_ptr<Model::Album>>& existingAlbums, SongListPtr songs);
+
+		std::set<SongsChangedCallback> m_songCallbackSet;
+		std::set<AlbumsChangedCallback> m_albumCallbackSet;
+		std::mutex m_albumCallbackLock;
+		std::mutex m_songCallbackLock;
+
 		std::shared_ptr<SongIdMapper> m_songMapper;
 		std::shared_ptr<LocalMusicStore::LocalMusicCache> m_musicCache;
 		std::shared_ptr<LocalMusicStore::MusicFinder> m_musicFinder;
 
-		std::atomic<bool> m_isLoading = true;
-		std::atomic<bool> m_hasLoadingBegun = false;
+		MusicProviderSubscription m_albumSubscription;
+
+		bool m_isLoading = true;
+		bool m_hasSongLoadingBegun = false;
+		bool m_hasAlbumLoadingBegun = false;
 		std::mutex m_isLoadingLock;
 
 		SongLoader m_songLoader;

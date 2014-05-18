@@ -1,3 +1,5 @@
+#pragma once
+
 #ifndef IMUSIC_PROVIDER_HPP
 #define IMUSIC_PROVIDER_HPP
 
@@ -14,6 +16,7 @@ namespace Arcusical{
 namespace Model
 {
 	class Song;
+	class Album;
 }
 }
 
@@ -25,15 +28,18 @@ namespace MusicProvider
 
 	typedef Arcusical::ServiceModel::ServiceResolver<IMusicProvider> MusicProviderLocator;
 
-	typedef std::weak_ptr<std::unordered_map<boost::uuids::uuid, std::shared_ptr<Arcusical::Model::Song>>> SongListPtr;
+	typedef std::weak_ptr<const std::unordered_map<boost::uuids::uuid, std::shared_ptr<Arcusical::Model::Song>>> SongListPtr;
+	typedef std::weak_ptr<const std::unordered_map<boost::uuids::uuid, std::shared_ptr<Arcusical::Model::Album>>> AlbumListPtr;
 	// Signature: (LocalSongs, RemoteSongs)
-	typedef Util::Delegate<void(SongListPtr, SongListPtr)> MusicChangedCallback;
+	typedef Util::Delegate<void(SongListPtr, SongListPtr)> SongsChangedCallback;
+	typedef Util::Delegate<void(AlbumListPtr)> AlbumsChangedCallback;
 	typedef std::shared_ptr<Util::Subscription> MusicProviderSubscription;
 
 	class IMusicProvider
 	{
 	public:
-		virtual MusicProviderSubscription Subscribe(MusicChangedCallback callback) = 0;
+		virtual MusicProviderSubscription SubscribeSongs(SongsChangedCallback callback) = 0;
+		virtual MusicProviderSubscription SubscribeAlbums(AlbumsChangedCallback callback) = 0;
 
 		static const std::string ServiceName;
 	};

@@ -1,3 +1,5 @@
+#pragma once
+
 #ifndef ALBUM_HPP
 #define ALBUM_HPP
 

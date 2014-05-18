@@ -36,4 +36,5 @@ MainPage::MainPage()
 	auto musicProviderService = MusicProvider::MusicProviderLocator::ResolveService();
 
 	this->v_songListControl->DataContext = ref new ViewModel::SongListControlViewModel(musicProviderService);
+	this->v_albumListControl->DataContext = ref new ViewModel::AlbumListControlVM(musicProviderService);
 }

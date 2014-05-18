@@ -151,13 +151,13 @@ namespace Arcusical { namespace MPEG4 {
 		// I expect only one of these to exist in the tree. If both exist then
 		// a different mechanism will be needed to determine the encoding
 		ARC_ASSERT(m_alac != nullptr || m_mp4a != nullptr);
-		if (nullptr != m_mp4a)
-		{
-			return Encoding::AAC;
-		}
-		else if (nullptr != m_alac)
+		if (nullptr != m_alac)
 		{
 			return Encoding::ALAC;
+		}
+		else if (nullptr != m_mp4a)
+		{
+			return Encoding::AAC;
 		}
 		else
 		{

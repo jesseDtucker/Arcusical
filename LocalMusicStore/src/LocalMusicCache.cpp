@@ -52,11 +52,12 @@ namespace Arcusical
 			, m_areAlbumsLoaded(false)
 		{
 			std::async([this](){this->LoadSongs(); });
+			std::async([this](){this->LoadAlbums(); });
 		}
 
-		std::future<std::weak_ptr<std::unordered_map<boost::uuids::uuid, std::shared_ptr<Model::Song>>>> LocalMusicCache::GetLocalSongs()
+		std::future<std::weak_ptr<const std::unordered_map<boost::uuids::uuid, std::shared_ptr<Model::Song>>>> LocalMusicCache::GetLocalSongs()
 		{
-			auto result = std::async([this]()->std::weak_ptr<std::unordered_map<boost::uuids::uuid, std::shared_ptr<Model::Song>>>
+			auto result = std::async([this]()->std::weak_ptr<const std::unordered_map<boost::uuids::uuid, std::shared_ptr<Model::Song>>>
 			{
 				std::unique_lock<std::mutex> lock(m_songsLoadingLock);
 				if (!m_areSongsLoaded)
@@ -71,9 +72,9 @@ namespace Arcusical
 			return result;
 		}
 
-		std::future<std::weak_ptr<std::unordered_map<boost::uuids::uuid, std::shared_ptr<Model::Album>>>> LocalMusicCache::GetLocalAlbums()
+		std::future<std::weak_ptr<const std::unordered_map<boost::uuids::uuid, std::shared_ptr<Model::Album>>>> LocalMusicCache::GetLocalAlbums()
 		{
-			auto result = std::async([this]()->std::weak_ptr<std::unordered_map<boost::uuids::uuid, std::shared_ptr<Model::Album>>>
+			auto result = std::async([this]()->std::weak_ptr<const std::unordered_map<boost::uuids::uuid, std::shared_ptr<Model::Album>>>
 			{
 				std::unique_lock<std::mutex> lock(m_albumsLoadingLock);
 				if (!m_areAlbumsLoaded)

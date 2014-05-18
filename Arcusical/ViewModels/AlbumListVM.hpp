@@ -1,6 +1,7 @@
 #ifndef ALBUM_LIST_VM_HPP
 #define ALBUM_LIST_VM_HPP
 
+#include "IMusicProvider.hpp"
 #include "PropertyHelper.hpp"
 #include "Utility/DispatcherHelper.hpp"
 #include "Utility/XamlMacros.hpp"
@@ -17,6 +18,8 @@ namespace ViewModel
 		PROP_SET_AND_GET_WINRT(Windows::Foundation::Collections::IVector<AlbumVM^>^, Albums);
 	internal:
 		
+		AlbumListVM(MusicProvider::AlbumListPtr albums);
+
 	private:
 
 	};

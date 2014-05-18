@@ -1,5 +1,5 @@
 ﻿<ViewModel:AlbumListControlVM xmlns:ViewModel="using:Arcusical.ViewModel">
-	<ViewModel:AlbumListControlVM.List>
+	<ViewModel:AlbumListControlVM.AlbumList>
 		<ViewModel:AlbumListVM>
 			<ViewModel:AlbumListVM.Albums>
 				<ViewModel:AlbumVM Artist="Curabitur vestibulum class aliquam adipiscing" Title="Phasellus curae integer donec nam">
@@ -54,5 +54,5 @@
 				</ViewModel:AlbumVM>
 			</ViewModel:AlbumListVM.Albums>
 		</ViewModel:AlbumListVM>
-	</ViewModel:AlbumListControlVM.List>
+	</ViewModel:AlbumListControlVM.AlbumList>
 </ViewModel:AlbumListControlVM>
