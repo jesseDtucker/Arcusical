@@ -108,7 +108,7 @@
     <IncludePath>$(ProjectDir)include;$(ProjectDir)src;$(SolutionDir)Util\include;$(SolutionDir)..\boost_1_55_0;$(IncludePath)</IncludePath>
     <CustomBuildAfterTargets>
     </CustomBuildAfterTargets>
-    <RunCodeAnalysis>true</RunCodeAnalysis>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
     <LibraryPath>$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\$(MSBuildProjectName)\</OutDir>
     <IntDir>$(ProjectDir)$(Platform)\$(Configuration)\$(MSBuildProjectName)\</IntDir>
@@ -127,7 +127,7 @@
     <IgnoreImportLibrary>false</IgnoreImportLibrary>
     <IncludePath>$(ProjectDir)include;$(ProjectDir)src;$(SolutionDir)Util\include;$(SolutionDir)..\boost_1_55_0;$(IncludePath)</IncludePath>
     <CustomBuildAfterTargets>Build</CustomBuildAfterTargets>
-    <RunCodeAnalysis>true</RunCodeAnalysis>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
     <LibraryPath>$(LibraryPath)</LibraryPath>
     <IntDir>$(ProjectDir)$(Platform)\$(Configuration)\$(MSBuildProjectName)\</IntDir>
   </PropertyGroup>
@@ -145,7 +145,7 @@
     <IgnoreImportLibrary>false</IgnoreImportLibrary>
     <IncludePath>$(ProjectDir)include;$(ProjectDir)src;$(SolutionDir)Util\include;$(SolutionDir)..\boost_1_55_0;$(IncludePath)</IncludePath>
     <CustomBuildAfterTargets>Build</CustomBuildAfterTargets>
-    <RunCodeAnalysis>true</RunCodeAnalysis>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
     <LibraryPath>$(LibraryPath)</LibraryPath>
     <IntDir>$(ProjectDir)$(Platform)\$(Configuration)\$(MSBuildProjectName)\</IntDir>
   </PropertyGroup>
@@ -178,7 +178,7 @@ copy $(OutDir)FileSystem.dll $(OutDir)..\..\DLL\FileSystem.dll</Command>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <CompileAsWinRT>true</CompileAsWinRT>
       <PreprocessorDefinitions>ARC_DLL</PreprocessorDefinitions>
-      <EnablePREfast>true</EnablePREfast>
+      <EnablePREfast>false</EnablePREfast>
       <WarningLevel>Level4</WarningLevel>
       <TreatWarningAsError>true</TreatWarningAsError>
       <AdditionalOptions>/d2Zi+ %(AdditionalOptions)</AdditionalOptions>
@@ -227,7 +227,7 @@ copy $(OutDir)FileSystem.dll $(OutDir)..\..\DLL\FileSystem.dll</Command>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <CompileAsWinRT>true</CompileAsWinRT>
       <PreprocessorDefinitions>ARC_DLL</PreprocessorDefinitions>
-      <EnablePREfast>true</EnablePREfast>
+      <EnablePREfast>false</EnablePREfast>
       <WarningLevel>Level4</WarningLevel>
       <TreatWarningAsError>true</TreatWarningAsError>
       <AdditionalOptions>/d2Zi+ %(AdditionalOptions)</AdditionalOptions>
@@ -275,7 +275,7 @@ copy $(OutDir)FileSystem.dll $(OutDir)..\..\DLL\FileSystem.dll</Command>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <CompileAsWinRT>true</CompileAsWinRT>
       <PreprocessorDefinitions>ARC_DLL</PreprocessorDefinitions>
-      <EnablePREfast>true</EnablePREfast>
+      <EnablePREfast>false</EnablePREfast>
       <WarningLevel>Level4</WarningLevel>
       <TreatWarningAsError>true</TreatWarningAsError>
       <AdditionalOptions>/d2Zi+ %(AdditionalOptions)</AdditionalOptions>

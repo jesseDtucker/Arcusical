@@ -153,6 +153,7 @@ namespace Player
 		{
 			// I hate this... but it's how the tutorial says to implement com objects...
 			delete this;
+			return 0;
 		}
 		return m_refCount;
 	}
