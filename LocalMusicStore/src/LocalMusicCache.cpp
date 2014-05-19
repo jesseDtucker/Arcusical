@@ -66,7 +66,10 @@ namespace Arcusical
 					m_songLoading.wait(lock);
 				}
 
-				return m_localSongs;
+				std::lock_guard<std::mutex> songGuard(m_songsEditLock);
+				auto songs = m_localSongs;
+
+				return songs;
 			});
 
 			return result;
@@ -83,7 +86,10 @@ namespace Arcusical
 					m_albumsLoading.wait(lock);
 				}
 
-				return m_localAlbums;
+				std::lock_guard<std::mutex> albumGuard(m_albumsEditLock);
+				auto result = m_localAlbums;
+
+				return result;
 			});
 
 			return result;
@@ -91,34 +97,47 @@ namespace Arcusical
 
 		void LocalMusicCache::ClearCache()
 		{
-			m_localAlbums->clear();
-			m_localSongs->clear();
+			std::lock_guard<std::mutex> songGuard(m_songsEditLock);
+			std::lock_guard<std::mutex> albumGuard(m_albumsEditLock);
+
+			m_localAlbums = std::make_shared<std::unordered_map<boost::uuids::uuid, std::shared_ptr<Model::Album>>>();
+			m_localSongs = std::make_shared<std::unordered_map<boost::uuids::uuid, std::shared_ptr<Model::Song>>>();
 		}
 
 		void LocalMusicCache::AddToCache(const std::vector<std::shared_ptr<Model::Album>>& albums)
 		{
+			std::lock_guard<std::mutex> albumGuard(m_albumsEditLock);
+
+			auto newAlbums = *m_localAlbums;
+
 			for (auto& album : albums)
 			{
-				(*m_localAlbums)[album->GetId()] = album;
+				newAlbums[album->GetId()] = album;
 			}
+
+			m_localAlbums = std::make_shared<std::unordered_map<boost::uuids::uuid, std::shared_ptr<Model::Album>>>(std::move(newAlbums));
 		}
 
 		void LocalMusicCache::AddToCache(const std::vector<std::shared_ptr<Model::Song>>& songs)
 		{
+			std::lock_guard<std::mutex> songGuard(m_songsEditLock);
+
+			// make a copy of the existing map
+			auto newSongs = *m_localSongs;
+
 			for (auto& song : songs)
 			{
-				(*m_localSongs)[song->GetId()] = song;
+				// add the new elements to it
+				newSongs[song->GetId()] = song;
 			}
-		}
 
-		void LocalMusicCache::SaveCache() const
-		{
-			SaveAlbums();
-			SaveSongs();
+			m_localSongs = std::make_shared<std::unordered_map<boost::uuids::uuid, std::shared_ptr<Model::Song>>>(std::move(newSongs));
 		}
 
 		void LocalMusicCache::LoadAlbums()
 		{
+			std::lock_guard<std::mutex> albumGuard(m_albumsEditLock);
+
 			if (Storage::ApplicationFolder().ContainsFile(ALBUM_CACHE_FILE))
 			{
 				std::vector<unsigned char> buffer;
@@ -143,6 +162,8 @@ namespace Arcusical
 
 		void LocalMusicCache::LoadSongs()
 		{
+			std::lock_guard<std::mutex> songGuard(m_songsEditLock);
+
 			if (Storage::ApplicationFolder().ContainsFile(SONG_CACHE_FILE))
 			{
 				std::vector<unsigned char> buffer;
@@ -165,11 +186,18 @@ namespace Arcusical
 			m_songLoading.notify_all();
 		}
 
-		void LocalMusicCache::SaveAlbums() const
+		void LocalMusicCache::SaveAlbums()
 		{
 			CachedAlbumList cachedAlbums;
 
-			for (auto& album : *m_localAlbums)
+			decltype(m_localAlbums) localAlbums;
+
+			{
+				std::lock_guard<std::mutex> albumGuard(m_albumsEditLock);
+				localAlbums = m_localAlbums;
+			}
+
+			for (auto& album : *localAlbums)
 			{
 				auto cachedAlbum = cachedAlbums.add_albums();
 				FillInCachedAlbumFromModel(*cachedAlbum, *album.second);
@@ -187,11 +215,18 @@ namespace Arcusical
 			}
 		}
 
-		void LocalMusicCache::SaveSongs() const
+		void LocalMusicCache::SaveSongs()
 		{
 			CachedSongList cachedSongs;
 
-			for (auto& song : *m_localSongs)
+			decltype(m_localSongs) localSongs;
+
+			{
+				std::lock_guard<std::mutex> songsGuard(m_songsEditLock);
+				localSongs = m_localSongs;
+			}
+
+			for (auto& song : *localSongs)
 			{
 				auto cachedSong = cachedSongs.add_songs();
 				FillInCachedSongFromModel(*cachedSong, *song.second);

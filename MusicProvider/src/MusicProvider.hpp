@@ -51,8 +51,8 @@ namespace MusicProvider
 		void Unsubscribe(AlbumsChangedCallback callback);
 		void LoadSongs();
 		void LoadAlbums();
-		void Publish(SongListPtr localSongs, SongListPtr remoteSongs);
-		void Publish(AlbumListPtr albums);
+		void PublishSongs();
+		void PublishAlbums();
 
 		bool MergeSongCollections(const std::unordered_map<boost::uuids::uuid, std::shared_ptr<Arcusical::Model::Song>>& existingSongs, std::vector<std::shared_ptr<FileSystem::IFile>>& locatedFiles);
 		void AddNewSongToExisting(std::shared_ptr<Model::Song> newSong, std::shared_ptr<Model::Song> existingSong, std::wstring fullPath);

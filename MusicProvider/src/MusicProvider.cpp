@@ -107,34 +107,33 @@ namespace MusicProvider
 		// 3) Merge search results with cache - Publish
 		// 4) Check remote - Publish // TODO::JT will do this later
 
-		// kick off concurrent loads from both the cache and from disk
-		auto localSongsFuture = m_musicCache->GetLocalSongs();
+		// kick off a concurrent load from disk
 		auto musicFinderFuture = m_musicFinder->FindSongs();
 
-		auto cachedSongs = localSongsFuture.get();
-		Publish(cachedSongs, m_hackRemoteList);
+		// and publish what we have in the cache
+		PublishSongs();
 
+		auto songs = m_musicCache->GetLocalSongs().get().lock();
 		auto musicFinderResults = musicFinderFuture.get();
-		auto songs = cachedSongs.lock();
 		if (MergeSongCollections(*songs, musicFinderResults) == true)
 		{
 			// then some songs were merged, we need to republish!
-			Publish(cachedSongs, m_hackRemoteList);
+			PublishSongs();
 		}
 	}
 
 	void MusicProvider::LoadAlbums()
 	{
-		auto cachedAlbums = m_musicCache->GetLocalAlbums().get();
-		Publish(cachedAlbums);
+		// public what we have in the cache
+		PublishAlbums();
 
 		// now subscribe to the music search service
-		std::function<void(SongListPtr, SongListPtr)> songsCallback = [this, cachedAlbums](SongListPtr localSongs, SongListPtr remoteSongs)
+		std::function<void(SongListPtr, SongListPtr)> songsCallback = [this](SongListPtr localSongs, SongListPtr remoteSongs)
 		{
-			auto albums = cachedAlbums.lock();
+			auto albums = m_musicCache->GetLocalAlbums().get().lock();
 			if (MergeAlbumCollections(*albums, localSongs))
 			{
-				Publish(cachedAlbums);
+				PublishAlbums();
 			}
 		};
 
@@ -207,7 +206,7 @@ namespace MusicProvider
 		if (haveFilesBeenAdded)
 		{
 			m_musicCache->AddToCache(newSongs);
-			m_musicCache->SaveCache();
+			m_musicCache->SaveSongs();
 		}
 		
 		return haveFilesBeenAdded;
@@ -307,7 +306,7 @@ namespace MusicProvider
 			}
 
 			m_musicCache->AddToCache(newAlbumsVec);
-			m_musicCache->SaveCache();
+			m_musicCache->SaveAlbums();
 		}
 
 		return newContentAdded;
@@ -338,17 +337,21 @@ namespace MusicProvider
 		}
 	}
 
-	void MusicProvider::Publish(SongListPtr localSongs, SongListPtr remoteSongs)
+	void MusicProvider::PublishSongs()
 	{
+		auto songs = m_musicCache->GetLocalSongs().get();
+
 		std::unique_lock<std::mutex> callbackLock(m_songCallbackLock);
 		for (auto& callback : m_songCallbackSet)
 		{
-			callback(localSongs, remoteSongs);
+			callback(songs, m_hackRemoteList);
 		}
 	}
 
-	void MusicProvider::Publish(AlbumListPtr albums)
+	void MusicProvider::PublishAlbums()
 	{
+		auto albums = m_musicCache->GetLocalAlbums().get();
+
 		std::unique_lock<std::mutex> callbackLock(m_albumCallbackLock);
 		for (auto& callback : m_albumCallbackSet)
 		{

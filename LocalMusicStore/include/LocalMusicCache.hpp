@@ -38,14 +38,14 @@ namespace LocalMusicStore
 		void ClearCache();
 		void AddToCache(const std::vector<std::shared_ptr<Model::Album>>& albums);
 		void AddToCache(const std::vector<std::shared_ptr<Model::Song>>& songs);
-		void SaveCache() const;
+
+		void SaveAlbums();
+		void SaveSongs();
+
 	private:
 
 		void LoadAlbums();
 		void LoadSongs();
-
-		void SaveAlbums() const;
-		void SaveSongs() const;
 
 		void FillInCachedAlbumFromModel(CachedAlbum& cachedAlbum, Model::Album& modelAlbum) const;
 		void FillInCachedSongFromModel(CachedSong& cachedSong, const Model::Song& modelSong) const;
@@ -67,6 +67,9 @@ namespace LocalMusicStore
 
 		std::mutex m_songsLoadingLock;
 		std::mutex m_albumsLoadingLock;
+
+		std::mutex m_albumsEditLock;
+		std::mutex m_songsEditLock;
 
 		std::shared_ptr<Model::IAlbumToSongMapper> m_songMapper;
 
