@@ -39,6 +39,11 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Player", "Player\Player.vcx
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AlacCodec", "AlacCodec\AlacCodec.vcxproj", "{7A17D95A-45AC-4481-861F-D45E65DABB44}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "WinrtMediaEngine", "WinrtMediaEngine\WinrtMediaEngine.vcxproj", "{0ED4BA89-2570-4236-AE8B-39689A79700A}"
+	ProjectSection(ProjectDependencies) = postProject
+		{7A17D95A-45AC-4481-861F-D45E65DABB44} = {7A17D95A-45AC-4481-861F-D45E65DABB44}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|ARM = Debug|ARM
@@ -181,6 +186,18 @@ Global
 		{7A17D95A-45AC-4481-861F-D45E65DABB44}.Release|Win32.Build.0 = Release|Win32
 		{7A17D95A-45AC-4481-861F-D45E65DABB44}.Release|x64.ActiveCfg = Release|x64
 		{7A17D95A-45AC-4481-861F-D45E65DABB44}.Release|x64.Build.0 = Release|x64
+		{0ED4BA89-2570-4236-AE8B-39689A79700A}.Debug|ARM.ActiveCfg = Debug|ARM
+		{0ED4BA89-2570-4236-AE8B-39689A79700A}.Debug|ARM.Build.0 = Debug|ARM
+		{0ED4BA89-2570-4236-AE8B-39689A79700A}.Debug|Win32.ActiveCfg = Debug|Win32
+		{0ED4BA89-2570-4236-AE8B-39689A79700A}.Debug|Win32.Build.0 = Debug|Win32
+		{0ED4BA89-2570-4236-AE8B-39689A79700A}.Debug|x64.ActiveCfg = Debug|x64
+		{0ED4BA89-2570-4236-AE8B-39689A79700A}.Debug|x64.Build.0 = Debug|x64
+		{0ED4BA89-2570-4236-AE8B-39689A79700A}.Release|ARM.ActiveCfg = Release|ARM
+		{0ED4BA89-2570-4236-AE8B-39689A79700A}.Release|ARM.Build.0 = Release|ARM
+		{0ED4BA89-2570-4236-AE8B-39689A79700A}.Release|Win32.ActiveCfg = Release|Win32
+		{0ED4BA89-2570-4236-AE8B-39689A79700A}.Release|Win32.Build.0 = Release|Win32
+		{0ED4BA89-2570-4236-AE8B-39689A79700A}.Release|x64.ActiveCfg = Release|x64
+		{0ED4BA89-2570-4236-AE8B-39689A79700A}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

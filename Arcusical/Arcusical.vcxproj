@@ -320,6 +320,9 @@
     <ProjectReference Include="..\FileSystem\FileSystem.vcxproj">
       <Project>{d5c20956-c4c0-4549-ad72-92ac37d6120b}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\WinrtMediaEngine\WinrtMediaEngine.vcxproj">
+      <Project>{0ed4ba89-2570-4236-ae8b-39689a79700a}</Project>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <DesignData Include="SampleData\AlbumListControlVMSampleData.xaml" />

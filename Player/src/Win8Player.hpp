@@ -62,6 +62,8 @@ namespace Player
 		CComPtr<IMFMediaEngineClassFactory> m_factory;
 		CComPtr<IMFAttributes> m_attributes;
 		CComPtr<IMFMediaEngineEx> m_mediaEngine;
+
+		Windows::Media::MediaExtensionManager^ m_extensionManager;
 		
 	};
 }

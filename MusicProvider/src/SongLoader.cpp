@@ -1,7 +1,13 @@
 #include "pch.h"
 
-#include <codecvt>
+#define PARSER_VERSOBE 1
+
+#if PARSER_VERSOBE
 #include <sstream>
+#include <debugapi.h>
+#endif
+
+#include <codecvt>
 #include <string>
 
 #include "Album.hpp"
@@ -97,6 +103,20 @@ namespace MusicProvider
 		ARC_ASSERT(songFile.bitRate != 0);
 		ARC_ASSERT(songFile.channelCount != 0);
 		ARC_ASSERT(songFile.sampleSize != 0);
+
+#if PARSER_VERSOBE
+
+		std::stringstream stream;
+		mpegSong->GetTree()->PrintTree(stream);
+
+		while (!stream.eof())
+		{
+			std::string output;
+			std::getline(stream, output);
+			output.append("\n");
+			OutputDebugStringA(output.c_str());
+		}
+#endif
 
 		return result;
 	}

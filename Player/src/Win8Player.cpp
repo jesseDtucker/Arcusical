@@ -7,6 +7,7 @@
 #include "Win8Player.hpp"
 
 using namespace ATL;
+using namespace Windows::Media;
 using namespace Microsoft::WRL;
 using namespace concurrency;
 
@@ -48,6 +49,14 @@ namespace Player
 
 		result = engine.Get()->QueryInterface(__uuidof(IMFMediaEngine), (void**)(&m_mediaEngine));
 		ARC_ThrowIfFailed(result);
+
+		auto alacInputId = MFMPEG4Format_Base;
+		alacInputId.Data1 = 'alac';
+
+		auto alacOutputId = MFAudioFormat_PCM;
+
+		m_extensionManager = ref new MediaExtensionManager();
+		m_extensionManager->RegisterAudioDecoder("ALACDecoder.ALACDecoder", alacInputId, alacOutputId);
 	}
 
 	Win8Player::~Win8Player()
@@ -67,6 +76,7 @@ namespace Player
 			case Model::AudioFormat::ALAC:
 			{
 				ARC_FAIL("TODO::JT");
+				PlayNativeSong(stream);
 				break;
 			}
 			case Model::AudioFormat::FLAC:
@@ -98,7 +108,8 @@ namespace Player
 			result = ::MFCreateMFByteStreamOnStreamEx(pStreamUnk.Get(), &pMFStream);
 			ARC_ThrowIfFailed(result);
 
-			CComBSTR path = stream.songData.filePath.c_str();
+			//CComBSTR path = stream.songData.filePath.c_str();
+			CComBSTR path = "test.alac";
 			result = m_mediaEngine->SetSourceFromByteStream(pMFStream.Get(), path);
 			ARC_ThrowIfFailed(result);
 		}
