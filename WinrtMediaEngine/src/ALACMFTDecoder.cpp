@@ -3,17 +3,19 @@
 #include <wrl\module.h>
 #include <Mferror.h>
 
-#include "ALACDecoder.hpp"
+#include "ALACMFTDecoder.hpp"
 #include "Arc_Assert.hpp"
+#include "InMemoryStream.hpp"
+#include "MPEG4_Parser.hpp"
 
 using namespace Microsoft::WRL;
 
 // 261E9D83-9529-4B8F-A111-8B9C950A81A9
 GUID ALAC_COOKIE = { 0x261E9D83, 0x9529, 0x4B8F, 0xA1, 0x11, 0x8B, 0x9C, 0x95, 0x0A, 0x81, 0xA9 };
 
-ActivatableClass(ALACDecoder);
+ActivatableClass(ALACMFTDecoder);
 
-ALACDecoder::ALACDecoder()
+ALACMFTDecoder::ALACMFTDecoder()
 	: m_avgBytesPerSec(0)
 	, m_bitRate(0)
 	, m_cookieBlob(nullptr)
@@ -26,7 +28,7 @@ ALACDecoder::ALACDecoder()
 	
 }
 
-ALACDecoder::~ALACDecoder()
+ALACMFTDecoder::~ALACMFTDecoder()
 {
 	delete(m_cookieBlob);
 	m_cookieBlob = nullptr;
@@ -38,7 +40,7 @@ ALACDecoder::~ALACDecoder()
 // Name: SetProperties
 // Sets the configuration of the decoder
 //-------------------------------------------------------------------
-IFACEMETHODIMP ALACDecoder::SetProperties(ABI::Windows::Foundation::Collections::IPropertySet *pConfiguration)
+IFACEMETHODIMP ALACMFTDecoder::SetProperties(ABI::Windows::Foundation::Collections::IPropertySet *pConfiguration)
 {
 	return S_OK;
 }
@@ -50,7 +52,7 @@ IFACEMETHODIMP ALACDecoder::SetProperties(ABI::Windows::Foundation::Collections:
 // Returns the minimum and maximum number of streams.
 //-------------------------------------------------------------------
 
-HRESULT ALACDecoder::GetStreamLimits(
+HRESULT ALACMFTDecoder::GetStreamLimits(
 	DWORD   *pdwInputMinimum,
 	DWORD   *pdwInputMaximum,
 	DWORD   *pdwOutputMinimum,
@@ -83,7 +85,7 @@ HRESULT ALACDecoder::GetStreamLimits(
 // Returns the actual number of streams.
 //-------------------------------------------------------------------
 
-HRESULT ALACDecoder::GetStreamCount(
+HRESULT ALACMFTDecoder::GetStreamCount(
 	DWORD   *pcInputStreams,
 	DWORD   *pcOutputStreams)
 {
@@ -102,7 +104,7 @@ HRESULT ALACDecoder::GetStreamCount(
 // Name: GetStreamIDs
 // Returns stream IDs for the input and output streams.
 //-------------------------------------------------------------------
-HRESULT ALACDecoder::GetStreamIDs(
+HRESULT ALACMFTDecoder::GetStreamIDs(
 	DWORD   dwInputIDArraySize,
 	DWORD   *pdwInputIDs,
 	DWORD   dwOutputIDArraySize,
@@ -119,7 +121,7 @@ HRESULT ALACDecoder::GetStreamIDs(
 // Name: GetInputStreamInfo
 // Returns information about an input stream.
 //-------------------------------------------------------------------
-HRESULT ALACDecoder::GetInputStreamInfo(
+HRESULT ALACMFTDecoder::GetInputStreamInfo(
 	DWORD                     dwInputStreamID,
 	MFT_INPUT_STREAM_INFO *   pStreamInfo
 	)
@@ -137,22 +139,24 @@ HRESULT ALACDecoder::GetInputStreamInfo(
 // Name: GetOutputStreamInfo
 // Returns information about an output stream.
 //-------------------------------------------------------------------
-HRESULT ALACDecoder::GetOutputStreamInfo(
+HRESULT ALACMFTDecoder::GetOutputStreamInfo(
 	DWORD                     dwOutputStreamID,
 	MFT_OUTPUT_STREAM_INFO *  pStreamInfo
 	)
 {
-	ARC_FAIL("TODO::JT");
-
 	if (pStreamInfo == nullptr)
 	{
 		return E_POINTER;
 	}
 
+	pStreamInfo->dwFlags = MFT_OUTPUT_STREAM_WHOLE_SAMPLES | MFT_OUTPUT_STREAM_FIXED_SAMPLE_SIZE;
+	pStreamInfo->cbSize = m_alacBox->GetSamplePerFrame() * m_bitsPerSample / 8;
+	pStreamInfo->cbAlignment = 0;
+
 	return S_OK;
 }
 
-HRESULT ALACDecoder::GetAttributes(IMFAttributes** pAttributes)
+HRESULT ALACMFTDecoder::GetAttributes(IMFAttributes** pAttributes)
 {
 	return E_NOTIMPL;
 }
@@ -162,7 +166,7 @@ HRESULT ALACDecoder::GetAttributes(IMFAttributes** pAttributes)
 // Returns stream-level attributes for an input stream.
 //-------------------------------------------------------------------
 
-HRESULT ALACDecoder::GetInputStreamAttributes(
+HRESULT ALACMFTDecoder::GetInputStreamAttributes(
 	DWORD           dwInputStreamID,
 	IMFAttributes** ppAttributes)
 {
@@ -174,7 +178,7 @@ HRESULT ALACDecoder::GetInputStreamAttributes(
 // Name: GetOutputStreamAttributes
 // Returns stream-level attributes for an output stream.
 //-------------------------------------------------------------------
-HRESULT ALACDecoder::GetOutputStreamAttributes(
+HRESULT ALACMFTDecoder::GetOutputStreamAttributes(
 	DWORD           dwOutputStreamID,
 	IMFAttributes** ppAttributes
 	)
@@ -187,7 +191,7 @@ HRESULT ALACDecoder::GetOutputStreamAttributes(
 //-------------------------------------------------------------------
 // Name: DeleteInputStream
 //-------------------------------------------------------------------
-HRESULT ALACDecoder::DeleteInputStream(DWORD dwStreamID)
+HRESULT ALACMFTDecoder::DeleteInputStream(DWORD dwStreamID)
 {
 	ARC_FAIL("TODO::JT");
 	// This MFT has a fixed number of input streams, so the method is not implemented.
@@ -197,7 +201,7 @@ HRESULT ALACDecoder::DeleteInputStream(DWORD dwStreamID)
 //-------------------------------------------------------------------
 // Name: AddInputStreams
 //-------------------------------------------------------------------
-HRESULT ALACDecoder::AddInputStreams(
+HRESULT ALACMFTDecoder::AddInputStreams(
 	DWORD   cStreams,
 	DWORD*  adwStreamIDs)
 {
@@ -210,7 +214,7 @@ HRESULT ALACDecoder::AddInputStreams(
 // Name: GetInputAvailableType
 // Description: Return a preferred input type.
 //-------------------------------------------------------------------
-HRESULT ALACDecoder::GetInputAvailableType(
+HRESULT ALACMFTDecoder::GetInputAvailableType(
 	DWORD           dwInputStreamID,
 	DWORD           dwTypeIndex,
 	IMFMediaType**  ppType)
@@ -223,7 +227,7 @@ HRESULT ALACDecoder::GetInputAvailableType(
 // Name: GetOutputAvailableType
 // Description: Return a preferred output type.
 //-------------------------------------------------------------------
-HRESULT ALACDecoder::GetOutputAvailableType(
+HRESULT ALACMFTDecoder::GetOutputAvailableType(
 	DWORD           dwOutputStreamID,
 	DWORD           dwTypeIndex, // 0-based
 	IMFMediaType    **ppType)
@@ -246,7 +250,7 @@ HRESULT ALACDecoder::GetOutputAvailableType(
 //-------------------------------------------------------------------
 // Name: SetInputType
 //-------------------------------------------------------------------
-HRESULT ALACDecoder::SetInputType(
+HRESULT ALACMFTDecoder::SetInputType(
 	DWORD           dwInputStreamID,
 	IMFMediaType    *pType, // Can be nullptr to clear the input type.
 	DWORD           dwFlags
@@ -279,6 +283,8 @@ HRESULT ALACDecoder::SetInputType(
 		ARC_ThrowIfFailed(hr);
 
 		m_inputType = pType;
+
+		ParseALACBox();
 	}
 	catch (Platform::Exception^ ex)
 	{
@@ -289,10 +295,37 @@ HRESULT ALACDecoder::SetInputType(
 	return hr;
 }
 
+void ALACMFTDecoder::ParseALACBox()
+{
+	using namespace Arcusical::MPEG4;
+
+	Util::InMemoryStream stream(m_cookieBlob, m_cookieBlobSize);
+	MPEG4_Parser parser;
+	
+	auto mpegSong = parser.ReadAndParseFromStream(stream);
+	auto tree = mpegSong->GetTree();
+
+	auto boxes = tree->GetBoxes();
+	ARC_ASSERT_MSG(boxes.size() == 1, "Only one box was expected!");
+
+	if (boxes.size() > 0)
+	{
+		auto stsdBox = boxes[0];
+		auto children = stsdBox->GetChildren();
+
+		ARC_ASSERT_MSG(children.size() == 1, "Expected only 1 box!");
+		if (children.size() > 0)
+		{
+			m_alacBox = std::dynamic_pointer_cast<Alac>(children[0]);
+			ARC_ASSERT(m_alacBox != nullptr);
+		}
+	}
+}
+
 //-------------------------------------------------------------------
 // Name: SetOutputType
 //-------------------------------------------------------------------
-HRESULT ALACDecoder::SetOutputType(
+HRESULT ALACMFTDecoder::SetOutputType(
 	DWORD           dwOutputStreamID,
 	IMFMediaType    *pType, // Can be nullptr to clear the output type.
 	DWORD           dwFlags)
@@ -306,7 +339,7 @@ HRESULT ALACDecoder::SetOutputType(
 // Name: GetInputCurrentType
 // Description: Returns the current input type.
 //-------------------------------------------------------------------
-HRESULT ALACDecoder::GetInputCurrentType(
+HRESULT ALACMFTDecoder::GetInputCurrentType(
 	DWORD           dwInputStreamID,
 	IMFMediaType    **ppType)
 {
@@ -328,7 +361,7 @@ HRESULT ALACDecoder::GetInputCurrentType(
 // Name: GetOutputCurrentType
 // Description: Returns the current output type.
 //-------------------------------------------------------------------
-HRESULT ALACDecoder::GetOutputCurrentType(
+HRESULT ALACMFTDecoder::GetOutputCurrentType(
 	DWORD           dwOutputStreamID,
 	IMFMediaType    **ppType)
 {
@@ -350,7 +383,7 @@ HRESULT ALACDecoder::GetOutputCurrentType(
 // Name: GetInputStatus
 // Description: Query if the MFT is accepting more input.
 //-------------------------------------------------------------------
-HRESULT ALACDecoder::GetInputStatus(
+HRESULT ALACMFTDecoder::GetInputStatus(
 	DWORD           dwInputStreamID,
 	DWORD           *pdwFlags)
 {
@@ -367,7 +400,7 @@ HRESULT ALACDecoder::GetInputStatus(
 // Name: GetOutputStatus
 // Description: Query if the MFT can produce output.
 //-------------------------------------------------------------------
-HRESULT ALACDecoder::GetOutputStatus(DWORD *pdwFlags)
+HRESULT ALACMFTDecoder::GetOutputStatus(DWORD *pdwFlags)
 {
 	if (pdwFlags == nullptr)
 	{
@@ -382,7 +415,7 @@ HRESULT ALACDecoder::GetOutputStatus(DWORD *pdwFlags)
 // Name: SetOutputBounds
 // Sets the range of time stamps that the MFT will output.
 //-------------------------------------------------------------------
-HRESULT ALACDecoder::SetOutputBounds(
+HRESULT ALACMFTDecoder::SetOutputBounds(
 	LONGLONG        /*hnsLowerBound*/,
 	LONGLONG        /*hnsUpperBound*/)
 {
@@ -395,7 +428,7 @@ HRESULT ALACDecoder::SetOutputBounds(
 // Name: ProcessEvent
 // Sends an event to an input stream.
 //-------------------------------------------------------------------
-HRESULT ALACDecoder::ProcessEvent(
+HRESULT ALACMFTDecoder::ProcessEvent(
 	DWORD              /*dwInputStreamID*/,
 	IMFMediaEvent      * /*pEvent */)
 {
@@ -409,7 +442,7 @@ HRESULT ALACDecoder::ProcessEvent(
 //-------------------------------------------------------------------
 // Name: ProcessMessage
 //-------------------------------------------------------------------
-HRESULT ALACDecoder::ProcessMessage(
+HRESULT ALACMFTDecoder::ProcessMessage(
 	MFT_MESSAGE_TYPE    eMessage,
 	ULONG_PTR           ulParam)
 {
@@ -422,7 +455,7 @@ HRESULT ALACDecoder::ProcessMessage(
 // Name: ProcessInput
 // Description: Process an input sample.
 //-------------------------------------------------------------------
-HRESULT ALACDecoder::ProcessInput(
+HRESULT ALACMFTDecoder::ProcessInput(
 	DWORD               dwInputStreamID,
 	IMFSample           *pSample,
 	DWORD               dwFlags)
@@ -435,17 +468,17 @@ HRESULT ALACDecoder::ProcessInput(
 // Name: ProcessOutput
 // Description: Process an output sample.
 //-------------------------------------------------------------------
-HRESULT ALACDecoder::ProcessOutput(
+HRESULT ALACMFTDecoder::ProcessOutput(
 	DWORD                   dwFlags,
 	DWORD                   cOutputBufferCount,
 	MFT_OUTPUT_DATA_BUFFER  *pOutputSamples, // one per stream
 	DWORD                   *pdwStatus)
 {
 	ARC_FAIL("TODO::JT");
-	return S_OK;
+	return MF_E_TRANSFORM_NEED_MORE_INPUT;
 }
 
-HRESULT ALACDecoder::CreateOutputType(Microsoft::WRL::ComPtr<IMFMediaType>& spOutputType)
+HRESULT ALACMFTDecoder::CreateOutputType(Microsoft::WRL::ComPtr<IMFMediaType>& spOutputType)
 {
 	HRESULT hr = S_OK;
 
@@ -478,7 +511,8 @@ HRESULT ALACDecoder::CreateOutputType(Microsoft::WRL::ComPtr<IMFMediaType>& spOu
 		hr = spOutputType->SetUINT32(MF_MT_ALL_SAMPLES_INDEPENDENT, TRUE);
 		ARC_ThrowIfFailed(hr);
 
-		hr = spOutputType->SetUINT32({ 0x494bbcf7, 0xb031, 0x4e38, 0x97, 0xc4, 0xd5, 0x42, 0x2d, 0xd6, 0x18, 0xdc }, TRUE);
+		GUID iCantRemembeWhatThisis = { 0x494bbcf7, 0xb031, 0x4e38, 0x97, 0xc4, 0xd5, 0x42, 0x2d, 0xd6, 0x18, 0xdc };
+		hr = spOutputType->SetUINT32(iCantRemembeWhatThisis, TRUE);
 		ARC_ThrowIfFailed(hr);
 	}
 	catch (Platform::Exception^ ex)

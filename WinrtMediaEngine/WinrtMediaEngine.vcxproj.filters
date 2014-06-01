@@ -16,7 +16,7 @@
     <ClCompile Include="pch.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\ALACDecoder.cpp">
+    <ClCompile Include="src\ALACMFTDecoder.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
@@ -24,7 +24,7 @@
     <ClInclude Include="pch.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="include\ALACDecoder.hpp">
+    <ClInclude Include="include\ALACMFTDecoder.hpp">
       <Filter>include</Filter>
     </ClInclude>
   </ItemGroup>

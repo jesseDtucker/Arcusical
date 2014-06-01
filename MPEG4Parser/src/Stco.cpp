@@ -56,6 +56,17 @@ namespace Arcusical { namespace MPEG4 {
 
 		outStream << tabs << "\tVersion: " << m_version << std::endl;
 		outStream << tabs << "\tNumber of Entries: " << m_entries.size() << std::endl;
+
+		int entryNumber = 0;
+		for (auto& entry : m_entries)
+		{
+			outStream << tabs << "\t\tEntry " << entryNumber << " : " << entry << std::endl;
+			if (entryNumber > 0)
+			{
+				outStream << tabs << "\t\t\tDelta : " << entry - m_entries[entryNumber - 1] << std::endl;
+			}
+			entryNumber++;
+		}
 	}
 
 	#pragma region Public Getters

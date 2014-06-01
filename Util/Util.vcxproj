@@ -136,6 +136,7 @@
       <WarningLevel>Level4</WarningLevel>
       <TreatWarningAsError>true</TreatWarningAsError>
       <AdditionalOptions>/d2Zi+ %(AdditionalOptions)</AdditionalOptions>
+      <PreprocessorDefinitions>_SCL_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -155,6 +156,7 @@
       <WarningLevel>Level4</WarningLevel>
       <TreatWarningAsError>true</TreatWarningAsError>
       <AdditionalOptions>/d2Zi+ %(AdditionalOptions)</AdditionalOptions>
+      <PreprocessorDefinitions>D_SCL_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -174,6 +176,7 @@
       <WarningLevel>Level4</WarningLevel>
       <TreatWarningAsError>true</TreatWarningAsError>
       <AdditionalOptions>/d2Zi+ %(AdditionalOptions)</AdditionalOptions>
+      <PreprocessorDefinitions>D_SCL_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -193,6 +196,7 @@
       <WarningLevel>Level4</WarningLevel>
       <TreatWarningAsError>true</TreatWarningAsError>
       <AdditionalOptions>/d2Zi+ %(AdditionalOptions)</AdditionalOptions>
+      <PreprocessorDefinitions>D_SCL_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -212,6 +216,7 @@
       <WarningLevel>Level4</WarningLevel>
       <TreatWarningAsError>true</TreatWarningAsError>
       <AdditionalOptions>/d2Zi+ %(AdditionalOptions)</AdditionalOptions>
+      <PreprocessorDefinitions>D_SCL_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -231,6 +236,7 @@
       <WarningLevel>Level4</WarningLevel>
       <TreatWarningAsError>true</TreatWarningAsError>
       <AdditionalOptions>/d2Zi+ %(AdditionalOptions)</AdditionalOptions>
+      <PreprocessorDefinitions>D_SCL_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -246,6 +252,7 @@
     <ClInclude Include="include\CheckedCasts.hpp" />
     <ClInclude Include="include\Delegate.hpp" />
     <ClInclude Include="include\Export.hpp" />
+    <ClInclude Include="include\InMemoryStream.hpp" />
     <ClInclude Include="include\InterfaceWrapper.hpp" />
     <ClInclude Include="include\MulticastDelegate.hpp" />
     <ClInclude Include="include\pch.h" />
@@ -257,6 +264,7 @@
     <ClInclude Include="include\Util.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\InMemoryStream.cpp" />
     <ClCompile Include="src\pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>

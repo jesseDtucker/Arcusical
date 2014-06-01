@@ -7,9 +7,11 @@
 #include <wrl\implements.h>
 #include <mftransform.h>
 
+#include "Alac.hpp"
 #include "Export.hpp"
+#include "Stsd.hpp"
 
-class EXPORT ALACDecoder WrlSealed
+class EXPORT ALACMFTDecoder WrlSealed
 	: public Microsoft::WRL::RuntimeClass <
 	Microsoft::WRL::RuntimeClassFlags< Microsoft::WRL::RuntimeClassType::WinRtClassicComMix >,
 	ABI::Windows::Media::IMediaExtension,
@@ -19,8 +21,8 @@ class EXPORT ALACDecoder WrlSealed
 
 public:
 		
-	ALACDecoder();
-	virtual ~ALACDecoder();
+	ALACMFTDecoder();
+	virtual ~ALACMFTDecoder();
 
 	// IMediaExtension
 	IFACEMETHOD(SetProperties) (ABI::Windows::Foundation::Collections::IPropertySet *pConfiguration);
@@ -146,10 +148,12 @@ public:
 private:
 
 	HRESULT CreateOutputType(Microsoft::WRL::ComPtr<IMFMediaType>& outType);
+	void ParseALACBox();
 
 	UINT32 m_avgBytesPerSec;
 	UINT32 m_bitRate;
 	UINT8* m_cookieBlob;
+	std::shared_ptr<Arcusical::MPEG4::Alac> m_alacBox;
 	UINT32 m_cookieBlobSize;
 	UINT32 m_channelCount;
 	UINT32 m_samplesPerSecond;

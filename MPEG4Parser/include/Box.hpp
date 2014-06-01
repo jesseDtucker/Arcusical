@@ -54,8 +54,8 @@ namespace Arcusical { namespace MPEG4 {
 
 			/*
 			*	Print out the contents of this box in a human readable form to the provided stream.
-			*	depth = depth of indentation, largely used internally however can be adjusted extenerally
-			*	to increase number of tabs at beggining of lines.
+			*	depth = depth of indentation, largely used internally however can be adjusted externally
+			*	to increase number of tabs at beginning of lines.
 			*/
 			virtual void PrintBox(std::ostream& outStream, int depth = 0) = 0;
 

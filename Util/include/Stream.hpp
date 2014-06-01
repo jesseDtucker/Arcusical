@@ -94,7 +94,7 @@ namespace Util
 		void ReadRawBytes(unsigned int count, T& destination);
 		std::vector<unsigned char> ReadRawBytes(unsigned int count);
 
-	private:
+	protected:
 		virtual std::vector<unsigned char> GetBytes(unsigned int count) = 0;
 	};
 
