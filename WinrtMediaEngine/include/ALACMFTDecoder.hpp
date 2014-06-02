@@ -8,6 +8,7 @@
 #include <mftransform.h>
 
 #include "Alac.hpp"
+#include "ALACDecoder.h"
 #include "Export.hpp"
 #include "Stsd.hpp"
 
@@ -149,6 +150,7 @@ private:
 
 	HRESULT CreateOutputType(Microsoft::WRL::ComPtr<IMFMediaType>& outType);
 	void ParseALACBox();
+	unsigned int GetOutBufferSize();
 
 	UINT32 m_avgBytesPerSec;
 	UINT32 m_bitRate;
@@ -159,8 +161,14 @@ private:
 	UINT32 m_samplesPerSecond;
 	UINT32 m_bitsPerSample;
 
+	ALACDecoder m_decoder;
+
 	Microsoft::WRL::ComPtr<IMFMediaType> m_inputType;
 	Microsoft::WRL::ComPtr<IMFMediaType> m_outputType;
+
+	unsigned int m_samplesAvailable;
+	std::vector<char> m_outBuffer;
+	bool m_isOutFrameReady;
 };
 
 #endif

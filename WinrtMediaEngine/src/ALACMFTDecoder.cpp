@@ -3,10 +3,12 @@
 #include <wrl\module.h>
 #include <Mferror.h>
 
+#include "ALACBitUtilities.h"
 #include "ALACMFTDecoder.hpp"
 #include "Arc_Assert.hpp"
 #include "InMemoryStream.hpp"
 #include "MPEG4_Parser.hpp"
+#include "ScopeGuard.hpp"
 
 using namespace Microsoft::WRL;
 
@@ -24,6 +26,9 @@ ALACMFTDecoder::ALACMFTDecoder()
 	, m_bitsPerSample(0)
 	, m_outputType(nullptr)
 	, m_inputType(nullptr)
+	, m_outBuffer()
+	, m_isOutFrameReady(false)
+	, m_samplesAvailable(0)
 {
 	
 }
@@ -150,7 +155,7 @@ HRESULT ALACMFTDecoder::GetOutputStreamInfo(
 	}
 
 	pStreamInfo->dwFlags = MFT_OUTPUT_STREAM_WHOLE_SAMPLES | MFT_OUTPUT_STREAM_FIXED_SAMPLE_SIZE;
-	pStreamInfo->cbSize = m_alacBox->GetSamplePerFrame() * m_bitsPerSample / 8;
+	pStreamInfo->cbSize = GetOutBufferSize();
 	pStreamInfo->cbAlignment = 0;
 
 	return S_OK;
@@ -318,8 +323,17 @@ void ALACMFTDecoder::ParseALACBox()
 		{
 			m_alacBox = std::dynamic_pointer_cast<Alac>(children[0]);
 			ARC_ASSERT(m_alacBox != nullptr);
+
+			m_outBuffer.resize(GetOutBufferSize());
 		}
 	}
+
+	m_decoder.Init(m_cookieBlob + 52, m_cookieBlobSize - 52);
+}
+
+unsigned int ALACMFTDecoder::GetOutBufferSize()
+{
+	return m_alacBox->GetSamplePerFrame() * m_channelCount * m_bitsPerSample / 8;
 }
 
 //-------------------------------------------------------------------
@@ -460,7 +474,26 @@ HRESULT ALACMFTDecoder::ProcessInput(
 	IMFSample           *pSample,
 	DWORD               dwFlags)
 {
-	ARC_FAIL("TODO::JT");
+	IMFMediaBuffer* inputMediaBuffer = nullptr;
+	auto hr = pSample->GetBufferByIndex(dwInputStreamID, &inputMediaBuffer);
+	ARC_ThrowIfFailed(hr);
+
+	BYTE* inBuffer =  nullptr;
+	DWORD bufferLength = 0;
+	hr = inputMediaBuffer->Lock(&inBuffer, NULL, &bufferLength);
+	Util::ScopeGuard<std::function<void()>> inputBufferUnlocker([&inputMediaBuffer]()
+	{
+		auto hr = inputMediaBuffer->Unlock();
+		ARC_ASSERT(SUCCEEDED(hr));
+	});
+	
+	BitBuffer bitsWrapper;
+	BitBufferInit(&bitsWrapper, inBuffer, bufferLength);
+	m_decoder.Decode(&bitsWrapper, (uint8_t*)(m_outBuffer.data()), m_alacBox->GetSamplePerFrame(), m_channelCount, &m_samplesAvailable);
+
+	ARC_ASSERT(m_samplesAvailable == m_alacBox->GetSamplePerFrame());
+	m_isOutFrameReady = true;
+
 	return S_OK;
 }
 
@@ -474,8 +507,43 @@ HRESULT ALACMFTDecoder::ProcessOutput(
 	MFT_OUTPUT_DATA_BUFFER  *pOutputSamples, // one per stream
 	DWORD                   *pdwStatus)
 {
-	ARC_FAIL("TODO::JT");
-	return MF_E_TRANSFORM_NEED_MORE_INPUT;
+	if (m_isOutFrameReady)
+	{
+		IMFMediaBuffer* outBuffer = nullptr;
+		auto hr = pOutputSamples->pSample->GetBufferByIndex(cOutputBufferCount - 1, &outBuffer);
+		ARC_ThrowIfFailed(hr);
+
+		BYTE* pBuffer = nullptr;
+		hr = outBuffer->Lock(&pBuffer, NULL, NULL);
+		ARC_ThrowIfFailed(hr);
+
+		Util::ScopeGuard<std::function<void()>> inputBufferUnlocker([&outBuffer]()
+		{
+			auto hr = outBuffer->Unlock();
+			ARC_ASSERT(SUCCEEDED(hr));
+		});
+
+		DWORD bufferLength = 0;
+		hr = outBuffer->GetMaxLength(&bufferLength);
+		ARC_ThrowIfFailed(hr);
+
+		ARC_ASSERT(bufferLength >= m_outBuffer.size());
+		auto bytesToCopy =  m_samplesAvailable * m_channelCount * m_bitsPerSample / 8;
+
+		std::copy(	m_outBuffer.data(), 
+					m_outBuffer.data() + bytesToCopy,
+					pBuffer);
+
+		outBuffer->SetCurrentLength(bytesToCopy);
+		m_isOutFrameReady = false;
+		m_samplesAvailable = 0;
+
+		return S_OK;
+	}
+	else
+	{
+		return MF_E_TRANSFORM_NEED_MORE_INPUT;
+	}
 }
 
 HRESULT ALACMFTDecoder::CreateOutputType(Microsoft::WRL::ComPtr<IMFMediaType>& spOutputType)
