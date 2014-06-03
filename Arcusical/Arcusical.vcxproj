@@ -166,10 +166,14 @@
       <EnablePREfast>true</EnablePREfast>
       <WarningLevel>Level4</WarningLevel>
       <TreatWarningAsError>true</TreatWarningAsError>
+      <BrowseInformation>true</BrowseInformation>
     </ClCompile>
     <Link>
       <AdditionalDependencies>FileSystem.lib;Util.lib;Model.lib;LocalMusicStore.lib;libprotobuf.lib;MPEG4Parser.lib;MusicProvider.lib;Player.lib;ole32.lib;oleaut32.lib;Mfplat.lib;mfuuid.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <Bscmake>
+      <PreserveSbr>true</PreserveSbr>
+    </Bscmake>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
