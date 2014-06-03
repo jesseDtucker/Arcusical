@@ -168,7 +168,9 @@ private:
 
 	unsigned int m_samplesAvailable;
 	std::vector<char> m_outBuffer;
+	std::vector<char> m_inBuffer; // TODO::JT you were hooking this up!
 	bool m_isOutFrameReady;
+	bool m_hasEnoughInput;
 };
 
 #endif

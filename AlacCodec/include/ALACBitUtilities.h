@@ -40,7 +40,7 @@
 #define nil NULL
 #endif
 
-#define RequireAction(condition, action)			if (!(condition)) { action }
+#define RequireAction(condition, action)			if (!(condition)) { __debugbreak(); action }
 #define RequireActionSilent(condition, action)			if (!(condition)) { action }
 #define RequireNoErr(condition, action)			if ((condition)) { action }
 

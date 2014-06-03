@@ -12,6 +12,8 @@
 
 using namespace Microsoft::WRL;
 
+#define VERBOSE 1
+
 // 261E9D83-9529-4B8F-A111-8B9C950A81A9
 GUID ALAC_COOKIE = { 0x261E9D83, 0x9529, 0x4B8F, 0xA1, 0x11, 0x8B, 0x9C, 0x95, 0x0A, 0x81, 0xA9 };
 
@@ -29,13 +31,15 @@ ALACMFTDecoder::ALACMFTDecoder()
 	, m_outBuffer()
 	, m_isOutFrameReady(false)
 	, m_samplesAvailable(0)
+	, m_hasEnoughInput(false)
 {
 	
 }
 
 ALACMFTDecoder::~ALACMFTDecoder()
 {
-	delete(m_cookieBlob);
+	// TODO::JT something wrong with this..
+	//delete(m_cookieBlob);
 	m_cookieBlob = nullptr;
 }
 
@@ -460,8 +464,7 @@ HRESULT ALACMFTDecoder::ProcessMessage(
 	MFT_MESSAGE_TYPE    eMessage,
 	ULONG_PTR           ulParam)
 {
-	ARC_FAIL("TODO::JT");
-	//AutoLock lock(m_critSec);
+	OutputDebugStringA("Message Rx'd\n");
 	return S_OK;
 }
 
@@ -474,25 +477,70 @@ HRESULT ALACMFTDecoder::ProcessInput(
 	IMFSample           *pSample,
 	DWORD               dwFlags)
 {
-	IMFMediaBuffer* inputMediaBuffer = nullptr;
-	auto hr = pSample->GetBufferByIndex(dwInputStreamID, &inputMediaBuffer);
+	DWORD bufferCount = 0;
+	auto hr = pSample->GetBufferCount(&bufferCount);
 	ARC_ThrowIfFailed(hr);
 
-	BYTE* inBuffer =  nullptr;
-	DWORD bufferLength = 0;
-	hr = inputMediaBuffer->Lock(&inBuffer, NULL, &bufferLength);
-	Util::ScopeGuard<std::function<void()>> inputBufferUnlocker([&inputMediaBuffer]()
+	// buffer count is almost always one, that is why
+	// I'm optimizing this particular case and not bothering to copy the buffers
+	if (bufferCount == 1)
 	{
-		auto hr = inputMediaBuffer->Unlock();
-		ARC_ASSERT(SUCCEEDED(hr));
-	});
-	
-	BitBuffer bitsWrapper;
-	BitBufferInit(&bitsWrapper, inBuffer, bufferLength);
-	m_decoder.Decode(&bitsWrapper, (uint8_t*)(m_outBuffer.data()), m_alacBox->GetSamplePerFrame(), m_channelCount, &m_samplesAvailable);
+		IMFMediaBuffer* inputMediaBuffer = nullptr;
+		hr = pSample->GetBufferByIndex(0, &inputMediaBuffer);
+		ARC_ThrowIfFailed(hr);
 
-	ARC_ASSERT(m_samplesAvailable == m_alacBox->GetSamplePerFrame());
-	m_isOutFrameReady = true;
+		BYTE* inBuffer = nullptr;
+		DWORD bufferLength = 0;
+		hr = inputMediaBuffer->Lock(&inBuffer, NULL, &bufferLength);
+		ARC_ThrowIfFailed(hr);
+		Util::ScopeGuard<std::function<void()>> inputBufferUnlocker([&inputMediaBuffer]()
+		{
+			auto hr = inputMediaBuffer->Unlock();
+			ARC_ASSERT(SUCCEEDED(hr));
+		});
+
+		BitBuffer bitsWrapper;
+		BitBufferInit(&bitsWrapper, inBuffer, bufferLength);
+
+		auto decodeResult = m_decoder.Decode(&bitsWrapper, (uint8_t*) (m_outBuffer.data()), m_alacBox->GetSamplePerFrame(), m_channelCount, &m_samplesAvailable);
+		m_hasEnoughInput = decodeResult != kALAC_ParamError;
+		m_isOutFrameReady = decodeResult == 0;
+	}
+	else
+	{
+		// there are multiple buffers, however the decoder can only accept a single continuous buffer
+		// so we'll have to merge them together into a single buffer
+		std::vector<char> inputFrameBuffer;
+		for (unsigned int i = 0; i < bufferCount; ++i)
+		{
+			IMFMediaBuffer* inputMediaBuffer = nullptr;
+			hr = pSample->GetBufferByIndex(i, &inputMediaBuffer);
+			ARC_ThrowIfFailed(hr);
+
+			BYTE* inBuffer = nullptr;
+			DWORD bufferLength = 0;
+			hr = inputMediaBuffer->Lock(&inBuffer, NULL, &bufferLength);
+			ARC_ThrowIfFailed(hr);
+			Util::ScopeGuard<std::function<void()>> inputBufferUnlocker([&inputMediaBuffer]()
+			{
+				auto hr = inputMediaBuffer->Unlock();
+				ARC_ASSERT(SUCCEEDED(hr));
+			});
+
+			auto nextPos = inputFrameBuffer.size();
+			inputFrameBuffer.resize(inputFrameBuffer.size() + bufferLength);
+			std::copy(	inBuffer,
+						inBuffer + bufferLength,
+						inputFrameBuffer.data() + nextPos);
+		}
+
+		BitBuffer bitsWrapper;
+		BitBufferInit(&bitsWrapper, (uint8_t*) (inputFrameBuffer.data()), inputFrameBuffer.size());
+
+		auto decodeResult = m_decoder.Decode(&bitsWrapper, (uint8_t*) (m_outBuffer.data()), m_alacBox->GetSamplePerFrame(), m_channelCount, &m_samplesAvailable);
+		m_hasEnoughInput = decodeResult != kALAC_ParamError;
+		m_isOutFrameReady = decodeResult == 0;
+	}
 
 	return S_OK;
 }

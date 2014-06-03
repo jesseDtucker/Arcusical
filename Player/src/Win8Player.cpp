@@ -71,24 +71,7 @@ namespace Player
 		if (m_currentSong != nullptr)
 		{
 			auto stream = m_currentSong->GetStream();
-			switch (stream.songData.format)
-			{
-			case Model::AudioFormat::ALAC:
-			{
-				ARC_FAIL("TODO::JT");
-				PlayNativeSong(stream);
-				break;
-			}
-			case Model::AudioFormat::FLAC:
-			{
-				ARC_FAIL("TODO::JT");
-				break;
-			}
-			default:
-			{
-				PlayNativeSong(stream);
-			}
-			}
+			PlayNativeSong(stream);
 		}
 	}
 

@@ -64,6 +64,7 @@ namespace Util
 	void InMemoryStream::EnsureBytesAvailable(unsigned int count /* = 0 */)
 	{
 		ARC_ASSERT(count <= GetAvailableLength());
+		UNREFERENCED_PARAMETER(count); // needed for release builds
 		// nothing to do here other than assert, There is no data source to pull extra bytes from
 	}
 

@@ -198,8 +198,8 @@ int32_t ALACDecoder::Decode( BitBuffer * bits, uint8_t * sampleBuffer, uint32_t 
 	uint32_t			i, j;
 	int32_t             status;
 	
-	RequireAction( (bits != nil) && (sampleBuffer != nil) && (outNumSamples != nil), return kALAC_ParamError; );
-	RequireAction( numChannels > 0, return kALAC_ParamError; );
+	RequireAction((bits != nil) && (sampleBuffer != nil) && (outNumSamples != nil), status = kALAC_ParamError; goto Exit;);
+	RequireAction(numChannels > 0, status = kALAC_ParamError; goto Exit;);
 
 	mActiveElements = 0;
 	channelIndex	= 0;
