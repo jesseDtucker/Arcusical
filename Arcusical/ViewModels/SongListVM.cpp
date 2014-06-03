@@ -1,10 +1,11 @@
 #include "pch.h"
 
+#include <vector>
+
+#include "Arc_Assert.hpp"
 #include "Song.hpp"
 #include "ViewModels/SongListVM.hpp"
 #include "ViewModels/SongVM.hpp"
-
-#include "Arc_Assert.hpp"
 
 namespace Arcusical{
 namespace ViewModel{
@@ -18,9 +19,22 @@ namespace ViewModel{
 		ARC_ASSERT(songsPtr != nullptr);
 		if (songsPtr != nullptr)
 		{
-			for (auto song : *songsPtr)
+			// temp hack
+			std::vector<std::shared_ptr<Model::Song>> sortedSongs;
+
+			for (auto& song : *songsPtr)
 			{
-				List->Append(ref new SongVM(song.second));
+				sortedSongs.push_back(song.second);
+			}
+
+			std::sort(sortedSongs.begin(), sortedSongs.end(), [](std::shared_ptr<Model::Song> a, std::shared_ptr<Model::Song> b)
+			{
+				return a->GetTitle() > b->GetTitle();
+			});
+
+			for (auto& song : sortedSongs)
+			{
+				List->Append(ref new SongVM(song));
 			}
 		}
 	}
