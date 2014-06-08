@@ -485,7 +485,7 @@ HRESULT ALACMFTDecoder::ProcessInput(
 	// I'm optimizing this particular case and not bothering to copy the buffers
 	if (bufferCount == 1)
 	{
-		IMFMediaBuffer* inputMediaBuffer = nullptr;
+		ComPtr<IMFMediaBuffer> inputMediaBuffer = nullptr;
 		hr = pSample->GetBufferByIndex(0, &inputMediaBuffer);
 		ARC_ThrowIfFailed(hr);
 
@@ -513,7 +513,7 @@ HRESULT ALACMFTDecoder::ProcessInput(
 		std::vector<char> inputFrameBuffer;
 		for (unsigned int i = 0; i < bufferCount; ++i)
 		{
-			IMFMediaBuffer* inputMediaBuffer = nullptr;
+			ComPtr<IMFMediaBuffer> inputMediaBuffer = nullptr;
 			hr = pSample->GetBufferByIndex(i, &inputMediaBuffer);
 			ARC_ThrowIfFailed(hr);
 
@@ -557,7 +557,7 @@ HRESULT ALACMFTDecoder::ProcessOutput(
 {
 	if (m_isOutFrameReady)
 	{
-		IMFMediaBuffer* outBuffer = nullptr;
+		ComPtr<IMFMediaBuffer> outBuffer = nullptr;
 		auto hr = pOutputSamples->pSample->GetBufferByIndex(cOutputBufferCount - 1, &outBuffer);
 		ARC_ThrowIfFailed(hr);
 
