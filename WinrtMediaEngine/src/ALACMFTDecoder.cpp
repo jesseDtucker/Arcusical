@@ -247,8 +247,6 @@ HRESULT ALACMFTDecoder::GetOutputAvailableType(
 		return MF_E_NO_MORE_TYPES;
 	}
 
-	OutputDebugStringA("axa\n");
-
 	ComPtr<IMFMediaType> spOutputType;
 	auto hr = CreateOutputType(spOutputType);
 	*ppType = spOutputType.Detach();
@@ -266,8 +264,6 @@ HRESULT ALACMFTDecoder::SetInputType(
 	)
 {
 	HRESULT hr = S_OK;
-
-	OutputDebugStringA("axb\n");
 
 	try
 	{
@@ -388,8 +384,6 @@ HRESULT ALACMFTDecoder::GetOutputCurrentType(
 		return E_POINTER;
 	}
 
-	OutputDebugStringA("axc\n");
-
 	ComPtr<IMFMediaType> outType;
 	auto hr = CreateOutputType(outType);
 	*ppType = outType.Detach();
@@ -464,7 +458,6 @@ HRESULT ALACMFTDecoder::ProcessMessage(
 	MFT_MESSAGE_TYPE    eMessage,
 	ULONG_PTR           ulParam)
 {
-	OutputDebugStringA("Message Rx'd\n");
 	return S_OK;
 }
 

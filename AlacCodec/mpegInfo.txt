@@ -1,0 +1,1144 @@
+FTYP Box: 
+	Major Brand: M4A 
+	Minor Version: 	Compatible Brands: 
+		isom
+		iso2
+MOOV Box:
+	MVHD Box: 
+		Version: 0
+		Creation Time: 2082844800
+		Modification Time: 3460911079
+		Time Scale: 1000
+		Duration: 47760
+		Rate: 1
+		Volume: 1
+		Next Track ID: 2
+	Trak Box:
+		TKHD Box:
+			Version: 0
+			Flags: 15
+			Creation Time: 2082844800
+			Modification Time: 2082844800
+			Track ID: 1
+			Duration: 47760
+			Layer: 0
+			Alternate Group: 0
+			Volume: 1
+			Width: 0
+			Height: 0
+		MDIA Box:
+			MDHD Box:
+				Version: 0
+				Creation Time: 2082844800
+				Modification Time: 2082844800
+				Time Scale: 44100
+				Duration: 2106197
+			HDLR Box: 
+				Version: 0
+				Handle Type: soun
+				Name: SoundHandler			MINF Box: 
+				SMHD Box:
+					Version: 0
+					Balance: 0
+				Dinf Box:
+					DREF Box:
+						Version: 0
+						Entry Count: 1
+						URL Box:
+							Version: 0
+							Flags: 1
+							URL: 
+					STSD Box:
+						ALAC Box:
+							Number of Channels: 2
+							Sample Size: 16
+							Sample Rate: 44100
+							Samples per Frame: 4096
+							Compatible Version: 0
+							Max Run: 0
+							Max Frame Size: 16392
+							Average Bit Rate: 1411200
+							Version: 0
+							Index: 1
+							ChannelLayout: Unknown
+					STTS Box:
+						Version: 0
+						Entry Count: 2
+						Entry 0:
+							Sample Count: 514
+							Sample Delta: 4096
+						Entry 1:
+							Sample Count: 1
+							Sample Delta: 853
+					STSC Box:
+						Version: 0
+						Entry count: 1
+						Entry 0:
+							First Chunk: 1
+							Samples per Chunk: 1
+							Sample Description Index: 1
+					STSZ Box:
+						Version: 0
+						SampleSize: 0
+						SampleCount: 0
+					STCO Box:
+						Version: 0
+						Number of Entries: 515
+							Entry 0 : 274507
+							Entry 1 : 276174
+								Delta : 1667
+							Entry 2 : 277847
+								Delta : 1673
+							Entry 3 : 281159
+								Delta : 3312
+							Entry 4 : 291363
+								Delta : 10204
+							Entry 5 : 300920
+								Delta : 9557
+							Entry 6 : 310470
+								Delta : 9550
+							Entry 7 : 320216
+								Delta : 9746
+							Entry 8 : 329773
+								Delta : 9557
+							Entry 9 : 339716
+								Delta : 9943
+							Entry 10 : 349305
+								Delta : 9589
+							Entry 11 : 359089
+								Delta : 9784
+							Entry 12 : 368946
+								Delta : 9857
+							Entry 13 : 378490
+								Delta : 9544
+							Entry 14 : 388332
+								Delta : 9842
+							Entry 15 : 398294
+								Delta : 9962
+							Entry 16 : 407663
+								Delta : 9369
+							Entry 17 : 417455
+								Delta : 9792
+							Entry 18 : 427159
+								Delta : 9704
+							Entry 19 : 436419
+								Delta : 9260
+							Entry 20 : 446258
+								Delta : 9839
+							Entry 21 : 455457
+								Delta : 9199
+							Entry 22 : 464727
+								Delta : 9270
+							Entry 23 : 474113
+								Delta : 9386
+							Entry 24 : 483610
+								Delta : 9497
+							Entry 25 : 492734
+								Delta : 9124
+							Entry 26 : 501865
+								Delta : 9131
+							Entry 27 : 512450
+								Delta : 10585
+							Entry 28 : 522262
+								Delta : 9812
+							Entry 29 : 531546
+								Delta : 9284
+							Entry 30 : 541464
+								Delta : 9918
+							Entry 31 : 550933
+								Delta : 9469
+							Entry 32 : 560107
+								Delta : 9174
+							Entry 33 : 569932
+								Delta : 9825
+							Entry 34 : 579161
+								Delta : 9229
+							Entry 35 : 588314
+								Delta : 9153
+							Entry 36 : 598191
+								Delta : 9877
+							Entry 37 : 607765
+								Delta : 9574
+							Entry 38 : 616813
+								Delta : 9048
+							Entry 39 : 626244
+								Delta : 9431
+							Entry 40 : 635793
+								Delta : 9549
+							Entry 41 : 645330
+								Delta : 9537
+							Entry 42 : 654703
+								Delta : 9373
+							Entry 43 : 664074
+								Delta : 9371
+							Entry 44 : 673479
+								Delta : 9405
+							Entry 45 : 682907
+								Delta : 9428
+							Entry 46 : 692744
+								Delta : 9837
+							Entry 47 : 702284
+								Delta : 9540
+							Entry 48 : 711937
+								Delta : 9653
+							Entry 49 : 721924
+								Delta : 9987
+							Entry 50 : 732649
+								Delta : 10725
+							Entry 51 : 742917
+								Delta : 10268
+							Entry 52 : 753187
+								Delta : 10270
+							Entry 53 : 763350
+								Delta : 10163
+							Entry 54 : 773124
+								Delta : 9774
+							Entry 55 : 782871
+								Delta : 9747
+							Entry 56 : 792929
+								Delta : 10058
+							Entry 57 : 802558
+								Delta : 9629
+							Entry 58 : 811892
+								Delta : 9334
+							Entry 59 : 821310
+								Delta : 9418
+							Entry 60 : 830760
+								Delta : 9450
+							Entry 61 : 839900
+								Delta : 9140
+							Entry 62 : 849492
+								Delta : 9592
+							Entry 63 : 858726
+								Delta : 9234
+							Entry 64 : 867914
+								Delta : 9188
+							Entry 65 : 877534
+								Delta : 9620
+							Entry 66 : 887240
+								Delta : 9706
+							Entry 67 : 896607
+								Delta : 9367
+							Entry 68 : 905934
+								Delta : 9327
+							Entry 69 : 915240
+								Delta : 9306
+							Entry 70 : 924451
+								Delta : 9211
+							Entry 71 : 933539
+								Delta : 9088
+							Entry 72 : 942413
+								Delta : 8874
+							Entry 73 : 952108
+								Delta : 9695
+							Entry 74 : 962373
+								Delta : 10265
+							Entry 75 : 971993
+								Delta : 9620
+							Entry 76 : 981403
+								Delta : 9410
+							Entry 77 : 990395
+								Delta : 8992
+							Entry 78 : 999624
+								Delta : 9229
+							Entry 79 : 1009098
+								Delta : 9474
+							Entry 80 : 1017899
+								Delta : 8801
+							Entry 81 : 1026873
+								Delta : 8974
+							Entry 82 : 1036138
+								Delta : 9265
+							Entry 83 : 1044771
+								Delta : 8633
+							Entry 84 : 1054034
+								Delta : 9263
+							Entry 85 : 1063036
+								Delta : 9002
+							Entry 86 : 1071727
+								Delta : 8691
+							Entry 87 : 1080560
+								Delta : 8833
+							Entry 88 : 1090114
+								Delta : 9554
+							Entry 89 : 1098989
+								Delta : 8875
+							Entry 90 : 1107617
+								Delta : 8628
+							Entry 91 : 1116679
+								Delta : 9062
+							Entry 92 : 1125795
+								Delta : 9116
+							Entry 93 : 1134404
+								Delta : 8609
+							Entry 94 : 1142803
+								Delta : 8399
+							Entry 95 : 1151600
+								Delta : 8797
+							Entry 96 : 1160179
+								Delta : 8579
+							Entry 97 : 1170995
+								Delta : 10816
+							Entry 98 : 1181044
+								Delta : 10049
+							Entry 99 : 1190768
+								Delta : 9724
+							Entry 100 : 1200895
+								Delta : 10127
+							Entry 101 : 1210871
+								Delta : 9976
+							Entry 102 : 1220698
+								Delta : 9827
+							Entry 103 : 1231429
+								Delta : 10731
+							Entry 104 : 1241449
+								Delta : 10020
+							Entry 105 : 1251442
+								Delta : 9993
+							Entry 106 : 1261630
+								Delta : 10188
+							Entry 107 : 1271724
+								Delta : 10094
+							Entry 108 : 1281864
+								Delta : 10140
+							Entry 109 : 1292420
+								Delta : 10556
+							Entry 110 : 1302830
+								Delta : 10410
+							Entry 111 : 1312679
+								Delta : 9849
+							Entry 112 : 1322350
+								Delta : 9671
+							Entry 113 : 1332958
+								Delta : 10608
+							Entry 114 : 1343438
+								Delta : 10480
+							Entry 115 : 1353806
+								Delta : 10368
+							Entry 116 : 1363649
+								Delta : 9843
+							Entry 117 : 1373952
+								Delta : 10303
+							Entry 118 : 1383590
+								Delta : 9638
+							Entry 119 : 1393646
+								Delta : 10056
+							Entry 120 : 1404560
+								Delta : 10914
+							Entry 121 : 1414609
+								Delta : 10049
+							Entry 122 : 1424601
+								Delta : 9992
+							Entry 123 : 1434722
+								Delta : 10121
+							Entry 124 : 1444424
+								Delta : 9702
+							Entry 125 : 1454544
+								Delta : 10120
+							Entry 126 : 1465313
+								Delta : 10769
+							Entry 127 : 1475237
+								Delta : 9924
+							Entry 128 : 1484792
+								Delta : 9555
+							Entry 129 : 1495195
+								Delta : 10403
+							Entry 130 : 1505171
+								Delta : 9976
+							Entry 131 : 1514926
+								Delta : 9755
+							Entry 132 : 1525478
+								Delta : 10552
+							Entry 133 : 1536084
+								Delta : 10606
+							Entry 134 : 1545835
+								Delta : 9751
+							Entry 135 : 1555716
+								Delta : 9881
+							Entry 136 : 1565819
+								Delta : 10103
+							Entry 137 : 1575970
+								Delta : 10151
+							Entry 138 : 1586381
+								Delta : 10411
+							Entry 139 : 1596474
+								Delta : 10093
+							Entry 140 : 1606617
+								Delta : 10143
+							Entry 141 : 1616639
+								Delta : 10022
+							Entry 142 : 1627062
+								Delta : 10423
+							Entry 143 : 1637733
+								Delta : 10671
+							Entry 144 : 1648168
+								Delta : 10435
+							Entry 145 : 1658797
+								Delta : 10629
+							Entry 146 : 1669163
+								Delta : 10366
+							Entry 147 : 1678985
+								Delta : 9822
+							Entry 148 : 1689578
+								Delta : 10593
+							Entry 149 : 1700055
+								Delta : 10477
+							Entry 150 : 1710226
+								Delta : 10171
+							Entry 151 : 1720150
+								Delta : 9924
+							Entry 152 : 1730459
+								Delta : 10309
+							Entry 153 : 1740029
+								Delta : 9570
+							Entry 154 : 1750060
+								Delta : 10031
+							Entry 155 : 1760592
+								Delta : 10532
+							Entry 156 : 1770888
+								Delta : 10296
+							Entry 157 : 1780744
+								Delta : 9856
+							Entry 158 : 1790723
+								Delta : 9979
+							Entry 159 : 1800867
+								Delta : 10144
+							Entry 160 : 1811150
+								Delta : 10283
+							Entry 161 : 1821875
+								Delta : 10725
+							Entry 162 : 1832147
+								Delta : 10272
+							Entry 163 : 1841891
+								Delta : 9744
+							Entry 164 : 1851968
+								Delta : 10077
+							Entry 165 : 1861827
+								Delta : 9859
+							Entry 166 : 1871674
+								Delta : 9847
+							Entry 167 : 1882563
+								Delta : 10889
+							Entry 168 : 1892761
+								Delta : 10198
+							Entry 169 : 1902480
+								Delta : 9719
+							Entry 170 : 1912173
+								Delta : 9693
+							Entry 171 : 1922170
+								Delta : 9997
+							Entry 172 : 1931989
+								Delta : 9819
+							Entry 173 : 1942178
+								Delta : 10189
+							Entry 174 : 1951802
+								Delta : 9624
+							Entry 175 : 1961703
+								Delta : 9901
+							Entry 176 : 1970926
+								Delta : 9223
+							Entry 177 : 1980799
+								Delta : 9873
+							Entry 178 : 1990699
+								Delta : 9900
+							Entry 179 : 2000903
+								Delta : 10204
+							Entry 180 : 2011038
+								Delta : 10135
+							Entry 181 : 2020802
+								Delta : 9764
+							Entry 182 : 2030151
+								Delta : 9349
+							Entry 183 : 2040270
+								Delta : 10119
+							Entry 184 : 2050878
+								Delta : 10608
+							Entry 185 : 2060751
+								Delta : 9873
+							Entry 186 : 2070103
+								Delta : 9352
+							Entry 187 : 2079977
+								Delta : 9874
+							Entry 188 : 2089859
+								Delta : 9882
+							Entry 189 : 2099439
+								Delta : 9580
+							Entry 190 : 2111291
+								Delta : 11852
+							Entry 191 : 2122076
+								Delta : 10785
+							Entry 192 : 2131916
+								Delta : 9840
+							Entry 193 : 2142436
+								Delta : 10520
+							Entry 194 : 2152686
+								Delta : 10250
+							Entry 195 : 2162790
+								Delta : 10104
+							Entry 196 : 2174540
+								Delta : 11750
+							Entry 197 : 2185198
+								Delta : 10658
+							Entry 198 : 2194897
+								Delta : 9699
+							Entry 199 : 2205455
+								Delta : 10558
+							Entry 200 : 2216740
+								Delta : 11285
+							Entry 201 : 2227899
+								Delta : 11159
+							Entry 202 : 2239558
+								Delta : 11659
+							Entry 203 : 2250270
+								Delta : 10712
+							Entry 204 : 2260378
+								Delta : 10108
+							Entry 205 : 2270480
+								Delta : 10102
+							Entry 206 : 2281826
+								Delta : 11346
+							Entry 207 : 2293049
+								Delta : 11223
+							Entry 208 : 2304281
+								Delta : 11232
+							Entry 209 : 2314623
+								Delta : 10342
+							Entry 210 : 2324866
+								Delta : 10243
+							Entry 211 : 2334651
+								Delta : 9785
+							Entry 212 : 2345843
+								Delta : 11192
+							Entry 213 : 2357366
+								Delta : 11523
+							Entry 214 : 2368011
+								Delta : 10645
+							Entry 215 : 2378339
+								Delta : 10328
+							Entry 216 : 2388906
+								Delta : 10567
+							Entry 217 : 2398711
+								Delta : 9805
+							Entry 218 : 2409203
+								Delta : 10492
+							Entry 219 : 2421057
+								Delta : 11854
+							Entry 220 : 2432047
+								Delta : 10990
+							Entry 221 : 2442040
+								Delta : 9993
+							Entry 222 : 2452795
+								Delta : 10755
+							Entry 223 : 2463138
+								Delta : 10343
+							Entry 224 : 2473502
+								Delta : 10364
+							Entry 225 : 2485653
+								Delta : 12151
+							Entry 226 : 2496577
+								Delta : 10924
+							Entry 227 : 2506692
+								Delta : 10115
+							Entry 228 : 2517241
+								Delta : 10549
+							Entry 229 : 2528043
+								Delta : 10802
+							Entry 230 : 2538278
+								Delta : 10235
+							Entry 231 : 2550331
+								Delta : 12053
+							Entry 232 : 2561184
+								Delta : 10853
+							Entry 233 : 2571020
+								Delta : 9836
+							Entry 234 : 2581665
+								Delta : 10645
+							Entry 235 : 2592719
+								Delta : 11054
+							Entry 236 : 2603806
+								Delta : 11087
+							Entry 237 : 2615158
+								Delta : 11352
+							Entry 238 : 2625960
+								Delta : 10802
+							Entry 239 : 2636179
+								Delta : 10219
+							Entry 240 : 2645868
+								Delta : 9689
+							Entry 241 : 2656932
+								Delta : 11064
+							Entry 242 : 2668230
+								Delta : 11298
+							Entry 243 : 2679150
+								Delta : 10920
+							Entry 244 : 2689686
+								Delta : 10536
+							Entry 245 : 2699755
+								Delta : 10069
+							Entry 246 : 2709825
+								Delta : 10070
+							Entry 247 : 2721324
+								Delta : 11499
+							Entry 248 : 2733473
+								Delta : 12149
+							Entry 249 : 2744371
+								Delta : 10898
+							Entry 250 : 2754718
+								Delta : 10347
+							Entry 251 : 2765253
+								Delta : 10535
+							Entry 252 : 2775346
+								Delta : 10093
+							Entry 253 : 2786241
+								Delta : 10895
+							Entry 254 : 2798042
+								Delta : 11801
+							Entry 255 : 2808571
+								Delta : 10529
+							Entry 256 : 2818076
+								Delta : 9505
+							Entry 257 : 2828441
+								Delta : 10365
+							Entry 258 : 2838675
+								Delta : 10234
+							Entry 259 : 2848443
+								Delta : 9768
+							Entry 260 : 2860351
+								Delta : 11908
+							Entry 261 : 2870978
+								Delta : 10627
+							Entry 262 : 2880609
+								Delta : 9631
+							Entry 263 : 2891074
+								Delta : 10465
+							Entry 264 : 2901746
+								Delta : 10672
+							Entry 265 : 2912143
+								Delta : 10397
+							Entry 266 : 2923834
+								Delta : 11691
+							Entry 267 : 2934671
+								Delta : 10837
+							Entry 268 : 2944699
+								Delta : 10028
+							Entry 269 : 2955021
+								Delta : 10322
+							Entry 270 : 2966012
+								Delta : 10991
+							Entry 271 : 2977317
+								Delta : 11305
+							Entry 272 : 2988412
+								Delta : 11095
+							Entry 273 : 2999141
+								Delta : 10729
+							Entry 274 : 3009579
+								Delta : 10438
+							Entry 275 : 3019380
+								Delta : 9801
+							Entry 276 : 3030150
+								Delta : 10770
+							Entry 277 : 3041573
+								Delta : 11423
+							Entry 278 : 3052617
+								Delta : 11044
+							Entry 279 : 3062942
+								Delta : 10325
+							Entry 280 : 3073410
+								Delta : 10468
+							Entry 281 : 3083040
+								Delta : 9630
+							Entry 282 : 3093744
+								Delta : 10704
+							Entry 283 : 3105725
+								Delta : 11981
+							Entry 284 : 3116535
+								Delta : 10810
+							Entry 285 : 3126962
+								Delta : 10427
+							Entry 286 : 3137402
+								Delta : 10440
+							Entry 287 : 3147346
+								Delta : 9944
+							Entry 288 : 3157791
+								Delta : 10445
+							Entry 289 : 3169706
+								Delta : 11915
+							Entry 290 : 3180555
+								Delta : 10849
+							Entry 291 : 3190419
+								Delta : 9864
+							Entry 292 : 3201192
+								Delta : 10773
+							Entry 293 : 3212230
+								Delta : 11038
+							Entry 294 : 3223049
+								Delta : 10819
+							Entry 295 : 3235078
+								Delta : 12029
+							Entry 296 : 3245854
+								Delta : 10776
+							Entry 297 : 3255899
+								Delta : 10045
+							Entry 298 : 3266126
+								Delta : 10227
+							Entry 299 : 3277452
+								Delta : 11326
+							Entry 300 : 3288331
+								Delta : 10879
+							Entry 301 : 3299835
+								Delta : 11504
+							Entry 302 : 3310295
+								Delta : 10460
+							Entry 303 : 3320376
+								Delta : 10081
+							Entry 304 : 3330161
+								Delta : 9785
+							Entry 305 : 3341352
+								Delta : 11191
+							Entry 306 : 3352518
+								Delta : 11166
+							Entry 307 : 3363097
+								Delta : 10579
+							Entry 308 : 3373276
+								Delta : 10179
+							Entry 309 : 3383670
+								Delta : 10394
+							Entry 310 : 3393409
+								Delta : 9739
+							Entry 311 : 3403972
+								Delta : 10563
+							Entry 312 : 3415616
+								Delta : 11644
+							Entry 313 : 3426534
+								Delta : 10918
+							Entry 314 : 3437027
+								Delta : 10493
+							Entry 315 : 3447760
+								Delta : 10733
+							Entry 316 : 3457697
+								Delta : 9937
+							Entry 317 : 3468223
+								Delta : 10526
+							Entry 318 : 3480286
+								Delta : 12063
+							Entry 319 : 3491090
+								Delta : 10804
+							Entry 320 : 3501063
+								Delta : 9973
+							Entry 321 : 3511575
+								Delta : 10512
+							Entry 322 : 3522007
+								Delta : 10432
+							Entry 323 : 3531725
+								Delta : 9718
+							Entry 324 : 3543857
+								Delta : 12132
+							Entry 325 : 3554772
+								Delta : 10915
+							Entry 326 : 3564478
+								Delta : 9706
+							Entry 327 : 3575837
+								Delta : 11359
+							Entry 328 : 3586922
+								Delta : 11085
+							Entry 329 : 3597359
+								Delta : 10437
+							Entry 330 : 3608890
+								Delta : 11531
+							Entry 331 : 3619625
+								Delta : 10735
+							Entry 332 : 3629633
+								Delta : 10008
+							Entry 333 : 3639378
+								Delta : 9745
+							Entry 334 : 3650430
+								Delta : 11052
+							Entry 335 : 3661343
+								Delta : 10913
+							Entry 336 : 3672430
+								Delta : 11087
+							Entry 337 : 3683055
+								Delta : 10625
+							Entry 338 : 3693141
+								Delta : 10086
+							Entry 339 : 3702707
+								Delta : 9566
+							Entry 340 : 3713959
+								Delta : 11252
+							Entry 341 : 3725608
+								Delta : 11649
+							Entry 342 : 3736313
+								Delta : 10705
+							Entry 343 : 3746792
+								Delta : 10479
+							Entry 344 : 3757274
+								Delta : 10482
+							Entry 345 : 3767094
+								Delta : 9820
+							Entry 346 : 3778203
+								Delta : 11109
+							Entry 347 : 3790092
+								Delta : 11889
+							Entry 348 : 3800933
+								Delta : 10841
+							Entry 349 : 3810800
+								Delta : 9867
+							Entry 350 : 3821022
+								Delta : 10222
+							Entry 351 : 3830821
+								Delta : 9799
+							Entry 352 : 3841006
+								Delta : 10185
+							Entry 353 : 3852859
+								Delta : 11853
+							Entry 354 : 3863540
+								Delta : 10681
+							Entry 355 : 3873012
+								Delta : 9472
+							Entry 356 : 3883572
+								Delta : 10560
+							Entry 357 : 3893907
+								Delta : 10335
+							Entry 358 : 3903708
+								Delta : 9801
+							Entry 359 : 3915533
+								Delta : 11825
+							Entry 360 : 3926407
+								Delta : 10874
+							Entry 361 : 3936164
+								Delta : 9757
+							Entry 362 : 3946597
+								Delta : 10433
+							Entry 363 : 3957539
+								Delta : 10942
+							Entry 364 : 3968528
+								Delta : 10989
+							Entry 365 : 3979983
+								Delta : 11455
+							Entry 366 : 3990815
+								Delta : 10832
+							Entry 367 : 4001141
+								Delta : 10326
+							Entry 368 : 4010894
+								Delta : 9753
+							Entry 369 : 4022061
+								Delta : 11167
+							Entry 370 : 4033255
+								Delta : 11194
+							Entry 371 : 4044401
+								Delta : 11146
+							Entry 372 : 4054867
+								Delta : 10466
+							Entry 373 : 4065375
+								Delta : 10508
+							Entry 374 : 4075213
+								Delta : 9838
+							Entry 375 : 4086349
+								Delta : 11136
+							Entry 376 : 4097923
+								Delta : 11574
+							Entry 377 : 4108427
+								Delta : 10504
+							Entry 378 : 4119141
+								Delta : 10714
+							Entry 379 : 4129636
+								Delta : 10495
+							Entry 380 : 4139345
+								Delta : 9709
+							Entry 381 : 4150148
+								Delta : 10803
+							Entry 382 : 4161876
+								Delta : 11728
+							Entry 383 : 4172675
+								Delta : 10799
+							Entry 384 : 4182199
+								Delta : 9524
+							Entry 385 : 4192842
+								Delta : 10643
+							Entry 386 : 4203461
+								Delta : 10619
+							Entry 387 : 4214486
+								Delta : 11025
+							Entry 388 : 4226588
+								Delta : 12102
+							Entry 389 : 4237326
+								Delta : 10738
+							Entry 390 : 4247140
+								Delta : 9814
+							Entry 391 : 4257408
+								Delta : 10268
+							Entry 392 : 4268197
+								Delta : 10789
+							Entry 393 : 4278418
+								Delta : 10221
+							Entry 394 : 4290388
+								Delta : 11970
+							Entry 395 : 4300966
+								Delta : 10578
+							Entry 396 : 4310685
+								Delta : 9719
+							Entry 397 : 4320695
+								Delta : 10010
+							Entry 398 : 4331766
+								Delta : 11071
+							Entry 399 : 4342740
+								Delta : 10974
+							Entry 400 : 4353807
+								Delta : 11067
+							Entry 401 : 4364230
+								Delta : 10423
+							Entry 402 : 4374499
+								Delta : 10269
+							Entry 403 : 4384056
+								Delta : 9557
+							Entry 404 : 4394956
+								Delta : 10900
+							Entry 405 : 4406364
+								Delta : 11408
+							Entry 406 : 4417340
+								Delta : 10976
+							Entry 407 : 4427899
+								Delta : 10559
+							Entry 408 : 4438519
+								Delta : 10620
+							Entry 409 : 4448402
+								Delta : 9883
+							Entry 410 : 4459068
+								Delta : 10666
+							Entry 411 : 4471015
+								Delta : 11947
+							Entry 412 : 4481780
+								Delta : 10765
+							Entry 413 : 4491953
+								Delta : 10173
+							Entry 414 : 4502385
+								Delta : 10432
+							Entry 415 : 4512624
+								Delta : 10239
+							Entry 416 : 4522807
+								Delta : 10183
+							Entry 417 : 4534904
+								Delta : 12097
+							Entry 418 : 4545910
+								Delta : 11006
+							Entry 419 : 4555462
+								Delta : 9552
+							Entry 420 : 4566861
+								Delta : 11399
+							Entry 421 : 4577788
+								Delta : 10927
+							Entry 422 : 4587673
+								Delta : 9885
+							Entry 423 : 4599169
+								Delta : 11496
+							Entry 424 : 4609723
+								Delta : 10554
+							Entry 425 : 4619423
+								Delta : 9700
+							Entry 426 : 4628944
+								Delta : 9521
+							Entry 427 : 4638595
+								Delta : 9651
+							Entry 428 : 4647275
+								Delta : 8680
+							Entry 429 : 4656022
+								Delta : 8747
+							Entry 430 : 4665601
+								Delta : 9579
+							Entry 431 : 4674414
+								Delta : 8813
+							Entry 432 : 4682495
+								Delta : 8081
+							Entry 433 : 4691363
+								Delta : 8868
+							Entry 434 : 4699946
+								Delta : 8583
+							Entry 435 : 4707823
+								Delta : 7877
+							Entry 436 : 4716695
+								Delta : 8872
+							Entry 437 : 4725938
+								Delta : 9243
+							Entry 438 : 4733689
+								Delta : 7751
+							Entry 439 : 4743055
+								Delta : 9366
+							Entry 440 : 4752008
+								Delta : 8953
+							Entry 441 : 4760097
+								Delta : 8089
+							Entry 442 : 4767948
+								Delta : 7851
+							Entry 443 : 4776139
+								Delta : 8191
+							Entry 444 : 4783973
+								Delta : 7834
+							Entry 445 : 4791212
+								Delta : 7239
+							Entry 446 : 4800292
+								Delta : 9080
+							Entry 447 : 4809085
+								Delta : 8793
+							Entry 448 : 4816933
+								Delta : 7848
+							Entry 449 : 4825402
+								Delta : 8469
+							Entry 450 : 4834291
+								Delta : 8889
+							Entry 451 : 4841827
+								Delta : 7536
+							Entry 452 : 4850301
+								Delta : 8474
+							Entry 453 : 4858103
+								Delta : 7802
+							Entry 454 : 4865403
+								Delta : 7300
+							Entry 455 : 4873409
+								Delta : 8006
+							Entry 456 : 4881692
+								Delta : 8283
+							Entry 457 : 4889223
+								Delta : 7531
+							Entry 458 : 4896924
+								Delta : 7701
+							Entry 459 : 4904570
+								Delta : 7646
+							Entry 460 : 4912647
+								Delta : 8077
+							Entry 461 : 4920643
+								Delta : 7996
+							Entry 462 : 4929939
+								Delta : 9296
+							Entry 463 : 4938082
+								Delta : 8143
+							Entry 464 : 4945475
+								Delta : 7393
+							Entry 465 : 4952606
+								Delta : 7131
+							Entry 466 : 4959780
+								Delta : 7174
+							Entry 467 : 4965944
+								Delta : 6164
+							Entry 468 : 4971950
+								Delta : 6006
+							Entry 469 : 4977692
+								Delta : 5742
+							Entry 470 : 4983202
+								Delta : 5510
+							Entry 471 : 4988523
+								Delta : 5321
+							Entry 472 : 4993494
+								Delta : 4971
+							Entry 473 : 4998344
+								Delta : 4850
+							Entry 474 : 5003004
+								Delta : 4660
+							Entry 475 : 5007835
+								Delta : 4831
+							Entry 476 : 5012089
+								Delta : 4254
+							Entry 477 : 5016216
+								Delta : 4127
+							Entry 478 : 5020228
+								Delta : 4012
+							Entry 479 : 5024159
+								Delta : 3931
+							Entry 480 : 5027922
+								Delta : 3763
+							Entry 481 : 5031384
+								Delta : 3462
+							Entry 482 : 5034653
+								Delta : 3269
+							Entry 483 : 5037825
+								Delta : 3172
+							Entry 484 : 5041153
+								Delta : 3328
+							Entry 485 : 5044320
+								Delta : 3167
+							Entry 486 : 5047301
+								Delta : 2981
+							Entry 487 : 5050336
+								Delta : 3035
+							Entry 488 : 5053404
+								Delta : 3068
+							Entry 489 : 5056327
+								Delta : 2923
+							Entry 490 : 5059129
+								Delta : 2802
+							Entry 491 : 5061957
+								Delta : 2828
+							Entry 492 : 5064775
+								Delta : 2818
+							Entry 493 : 5067515
+								Delta : 2740
+							Entry 494 : 5070009
+								Delta : 2494
+							Entry 495 : 5072526
+								Delta : 2517
+							Entry 496 : 5074763
+								Delta : 2237
+							Entry 497 : 5077245
+								Delta : 2482
+							Entry 498 : 5079523
+								Delta : 2278
+							Entry 499 : 5081693
+								Delta : 2170
+							Entry 500 : 5083792
+								Delta : 2099
+							Entry 501 : 5086027
+								Delta : 2235
+							Entry 502 : 5088072
+								Delta : 2045
+							Entry 503 : 5090154
+								Delta : 2082
+							Entry 504 : 5090638
+								Delta : 484
+							Entry 505 : 5090674
+								Delta : 36
+							Entry 506 : 5090710
+								Delta : 36
+							Entry 507 : 5090746
+								Delta : 36
+							Entry 508 : 5090782
+								Delta : 36
+							Entry 509 : 5090818
+								Delta : 36
+							Entry 510 : 5090854
+								Delta : 36
+							Entry 511 : 5090890
+								Delta : 36
+							Entry 512 : 5090926
+								Delta : 36
+							Entry 513 : 5090962
+								Delta : 36
+							Entry 514 : 5091079
+								Delta : 117
+	UDTA Box:
+		META Box: 
+			Version: 0
+			HDLR Box: 
+				Version: 0
+				Handle Type: unknown
+				Name: 			Ilst Box:
+				iName Box:
+					Title: Wildland
+				iArtist Box: 
+					Artist: Jillian Aversa
+				iAlbum Artist Box: 
+					Album Artist: Jillian Aversa
+				iAlbum Box: 
+					Album Name; Origins
+				Unknown Box:
+					Size: 55
+					Name: class Arcusical::MPEG4::UnknownBox
+				iRelease Date Box: 
+					Release Date: 2008
+				iTrackNumber Box:
+					Track Number: 5 of 0
+				iEncoderName Box:
+					Name: Lavf52.64.2
+				iCover Box:
+					Image Type: JPEG
+Data Box:
+	Size: 4817021
+	Name: class Arcusical::MPEG4::Mdat
