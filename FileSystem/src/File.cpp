@@ -76,13 +76,17 @@ namespace FileSystem
 			length = static_cast<decltype(length)>(randomAccessStream->Size);
 		}
 
-		ARC_ASSERT_MSG(startPosition < randomAccessStream->Size, "Attempting to start reading from a point beyond the end of the file!");
-		ARC_ASSERT_MSG(startPosition + length <= randomAccessStream->Size, "Attempted to read beyond the end of a file!");
+		// do not try to read in zero bytes, the file may exist but it may be empty
+		if (length > 0)
+		{
+			ARC_ASSERT_MSG(startPosition < randomAccessStream->Size, "Attempting to start reading from a point beyond the end of the file!");
+			ARC_ASSERT_MSG(startPosition + length <= randomAccessStream->Size, "Attempted to read beyond the end of a file!");
 
-		auto inputStream = randomAccessStream->GetInputStreamAt(startPosition);
-		buffer.resize(length);
-		auto task = create_task(inputStream->ReadAsync(nativeBuffer, length, Windows::Storage::Streams::InputStreamOptions::None));
-		task.wait();
+			auto inputStream = randomAccessStream->GetInputStreamAt(startPosition);
+			buffer.resize(length);
+			auto task = create_task(inputStream->ReadAsync(nativeBuffer, length, Windows::Storage::Streams::InputStreamOptions::None));
+			task.wait();
+		}
 	}
 
 	unsigned long long File::GetFileSize()

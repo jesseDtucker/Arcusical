@@ -22,6 +22,7 @@
     <PlatformToolset>v120</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
     <WindowsAppContainer>false</WindowsAppContainer>
+    <CLRSupport>false</CLRSupport>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -42,10 +43,11 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SolutionDir)Util\include;$(SolutionDir)ServiceModel\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)ServiceModel\include;$(SolutionDir)Util\include;$(SolutionDir)MusicProvider\include;$(SolutionDir)Model\include;$(SolutionDir)..\boost_1_56_0;$(SolutionDir)MPEG4Parser\include;$(ProjectDir);$(SolutionDir)Player\include;$(IncludePath)</IncludePath>
     <RunCodeAnalysis>true</RunCodeAnalysis>
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(ProjectDir)$(Platform)\$(Configuration)\$(MSBuildProjectName)\</IntDir>
+    <LibraryPath>$(SolutionDir)$(Platform)\$(Configuration)\Model;$(SolutionDir)$(Platform)\$(Configuration)\FileSystem;$(SolutionDir)$(Platform)\$(Configuration)\ServiceModel;$(SolutionDir)$(Platform)\$(Configuration)\Util;$(SolutionDir)$(Platform)\$(Configuration)\MusicProvider;$(SolutionDir)$(Platform)\$(Configuration)\LocalMusicStore;$(SolutionDir)$(Platform)\$(Configuration)\MPEG4Parser;$(SolutionDir)..\protoc\protobuf-2.6.0\vsprojects\$(Platform)\$(Configuration);$(SolutionDir)$(Platform)\$(Configuration)\Player;$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>

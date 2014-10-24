@@ -104,6 +104,7 @@ const int GUID::kRawDataFieldNumber;
 GUID::GUID()
   : ::google::protobuf::Message() {
   SharedCtor();
+  // @@protoc_insertion_point(constructor:Arcusical.LocalMusicStore.GUID)
 }
 
 void GUID::InitAsDefaultInstance() {
@@ -113,20 +114,23 @@ GUID::GUID(const GUID& from)
   : ::google::protobuf::Message() {
   SharedCtor();
   MergeFrom(from);
+  // @@protoc_insertion_point(copy_constructor:Arcusical.LocalMusicStore.GUID)
 }
 
 void GUID::SharedCtor() {
+  ::google::protobuf::internal::GetEmptyString();
   _cached_size_ = 0;
-  rawdata_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  rawdata_ = const_cast< ::std::string*>(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
 GUID::~GUID() {
+  // @@protoc_insertion_point(destructor:Arcusical.LocalMusicStore.GUID)
   SharedDtor();
 }
 
 void GUID::SharedDtor() {
-  if (rawdata_ != &::google::protobuf::internal::kEmptyString) {
+  if (rawdata_ != &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
     delete rawdata_;
   }
   if (this != default_instance_) {
@@ -155,11 +159,9 @@ GUID* GUID::New() const {
 }
 
 void GUID::Clear() {
-  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (has_rawdata()) {
-      if (rawdata_ != &::google::protobuf::internal::kEmptyString) {
-        rawdata_->clear();
-      }
+  if (has_rawdata()) {
+    if (rawdata_ != &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+      rawdata_->clear();
     }
   }
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
@@ -168,28 +170,32 @@ void GUID::Clear() {
 
 bool GUID::MergePartialFromCodedStream(
     ::google::protobuf::io::CodedInputStream* input) {
-#define DO_(EXPRESSION) if (!(EXPRESSION)) return false
+#define DO_(EXPRESSION) if (!(EXPRESSION)) goto failure
   ::google::protobuf::uint32 tag;
-  while ((tag = input->ReadTag()) != 0) {
+  // @@protoc_insertion_point(parse_start:Arcusical.LocalMusicStore.GUID)
+  for (;;) {
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoff(127);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
       // required bytes rawData = 1;
       case 1: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+        if (tag == 10) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadBytes(
                 input, this->mutable_rawdata()));
         } else {
-          goto handle_uninterpreted;
+          goto handle_unusual;
         }
-        if (input->ExpectAtEnd()) return true;
+        if (input->ExpectAtEnd()) goto success;
         break;
       }
 
       default: {
-      handle_uninterpreted:
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+      handle_unusual:
+        if (tag == 0 ||
+            ::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
-          return true;
+          goto success;
         }
         DO_(::google::protobuf::internal::WireFormat::SkipField(
               input, tag, mutable_unknown_fields()));
@@ -197,15 +203,21 @@ bool GUID::MergePartialFromCodedStream(
       }
     }
   }
+success:
+  // @@protoc_insertion_point(parse_success:Arcusical.LocalMusicStore.GUID)
   return true;
+failure:
+  // @@protoc_insertion_point(parse_failure:Arcusical.LocalMusicStore.GUID)
+  return false;
 #undef DO_
 }
 
 void GUID::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
+  // @@protoc_insertion_point(serialize_start:Arcusical.LocalMusicStore.GUID)
   // required bytes rawData = 1;
   if (has_rawdata()) {
-    ::google::protobuf::internal::WireFormatLite::WriteBytes(
+    ::google::protobuf::internal::WireFormatLite::WriteBytesMaybeAliased(
       1, this->rawdata(), output);
   }
 
@@ -213,10 +225,12 @@ void GUID::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         unknown_fields(), output);
   }
+  // @@protoc_insertion_point(serialize_end:Arcusical.LocalMusicStore.GUID)
 }
 
 ::google::protobuf::uint8* GUID::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
+  // @@protoc_insertion_point(serialize_to_array_start:Arcusical.LocalMusicStore.GUID)
   // required bytes rawData = 1;
   if (has_rawdata()) {
     target =
@@ -228,6 +242,7 @@ void GUID::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
         unknown_fields(), target);
   }
+  // @@protoc_insertion_point(serialize_to_array_end:Arcusical.LocalMusicStore.GUID)
   return target;
 }
 

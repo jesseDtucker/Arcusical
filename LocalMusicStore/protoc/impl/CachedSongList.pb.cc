@@ -107,6 +107,7 @@ const int CachedSongList::kSongsFieldNumber;
 CachedSongList::CachedSongList()
   : ::google::protobuf::Message() {
   SharedCtor();
+  // @@protoc_insertion_point(constructor:Arcusical.LocalMusicStore.CachedSongList)
 }
 
 void CachedSongList::InitAsDefaultInstance() {
@@ -116,6 +117,7 @@ CachedSongList::CachedSongList(const CachedSongList& from)
   : ::google::protobuf::Message() {
   SharedCtor();
   MergeFrom(from);
+  // @@protoc_insertion_point(copy_constructor:Arcusical.LocalMusicStore.CachedSongList)
 }
 
 void CachedSongList::SharedCtor() {
@@ -124,6 +126,7 @@ void CachedSongList::SharedCtor() {
 }
 
 CachedSongList::~CachedSongList() {
+  // @@protoc_insertion_point(destructor:Arcusical.LocalMusicStore.CachedSongList)
   SharedDtor();
 }
 
@@ -161,30 +164,34 @@ void CachedSongList::Clear() {
 
 bool CachedSongList::MergePartialFromCodedStream(
     ::google::protobuf::io::CodedInputStream* input) {
-#define DO_(EXPRESSION) if (!(EXPRESSION)) return false
+#define DO_(EXPRESSION) if (!(EXPRESSION)) goto failure
   ::google::protobuf::uint32 tag;
-  while ((tag = input->ReadTag()) != 0) {
+  // @@protoc_insertion_point(parse_start:Arcusical.LocalMusicStore.CachedSongList)
+  for (;;) {
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoff(127);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
       // repeated .Arcusical.LocalMusicStore.CachedSong songs = 1;
       case 1: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+        if (tag == 10) {
          parse_songs:
           DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
                 input, add_songs()));
         } else {
-          goto handle_uninterpreted;
+          goto handle_unusual;
         }
         if (input->ExpectTag(10)) goto parse_songs;
-        if (input->ExpectAtEnd()) return true;
+        if (input->ExpectAtEnd()) goto success;
         break;
       }
 
       default: {
-      handle_uninterpreted:
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+      handle_unusual:
+        if (tag == 0 ||
+            ::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
-          return true;
+          goto success;
         }
         DO_(::google::protobuf::internal::WireFormat::SkipField(
               input, tag, mutable_unknown_fields()));
@@ -192,12 +199,18 @@ bool CachedSongList::MergePartialFromCodedStream(
       }
     }
   }
+success:
+  // @@protoc_insertion_point(parse_success:Arcusical.LocalMusicStore.CachedSongList)
   return true;
+failure:
+  // @@protoc_insertion_point(parse_failure:Arcusical.LocalMusicStore.CachedSongList)
+  return false;
 #undef DO_
 }
 
 void CachedSongList::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
+  // @@protoc_insertion_point(serialize_start:Arcusical.LocalMusicStore.CachedSongList)
   // repeated .Arcusical.LocalMusicStore.CachedSong songs = 1;
   for (int i = 0; i < this->songs_size(); i++) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
@@ -208,10 +221,12 @@ void CachedSongList::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         unknown_fields(), output);
   }
+  // @@protoc_insertion_point(serialize_end:Arcusical.LocalMusicStore.CachedSongList)
 }
 
 ::google::protobuf::uint8* CachedSongList::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
+  // @@protoc_insertion_point(serialize_to_array_start:Arcusical.LocalMusicStore.CachedSongList)
   // repeated .Arcusical.LocalMusicStore.CachedSong songs = 1;
   for (int i = 0; i < this->songs_size(); i++) {
     target = ::google::protobuf::internal::WireFormatLite::
@@ -223,6 +238,7 @@ void CachedSongList::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
         unknown_fields(), target);
   }
+  // @@protoc_insertion_point(serialize_to_array_end:Arcusical.LocalMusicStore.CachedSongList)
   return target;
 }
 
@@ -280,9 +296,7 @@ void CachedSongList::CopyFrom(const CachedSongList& from) {
 
 bool CachedSongList::IsInitialized() const {
 
-  for (int i = 0; i < songs_size(); i++) {
-    if (!this->songs(i).IsInitialized()) return false;
-  }
+  if (!::google::protobuf::internal::AllAreInitialized(this->songs())) return false;
   return true;
 }
 

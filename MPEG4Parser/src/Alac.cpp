@@ -59,16 +59,18 @@ namespace Arcusical { namespace MPEG4 {
 			m_samplePerFrame = stream.ReadInteger<uint32_t>();
 			m_compatibleVersion = stream.ReadInteger<uint8_t>();
 
-			//sample size is repeated here, ignore value
-			stream.Advance(1);
+			//sample size is repeated here
+			auto otherSampleSize = stream.ReadInteger<uint8_t>();
+			m_sampleSize = otherSampleSize; // not asserting and just assuming mismatch should result in overwrite of value
 
 			//these next 3 are unspecified tuning values, parsing just in case they are ever needed
 			m_pb = stream.ReadInteger<uint8_t>();
 			m_mb = stream.ReadInteger<uint8_t>();
 			m_kb = stream.ReadInteger<uint8_t>();
 
-			//channel count is repeated here, ignore
-			stream.Advance(1);
+			//channel count is repeated here
+			auto otherChannelCount = stream.ReadInteger<uint8_t>();
+			ARC_ASSERT_MSG(otherChannelCount == m_numChannels, "Channel count of inner and outer box do not match!");
 
 			//maxRun, presently unused but required to be 0x00FF, parse and ignore value
 			m_maxRun = stream.ReadInteger<uint16_t>();
@@ -77,8 +79,9 @@ namespace Arcusical { namespace MPEG4 {
 			m_avgBitRate = stream.ReadInteger<uint32_t>();
 			
 			//sample rate is now repeated, ignoring value
-			stream.Advance(4);
-
+			auto otherSampleRate = stream.ReadInteger<uint32_t>();
+			ARC_ASSERT_MSG(otherSampleRate == m_sampleRate, "Sample rate of outer and inner box do not match!");
+			
 			//I do not have any samples of the channel layout info section that may
 			//occupy the remaining bits, simply assuming that it must run to the end
 			//of the tag.

@@ -117,6 +117,7 @@ const int CachedAlbum::kSongListFieldNumber;
 CachedAlbum::CachedAlbum()
   : ::google::protobuf::Message() {
   SharedCtor();
+  // @@protoc_insertion_point(constructor:Arcusical.LocalMusicStore.CachedAlbum)
 }
 
 void CachedAlbum::InitAsDefaultInstance() {
@@ -127,29 +128,32 @@ CachedAlbum::CachedAlbum(const CachedAlbum& from)
   : ::google::protobuf::Message() {
   SharedCtor();
   MergeFrom(from);
+  // @@protoc_insertion_point(copy_constructor:Arcusical.LocalMusicStore.CachedAlbum)
 }
 
 void CachedAlbum::SharedCtor() {
+  ::google::protobuf::internal::GetEmptyString();
   _cached_size_ = 0;
   id_ = NULL;
-  title_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
-  artist_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
-  imagefile_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  title_ = const_cast< ::std::string*>(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  artist_ = const_cast< ::std::string*>(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  imagefile_ = const_cast< ::std::string*>(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
 CachedAlbum::~CachedAlbum() {
+  // @@protoc_insertion_point(destructor:Arcusical.LocalMusicStore.CachedAlbum)
   SharedDtor();
 }
 
 void CachedAlbum::SharedDtor() {
-  if (title_ != &::google::protobuf::internal::kEmptyString) {
+  if (title_ != &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
     delete title_;
   }
-  if (artist_ != &::google::protobuf::internal::kEmptyString) {
+  if (artist_ != &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
     delete artist_;
   }
-  if (imagefile_ != &::google::protobuf::internal::kEmptyString) {
+  if (imagefile_ != &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
     delete imagefile_;
   }
   if (this != default_instance_) {
@@ -179,22 +183,22 @@ CachedAlbum* CachedAlbum::New() const {
 }
 
 void CachedAlbum::Clear() {
-  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+  if (_has_bits_[0 / 32] & 15) {
     if (has_id()) {
       if (id_ != NULL) id_->::Arcusical::LocalMusicStore::GUID::Clear();
     }
     if (has_title()) {
-      if (title_ != &::google::protobuf::internal::kEmptyString) {
+      if (title_ != &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
         title_->clear();
       }
     }
     if (has_artist()) {
-      if (artist_ != &::google::protobuf::internal::kEmptyString) {
+      if (artist_ != &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
         artist_->clear();
       }
     }
     if (has_imagefile()) {
-      if (imagefile_ != &::google::protobuf::internal::kEmptyString) {
+      if (imagefile_ != &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
         imagefile_->clear();
       }
     }
@@ -206,18 +210,21 @@ void CachedAlbum::Clear() {
 
 bool CachedAlbum::MergePartialFromCodedStream(
     ::google::protobuf::io::CodedInputStream* input) {
-#define DO_(EXPRESSION) if (!(EXPRESSION)) return false
+#define DO_(EXPRESSION) if (!(EXPRESSION)) goto failure
   ::google::protobuf::uint32 tag;
-  while ((tag = input->ReadTag()) != 0) {
+  // @@protoc_insertion_point(parse_start:Arcusical.LocalMusicStore.CachedAlbum)
+  for (;;) {
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoff(127);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
       // required .Arcusical.LocalMusicStore.GUID id = 1;
       case 1: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+        if (tag == 10) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
                input, mutable_id()));
         } else {
-          goto handle_uninterpreted;
+          goto handle_unusual;
         }
         if (input->ExpectTag(18)) goto parse_title;
         break;
@@ -225,16 +232,16 @@ bool CachedAlbum::MergePartialFromCodedStream(
 
       // required string title = 2;
       case 2: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+        if (tag == 18) {
          parse_title:
           DO_(::google::protobuf::internal::WireFormatLite::ReadString(
                 input, this->mutable_title()));
-          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+          ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
             this->title().data(), this->title().length(),
-            ::google::protobuf::internal::WireFormat::PARSE);
+            ::google::protobuf::internal::WireFormat::PARSE,
+            "title");
         } else {
-          goto handle_uninterpreted;
+          goto handle_unusual;
         }
         if (input->ExpectTag(26)) goto parse_artist;
         break;
@@ -242,16 +249,16 @@ bool CachedAlbum::MergePartialFromCodedStream(
 
       // required string artist = 3;
       case 3: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+        if (tag == 26) {
          parse_artist:
           DO_(::google::protobuf::internal::WireFormatLite::ReadString(
                 input, this->mutable_artist()));
-          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+          ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
             this->artist().data(), this->artist().length(),
-            ::google::protobuf::internal::WireFormat::PARSE);
+            ::google::protobuf::internal::WireFormat::PARSE,
+            "artist");
         } else {
-          goto handle_uninterpreted;
+          goto handle_unusual;
         }
         if (input->ExpectTag(34)) goto parse_imageFile;
         break;
@@ -259,16 +266,16 @@ bool CachedAlbum::MergePartialFromCodedStream(
 
       // required string imageFile = 4;
       case 4: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+        if (tag == 34) {
          parse_imageFile:
           DO_(::google::protobuf::internal::WireFormatLite::ReadString(
                 input, this->mutable_imagefile()));
-          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+          ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
             this->imagefile().data(), this->imagefile().length(),
-            ::google::protobuf::internal::WireFormat::PARSE);
+            ::google::protobuf::internal::WireFormat::PARSE,
+            "imagefile");
         } else {
-          goto handle_uninterpreted;
+          goto handle_unusual;
         }
         if (input->ExpectTag(42)) goto parse_songList;
         break;
@@ -276,24 +283,24 @@ bool CachedAlbum::MergePartialFromCodedStream(
 
       // repeated .Arcusical.LocalMusicStore.GUID songList = 5;
       case 5: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+        if (tag == 42) {
          parse_songList:
           DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
                 input, add_songlist()));
         } else {
-          goto handle_uninterpreted;
+          goto handle_unusual;
         }
         if (input->ExpectTag(42)) goto parse_songList;
-        if (input->ExpectAtEnd()) return true;
+        if (input->ExpectAtEnd()) goto success;
         break;
       }
 
       default: {
-      handle_uninterpreted:
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+      handle_unusual:
+        if (tag == 0 ||
+            ::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
-          return true;
+          goto success;
         }
         DO_(::google::protobuf::internal::WireFormat::SkipField(
               input, tag, mutable_unknown_fields()));
@@ -301,12 +308,18 @@ bool CachedAlbum::MergePartialFromCodedStream(
       }
     }
   }
+success:
+  // @@protoc_insertion_point(parse_success:Arcusical.LocalMusicStore.CachedAlbum)
   return true;
+failure:
+  // @@protoc_insertion_point(parse_failure:Arcusical.LocalMusicStore.CachedAlbum)
+  return false;
 #undef DO_
 }
 
 void CachedAlbum::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
+  // @@protoc_insertion_point(serialize_start:Arcusical.LocalMusicStore.CachedAlbum)
   // required .Arcusical.LocalMusicStore.GUID id = 1;
   if (has_id()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
@@ -315,28 +328,31 @@ void CachedAlbum::SerializeWithCachedSizes(
 
   // required string title = 2;
   if (has_title()) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+    ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
       this->title().data(), this->title().length(),
-      ::google::protobuf::internal::WireFormat::SERIALIZE);
-    ::google::protobuf::internal::WireFormatLite::WriteString(
+      ::google::protobuf::internal::WireFormat::SERIALIZE,
+      "title");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
       2, this->title(), output);
   }
 
   // required string artist = 3;
   if (has_artist()) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+    ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
       this->artist().data(), this->artist().length(),
-      ::google::protobuf::internal::WireFormat::SERIALIZE);
-    ::google::protobuf::internal::WireFormatLite::WriteString(
+      ::google::protobuf::internal::WireFormat::SERIALIZE,
+      "artist");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
       3, this->artist(), output);
   }
 
   // required string imageFile = 4;
   if (has_imagefile()) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+    ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
       this->imagefile().data(), this->imagefile().length(),
-      ::google::protobuf::internal::WireFormat::SERIALIZE);
-    ::google::protobuf::internal::WireFormatLite::WriteString(
+      ::google::protobuf::internal::WireFormat::SERIALIZE,
+      "imagefile");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
       4, this->imagefile(), output);
   }
 
@@ -350,10 +366,12 @@ void CachedAlbum::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         unknown_fields(), output);
   }
+  // @@protoc_insertion_point(serialize_end:Arcusical.LocalMusicStore.CachedAlbum)
 }
 
 ::google::protobuf::uint8* CachedAlbum::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
+  // @@protoc_insertion_point(serialize_to_array_start:Arcusical.LocalMusicStore.CachedAlbum)
   // required .Arcusical.LocalMusicStore.GUID id = 1;
   if (has_id()) {
     target = ::google::protobuf::internal::WireFormatLite::
@@ -363,9 +381,10 @@ void CachedAlbum::SerializeWithCachedSizes(
 
   // required string title = 2;
   if (has_title()) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+    ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
       this->title().data(), this->title().length(),
-      ::google::protobuf::internal::WireFormat::SERIALIZE);
+      ::google::protobuf::internal::WireFormat::SERIALIZE,
+      "title");
     target =
       ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
         2, this->title(), target);
@@ -373,9 +392,10 @@ void CachedAlbum::SerializeWithCachedSizes(
 
   // required string artist = 3;
   if (has_artist()) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+    ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
       this->artist().data(), this->artist().length(),
-      ::google::protobuf::internal::WireFormat::SERIALIZE);
+      ::google::protobuf::internal::WireFormat::SERIALIZE,
+      "artist");
     target =
       ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
         3, this->artist(), target);
@@ -383,9 +403,10 @@ void CachedAlbum::SerializeWithCachedSizes(
 
   // required string imageFile = 4;
   if (has_imagefile()) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+    ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
       this->imagefile().data(), this->imagefile().length(),
-      ::google::protobuf::internal::WireFormat::SERIALIZE);
+      ::google::protobuf::internal::WireFormat::SERIALIZE,
+      "imagefile");
     target =
       ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
         4, this->imagefile(), target);
@@ -402,6 +423,7 @@ void CachedAlbum::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
         unknown_fields(), target);
   }
+  // @@protoc_insertion_point(serialize_to_array_end:Arcusical.LocalMusicStore.CachedAlbum)
   return target;
 }
 
@@ -507,9 +529,7 @@ bool CachedAlbum::IsInitialized() const {
   if (has_id()) {
     if (!this->id().IsInitialized()) return false;
   }
-  for (int i = 0; i < songlist_size(); i++) {
-    if (!this->songlist(i).IsInitialized()) return false;
-  }
+  if (!::google::protobuf::internal::AllAreInitialized(this->songlist())) return false;
   return true;
 }
 

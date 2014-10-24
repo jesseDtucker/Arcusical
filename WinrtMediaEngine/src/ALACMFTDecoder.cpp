@@ -323,6 +323,8 @@ void ALACMFTDecoder::ParseALACBox()
 		{
 			m_alacBox = std::dynamic_pointer_cast<Alac>(children[0]);
 			ARC_ASSERT(m_alacBox != nullptr);
+			
+			m_bitsPerSample = m_alacBox->GetSampleSize();
 
 			m_outBuffer.resize(GetOutBufferSize());
 		}
@@ -497,7 +499,7 @@ HRESULT ALACMFTDecoder::ProcessInput(
 
 		auto decodeResult = m_decoder.Decode(&bitsWrapper, (uint8_t*) (m_outBuffer.data()), m_alacBox->GetSamplePerFrame(), m_channelCount, &m_samplesAvailable);
 		m_hasEnoughInput = decodeResult != kALAC_ParamError;
-		m_isOutFrameReady = decodeResult == 0;
+		m_isOutFrameReady = (decodeResult == 0);
 	}
 	else
 	{
@@ -528,7 +530,7 @@ HRESULT ALACMFTDecoder::ProcessInput(
 		}
 
 		BitBuffer bitsWrapper;
-		BitBufferInit(&bitsWrapper, (uint8_t*) (inputFrameBuffer.data()), inputFrameBuffer.size());
+		BitBufferInit(&bitsWrapper, (uint8_t*) (inputFrameBuffer.data()), (uint32_t)(inputFrameBuffer.size()));
 
 		auto decodeResult = m_decoder.Decode(&bitsWrapper, (uint8_t*) (m_outBuffer.data()), m_alacBox->GetSamplePerFrame(), m_channelCount, &m_samplesAvailable);
 		m_hasEnoughInput = decodeResult != kALAC_ParamError;
@@ -554,8 +556,11 @@ HRESULT ALACMFTDecoder::ProcessOutput(
 		auto hr = pOutputSamples->pSample->GetBufferByIndex(cOutputBufferCount - 1, &outBuffer);
 		ARC_ThrowIfFailed(hr);
 
+		DWORD bufferLength = 0;
+		DWORD currentLength = 0;
+
 		BYTE* pBuffer = nullptr;
-		hr = outBuffer->Lock(&pBuffer, NULL, NULL);
+		hr = outBuffer->Lock(&pBuffer, &bufferLength, &currentLength);
 		ARC_ThrowIfFailed(hr);
 
 		Util::ScopeGuard<std::function<void()>> inputBufferUnlocker([&outBuffer]()
@@ -564,12 +569,9 @@ HRESULT ALACMFTDecoder::ProcessOutput(
 			ARC_ASSERT(SUCCEEDED(hr));
 		});
 
-		DWORD bufferLength = 0;
-		hr = outBuffer->GetMaxLength(&bufferLength);
-		ARC_ThrowIfFailed(hr);
-
 		ARC_ASSERT(bufferLength >= m_outBuffer.size());
 		auto bytesToCopy =  m_samplesAvailable * m_channelCount * m_bitsPerSample / 8;
+		ARC_ASSERT(bytesToCopy <= m_outBuffer.size());
 
 		std::copy(	m_outBuffer.data(), 
 					m_outBuffer.data() + bytesToCopy,
