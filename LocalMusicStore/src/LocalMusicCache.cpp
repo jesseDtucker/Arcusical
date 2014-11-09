@@ -46,8 +46,8 @@ namespace Arcusical
 
 		LocalMusicCache::LocalMusicCache(std::shared_ptr<Model::IAlbumToSongMapper>& songMapper)
 			: m_songMapper(songMapper)
-			, m_localSongs(std::make_shared<std::unordered_map<boost::uuids::uuid, std::shared_ptr<Model::Song>>>())
-			, m_localAlbums(std::make_shared<std::unordered_map<boost::uuids::uuid, std::shared_ptr<Model::Album>>>())
+			, m_localSongs()
+			, m_localAlbums()
 			, m_areSongsLoaded(false)
 			, m_areAlbumsLoaded(false)
 		{
@@ -55,9 +55,9 @@ namespace Arcusical
 			std::async([this](){this->LoadAlbums(); });
 		}
 
-		std::future<std::weak_ptr<const std::unordered_map<boost::uuids::uuid, std::shared_ptr<Model::Song>>>> LocalMusicCache::GetLocalSongs()
+		std::future<Model::SongCollectionPtr> LocalMusicCache::GetLocalSongs()
 		{
-			auto result = std::async([this]()->std::weak_ptr<const std::unordered_map<boost::uuids::uuid, std::shared_ptr<Model::Song>>>
+			auto result = std::async([this]()
 			{
 				std::unique_lock<std::mutex> lock(m_songsLoadingLock);
 				if (!m_areSongsLoaded)
@@ -66,18 +66,15 @@ namespace Arcusical
 					m_songLoading.wait(lock);
 				}
 
-				std::lock_guard<std::mutex> songGuard(m_songsEditLock);
-				auto songs = m_localSongs;
-
-				return songs;
+				return &m_localSongs;
 			});
 
 			return result;
 		}
 
-		std::future<std::weak_ptr<const std::unordered_map<boost::uuids::uuid, std::shared_ptr<Model::Album>>>> LocalMusicCache::GetLocalAlbums()
+		std::future<Model::AlbumCollectionPtr> LocalMusicCache::GetLocalAlbums()
 		{
-			auto result = std::async([this]()->std::weak_ptr<const std::unordered_map<boost::uuids::uuid, std::shared_ptr<Model::Album>>>
+			auto result = std::async([this]()
 			{
 				std::unique_lock<std::mutex> lock(m_albumsLoadingLock);
 				if (!m_areAlbumsLoaded)
@@ -86,10 +83,7 @@ namespace Arcusical
 					m_albumsLoading.wait(lock);
 				}
 
-				std::lock_guard<std::mutex> albumGuard(m_albumsEditLock);
-				auto result = m_localAlbums;
-
-				return result;
+				return &m_localAlbums;
 			});
 
 			return result;
@@ -100,38 +94,29 @@ namespace Arcusical
 			std::lock_guard<std::mutex> songGuard(m_songsEditLock);
 			std::lock_guard<std::mutex> albumGuard(m_albumsEditLock);
 
-			m_localAlbums = std::make_shared<std::unordered_map<boost::uuids::uuid, std::shared_ptr<Model::Album>>>();
-			m_localSongs = std::make_shared<std::unordered_map<boost::uuids::uuid, std::shared_ptr<Model::Song>>>();
+			m_localAlbums.clear();
+			m_localSongs.clear();
 		}
 
-		void LocalMusicCache::AddToCache(const std::vector<std::shared_ptr<Model::Album>>& albums)
+		void LocalMusicCache::AddToCache(const std::vector<Model::Album>& albums)
 		{
 			std::lock_guard<std::mutex> albumGuard(m_albumsEditLock);
 
-			auto newAlbums = *m_localAlbums;
-
 			for (auto& album : albums)
 			{
-				newAlbums[album->GetId()] = album;
+				m_localAlbums.insert({ album.GetId(), album });
 			}
-
-			m_localAlbums = std::make_shared<std::unordered_map<boost::uuids::uuid, std::shared_ptr<Model::Album>>>(std::move(newAlbums));
 		}
 
-		void LocalMusicCache::AddToCache(const std::vector<std::shared_ptr<Model::Song>>& songs)
+		void LocalMusicCache::AddToCache(const std::vector<Model::Song>& songs)
 		{
 			std::lock_guard<std::mutex> songGuard(m_songsEditLock);
-
-			// make a copy of the existing map
-			auto newSongs = *m_localSongs;
 
 			for (auto& song : songs)
 			{
 				// add the new elements to it
-				newSongs[song->GetId()] = song;
+				m_localSongs.insert({ song.GetId(), song });;
 			}
-
-			m_localSongs = std::make_shared<std::unordered_map<boost::uuids::uuid, std::shared_ptr<Model::Song>>>(std::move(newSongs));
 		}
 
 		void LocalMusicCache::LoadAlbums()
@@ -149,9 +134,9 @@ namespace Arcusical
 
 				for (int i = 0; i < cachedAlbums.albums_size(); ++i)
 				{
-					auto album = std::make_shared<Model::Album>(m_songMapper);
-					FillInModelAlbumFromCached(*album, cachedAlbums.albums(i));
-					(*m_localAlbums)[album->GetId()] = album;
+					auto album = Model::Album(m_songMapper);
+					FillInModelAlbumFromCached(album, cachedAlbums.albums(i));
+					m_localAlbums.insert({ album.GetId(), album });
 				}
 			}
 
@@ -175,9 +160,9 @@ namespace Arcusical
 
 				for (int i = 0; i < cachedSongs.songs_size(); ++i)
 				{
-					auto song = std::make_shared<Model::Song>();
-					FillInModelSongFromCached(*song, cachedSongs.songs(i));
-					(*m_localSongs)[song->GetId()] = song;
+					auto song = Model::Song();
+					FillInModelSongFromCached(song, cachedSongs.songs(i));
+					m_localSongs.insert({ song.GetId(), song });
 				}
 			}
 
@@ -197,10 +182,10 @@ namespace Arcusical
 				localAlbums = m_localAlbums;
 			}
 
-			for (auto& album : *localAlbums)
+			for (auto& album : localAlbums)
 			{
 				auto cachedAlbum = cachedAlbums.add_albums();
-				FillInCachedAlbumFromModel(*cachedAlbum, *album.second);
+				FillInCachedAlbumFromModel(*cachedAlbum, album.second);
 			}
 
 			// ensure we actually have contents to write to file
@@ -226,10 +211,10 @@ namespace Arcusical
 				localSongs = m_localSongs;
 			}
 
-			for (auto& song : *localSongs)
+			for (auto& song : localSongs)
 			{
 				auto cachedSong = cachedSongs.add_songs();
-				FillInCachedSongFromModel(*cachedSong, *song.second);
+				FillInCachedSongFromModel(*cachedSong, song.second);
 			}
 
 			// ensure we actually have contents to write to file
@@ -261,7 +246,7 @@ namespace Arcusical
 			cachedAlbum.set_imagefile(converter.to_bytes(modelAlbum.GetImageFilePath()));
 
 			// add ids
-			for (const auto& song : modelAlbum.GetSongs())
+			for (const auto& song : *(modelAlbum.GetSongs()))
 			{
 				auto songGuid = cachedAlbum.add_songlist();
 				SerializeGuid(songGuid->mutable_rawdata(), song.first);

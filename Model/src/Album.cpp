@@ -14,7 +14,7 @@ namespace Model
 	{
 
 	}
-
+	
 	bool Album::operator==(const Album& rhs) const
 	{
 		return this->GetId() == rhs.GetId();
@@ -25,14 +25,14 @@ namespace Model
 		return !(*this == rhs);
 	}
 
-	std::unordered_map<boost::uuids::uuid, std::shared_ptr<Song>>& Album::GetSongs()
+	std::unordered_map<boost::uuids::uuid, Song*>* Album::GetSongs()
 	{
 		if (this->m_songs.size() == 0)
 		{
 			m_songs = m_songMapper->GetSongsFromIds(m_SongIds);
 		}
 
-		return m_songs;
+		return &m_songs;
 	}
 }
 }

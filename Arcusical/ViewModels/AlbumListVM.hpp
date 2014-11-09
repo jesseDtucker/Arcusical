@@ -18,7 +18,7 @@ namespace ViewModel
 		PROP_SET_AND_GET_WINRT(Windows::Foundation::Collections::IVector<AlbumVM^>^, Albums);
 	internal:
 		
-		AlbumListVM(MusicProvider::AlbumListPtr albums);
+		AlbumListVM(Model::AlbumCollection& albums);
 
 	private:
 

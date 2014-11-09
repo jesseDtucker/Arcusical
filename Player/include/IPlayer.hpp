@@ -25,8 +25,8 @@ namespace Arcusical
 
 		static const std::string ServiceName;
 
-		virtual void SetSong(std::shared_ptr<Model::Song> song) = 0;
-		virtual std::shared_ptr<Model::Song> GetCurrentSong() = 0;
+		virtual void SetSong(const Model::Song& song) = 0;
+		virtual Model::Song* GetCurrentSong() = 0;
 		PROP_GET(bool, IsPlaying)
 
 		virtual void Play() = 0;

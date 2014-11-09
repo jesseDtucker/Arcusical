@@ -16,6 +16,9 @@
     <ClInclude Include="include\IAlbumToSongMapper.hpp">
       <Filter>include</Filter>
     </ClInclude>
+    <ClInclude Include="include\MusicTypes.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="src">

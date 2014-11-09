@@ -10,10 +10,8 @@
 namespace Arcusical {
 namespace ViewModel{
 
-	AlbumListVM::AlbumListVM(MusicProvider::AlbumListPtr albums)
+	AlbumListVM::AlbumListVM(Model::AlbumCollection& albums)
 	{
-		auto albumsCollection = albums.lock();
-
 		//TODO::JT fix the threading issue that is here!
 		this->Albums = ref new Platform::Collections::Vector<AlbumVM^>();
 
@@ -27,7 +25,7 @@ namespace ViewModel{
 
 		// DNS
 		ARC_ASSERT(this->Albums != nullptr);
-		for (auto album : *albumsCollection)
+		for (auto& album : albums)
 		{
 			this->Albums->Append(ref new AlbumVM(album.second));
 		}

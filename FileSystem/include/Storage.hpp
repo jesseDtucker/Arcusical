@@ -19,6 +19,7 @@ namespace FileSystem
 
 		static std::shared_ptr<IFile> LoadFileFromPath(std::wstring filePath);
 
+		static std::shared_ptr<IFileReader> GetReader(IFile* file);
 		static std::shared_ptr<IFileReader> GetReader(std::shared_ptr<IFile> file);
 	private:
 

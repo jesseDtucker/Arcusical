@@ -22,8 +22,8 @@ namespace Model
 	{
 	public:
 		Album(std::shared_ptr<IAlbumToSongMapper> songMapper);
-		Album(const Album&) = delete;
-		Album& operator=(const Album& del) = delete;
+		Album(const Album&) = default;
+		Album& operator=(const Album& other) = default;
 
 		PROP_SET_AND_GET(boost::uuids::uuid, Id);
 		PROP_SET_AND_GET(std::wstring, Title);
@@ -31,13 +31,13 @@ namespace Model
 		PROP_SET_AND_GET(std::wstring, ImageFilePath);
 		PROP_SET_AND_GET(std::set<boost::uuids::uuid>, SongIds);
 
-		std::unordered_map<boost::uuids::uuid, std::shared_ptr<Song>>& GetSongs();
+		std::unordered_map<boost::uuids::uuid, Song*>* GetSongs();
 
 		bool operator==(const Album& rhs) const;
 		bool operator!=(const Album& rhs) const;
 	private:
-		const std::shared_ptr<IAlbumToSongMapper> m_songMapper;
-		std::unordered_map<boost::uuids::uuid, std::shared_ptr<Song>> m_songs;
+		std::shared_ptr<IAlbumToSongMapper> m_songMapper;
+		std::unordered_map<boost::uuids::uuid, Song*> m_songs;
 	};
 }
 }

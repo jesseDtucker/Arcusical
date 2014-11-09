@@ -312,7 +312,6 @@ copy $(OutDir)FileSystem.dll $(OutDir)..\..\DLL\FileSystem.dll</Command>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\File.cpp" />
-    <ClCompile Include="src\FileReader.cpp" />
     <ClCompile Include="src\NativeBufferWrapper.cpp" />
     <ClCompile Include="src\Storage.cpp" />
     <ClCompile Include="src\Folder.cpp" />

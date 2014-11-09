@@ -30,12 +30,12 @@ namespace MusicProvider
 		{ MPEG4::Encoding::UNKNOWN, Model::AudioFormat::UNKNOWN }
 	};
 
-	std::shared_ptr<Model::Song> SongLoader::LoadSong(std::shared_ptr<FileSystem::IFile> file)
+	Model::Song SongLoader::LoadSong(FileSystem::IFile& file)
 	{
-		std::shared_ptr<Model::Song> result;
-		auto fileExtension = file->GetExtension();
+		Model::Song result;
+		auto fileExtension = file.GetExtension();
 
-		auto fileName = file->GetFullName();
+		auto fileName = file.GetFullName();
 
 		if (fileExtension == L"m4a")
 		{
@@ -49,40 +49,42 @@ namespace MusicProvider
 		{
 			result = LoadWav(file);
 		}
-
-		ARC_ASSERT_MSG(result != nullptr, "Attempted to load an unsupported format!");
+		else
+		{
+			ARC_FAIL("Attempted to load an unsupported format!");
+		}
 
 		return result;
 		
 	}
 
-	std::shared_ptr<Model::Album> SongLoader::CreateAlbum(std::wstring name, std::shared_ptr<Model::Song> song, std::shared_ptr<SongIdMapper>& songMapper)
+	Model::Album SongLoader::CreateAlbum(std::wstring& name, const Model::Song& song, std::shared_ptr<SongIdMapper>& songMapper)
 	{
-		auto newAlbum = std::make_shared<Model::Album>(songMapper);
+		auto newAlbum = Model::Album(songMapper);
 
-		newAlbum->SetId(m_idGenerator());
-		newAlbum->SetArtist(song->GetArtist());
-		newAlbum->GetMutableSongIds().insert(song->GetId());
-		newAlbum->SetTitle(name);
+		newAlbum.SetId(m_idGenerator());
+		newAlbum.SetArtist(song.GetArtist());
+		newAlbum.GetMutableSongIds().insert(song.GetId());
+		newAlbum.SetTitle(name);
 
 		return newAlbum;
 	}
 
-	std::shared_ptr<Model::Song> SongLoader::LoadMpeg4Song(std::shared_ptr<FileSystem::IFile> file)
+	Model::Song SongLoader::LoadMpeg4Song(FileSystem::IFile& file)
 	{
-		auto fileReader = FileSystem::Storage::GetReader(file);
+		auto fileReader = FileSystem::Storage::GetReader(&file);
 		auto mpegSong = m_mpegParser.ReadAndParseFromStream(*fileReader);
 
-		auto result = std::make_shared<Model::Song>();
+		auto result = Model::Song();
 
 		//setup converter
 		std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
 
-		result->SetArtist(converter.from_bytes(mpegSong->GetArtist()));
-		result->SetId(m_idGenerator()); // generate a random id, the odds of collision are slim to none
-		result->SetLength(mpegSong->GetLength());
-		result->SetTitle(converter.from_bytes(mpegSong->GetTitle()));
-		result->SetAlbumName(converter.from_bytes(mpegSong->GetAlbum()));
+		result.SetArtist(converter.from_bytes(mpegSong->GetArtist()));
+		result.SetId(m_idGenerator()); // generate a random id, the odds of collision are slim to none
+		result.SetLength(mpegSong->GetLength());
+		result.SetTitle(converter.from_bytes(mpegSong->GetTitle()));
+		result.SetAlbumName(converter.from_bytes(mpegSong->GetAlbum()));
 
 		Model::AudioFormat songFormat = Model::AudioFormat::UNKNOWN;
 		auto encodingItr = MPEG4_TO_MODEL_MAPPING.find(mpegSong->GetEncoding());
@@ -93,12 +95,12 @@ namespace MusicProvider
 		}
 
 		Model::SongFile songFile;
-		songFile.filePath = file->GetFullPath();
+		songFile.filePath = file.GetFullPath();
 		songFile.bitRate = mpegSong->GetSampleSize() * mpegSong->GetSampleRate();
 		songFile.channelCount = mpegSong->GetNumberOfChannels();
 		songFile.sampleSize = mpegSong->GetNumberOfChannels();
 		songFile.format = songFormat;
-		result->AddFile(songFormat, songFile);
+		result.AddFile(songFormat, songFile);
 
 		ARC_ASSERT(songFile.bitRate != 0);
 		ARC_ASSERT(songFile.channelCount != 0);
@@ -121,46 +123,46 @@ namespace MusicProvider
 		return result;
 	}
 
-	std::shared_ptr<Model::Song> SongLoader::LoadMP3(std::shared_ptr<FileSystem::IFile> file)
+	Model::Song SongLoader::LoadMP3(FileSystem::IFile& file)
 	{
-		auto result = std::make_shared<Model::Song>();
+		auto result = Model::Song();
 
-		result->SetArtist(L"Some Artist");
-		result->SetId(m_idGenerator()); // generate a random id, the odds of collision are slim to none
-		result->SetLength(100);
-		result->SetTitle(L"Some MP3");
+		result.SetArtist(L"Some Artist");
+		result.SetId(m_idGenerator()); // generate a random id, the odds of collision are slim to none
+		result.SetLength(100);
+		result.SetTitle(L"Some MP3");
 
 		Model::AudioFormat songFormat = Model::AudioFormat::MP3;
 
 		Model::SongFile songFile;
-		songFile.filePath = file->GetFullPath();
+		songFile.filePath = file.GetFullPath();
 		songFile.bitRate = 0;
 		songFile.channelCount = 0;
 		songFile.sampleSize = 0;
 		songFile.format = songFormat;
-		result->AddFile(songFormat, songFile);
+		result.AddFile(songFormat, songFile);
 
 		return result;
 	}
 
-	std::shared_ptr<Model::Song> SongLoader::LoadWav(std::shared_ptr<FileSystem::IFile> file)
+	Model::Song SongLoader::LoadWav(FileSystem::IFile& file)
 	{
-		auto result = std::make_shared<Model::Song>();
+		auto result = Model::Song();
 
-		result->SetArtist(L"Some Artist");
-		result->SetId(m_idGenerator()); // generate a random id, the odds of collision are slim to none
-		result->SetLength(100);
-		result->SetTitle(L"Some WAV");
+		result.SetArtist(L"Some Artist");
+		result.SetId(m_idGenerator()); // generate a random id, the odds of collision are slim to none
+		result.SetLength(100);
+		result.SetTitle(L"Some WAV");
 
 		Model::AudioFormat songFormat = Model::AudioFormat::MP3;
 
 		Model::SongFile songFile;
-		songFile.filePath = file->GetFullPath();
+		songFile.filePath = file.GetFullPath();
 		songFile.bitRate = 0;
 		songFile.channelCount = 0;
 		songFile.sampleSize = 0;
 		songFile.format = songFormat;
-		result->AddFile(songFormat, songFile);
+		result.AddFile(songFormat, songFile);
 
 		return result;
 	}

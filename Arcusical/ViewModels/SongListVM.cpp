@@ -10,32 +10,26 @@
 namespace Arcusical{
 namespace ViewModel{
 
-	SongListVM::SongListVM(MusicProvider::SongListPtr songs)
+	SongListVM::SongListVM(Model::SongCollection& songs)
 	{
 		List = ref new Platform::Collections::Vector<SongVM^>();
 
-		auto songsPtr = songs.lock();
+		// temp hack
+		std::vector<Model::Song*> sortedSongs;
 
-		ARC_ASSERT(songsPtr != nullptr);
-		if (songsPtr != nullptr)
+		for (auto& song : songs)
 		{
-			// temp hack
-			std::vector<std::shared_ptr<Model::Song>> sortedSongs;
+			sortedSongs.push_back(&song.second);
+		}
 
-			for (auto& song : *songsPtr)
-			{
-				sortedSongs.push_back(song.second);
-			}
+		std::sort(sortedSongs.begin(), sortedSongs.end(), [](Model::Song* a, Model::Song* b)
+		{
+			return a->GetTitle() > b->GetTitle();
+		});
 
-			std::sort(sortedSongs.begin(), sortedSongs.end(), [](std::shared_ptr<Model::Song> a, std::shared_ptr<Model::Song> b)
-			{
-				return a->GetTitle() > b->GetTitle();
-			});
-
-			for (auto& song : sortedSongs)
-			{
-				List->Append(ref new SongVM(song));
-			}
+		for (auto& song : sortedSongs)
+		{
+			List->Append(ref new SongVM(*song));
 		}
 	}
 

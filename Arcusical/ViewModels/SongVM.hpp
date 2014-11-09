@@ -25,6 +25,7 @@ namespace Player
 
 namespace Arcusical{ namespace ViewModel {
 
+	// TODO::JT is this needed?
 	// This enum is expected to match the enum in the song model
 	public enum class AudioFormat
 	{
@@ -66,21 +67,18 @@ namespace Arcusical{ namespace ViewModel {
 
 		SongStreamVM^ GetMediaStream();
 
-		static SongVM^ GetEmptySong();
-
 	internal:
-		SongVM(std::shared_ptr<Model::Song> song);
-		std::shared_ptr<Model::Song> GetModel();
+		SongVM(const Model::Song& song);
+		Model::Song* GetModel();
 
 		Commands::PlaySongCommand& PlaySong();
 		Commands::PlaySongCommand& PauseSong();
 		
 	private:
-		SongVM();
 		void Play();
 		void Pause();
 
-		std::shared_ptr<Model::Song> m_song;
+		Model::Song m_song;
 		Commands::PlaySongCommand m_playSongCommand;
 		Commands::PlaySongCommand m_pauseSongCommand;
 	};

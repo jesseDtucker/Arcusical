@@ -23,34 +23,21 @@ namespace ViewModel {
 		{ Model::AudioFormat::MP3, ViewModel::AudioFormat::MP3 }
 	};
 
-	SongVM::SongVM()
-		: m_playSongCommand([](SongVM^){})
-		, m_pauseSongCommand([](SongVM^){})
-		, m_song(nullptr)
-	{
-		Title = "";
-		Artist = "";
-		Length = 0;
-		Format = AudioFormat::UNKNOWN;
-		PlaySongCmd = ref new Commands::CommandWrapper(m_playSongCommand);
-		PauseSongCmd = ref new Commands::CommandWrapper(m_pauseSongCommand);
-	}
-
-	SongVM::SongVM(std::shared_ptr<Model::Song> song)
+	SongVM::SongVM(const Model::Song& song)
 		: m_song(song)
 		, m_playSongCommand([this](SongVM^ selectedSong){ ARC_ASSERT( selectedSong == nullptr || selectedSong == this); this->Play(); })
 		, m_pauseSongCommand([this](SongVM^ selectedSong){ ARC_ASSERT(selectedSong == nullptr || selectedSong == this); this->Pause(); })
 	{
-		Title = ref new Platform::String(m_song->GetTitle().c_str());
-		Artist = ref new Platform::String(m_song->GetArtist().c_str());
-		Length = m_song->GetLength();
+		Title = ref new Platform::String(m_song.GetTitle().c_str());
+		Artist = ref new Platform::String(m_song.GetArtist().c_str());
+		Length = m_song.GetLength();
 		PlaySongCmd = ref new Commands::CommandWrapper(m_playSongCommand);
 		PauseSongCmd = ref new Commands::CommandWrapper(m_pauseSongCommand);
 	}
 
-	std::shared_ptr<Model::Song> SongVM::GetModel()
+	Model::Song* SongVM::GetModel()
 	{
-		return m_song;
+		return &m_song;
 	}
 
 	Commands::PlaySongCommand& SongVM::PlaySong()
@@ -65,7 +52,7 @@ namespace ViewModel {
 
 	SongStreamVM^ SongVM::GetMediaStream()
 	{
-		auto songStream = m_song->GetStream();
+		auto songStream = m_song.GetStream();
 
 		SongStreamVM^ streamVM = ref new SongStreamVM();
 		streamVM->BitRate = songStream.songData.bitRate;
@@ -116,23 +103,14 @@ namespace ViewModel {
 	Platform::Boolean SongVM::IsPlaying::get()
 	{
 		bool isPlaying = false;
-		if (m_song != nullptr)
+		auto player = Player::PlayerLocator::ResolveService().lock();
+		ARC_ASSERT(player != nullptr);
+		if (player != nullptr)
 		{
-			auto player = Player::PlayerLocator::ResolveService().lock();
-			ARC_ASSERT(player != nullptr);
-			if (player != nullptr)
-			{
-				isPlaying = player->GetIsPlaying() && player->GetCurrentSong() == this->GetModel();
-			}
+			isPlaying = player->GetIsPlaying() && player->GetCurrentSong() == this->GetModel();
 		}
 
 		return isPlaying;
-	}
-
-	SongVM^ SongVM::GetEmptySong()
-	{
-		static SongVM^ emptySong = ref new SongVM();
-		return emptySong;
 	}
 }
 }

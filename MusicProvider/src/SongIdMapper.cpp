@@ -11,18 +11,17 @@ namespace Arcusical
 {
 namespace MusicProvider
 {
-	SongIdMapper::SongIdMapper(GetSongsCall getLocalSongs, GetSongsCall getRemoteSongs)
+	SongIdMapper::SongIdMapper(GetSongsCall getLocalSongs)
 		: m_getLocalSongs(getLocalSongs)
-		, m_getRemoteSongs(getRemoteSongs)
 	{
 		
 	}
 
-	std::unordered_map<boost::uuids::uuid, std::shared_ptr<Model::Song>> SongIdMapper::GetSongsFromIds(const std::set<boost::uuids::uuid>& ids)
+	std::unordered_map<boost::uuids::uuid, Model::Song*> SongIdMapper::GetSongsFromIds(const std::set<boost::uuids::uuid>& ids)
 	{
-		std::unordered_map<boost::uuids::uuid, std::shared_ptr<Model::Song>> results;
+		std::unordered_map<boost::uuids::uuid, Model::Song*> results;
 
-		auto localSongs = m_getLocalSongs().lock();
+		auto localSongs = m_getLocalSongs();
 		ARC_ASSERT_MSG(localSongs != nullptr, "Local songs returned a null ptr! This should never happen!");
 
 		if (localSongs != nullptr)
@@ -31,7 +30,7 @@ namespace MusicProvider
 			{
 				if (localSongs->find(id) != localSongs->end())
 				{
-					results[id] = localSongs->at(id);
+					results[id] = &localSongs->at(id);
 				}
 			}
 		}

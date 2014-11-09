@@ -71,9 +71,14 @@ namespace FileSystem
 		return *s_applicationFolder;
 	}
 
+	std::shared_ptr<IFileReader> Storage::GetReader(IFile* file)
+	{
+		return std::make_shared<FileReader<IFile*>>(file);
+	}
+
 	std::shared_ptr<IFileReader> Storage::GetReader(std::shared_ptr<IFile> file)
 	{
-		return std::make_shared<FileReader>(file);
+		return std::make_shared<FileReader<std::shared_ptr<IFile>>>(file);
 	}
 
 	std::shared_ptr<IFile> Storage::LoadFileFromPath(std::wstring filePath)

@@ -251,6 +251,7 @@
   <ItemGroup>
     <ClInclude Include="include\Album.hpp" />
     <ClInclude Include="include\IAlbumToSongMapper.hpp" />
+    <ClInclude Include="include\MusicTypes.hpp" />
     <ClInclude Include="include\pch.h" />
     <ClInclude Include="include\Song.hpp" />
     <ClInclude Include="include\targetver.h" />

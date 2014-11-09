@@ -20,7 +20,7 @@ namespace ViewModel{
 		SongListControlViewModel(MusicProvider::MusicProviderLocator::ServiceRef providerService);
 	private:
 
-		void MusicCallback(MusicProvider::SongListPtr localSongs, MusicProvider::SongListPtr remoteSongs);
+		void MusicCallback(Model::SongCollection& localSongs);
 
 		MusicProvider::MusicProviderLocator::ServiceRef m_providerService;
 		MusicProvider::MusicProviderSubscription m_subscription;

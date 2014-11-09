@@ -5,10 +5,9 @@
 
 #include "boost\uuid\uuid.hpp"
 #include <memory>
-#include <functional>
-#include <unordered_map>
 
 #include "Delegate.hpp"
+#include "MusicTypes.hpp"
 #include "Subscription.hpp"
 #include "ServiceResolver.hpp"
 
@@ -28,16 +27,14 @@ namespace MusicProvider
 
 	typedef Arcusical::ServiceModel::ServiceResolver<IMusicProvider> MusicProviderLocator;
 
-	typedef std::weak_ptr<const std::unordered_map<boost::uuids::uuid, std::shared_ptr<Arcusical::Model::Song>>> SongListPtr;
-	typedef std::weak_ptr<const std::unordered_map<boost::uuids::uuid, std::shared_ptr<Arcusical::Model::Album>>> AlbumListPtr;
-	// Signature: (LocalSongs, RemoteSongs)
-	typedef Util::Delegate<void(SongListPtr, SongListPtr)> SongsChangedCallback;
-	typedef Util::Delegate<void(AlbumListPtr)> AlbumsChangedCallback;
-	typedef std::shared_ptr<Util::Subscription> MusicProviderSubscription;
+	typedef Util::Delegate<void(Model::SongCollection&)> SongsChangedCallback;
+	typedef Util::Delegate<void(Model::AlbumCollection&)> AlbumsChangedCallback;
+	typedef std::unique_ptr<Util::Subscription> MusicProviderSubscription;
 
 	class IMusicProvider
 	{
 	public:
+
 		virtual MusicProviderSubscription SubscribeSongs(SongsChangedCallback callback) = 0;
 		virtual MusicProviderSubscription SubscribeAlbums(AlbumsChangedCallback callback) = 0;
 

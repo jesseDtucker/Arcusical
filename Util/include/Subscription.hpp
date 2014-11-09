@@ -10,6 +10,10 @@ namespace Util
 	public:
 		typedef std::function<void()> UnsubscribeCallback;
 		Subscription(UnsubscribeCallback unsubscribeCallback);
+		Subscription(Subscription&&);
+		Subscription& operator =(Subscription&&);
+		Subscription(const Subscription&) = delete; // copy is not allowed. If needs to be shared please place in shared_ptr
+		Subscription& operator =(const Subscription&) = delete;
 		~Subscription();
 
 		void Unsubscribe();

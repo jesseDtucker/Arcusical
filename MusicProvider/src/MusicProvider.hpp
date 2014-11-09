@@ -13,6 +13,7 @@
 #include <vector>
 
 #include "IMusicProvider.hpp"
+#include "MusicTypes.hpp"
 #include "SongLoader.hpp"
 
 namespace FileSystem
@@ -54,10 +55,10 @@ namespace MusicProvider
 		void PublishSongs();
 		void PublishAlbums();
 
-		bool MergeSongCollections(const std::unordered_map<boost::uuids::uuid, std::shared_ptr<Arcusical::Model::Song>>& existingSongs, std::vector<std::shared_ptr<FileSystem::IFile>>& locatedFiles);
-		void AddNewSongToExisting(std::shared_ptr<Model::Song> newSong, std::shared_ptr<Model::Song> existingSong, std::wstring fullPath);
+		bool MergeSongCollections(Model::SongCollection& existingSongs, std::vector<std::shared_ptr<FileSystem::IFile>>& locatedFiles);
+		void AddNewSongToExisting(const Model::Song& newSong, Model::Song& existingSong, std::wstring fullPath);
 
-		bool MergeAlbumCollections(const std::unordered_map<boost::uuids::uuid, std::shared_ptr<Model::Album>>& existingAlbums, SongListPtr songs);
+		bool MergeAlbumCollections(const Model::AlbumCollection& existingAlbums, Model::SongCollection& songs);
 
 		std::set<SongsChangedCallback> m_songCallbackSet;
 		std::set<AlbumsChangedCallback> m_albumCallbackSet;
@@ -76,9 +77,6 @@ namespace MusicProvider
 		std::mutex m_isLoadingLock;
 
 		SongLoader m_songLoader;
-
-		// hack for now
-		std::shared_ptr<std::unordered_map<boost::uuids::uuid, std::shared_ptr<Arcusical::Model::Song>>> m_hackRemoteList;
 	};
 }
 }

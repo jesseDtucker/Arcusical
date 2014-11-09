@@ -33,11 +33,11 @@ namespace Model
 
 	struct SongFile
 	{
-		AudioFormat format = AudioFormat::UNKNOWN;
-		std::wstring filePath;
 		unsigned int bitRate = 0;
 		unsigned int sampleSize = 0;
 		unsigned int channelCount = 0;
+		AudioFormat format = AudioFormat::UNKNOWN;
+		std::wstring filePath;
 	};
 
 	struct SongStream
@@ -51,10 +51,9 @@ namespace Model
 	public:
 		
 		Song();
-		Song(const Song&) = delete;
-		Song& operator=(const Song&) = delete;
+		Song(const Song&) = default;
+		Song& operator=(const Song&) = default;
 
-		// TODO::JT doesn't handle remote storage right now
 		PROP_SET_AND_GET(std::wstring, Title);
 		PROP_SET_AND_GET(boost::uuids::uuid, Id);
 		PROP_SET_AND_GET(std::wstring, Artist);
@@ -70,7 +69,7 @@ namespace Model
 
 		bool operator==(const Song& rhs) const;
 		bool operator!=(const Song& rhs) const;
-		bool IsSameSong(const Song& otherSong) const; // unlike the comparison operators this checks if the songs references the same content
+		bool IsSameSong(const Song& otherSong) const; // unlike the comparison operators this checks if the songs references the same content, but does not have identical meta data
 	private:
 		AudioFormat DetermineBestFormat();
 	};

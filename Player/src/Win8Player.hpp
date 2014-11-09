@@ -46,8 +46,8 @@ namespace Player
 		Win8Player();
 		virtual ~Win8Player();
 
-		virtual void SetSong(std::shared_ptr<Model::Song> song) override;
-		virtual std::shared_ptr<Model::Song> GetCurrentSong() override;
+		virtual void SetSong(const Model::Song& song) override;
+		virtual Model::Song* GetCurrentSong() override;
 
 		virtual void Play() override;
 		virtual void Stop() override;
@@ -55,7 +55,7 @@ namespace Player
 	private:
 		void PlayNativeSong(Model::SongStream& stream);
 
-		std::shared_ptr<Model::Song> m_currentSong;
+		Model::Song m_currentSong;
 		MediaEngineNotify m_mediaEngineNotify;
 		bool m_isCurrentSongSetForPlay;
 

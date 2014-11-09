@@ -9,6 +9,7 @@
 #include <unordered_map>
 
 #include "boost\uuid\uuid.hpp"
+#include "MusicTypes.hpp"
 
 namespace Arcusical{
 namespace Model
@@ -16,7 +17,7 @@ namespace Model
 	class IAlbumToSongMapper;
 	class Song;
 	class Album;
-	}
+}
 }
 
 namespace Arcusical
@@ -31,13 +32,12 @@ namespace LocalMusicStore
 	public:
 		LocalMusicCache(std::shared_ptr<Model::IAlbumToSongMapper>& songMapper);
 
-		// TODO::JT must modify this to take a callback instead. This has some thread safety issues atm
-		std::future<std::weak_ptr<const std::unordered_map<boost::uuids::uuid, std::shared_ptr<Model::Song>>>> GetLocalSongs();
-		std::future<std::weak_ptr<const std::unordered_map<boost::uuids::uuid, std::shared_ptr<Model::Album>>>> GetLocalAlbums();
+		std::future<Model::SongCollectionPtr> GetLocalSongs();
+		std::future<Model::AlbumCollectionPtr> GetLocalAlbums();
 
 		void ClearCache();
-		void AddToCache(const std::vector<std::shared_ptr<Model::Album>>& albums);
-		void AddToCache(const std::vector<std::shared_ptr<Model::Song>>& songs);
+		void AddToCache(const std::vector<Model::Album>& albums);
+		void AddToCache(const std::vector<Model::Song>& songs);
 
 		void SaveAlbums();
 		void SaveSongs();
@@ -56,8 +56,8 @@ namespace LocalMusicStore
 		void SerializeGuid(std::string* rawBytes, const boost::uuids::uuid guid) const;
 		void DeserializeGuid(const std::string* rawBytes, boost::uuids::uuid& guid) const;
 
-		std::shared_ptr<std::unordered_map<boost::uuids::uuid, std::shared_ptr<Model::Album>>> m_localAlbums;
-		std::shared_ptr<std::unordered_map<boost::uuids::uuid, std::shared_ptr<Model::Song>>> m_localSongs;
+		Model::AlbumCollection m_localAlbums;
+		Model::SongCollection m_localSongs;
 
 		bool m_areSongsLoaded;
 		bool m_areAlbumsLoaded;

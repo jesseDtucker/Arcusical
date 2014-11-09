@@ -9,6 +9,7 @@
 
 #include "IAlbumToSongMapper.hpp"
 #include "IMusicProvider.hpp"
+#include "MusicTypes.hpp"
 
 namespace Arcusical
 {
@@ -21,13 +22,12 @@ namespace MusicProvider
 		SongIdMapper(const SongIdMapper&) = delete;
 		SongIdMapper& operator=(const SongIdMapper&) = delete;
 
-		typedef const std::function<SongListPtr()> GetSongsCall;
-		SongIdMapper(GetSongsCall getLocalSongs, GetSongsCall getRemoteSongs);
+		typedef const std::function<Model::SongCollectionPtr()> GetSongsCall;
+		SongIdMapper(GetSongsCall getLocalSongs);
 
-		virtual std::unordered_map<boost::uuids::uuid, std::shared_ptr<Model::Song>> GetSongsFromIds(const std::set<boost::uuids::uuid>& ids);
+		std::unordered_map<boost::uuids::uuid, Model::Song*> GetSongsFromIds(const std::set<boost::uuids::uuid>& ids) override;
 	private:
 		GetSongsCall m_getLocalSongs;
-		GetSongsCall m_getRemoteSongs;
 	};
 }
 }

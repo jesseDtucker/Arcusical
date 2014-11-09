@@ -24,9 +24,7 @@ namespace ViewModel{
 		PROP_SET_AND_GET_WINRT(SongListVM^, Songs);
 		
 	internal:
-		AlbumVM(std::shared_ptr<Model::Album> album);
-	private:
-		std::shared_ptr<Model::Album> m_album;
+		AlbumVM(const Model::Album& album);
 	};
 
 }

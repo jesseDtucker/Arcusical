@@ -70,7 +70,7 @@ namespace Arcusical { namespace MPEG4 {
 
 			//channel count is repeated here
 			auto otherChannelCount = stream.ReadInteger<uint8_t>();
-			ARC_ASSERT_MSG(otherChannelCount == m_numChannels, "Channel count of inner and outer box do not match!");
+			m_numChannels = otherChannelCount; // assigning anyways as we assume that the inner box is the most truthful
 
 			//maxRun, presently unused but required to be 0x00FF, parse and ignore value
 			m_maxRun = stream.ReadInteger<uint16_t>();
@@ -80,7 +80,7 @@ namespace Arcusical { namespace MPEG4 {
 			
 			//sample rate is now repeated, ignoring value
 			auto otherSampleRate = stream.ReadInteger<uint32_t>();
-			ARC_ASSERT_MSG(otherSampleRate == m_sampleRate, "Sample rate of outer and inner box do not match!");
+			m_sampleRate = Util::SafeIntCast<uint16_t, uint32_t>(otherSampleRate);  // same as earlier, assuming inner box is most truthful value
 			
 			//I do not have any samples of the channel layout info section that may
 			//occupy the remaining bits, simply assuming that it must run to the end

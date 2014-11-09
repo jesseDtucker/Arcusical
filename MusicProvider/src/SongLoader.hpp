@@ -34,13 +34,13 @@ namespace MusicProvider
 		SongLoader() = default;
 		SongLoader(const SongLoader&) = delete;
 
-		std::shared_ptr<Model::Song> LoadSong(std::shared_ptr<FileSystem::IFile> file);
-		std::shared_ptr<Model::Album> CreateAlbum(std::wstring name, std::shared_ptr<Model::Song> song, std::shared_ptr<SongIdMapper>& mapper);
+		Model::Song LoadSong(FileSystem::IFile& file);
+		Model::Album CreateAlbum(std::wstring& name, const Model::Song& song, std::shared_ptr<SongIdMapper>& mapper);
 
 	private:
-		std::shared_ptr<Model::Song> LoadMpeg4Song(std::shared_ptr<FileSystem::IFile> file);
-		std::shared_ptr<Model::Song> LoadMP3(std::shared_ptr<FileSystem::IFile> file);
-		std::shared_ptr<Model::Song> LoadWav(std::shared_ptr<FileSystem::IFile> file);
+		Model::Song LoadMpeg4Song(FileSystem::IFile& file);
+		Model::Song LoadMP3(FileSystem::IFile& file);
+		Model::Song LoadWav(FileSystem::IFile& file);
 
 		MPEG4::MPEG4_Parser m_mpegParser;
 

@@ -16,22 +16,15 @@ namespace ViewModel{
 	{
 		auto service = providerService.lock();
 		ARC_ASSERT(service != nullptr);
-		m_subscription = service->SubscribeSongs(
-			std::function<void(MusicProvider::SongListPtr, MusicProvider::SongListPtr)>(
-		[this](MusicProvider::SongListPtr localSongs, MusicProvider::SongListPtr remoteSongs)
+		m_subscription = service->SubscribeSongs(MusicProvider::SongsChangedCallback([this](Model::SongCollection& localSongs)
 		{
-			this->MusicCallback(localSongs, remoteSongs);
+			this->MusicCallback(localSongs);
 		}));
 	}
 
-	void SongListControlViewModel::MusicCallback(MusicProvider::SongListPtr localSongs, MusicProvider::SongListPtr remoteSongs)
+	void SongListControlViewModel::MusicCallback(Model::SongCollection& localSongs)
 	{
-		auto songsPtr = localSongs.lock();
-		ARC_ASSERT(songsPtr != nullptr);
-		if (songsPtr != nullptr)
-		{
-			this->SongList = ref new SongListVM(songsPtr);
-		}
+		this->SongList = ref new SongListVM(localSongs);
 	}
 
 }

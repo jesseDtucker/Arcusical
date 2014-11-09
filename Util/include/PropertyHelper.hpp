@@ -11,7 +11,7 @@
 /*	the backing data.
 /************************************************************************/
 
-// needed for properties that have multiple template arugments in their type
+// needed for properties that have multiple template arguments in their type
 #define COMMA ,
 
 #define PROP_GET_EX(dataType, externalName, internalName)	\

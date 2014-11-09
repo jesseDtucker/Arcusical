@@ -19,7 +19,7 @@ namespace Player
 {
 
 	Win8Player::Win8Player()
-		: m_currentSong(nullptr)
+		: m_currentSong()
 		, m_mediaEngine(nullptr)
 		, m_factory(nullptr)
 		, m_attributes(nullptr)
@@ -68,11 +68,8 @@ namespace Player
 
 	void Win8Player::Play()
 	{
-		if (m_currentSong != nullptr)
-		{
-			auto stream = m_currentSong->GetStream();
-			PlayNativeSong(stream);
-		}
+		auto stream = m_currentSong.GetStream();
+		PlayNativeSong(stream);
 	}
 
 	void Win8Player::PlayNativeSong(Model::SongStream& stream)
@@ -112,7 +109,7 @@ namespace Player
 		m_IsPlaying = false;
 	}
 
-	void Win8Player::SetSong(std::shared_ptr<Model::Song> song)
+	void Win8Player::SetSong(const Model::Song& song)
 	{
 		if (m_currentSong != song)
 		{
@@ -122,9 +119,9 @@ namespace Player
 		}
 	}
 
-	std::shared_ptr<Model::Song> Win8Player::GetCurrentSong()
+	Model::Song* Win8Player::GetCurrentSong()
 	{
-		return m_currentSong;
+		return &m_currentSong;
 	}
 
 	HRESULT MediaEngineNotify::EventNotify(_In_ DWORD event, _In_ DWORD_PTR param1, _In_ DWORD param2)

@@ -25,7 +25,7 @@ namespace ViewModel
 		PROP_SET_AND_GET_WINRT(Windows::Foundation::Collections::IVector<ViewModel::SongVM^>^, List);
 
 	internal:
-		SongListVM(MusicProvider::SongListPtr songs);
+		SongListVM(Model::SongCollection& songs);
 	private:
 		
 	};

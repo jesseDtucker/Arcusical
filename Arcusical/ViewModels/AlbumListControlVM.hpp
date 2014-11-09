@@ -25,7 +25,7 @@ namespace ViewModel{
 
 	private:
 
-		void AlbumCallback(MusicProvider::AlbumListPtr albums);
+		void AlbumCallback(Model::AlbumCollection& albums);
 
 		MusicProvider::MusicProviderLocator::ServiceRef m_providerService;
 		MusicProvider::MusicProviderSubscription m_albumSubscription;

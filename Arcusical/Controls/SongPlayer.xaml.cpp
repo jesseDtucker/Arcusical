@@ -35,7 +35,7 @@ SongPlayer::SongPlayer()
 : m_currentSong(nullptr)
 {
 	InitializeComponent();
-	this->DataContext = ViewModel::SongVM::GetEmptySong();
+	this->DataContext = nullptr; // TODO::JT needs to be an empty song
 
 	std::function<void(const Events::SongSelectedEvent&)> songSelectedCallback = [this]
 		(const Events::SongSelectedEvent& selectedSongEvent)

@@ -12,11 +12,11 @@ namespace Arcusical
 			AlbumList = nullptr;
 			auto service = m_providerService.lock();
 
-			std::function<void(MusicProvider::AlbumListPtr)> callback = [this](MusicProvider::AlbumListPtr albums){ this->AlbumCallback(albums); };
+			MusicProvider::AlbumsChangedCallback callback = [this](Model::AlbumCollection& albums){ this->AlbumCallback(albums); };
 			m_albumSubscription = service->SubscribeAlbums(callback);
 		}
 
-		void AlbumListControlVM::AlbumCallback(MusicProvider::AlbumListPtr albums)
+		void AlbumListControlVM::AlbumCallback(Model::AlbumCollection& albums)
 		{
 			AlbumList = ref new AlbumListVM(albums);
 		}

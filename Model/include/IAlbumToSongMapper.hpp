@@ -18,7 +18,7 @@ namespace Model
 	class IAlbumToSongMapper
 	{
 	public:
-		virtual std::unordered_map<boost::uuids::uuid, std::shared_ptr<Song>> GetSongsFromIds(const std::set<boost::uuids::uuid>& ids) = 0;
+		virtual std::unordered_map<boost::uuids::uuid, Song*> GetSongsFromIds(const std::set<boost::uuids::uuid>& ids) = 0;
 	};
 	}
 }
