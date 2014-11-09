@@ -22,6 +22,7 @@ namespace ViewModel{
 		PROP_SET_AND_GET_WINRT(Platform::String^, Title);
 		PROP_SET_AND_GET_WINRT(Platform::String^, Artist);
 		PROP_SET_AND_GET_WINRT(SongListVM^, Songs);
+		PROP_SET_AND_GET_WINRT(Platform::String^, ImagePath);
 		
 	internal:
 		AlbumVM(const Model::Album& album);

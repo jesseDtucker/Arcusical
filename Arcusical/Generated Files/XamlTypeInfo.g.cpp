@@ -250,6 +250,7 @@
     {
         ::XamlTypeInfo::InfoProvider::XamlUserType^ userType = ref new ::XamlTypeInfo::InfoProvider::XamlUserType(this, typeName, GetXamlTypeByName(L"Object"));
         userType->KindOfType = ::Windows::UI::Xaml::Interop::TypeKind::Custom;
+        userType->AddMemberName(L"ImagePath");
         userType->AddMemberName(L"Songs");
         userType->AddMemberName(L"Artist");
         userType->AddMemberName(L"Title");
@@ -456,6 +457,25 @@
             {
                 auto that = (::Arcusical::ViewModel::SongListVM^)instance;
                 that->List = (::Windows::Foundation::Collections::IVector<::Arcusical::ViewModel::SongVM^>^)value;
+            };
+        return xamlMember;
+    }
+
+    if (longMemberName == L"Arcusical.ViewModel.AlbumVM.ImagePath")
+    {
+        ::XamlTypeInfo::InfoProvider::XamlMember^ xamlMember = ref new ::XamlTypeInfo::InfoProvider::XamlMember(this, L"ImagePath", L"String");
+        xamlMember->Getter =
+            [](Object^ instance) -> Object^
+            {
+                auto that = (::Arcusical::ViewModel::AlbumVM^)instance;
+                return that->ImagePath;
+            };
+
+        xamlMember->Setter =
+            [](Object^ instance, Object^ value) -> void
+            {
+                auto that = (::Arcusical::ViewModel::AlbumVM^)instance;
+                that->ImagePath = (::Platform::String^)value;
             };
         return xamlMember;
     }

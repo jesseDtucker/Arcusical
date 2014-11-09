@@ -94,6 +94,9 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
     <PackageCertificateKeyFile>Arcusical_TemporaryKey.pfx</PackageCertificateKeyFile>
+    <AppxAutoIncrementPackageRevision>False</AppxAutoIncrementPackageRevision>
+    <AppxPackageDir>D:\temp\</AppxPackageDir>
+    <AppxBundle>Never</AppxBundle>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <IncludePath>$(SolutionDir)ServiceModel\include;$(SolutionDir)Util\include;$(SolutionDir)MusicProvider\include;$(SolutionDir)Model\include;$(SolutionDir)..\boost_1_56_0;$(SolutionDir)MPEG4Parser\include;$(ProjectDir);$(SolutionDir)Player\include;$(IncludePath)</IncludePath>

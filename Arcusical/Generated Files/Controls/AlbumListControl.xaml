@@ -33,7 +33,7 @@
 		<DataTemplate x:Key="AlbumListItemTemplate">
 			<Button>
 				<StackPanel Orientation="Vertical">
-					<Image Source="Assets/TwinNote.png" Style="{StaticResource AlbumImageStyle}"/>
+					<Image Source="/Assets/TwinNote.png" Style="{StaticResource AlbumImageStyle}"/>
 					<TextBlock Text="{Binding Path=Title}" Style="{StaticResource AlbumTitleStyle}"/>
 					<TextBlock Text="{Binding Path=Artist}" Style="{StaticResource AlbumArtistStyle}"/>
 				</StackPanel>
