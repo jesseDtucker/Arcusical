@@ -5,6 +5,7 @@
 #include <future>
 #include <ppltasks.h>
 #include <string>
+#include <unordered_set>
 
 #include "Arc_Assert.hpp"
 #include "File.hpp"
@@ -20,6 +21,7 @@ namespace FileSystem
 	IFolder* Storage::s_applicationFolder = nullptr;
 
 	static std::mutex s_loadingLock;
+	static const std::unordered_set<wchar_t> ILLEGAL_CHARACTERS = { '?', '<', '>', ':', '*', '|', '^', };
 
 #ifdef __cplusplus_winrt
 	
@@ -83,6 +85,7 @@ namespace FileSystem
 
 	std::shared_ptr<IFile> Storage::LoadFileFromPath(std::wstring filePath)
 	{
+		ARC_ASSERT_MSG(CheckForIllegalCharacters(filePath), "Path to load contained illegal characters!");
 		std::replace(filePath.begin(), filePath.end(), L'/', L'\\');
 
 		std::shared_ptr<IFile> file = nullptr;
@@ -98,6 +101,27 @@ namespace FileSystem
 		}
 
 		return file;
+	}
+
+	bool Storage::CheckForIllegalCharacters(const std::wstring& filePath)
+	{
+		for (auto& badChar : ILLEGAL_CHARACTERS)
+		{
+			if (filePath.find(badChar) != std::basic_string<wchar_t>::npos)
+			{
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	void Storage::RemoveIllegalCharacters(std::wstring& filePath, wchar_t replacementCharacter /* = '_' */)
+	{
+		for (auto& badChar : ILLEGAL_CHARACTERS)
+		{
+			std::replace(std::begin(filePath), std::end(filePath), badChar, replacementCharacter);
+		}
 	}
 
 #else

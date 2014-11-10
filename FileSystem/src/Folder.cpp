@@ -2,8 +2,9 @@
 
 #include <ppltasks.h>
 
-#include "File.hpp"
 #include "Arc_Assert.hpp"
+#include "File.hpp"
+#include "Storage.hpp"
 
 using namespace concurrency;
 
@@ -92,12 +93,29 @@ namespace FileSystem
 
 	std::shared_ptr<IFile> Folder::CreateNewFile(const std::wstring& fileName)
 	{
-		Platform::String^ winrt_fileName = ref new Platform::String(fileName.c_str());
+		const std::wstring* fn = &fileName;
 
-		return std::make_shared<File>(
-					create_task(
-						m_folder->CreateFileAsync(	winrt_fileName, 
-													Windows::Storage::CreationCollisionOption::OpenIfExists)).get());
+		if (Storage::CheckForIllegalCharacters(fileName))
+		{
+			ARC_FAIL("Attempted to create a file with illegal characters! Automatically replacing for the sake of sanity!");
+			std::wstring newFileName = fileName;
+			Storage::RemoveIllegalCharacters(newFileName);
+			fn = &newFileName;
+		}
+
+		Platform::String^ winrt_fileName = ref new Platform::String(fn->c_str());
+
+		try
+		{
+			auto result = std::make_shared<File>(create_task(m_folder->CreateFileAsync(winrt_fileName, Windows::Storage::CreationCollisionOption::OpenIfExists)).get());
+			return result;
+		}
+		catch (Platform::COMException^ ex)
+		{
+			ARC_FAIL("Unhandled exception!");
+			return nullptr;
+		}
+		
 	}
 #else
 #error UNKNOWN_PLATFORM!

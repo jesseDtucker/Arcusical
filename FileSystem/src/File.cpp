@@ -23,7 +23,7 @@ namespace FileSystem
 		
 	}
 
-	wstring File::GetExtension()
+	wstring File::GetExtension() const
 	{
 		wstring name(m_file->Name->Data());
 		auto found = name.find_last_of(L".");
@@ -31,7 +31,7 @@ namespace FileSystem
 		return name.substr(found + 1);
 	}
 
-	std::wstring File::GetName()
+	std::wstring File::GetName() const
 	{
 		std::wstring name(m_file->Name->Data());
 		auto found = name.find_last_of(L".");
@@ -39,21 +39,28 @@ namespace FileSystem
 		return name.substr(0, found);
 	}
 
-	std::wstring File::GetFullName()
+	std::wstring File::GetFullName() const
 	{
 		return std::wstring(m_file->Name->Data());
 	}
 
-	std::wstring File::GetFullPath()
+	std::wstring File::GetFullPath() const
 	{
 		return std::wstring(m_file->Path->Data());
 	}
 
 	void File::WriteToFile(std::vector<unsigned char>& data)
 	{
-		auto buffer = NativeBufferWrapper::WrapBuffer(&data);
-		auto task = create_task(Windows::Storage::FileIO::WriteBufferAsync(m_file, buffer));
-		task.wait();
+		try
+		{
+			auto buffer = NativeBufferWrapper::WrapBuffer(&data);
+			auto task = create_task(Windows::Storage::FileIO::WriteBufferAsync(m_file, buffer));
+			task.wait();
+		}
+		catch (Platform::COMException^ ex)
+		{
+			ARC_FAIL("Unhandled Exception!");
+		}
 	}
 
 	void File::ReadFromFile(std::vector<unsigned char>& buffer, unsigned int length /* = 0*/, unsigned long long startPosition /* = 0*/)

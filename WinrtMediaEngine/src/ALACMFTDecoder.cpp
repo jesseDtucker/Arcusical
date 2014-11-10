@@ -120,7 +120,6 @@ HRESULT ALACMFTDecoder::GetStreamIDs(
 	DWORD   *pdwOutputIDs
 	)
 {
-	//ARC_FAIL("TODO::JT");
 	// Do not need to implement, because this MFT has a fixed number of
 	// streams and the stream IDs match the stream indexes.
 	return E_NOTIMPL;
@@ -505,7 +504,7 @@ HRESULT ALACMFTDecoder::ProcessInput(
 	{
 		// there are multiple buffers, however the decoder can only accept a single continuous buffer
 		// so we'll have to merge them together into a single buffer
-		std::vector<char> inputFrameBuffer;
+		std::vector<unsigned char> inputFrameBuffer;
 		for (unsigned int i = 0; i < bufferCount; ++i)
 		{
 			ComPtr<IMFMediaBuffer> inputMediaBuffer = nullptr;

@@ -12,8 +12,6 @@
 #include <ostream>
 #include <unordered_map>
 
-#include "boost\assign.hpp"
-
 namespace Arcusical { namespace MPEG4 {
 
 	//TODO: need to add some support for a wider array of image types.
@@ -25,11 +23,21 @@ namespace Arcusical { namespace MPEG4 {
 		UNKNOWN
 	};
 
-	const std::unordered_map<ImageType, std::string> ImageTypeToString = boost::assign::map_list_of<ImageType, std::string>
-	(ImageType::JPEG, "JPEG")
-	(ImageType::PNG, "PNG")
-	(ImageType::EXIF, "EXIF")
-	(ImageType::UNKNOWN, "Unknown");
+	const std::unordered_map<ImageType, std::string> ImageTypeToString = 
+	{
+		{ ImageType::JPEG, "jpg" },
+		{ ImageType::PNG, "png" },
+		{ ImageType::EXIF, "jpg" }, // stored in a jpg
+		{ ImageType::UNKNOWN, "Unknown" }
+	};
+
+	const std::unordered_map<ImageType, std::wstring> ImageTypeToWString =
+	{
+		{ ImageType::JPEG, L"jpg" },
+		{ ImageType::PNG, L"png" },
+		{ ImageType::EXIF, L"jpg" }, // stored in a jpg
+		{ ImageType::UNKNOWN, L"Unknown" }
+	};
 
 	std::ostream& operator << (std::ostream& outStream, ImageType type);
 

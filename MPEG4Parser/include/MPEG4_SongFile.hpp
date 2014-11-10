@@ -13,10 +13,12 @@
 #include <memory>
 #include <string>
 
+#include "Alac.hpp"
 #include "Box.hpp"
 #include "Mvhd.hpp"
 #include "Mp4a.hpp"
 #include "Esds.hpp"
+#include "ImageTypes.hpp"
 #include "iName.hpp"
 #include "iArtist.hpp"
 #include "iAlbumArtist.hpp"
@@ -28,7 +30,6 @@
 #include "iCover.hpp"
 #include "iComposer.hpp"
 #include "Mdat.hpp"
-#include "Alac.hpp"
 
 #include "MPEG4_Tree.hpp"
 
@@ -64,7 +65,8 @@ namespace Arcusical { namespace MPEG4 {
 			/*
 			*	Returns the raw image data.
 			*/
-			std::shared_ptr<std::vector<char>> GetImageData();
+			std::shared_ptr<std::vector<unsigned char>> GetImageData();
+			ImageType GetImageType();
 
 			#pragma endregion
 
@@ -75,7 +77,7 @@ namespace Arcusical { namespace MPEG4 {
 			/*
 			*	Returns the raw media data
 			*/
-			std::shared_ptr<std::vector<char>> GetMediaData();
+			std::shared_ptr<std::vector<unsigned char>> GetMediaData();
 
 			/*
 			*	Returns the length in seconds. Obtained by dividing the duration
@@ -144,7 +146,7 @@ namespace Arcusical { namespace MPEG4 {
 			std::shared_ptr<iGenre> m_iGenre;
 
 			std::shared_ptr<iCover> m_iCover;
-			std::shared_ptr<std::vector<char>> m_imageData;	// loaded on request from iCover
+			std::shared_ptr<std::vector<unsigned char>> m_imageData;	// loaded on request from iCover
 
 			#pragma endregion
 

@@ -33,15 +33,15 @@ namespace Model
 			this->GetArtist() == otherSong.GetArtist();
 	}
 
-	void Song::AddFile(AudioFormat format, const SongFile& songFile)
+	void Song::AddFile(const SongFile& songFile)
 	{
-		auto doesNotHaveFormat = (m_Files.find(format) == m_Files.end());
+		auto doesNotHaveFormat = (m_Files.find(songFile.format) == m_Files.end());
 		ARC_ASSERT_MSG(doesNotHaveFormat, "A song can have only one file per encoding!");
 
 		if (doesNotHaveFormat)
 		{
-			m_Files[format] = songFile;
-			m_AvailableFormats.push_back(format);
+			m_Files[songFile.format] = songFile;
+			m_AvailableFormats.push_back(songFile.format);
 		}
 	}
 

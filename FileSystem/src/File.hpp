@@ -13,10 +13,10 @@ namespace FileSystem
 	{
 	public:
 
-		virtual std::wstring GetName() override;
-		virtual std::wstring GetFullName() override;
-		virtual std::wstring GetExtension() override;
-		virtual std::wstring GetFullPath() override;
+		virtual std::wstring GetName() const override;
+		virtual std::wstring GetFullName() const override;
+		virtual std::wstring GetExtension() const override;
+		virtual std::wstring GetFullPath() const override;
 
 		virtual unsigned long long GetFileSize() override;
 

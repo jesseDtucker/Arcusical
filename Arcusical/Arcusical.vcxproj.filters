@@ -195,5 +195,8 @@
     <Image Include="Assets\Icons\Play.png">
       <Filter>Assets\Icons</Filter>
     </Image>
+    <Image Include="Assets\albumBackground.png">
+      <Filter>Assets</Filter>
+    </Image>
   </ItemGroup>
 </Project>

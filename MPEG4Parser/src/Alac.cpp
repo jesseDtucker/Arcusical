@@ -38,6 +38,7 @@ namespace Arcusical { namespace MPEG4 {
 		//Note: documentation claims it is a 32 bit unsigned integer, encoding
 		//suggests that is is either a 16 bit integer or a 16.16 floating point
 		//number, assuming 16 bit integer.
+		// TODO::JT resolve this ambiguity!
 		m_sampleRate = stream.ReadInteger<uint16_t>();
 
 		//2 bytes of unknown or reserved, see previous note about sample rate
@@ -80,7 +81,7 @@ namespace Arcusical { namespace MPEG4 {
 			
 			//sample rate is now repeated, ignoring value
 			auto otherSampleRate = stream.ReadInteger<uint32_t>();
-			m_sampleRate = Util::SafeIntCast<uint16_t, uint32_t>(otherSampleRate);  // same as earlier, assuming inner box is most truthful value
+			m_sampleRate = otherSampleRate;  // same as earlier, assuming inner box is most truthful value
 			
 			//I do not have any samples of the channel layout info section that may
 			//occupy the remaining bits, simply assuming that it must run to the end

@@ -58,18 +58,18 @@ namespace Arcusical { namespace MPEG4 {
 
 	struct DecoderSpecificInfo
 	{
-		std::vector<char> m_data;	//no idea what the data actually is...
+		std::vector<unsigned char> m_data;	//no idea what the data actually is...
 	};
 
 	struct SL_ConfigDescription
 	{
-		std::vector<char> m_data;	//no idea what this actually is...
+		std::vector<unsigned char> m_data;	//no idea what this actually is...
 	};
 
 	//preserves unknown sections in this tag
 	struct UnknownTagSection
 	{
-		std::vector<char> m_data;
+		std::vector<unsigned char> m_data;
 	};
 
 	#pragma region Tag Printing

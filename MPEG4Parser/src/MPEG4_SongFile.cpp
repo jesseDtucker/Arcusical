@@ -121,15 +121,15 @@ namespace Arcusical { namespace MPEG4 {
 	/*
 	*	Returns the raw image data.
 	*/
-	std::shared_ptr<std::vector<char>> MPEG4_SongFile::GetImageData()
+	std::shared_ptr<std::vector<unsigned char>> MPEG4_SongFile::GetImageData()
 	{
 		if(m_iCover != nullptr)
 		{
 			if(m_imageData == nullptr)
 			{
 				// then this is the first call, load the value in
-				typedef boost::make_unsigned<std::vector<char>::difference_type>::type UnsignedSize;
-				m_imageData = std::make_shared<std::vector<char>>(
+				typedef boost::make_unsigned<std::vector<unsigned char>::difference_type>::type UnsignedSize;
+				m_imageData = std::make_shared<std::vector<unsigned char>>(
 					m_iCover->GetImageData(),
 					m_iCover->GetImageData() + Util::SafeIntCast<UnsignedSize>(m_iCover->GetImageDataSize()));
 			}
@@ -139,6 +139,18 @@ namespace Arcusical { namespace MPEG4 {
 		else
 		{
 			return nullptr;
+		}
+	}
+
+	ImageType MPEG4_SongFile::GetImageType()
+	{
+		if (m_iCover != nullptr)
+		{
+			return m_iCover->GetType();
+		}
+		else
+		{
+			return ImageType::UNKNOWN;
 		}
 	}
 
@@ -165,7 +177,7 @@ namespace Arcusical { namespace MPEG4 {
 		}
 	}
 
-	std::shared_ptr<std::vector<char>> MPEG4_SongFile::GetMediaData()
+	std::shared_ptr<std::vector<unsigned char>> MPEG4_SongFile::GetMediaData()
 	{
 		if(m_mdat != nullptr)
 		{

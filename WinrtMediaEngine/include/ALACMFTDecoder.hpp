@@ -167,8 +167,8 @@ private:
 	Microsoft::WRL::ComPtr<IMFMediaType> m_outputType;
 
 	unsigned int m_samplesAvailable;
-	std::vector<char> m_outBuffer;
-	std::vector<char> m_inBuffer; // TODO::JT you were hooking this up!
+	std::vector<unsigned char> m_outBuffer;
+	std::vector<unsigned char> m_inBuffer; // TODO::JT you were hooking this up!
 	bool m_isOutFrameReady;
 	bool m_hasEnoughInput;
 };

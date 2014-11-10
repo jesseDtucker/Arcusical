@@ -279,6 +279,7 @@
     <None Include="Arcusical_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="Assets\albumBackground.png" />
     <Image Include="Assets\Icons\Pause.png" />
     <Image Include="Assets\Icons\Play.png" />
     <Image Include="Assets\Logo.scale-100.png" />

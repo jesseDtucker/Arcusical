@@ -40,14 +40,14 @@ class SongFile;
 class CachedSong;
 
 enum Encoding {
-  UNKNOWN = 0,
+  UNKNOWN_ENCODING = 0,
   AAC = 1,
   ALAC = 2,
   MP3 = 3,
   FLAC = 4
 };
 bool Encoding_IsValid(int value);
-const Encoding Encoding_MIN = UNKNOWN;
+const Encoding Encoding_MIN = UNKNOWN_ENCODING;
 const Encoding Encoding_MAX = FLAC;
 const int Encoding_ARRAYSIZE = Encoding_MAX + 1;
 
@@ -60,6 +60,28 @@ inline bool Encoding_Parse(
     const ::std::string& name, Encoding* value) {
   return ::google::protobuf::internal::ParseNamedEnum<Encoding>(
     Encoding_descriptor(), name, value);
+}
+enum Container {
+  UNKNOWN_CONTAINER = 0,
+  MP3_CONTAINER = 1,
+  MPEG4_CONTAINER = 2,
+  FLAC_CONTAINER = 3,
+  WAV_CONTAINER = 4
+};
+bool Container_IsValid(int value);
+const Container Container_MIN = UNKNOWN_CONTAINER;
+const Container Container_MAX = WAV_CONTAINER;
+const int Container_ARRAYSIZE = Container_MAX + 1;
+
+const ::google::protobuf::EnumDescriptor* Container_descriptor();
+inline const ::std::string& Container_Name(Container value) {
+  return ::google::protobuf::internal::NameOfEnum(
+    Container_descriptor(), value);
+}
+inline bool Container_Parse(
+    const ::std::string& name, Container* value) {
+  return ::google::protobuf::internal::ParseNamedEnum<Container>(
+    Container_descriptor(), name, value);
 }
 // ===================================================================
 
@@ -156,6 +178,13 @@ class SongFile : public ::google::protobuf::Message {
   inline ::google::protobuf::int32 channelcount() const;
   inline void set_channelcount(::google::protobuf::int32 value);
 
+  // required .Arcusical.LocalMusicStore.Container container = 6;
+  inline bool has_container() const;
+  inline void clear_container();
+  static const int kContainerFieldNumber = 6;
+  inline ::Arcusical::LocalMusicStore::Container container() const;
+  inline void set_container(::Arcusical::LocalMusicStore::Container value);
+
   // @@protoc_insertion_point(class_scope:Arcusical.LocalMusicStore.SongFile)
  private:
   inline void set_has_encoding();
@@ -168,6 +197,8 @@ class SongFile : public ::google::protobuf::Message {
   inline void clear_has_samplesize();
   inline void set_has_channelcount();
   inline void clear_has_channelcount();
+  inline void set_has_container();
+  inline void clear_has_container();
 
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
 
@@ -178,6 +209,7 @@ class SongFile : public ::google::protobuf::Message {
   ::google::protobuf::int32 bitrate_;
   ::google::protobuf::int32 samplesize_;
   ::google::protobuf::int32 channelcount_;
+  int container_;
   friend void  protobuf_AddDesc_CachedSong_2eproto();
   friend void protobuf_AssignDesc_CachedSong_2eproto();
   friend void protobuf_ShutdownFile_CachedSong_2eproto();
@@ -499,6 +531,31 @@ inline void SongFile::set_channelcount(::google::protobuf::int32 value) {
   // @@protoc_insertion_point(field_set:Arcusical.LocalMusicStore.SongFile.channelCount)
 }
 
+// required .Arcusical.LocalMusicStore.Container container = 6;
+inline bool SongFile::has_container() const {
+  return (_has_bits_[0] & 0x00000020u) != 0;
+}
+inline void SongFile::set_has_container() {
+  _has_bits_[0] |= 0x00000020u;
+}
+inline void SongFile::clear_has_container() {
+  _has_bits_[0] &= ~0x00000020u;
+}
+inline void SongFile::clear_container() {
+  container_ = 0;
+  clear_has_container();
+}
+inline ::Arcusical::LocalMusicStore::Container SongFile::container() const {
+  // @@protoc_insertion_point(field_get:Arcusical.LocalMusicStore.SongFile.container)
+  return static_cast< ::Arcusical::LocalMusicStore::Container >(container_);
+}
+inline void SongFile::set_container(::Arcusical::LocalMusicStore::Container value) {
+  assert(::Arcusical::LocalMusicStore::Container_IsValid(value));
+  set_has_container();
+  container_ = value;
+  // @@protoc_insertion_point(field_set:Arcusical.LocalMusicStore.SongFile.container)
+}
+
 // -------------------------------------------------------------------
 
 // CachedSong
@@ -764,6 +821,11 @@ template <> struct is_proto_enum< ::Arcusical::LocalMusicStore::Encoding> : ::go
 template <>
 inline const EnumDescriptor* GetEnumDescriptor< ::Arcusical::LocalMusicStore::Encoding>() {
   return ::Arcusical::LocalMusicStore::Encoding_descriptor();
+}
+template <> struct is_proto_enum< ::Arcusical::LocalMusicStore::Container> : ::google::protobuf::internal::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< ::Arcusical::LocalMusicStore::Container>() {
+  return ::Arcusical::LocalMusicStore::Container_descriptor();
 }
 
 }  // namespace google

@@ -12,7 +12,7 @@ namespace ViewModel{
 	{
 		this->Artist = ref new Platform::String(album.GetArtist().c_str());
 		this->Title = ref new Platform::String(album.GetTitle().c_str());
-		this->ImagePath = "./Assets/albumBackground.png";
+		this->ImagePath = ref new Platform::String(album.GetImageFilePath().c_str());
 		// TODO::JT
 		// this->Songs
 	}

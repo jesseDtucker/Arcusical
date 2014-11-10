@@ -32,7 +32,7 @@ namespace Util
 	
 		ARC_ASSERT_MSG(num <= std::numeric_limits<Smaller>::max(), "Overflow when casting integral to smaller size!");
 		// we are assigning an unsigned value to a signed value, make sure there is no overflow
-		ARC_ASSERT_MSG(num > 0, "Attempted to assign a negative value to an unsigned number!");
+		ARC_ASSERT_MSG(num >= 0, "Attempted to assign a negative value to an unsigned number!");
 
 		return static_cast<Smaller>(num);
 	}

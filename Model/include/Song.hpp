@@ -28,6 +28,16 @@ namespace Model
 		ALAC,
 		FLAC,
 		MP3,
+		WAV,
+		UNKNOWN
+	};
+
+	enum class ContainerType
+	{
+		MP4,
+		MP3,
+		FLAC,
+		WAV,
 		UNKNOWN
 	};
 
@@ -37,6 +47,7 @@ namespace Model
 		unsigned int sampleSize = 0;
 		unsigned int channelCount = 0;
 		AudioFormat format = AudioFormat::UNKNOWN;
+		ContainerType container = ContainerType::UNKNOWN;
 		std::wstring filePath;
 	};
 
@@ -62,7 +73,7 @@ namespace Model
 
 		PROP_GET(std::vector<AudioFormat>, AvailableFormats);
 		PROP_GET(std::unordered_map<AudioFormat COMMA SongFile>, Files);
-		void AddFile(AudioFormat format, const SongFile& songFile);
+		void AddFile(const SongFile& songFile);
 
 		SongStream GetStream();
 		SongStream GetStream(AudioFormat specificFormat);

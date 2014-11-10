@@ -75,8 +75,6 @@ namespace MusicProvider
 		bool m_hasSongLoadingBegun = false;
 		bool m_hasAlbumLoadingBegun = false;
 		std::mutex m_isLoadingLock;
-
-		SongLoader m_songLoader;
 	};
 }
 }

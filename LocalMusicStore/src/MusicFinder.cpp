@@ -14,7 +14,7 @@ namespace Arcusical
 {
 namespace LocalMusicStore
 {
-	const std::vector<std::wstring> MusicFinder::s_supportedFileEndings = { L"wav", L"m4a", L"mp3" };
+	const std::vector<std::wstring> MusicFinder::s_supportedFileEndings = { L"m4a"};
 
 	std::future<std::vector<std::shared_ptr<IFile>>> MusicFinder::FindSongs()
 	{

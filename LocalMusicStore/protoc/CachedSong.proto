@@ -4,11 +4,20 @@ import "GUID.proto";
 
 enum Encoding
 {
-	UNKNOWN = 0;
+	UNKNOWN_ENCODING = 0;
 	AAC = 1;
 	ALAC = 2;
 	MP3 = 3;
 	FLAC = 4;
+}
+
+enum Container
+{
+	UNKNOWN_CONTAINER = 0;
+	MP3_CONTAINER = 1;
+	MPEG4_CONTAINER = 2;
+	FLAC_CONTAINER = 3;
+	WAV_CONTAINER = 4;
 }
 
 message SongFile
@@ -18,6 +27,7 @@ message SongFile
 	required int32 bitRate = 3;
 	required int32 sampleSize = 4;
 	required int32 channelCount = 5;
+	required Container container = 6;
 }
 
 message CachedSong

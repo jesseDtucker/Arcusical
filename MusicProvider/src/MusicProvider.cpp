@@ -154,7 +154,7 @@ namespace MusicProvider
 			if (existingSongFiles.find(file->GetFullPath()) == existingSongFiles.end())
 			{
 				// then we found a song in the file system that wasn't in our cache
-				auto song = m_songLoader.LoadSong(*file);
+				auto song = LoadSong(*file);
 				haveFilesBeenAdded = true;
 				
 				// now we need to see if this song is simply another copy of an existing song or if it is
@@ -281,7 +281,7 @@ namespace MusicProvider
 			else
 			{
 				// we don't have this album yet, so we need to create a new one
-				auto newAlbum = m_songLoader.CreateAlbum(albumName, song, m_songMapper);
+				auto newAlbum = CreateAlbum(albumName, song, m_songMapper);
 				newContentAdded = true;
 				newAlbums.insert({ newAlbum.GetId(), newAlbum });
 				albumLookup[newAlbum.GetTitle()].push_back(newAlbum.GetId());
@@ -325,7 +325,7 @@ namespace MusicProvider
 				ARC_ASSERT(files.size() == 1);
 
 				auto songFile = files.begin()->second;
-				existingFile.AddFile(newSongFormat, songFile);
+				existingFile.AddFile(songFile);
 			}
 		}
 	}

@@ -28,6 +28,7 @@ const ::google::protobuf::Descriptor* CachedSong_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   CachedSong_reflection_ = NULL;
 const ::google::protobuf::EnumDescriptor* Encoding_descriptor_ = NULL;
+const ::google::protobuf::EnumDescriptor* Container_descriptor_ = NULL;
 
 }  // namespace
 
@@ -39,12 +40,13 @@ void protobuf_AssignDesc_CachedSong_2eproto() {
       "CachedSong.proto");
   GOOGLE_CHECK(file != NULL);
   SongFile_descriptor_ = file->message_type(0);
-  static const int SongFile_offsets_[5] = {
+  static const int SongFile_offsets_[6] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SongFile, encoding_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SongFile, file_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SongFile, bitrate_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SongFile, samplesize_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SongFile, channelcount_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SongFile, container_),
   };
   SongFile_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
@@ -77,6 +79,7 @@ void protobuf_AssignDesc_CachedSong_2eproto() {
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(CachedSong));
   Encoding_descriptor_ = file->enum_type(0);
+  Container_descriptor_ = file->enum_type(1);
 }
 
 namespace {
@@ -113,16 +116,21 @@ void protobuf_AddDesc_CachedSong_2eproto() {
   ::Arcusical::LocalMusicStore::protobuf_AddDesc_GUID_2eproto();
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
     "\n\020CachedSong.proto\022\031Arcusical.LocalMusic"
-    "Store\032\nGUID.proto\"\212\001\n\010SongFile\0225\n\010encodi"
+    "Store\032\nGUID.proto\"\303\001\n\010SongFile\0225\n\010encodi"
     "ng\030\001 \002(\0162#.Arcusical.LocalMusicStore.Enc"
     "oding\022\014\n\004file\030\002 \002(\t\022\017\n\007bitRate\030\003 \002(\005\022\022\n\n"
-    "sampleSize\030\004 \002(\005\022\024\n\014channelCount\030\005 \002(\005\"\234"
-    "\001\n\nCachedSong\022+\n\002id\030\001 \002(\0132\037.Arcusical.Lo"
-    "calMusicStore.GUID\022\r\n\005title\030\002 \002(\t\022\016\n\006art"
-    "ist\030\004 \002(\t\022\016\n\006length\030\005 \002(\003\0222\n\005files\030\006 \003(\013"
-    "2#.Arcusical.LocalMusicStore.SongFile*=\n"
-    "\010Encoding\022\013\n\007UNKNOWN\020\000\022\007\n\003AAC\020\001\022\010\n\004ALAC\020"
-    "\002\022\007\n\003MP3\020\003\022\010\n\004FLAC\020\004", 420);
+    "sampleSize\030\004 \002(\005\022\024\n\014channelCount\030\005 \002(\005\0227"
+    "\n\tcontainer\030\006 \002(\0162$.Arcusical.LocalMusic"
+    "Store.Container\"\234\001\n\nCachedSong\022+\n\002id\030\001 \002"
+    "(\0132\037.Arcusical.LocalMusicStore.GUID\022\r\n\005t"
+    "itle\030\002 \002(\t\022\016\n\006artist\030\004 \002(\t\022\016\n\006length\030\005 \002"
+    "(\003\0222\n\005files\030\006 \003(\0132#.Arcusical.LocalMusic"
+    "Store.SongFile*F\n\010Encoding\022\024\n\020UNKNOWN_EN"
+    "CODING\020\000\022\007\n\003AAC\020\001\022\010\n\004ALAC\020\002\022\007\n\003MP3\020\003\022\010\n\004"
+    "FLAC\020\004*q\n\tContainer\022\025\n\021UNKNOWN_CONTAINER"
+    "\020\000\022\021\n\rMP3_CONTAINER\020\001\022\023\n\017MPEG4_CONTAINER"
+    "\020\002\022\022\n\016FLAC_CONTAINER\020\003\022\021\n\rWAV_CONTAINER\020"
+    "\004", 601);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "CachedSong.proto", &protobuf_RegisterTypes);
   SongFile::default_instance_ = new SongFile();
@@ -155,6 +163,23 @@ bool Encoding_IsValid(int value) {
   }
 }
 
+const ::google::protobuf::EnumDescriptor* Container_descriptor() {
+  protobuf_AssignDescriptorsOnce();
+  return Container_descriptor_;
+}
+bool Container_IsValid(int value) {
+  switch(value) {
+    case 0:
+    case 1:
+    case 2:
+    case 3:
+    case 4:
+      return true;
+    default:
+      return false;
+  }
+}
+
 
 // ===================================================================
 
@@ -164,6 +189,7 @@ const int SongFile::kFileFieldNumber;
 const int SongFile::kBitRateFieldNumber;
 const int SongFile::kSampleSizeFieldNumber;
 const int SongFile::kChannelCountFieldNumber;
+const int SongFile::kContainerFieldNumber;
 #endif  // !_MSC_VER
 
 SongFile::SongFile()
@@ -190,6 +216,7 @@ void SongFile::SharedCtor() {
   bitrate_ = 0;
   samplesize_ = 0;
   channelcount_ = 0;
+  container_ = 0;
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -238,8 +265,8 @@ void SongFile::Clear() {
     ::memset(&first, 0, n);                                \
   } while (0)
 
-  if (_has_bits_[0 / 32] & 31) {
-    ZR_(encoding_, channelcount_);
+  if (_has_bits_[0 / 32] & 63) {
+    ZR_(encoding_, container_);
     if (has_file()) {
       if (file_ != &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
         file_->clear();
@@ -341,6 +368,26 @@ bool SongFile::MergePartialFromCodedStream(
         } else {
           goto handle_unusual;
         }
+        if (input->ExpectTag(48)) goto parse_container;
+        break;
+      }
+
+      // required .Arcusical.LocalMusicStore.Container container = 6;
+      case 6: {
+        if (tag == 48) {
+         parse_container:
+          int value;
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   int, ::google::protobuf::internal::WireFormatLite::TYPE_ENUM>(
+                 input, &value)));
+          if (::Arcusical::LocalMusicStore::Container_IsValid(value)) {
+            set_container(static_cast< ::Arcusical::LocalMusicStore::Container >(value));
+          } else {
+            mutable_unknown_fields()->AddVarint(6, value);
+          }
+        } else {
+          goto handle_unusual;
+        }
         if (input->ExpectAtEnd()) goto success;
         break;
       }
@@ -401,6 +448,12 @@ void SongFile::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteInt32(5, this->channelcount(), output);
   }
 
+  // required .Arcusical.LocalMusicStore.Container container = 6;
+  if (has_container()) {
+    ::google::protobuf::internal::WireFormatLite::WriteEnum(
+      6, this->container(), output);
+  }
+
   if (!unknown_fields().empty()) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         unknown_fields(), output);
@@ -441,6 +494,12 @@ void SongFile::SerializeWithCachedSizes(
   // required int32 channelCount = 5;
   if (has_channelcount()) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(5, this->channelcount(), target);
+  }
+
+  // required .Arcusical.LocalMusicStore.Container container = 6;
+  if (has_container()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
+      6, this->container(), target);
   }
 
   if (!unknown_fields().empty()) {
@@ -489,6 +548,12 @@ int SongFile::ByteSize() const {
           this->channelcount());
     }
 
+    // required .Arcusical.LocalMusicStore.Container container = 6;
+    if (has_container()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::EnumSize(this->container());
+    }
+
   }
   if (!unknown_fields().empty()) {
     total_size +=
@@ -531,6 +596,9 @@ void SongFile::MergeFrom(const SongFile& from) {
     if (from.has_channelcount()) {
       set_channelcount(from.channelcount());
     }
+    if (from.has_container()) {
+      set_container(from.container());
+    }
   }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
 }
@@ -548,7 +616,7 @@ void SongFile::CopyFrom(const SongFile& from) {
 }
 
 bool SongFile::IsInitialized() const {
-  if ((_has_bits_[0] & 0x0000001f) != 0x0000001f) return false;
+  if ((_has_bits_[0] & 0x0000003f) != 0x0000003f) return false;
 
   return true;
 }
@@ -560,6 +628,7 @@ void SongFile::Swap(SongFile* other) {
     std::swap(bitrate_, other->bitrate_);
     std::swap(samplesize_, other->samplesize_);
     std::swap(channelcount_, other->channelcount_);
+    std::swap(container_, other->container_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);

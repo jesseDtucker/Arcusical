@@ -99,18 +99,20 @@ namespace Arcusical { namespace MPEG4 {
 
 		private:
 
+			uint32_t m_sampleRate;
+			uint32_t m_samplePerFrame;
+			uint32_t m_maxFrameSize;
+			uint32_t m_avgBitRate;
+			uint32_t m_version;
 			uint16_t m_numChannels;
 			uint16_t m_sampleSize;
-			uint16_t m_sampleRate;
-			uint32_t m_samplePerFrame;
+			uint16_t m_maxRun;	//unused, default = 0xFF
 			uint8_t m_compatibleVersion;
 			uint8_t m_pb;	//unused tuning variable
 			uint8_t m_mb;	//unused tuning variable
 			uint8_t m_kb;	//unused tuning variable
-			uint16_t m_maxRun;	//unused, default = 0xFF
-			uint32_t m_maxFrameSize;
-			uint32_t m_avgBitRate;
-			uint32_t m_version;
+			
+			
 			uint16_t m_index;
 			AlacChannelLayout m_channelLayout;
 	};

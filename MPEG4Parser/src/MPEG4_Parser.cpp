@@ -113,7 +113,7 @@ namespace Arcusical { namespace MPEG4 {
 
 		auto type = StringToBoxType.find(typeStr);
 
-		//ARC_ASSERT_MSG(type != StringToBoxType.end(), "Found unknown box type!")
+		ARC_ASSERT_MSG(type != StringToBoxType.end(), "Found unknown box type!")
 		if(type != StringToBoxType.end())
 		{
 			return type->second;

@@ -12,10 +12,10 @@ namespace FileSystem
 	class EXPORT IFile
 	{
 	public:
-		virtual std::wstring GetName() = 0;
-		virtual std::wstring GetFullName() = 0;
-		virtual std::wstring GetExtension() = 0;
-		virtual std::wstring GetFullPath() = 0;
+		virtual std::wstring GetName() const = 0;
+		virtual std::wstring GetFullName() const = 0;
+		virtual std::wstring GetExtension() const = 0;
+		virtual std::wstring GetFullPath() const = 0;
 
 		virtual unsigned long long GetFileSize() = 0;
 
