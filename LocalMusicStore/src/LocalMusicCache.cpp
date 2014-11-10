@@ -28,20 +28,38 @@ namespace Arcusical
 
 		static const std::unordered_map<LocalMusicStore::Encoding, Model::AudioFormat> CACHE_ENCODING_TO_MODEL =
 		{
-			{ LocalMusicStore::UNKNOWN, Model::AudioFormat::UNKNOWN },
-			{ LocalMusicStore::AAC, Model::AudioFormat::AAC},
-			{ LocalMusicStore::ALAC, Model::AudioFormat::ALAC},
-			{ LocalMusicStore::MP3, Model::AudioFormat::MP3},
-			{ LocalMusicStore::FLAC, Model::AudioFormat::FLAC}
+			{ LocalMusicStore::UNKNOWN_ENCODING,	Model::AudioFormat::UNKNOWN },
+			{ LocalMusicStore::AAC,					Model::AudioFormat::AAC},
+			{ LocalMusicStore::ALAC,				Model::AudioFormat::ALAC},
+			{ LocalMusicStore::MP3,					Model::AudioFormat::MP3},
+			{ LocalMusicStore::FLAC,				Model::AudioFormat::FLAC}
 		};
 
 		static const std::unordered_map<Model::AudioFormat, LocalMusicStore::Encoding> MODEL_ENCODING_TO_CACHE =
 		{
-			{ Model::AudioFormat::UNKNOWN, LocalMusicStore::UNKNOWN},
-			{ Model::AudioFormat::AAC, LocalMusicStore::AAC},
-			{ Model::AudioFormat::ALAC, LocalMusicStore::ALAC},
-			{ Model::AudioFormat::MP3, LocalMusicStore::MP3},
-			{ Model::AudioFormat::FLAC,  LocalMusicStore::FLAC}
+			{ Model::AudioFormat::UNKNOWN,	LocalMusicStore::UNKNOWN_ENCODING },
+			{ Model::AudioFormat::AAC,		LocalMusicStore::AAC},
+			{ Model::AudioFormat::ALAC,		LocalMusicStore::ALAC},
+			{ Model::AudioFormat::MP3,		LocalMusicStore::MP3},
+			{ Model::AudioFormat::FLAC,		LocalMusicStore::FLAC}
+		};
+
+		static const std::unordered_map<LocalMusicStore::Container, Model::ContainerType> CACHE_CONTAINER_TO_MODEL =
+		{
+			{ LocalMusicStore::UNKNOWN_CONTAINER,	Model::ContainerType::UNKNOWN },
+			{ LocalMusicStore::MPEG4_CONTAINER,		Model::ContainerType::MP4 },
+			{ LocalMusicStore::MP3_CONTAINER,		Model::ContainerType::MP3 },
+			{ LocalMusicStore::FLAC_CONTAINER,		Model::ContainerType::FLAC },
+			{ LocalMusicStore::WAV_CONTAINER,		Model::ContainerType::WAV }
+		};
+
+		static const std::unordered_map<Model::ContainerType, LocalMusicStore::Container> MODEL_CONTAINER_TO_CACHE =
+		{
+			{ Model::ContainerType::UNKNOWN, LocalMusicStore::UNKNOWN_CONTAINER },
+			{ Model::ContainerType::MP4,	LocalMusicStore::MPEG4_CONTAINER },
+			{ Model::ContainerType::MP3,	LocalMusicStore::MP3_CONTAINER },
+			{ Model::ContainerType::FLAC,	LocalMusicStore::FLAC_CONTAINER },
+			{ Model::ContainerType::WAV,	LocalMusicStore::WAV_CONTAINER }
 		};
 
 		LocalMusicCache::LocalMusicCache(std::shared_ptr<Model::IAlbumToSongMapper>& songMapper)
@@ -266,7 +284,7 @@ namespace Arcusical
 			// apply strings
 			cachedSong.set_title(converter.to_bytes(modelSong.GetTitle()));
 			cachedSong.set_artist(converter.to_bytes(modelSong.GetArtist()));
-
+			cachedSong.set_album(converter.to_bytes(modelSong.GetAlbumName()));
 			cachedSong.set_length(modelSong.GetLength());
 
 			for (const auto& file : modelSong.GetFiles())
@@ -281,7 +299,17 @@ namespace Arcusical
 				}
 				else
 				{
-					songFile->set_encoding(LocalMusicStore::UNKNOWN);
+					songFile->set_encoding(LocalMusicStore::UNKNOWN_ENCODING);
+				}
+
+				auto cacheContainer = MODEL_CONTAINER_TO_CACHE.find(file.second.container);
+				if (cacheContainer != std::end(MODEL_CONTAINER_TO_CACHE))
+				{
+					songFile->set_container((*cacheContainer).second);
+				}
+				else
+				{
+					songFile->set_container(LocalMusicStore::UNKNOWN_CONTAINER);
 				}
 				
 				songFile->set_file(converter.to_bytes(file.second.filePath));
@@ -331,10 +359,11 @@ namespace Arcusical
 			modelSong.SetArtist(converter.from_bytes(cachedSong.artist()));
 			modelSong.SetLength(cachedSong.length());
 			modelSong.SetTitle(converter.from_bytes(cachedSong.title()));
+			modelSong.SetAlbumName(converter.from_bytes(cachedSong.album()));
 			
 			for (const auto& cachedFile : cachedSong.files())
 			{
-				Model::AudioFormat audioFormat = Model::AudioFormat::UNKNOWN;
+				auto audioFormat = Model::AudioFormat::UNKNOWN;
 				auto encodingItr = CACHE_ENCODING_TO_MODEL.find(cachedFile.encoding());
 
 				ARC_ASSERT_MSG(encodingItr != std::end(CACHE_ENCODING_TO_MODEL), "Found a format in cache that isn't in the model map!")
@@ -342,12 +371,24 @@ namespace Arcusical
 				{
 					audioFormat = (*encodingItr).second;
 				}
+
+				auto container = Model::ContainerType::UNKNOWN;
+				auto containerItr = CACHE_CONTAINER_TO_MODEL.find(cachedFile.container());
+				
+				ARC_ASSERT_MSG(containerItr != std::end(CACHE_CONTAINER_TO_MODEL), "Found a container in cache that isn't in model map!");
+				if(containerItr != std::end(CACHE_CONTAINER_TO_MODEL))
+				{
+					container = (*containerItr).second;
+				}
+
 				Arcusical::Model::SongFile songFile;
+				songFile.format = audioFormat;
+				songFile.container = container;
 				songFile.filePath = converter.from_bytes(cachedFile.file());
 				songFile.bitRate = cachedFile.bitrate();
 				songFile.channelCount = cachedFile.channelcount();
 				songFile.sampleSize = cachedFile.samplesize();
-				modelSong.AddFile(audioFormat, songFile);
+				modelSong.AddFile(songFile);
 			}
 		}
 

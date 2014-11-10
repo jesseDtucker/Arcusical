@@ -24,7 +24,7 @@ namespace ViewModel{
 
 		std::sort(sortedSongs.begin(), sortedSongs.end(), [](Model::Song* a, Model::Song* b)
 		{
-			return a->GetTitle() > b->GetTitle();
+			return a->GetTitle() < b->GetTitle();
 		});
 
 		for (auto& song : sortedSongs)

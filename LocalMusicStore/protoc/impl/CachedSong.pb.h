@@ -305,17 +305,29 @@ class CachedSong : public ::google::protobuf::Message {
   inline ::std::string* release_artist();
   inline void set_allocated_artist(::std::string* artist);
 
-  // required int64 length = 5;
+  // required int64 length = 6;
   inline bool has_length() const;
   inline void clear_length();
-  static const int kLengthFieldNumber = 5;
+  static const int kLengthFieldNumber = 6;
   inline ::google::protobuf::int64 length() const;
   inline void set_length(::google::protobuf::int64 value);
 
-  // repeated .Arcusical.LocalMusicStore.SongFile files = 6;
+  // required string album = 7;
+  inline bool has_album() const;
+  inline void clear_album();
+  static const int kAlbumFieldNumber = 7;
+  inline const ::std::string& album() const;
+  inline void set_album(const ::std::string& value);
+  inline void set_album(const char* value);
+  inline void set_album(const char* value, size_t size);
+  inline ::std::string* mutable_album();
+  inline ::std::string* release_album();
+  inline void set_allocated_album(::std::string* album);
+
+  // repeated .Arcusical.LocalMusicStore.SongFile files = 8;
   inline int files_size() const;
   inline void clear_files();
-  static const int kFilesFieldNumber = 6;
+  static const int kFilesFieldNumber = 8;
   inline const ::Arcusical::LocalMusicStore::SongFile& files(int index) const;
   inline ::Arcusical::LocalMusicStore::SongFile* mutable_files(int index);
   inline ::Arcusical::LocalMusicStore::SongFile* add_files();
@@ -334,6 +346,8 @@ class CachedSong : public ::google::protobuf::Message {
   inline void clear_has_artist();
   inline void set_has_length();
   inline void clear_has_length();
+  inline void set_has_album();
+  inline void clear_has_album();
 
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
 
@@ -343,6 +357,7 @@ class CachedSong : public ::google::protobuf::Message {
   ::std::string* title_;
   ::std::string* artist_;
   ::google::protobuf::int64 length_;
+  ::std::string* album_;
   ::google::protobuf::RepeatedPtrField< ::Arcusical::LocalMusicStore::SongFile > files_;
   friend void  protobuf_AddDesc_CachedSong_2eproto();
   friend void protobuf_AssignDesc_CachedSong_2eproto();
@@ -753,7 +768,7 @@ inline void CachedSong::set_allocated_artist(::std::string* artist) {
   // @@protoc_insertion_point(field_set_allocated:Arcusical.LocalMusicStore.CachedSong.artist)
 }
 
-// required int64 length = 5;
+// required int64 length = 6;
 inline bool CachedSong::has_length() const {
   return (_has_bits_[0] & 0x00000008u) != 0;
 }
@@ -777,7 +792,83 @@ inline void CachedSong::set_length(::google::protobuf::int64 value) {
   // @@protoc_insertion_point(field_set:Arcusical.LocalMusicStore.CachedSong.length)
 }
 
-// repeated .Arcusical.LocalMusicStore.SongFile files = 6;
+// required string album = 7;
+inline bool CachedSong::has_album() const {
+  return (_has_bits_[0] & 0x00000010u) != 0;
+}
+inline void CachedSong::set_has_album() {
+  _has_bits_[0] |= 0x00000010u;
+}
+inline void CachedSong::clear_has_album() {
+  _has_bits_[0] &= ~0x00000010u;
+}
+inline void CachedSong::clear_album() {
+  if (album_ != &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    album_->clear();
+  }
+  clear_has_album();
+}
+inline const ::std::string& CachedSong::album() const {
+  // @@protoc_insertion_point(field_get:Arcusical.LocalMusicStore.CachedSong.album)
+  return *album_;
+}
+inline void CachedSong::set_album(const ::std::string& value) {
+  set_has_album();
+  if (album_ == &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    album_ = new ::std::string;
+  }
+  album_->assign(value);
+  // @@protoc_insertion_point(field_set:Arcusical.LocalMusicStore.CachedSong.album)
+}
+inline void CachedSong::set_album(const char* value) {
+  set_has_album();
+  if (album_ == &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    album_ = new ::std::string;
+  }
+  album_->assign(value);
+  // @@protoc_insertion_point(field_set_char:Arcusical.LocalMusicStore.CachedSong.album)
+}
+inline void CachedSong::set_album(const char* value, size_t size) {
+  set_has_album();
+  if (album_ == &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    album_ = new ::std::string;
+  }
+  album_->assign(reinterpret_cast<const char*>(value), size);
+  // @@protoc_insertion_point(field_set_pointer:Arcusical.LocalMusicStore.CachedSong.album)
+}
+inline ::std::string* CachedSong::mutable_album() {
+  set_has_album();
+  if (album_ == &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    album_ = new ::std::string;
+  }
+  // @@protoc_insertion_point(field_mutable:Arcusical.LocalMusicStore.CachedSong.album)
+  return album_;
+}
+inline ::std::string* CachedSong::release_album() {
+  clear_has_album();
+  if (album_ == &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    return NULL;
+  } else {
+    ::std::string* temp = album_;
+    album_ = const_cast< ::std::string*>(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+    return temp;
+  }
+}
+inline void CachedSong::set_allocated_album(::std::string* album) {
+  if (album_ != &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    delete album_;
+  }
+  if (album) {
+    set_has_album();
+    album_ = album;
+  } else {
+    clear_has_album();
+    album_ = const_cast< ::std::string*>(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  }
+  // @@protoc_insertion_point(field_set_allocated:Arcusical.LocalMusicStore.CachedSong.album)
+}
+
+// repeated .Arcusical.LocalMusicStore.SongFile files = 8;
 inline int CachedSong::files_size() const {
   return files_.size();
 }

@@ -60,11 +60,12 @@ void protobuf_AssignDesc_CachedSong_2eproto() {
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(SongFile));
   CachedSong_descriptor_ = file->message_type(1);
-  static const int CachedSong_offsets_[5] = {
+  static const int CachedSong_offsets_[6] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(CachedSong, id_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(CachedSong, title_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(CachedSong, artist_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(CachedSong, length_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(CachedSong, album_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(CachedSong, files_),
   };
   CachedSong_reflection_ =
@@ -121,16 +122,16 @@ void protobuf_AddDesc_CachedSong_2eproto() {
     "oding\022\014\n\004file\030\002 \002(\t\022\017\n\007bitRate\030\003 \002(\005\022\022\n\n"
     "sampleSize\030\004 \002(\005\022\024\n\014channelCount\030\005 \002(\005\0227"
     "\n\tcontainer\030\006 \002(\0162$.Arcusical.LocalMusic"
-    "Store.Container\"\234\001\n\nCachedSong\022+\n\002id\030\001 \002"
+    "Store.Container\"\253\001\n\nCachedSong\022+\n\002id\030\001 \002"
     "(\0132\037.Arcusical.LocalMusicStore.GUID\022\r\n\005t"
-    "itle\030\002 \002(\t\022\016\n\006artist\030\004 \002(\t\022\016\n\006length\030\005 \002"
-    "(\003\0222\n\005files\030\006 \003(\0132#.Arcusical.LocalMusic"
-    "Store.SongFile*F\n\010Encoding\022\024\n\020UNKNOWN_EN"
-    "CODING\020\000\022\007\n\003AAC\020\001\022\010\n\004ALAC\020\002\022\007\n\003MP3\020\003\022\010\n\004"
-    "FLAC\020\004*q\n\tContainer\022\025\n\021UNKNOWN_CONTAINER"
-    "\020\000\022\021\n\rMP3_CONTAINER\020\001\022\023\n\017MPEG4_CONTAINER"
-    "\020\002\022\022\n\016FLAC_CONTAINER\020\003\022\021\n\rWAV_CONTAINER\020"
-    "\004", 601);
+    "itle\030\002 \002(\t\022\016\n\006artist\030\004 \002(\t\022\016\n\006length\030\006 \002"
+    "(\003\022\r\n\005album\030\007 \002(\t\0222\n\005files\030\010 \003(\0132#.Arcus"
+    "ical.LocalMusicStore.SongFile*F\n\010Encodin"
+    "g\022\024\n\020UNKNOWN_ENCODING\020\000\022\007\n\003AAC\020\001\022\010\n\004ALAC"
+    "\020\002\022\007\n\003MP3\020\003\022\010\n\004FLAC\020\004*q\n\tContainer\022\025\n\021UN"
+    "KNOWN_CONTAINER\020\000\022\021\n\rMP3_CONTAINER\020\001\022\023\n\017"
+    "MPEG4_CONTAINER\020\002\022\022\n\016FLAC_CONTAINER\020\003\022\021\n"
+    "\rWAV_CONTAINER\020\004", 616);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "CachedSong.proto", &protobuf_RegisterTypes);
   SongFile::default_instance_ = new SongFile();
@@ -651,6 +652,7 @@ const int CachedSong::kIdFieldNumber;
 const int CachedSong::kTitleFieldNumber;
 const int CachedSong::kArtistFieldNumber;
 const int CachedSong::kLengthFieldNumber;
+const int CachedSong::kAlbumFieldNumber;
 const int CachedSong::kFilesFieldNumber;
 #endif  // !_MSC_VER
 
@@ -678,6 +680,7 @@ void CachedSong::SharedCtor() {
   title_ = const_cast< ::std::string*>(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   artist_ = const_cast< ::std::string*>(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   length_ = GOOGLE_LONGLONG(0);
+  album_ = const_cast< ::std::string*>(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -692,6 +695,9 @@ void CachedSong::SharedDtor() {
   }
   if (artist_ != &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
     delete artist_;
+  }
+  if (album_ != &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    delete album_;
   }
   if (this != default_instance_) {
     delete id_;
@@ -720,7 +726,7 @@ CachedSong* CachedSong::New() const {
 }
 
 void CachedSong::Clear() {
-  if (_has_bits_[0 / 32] & 15) {
+  if (_has_bits_[0 / 32] & 31) {
     if (has_id()) {
       if (id_ != NULL) id_->::Arcusical::LocalMusicStore::GUID::Clear();
     }
@@ -735,6 +741,11 @@ void CachedSong::Clear() {
       }
     }
     length_ = GOOGLE_LONGLONG(0);
+    if (has_album()) {
+      if (album_ != &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+        album_->clear();
+      }
+    }
   }
   files_.Clear();
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
@@ -793,13 +804,13 @@ bool CachedSong::MergePartialFromCodedStream(
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(40)) goto parse_length;
+        if (input->ExpectTag(48)) goto parse_length;
         break;
       }
 
-      // required int64 length = 5;
-      case 5: {
-        if (tag == 40) {
+      // required int64 length = 6;
+      case 6: {
+        if (tag == 48) {
          parse_length:
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
@@ -808,20 +819,37 @@ bool CachedSong::MergePartialFromCodedStream(
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(50)) goto parse_files;
+        if (input->ExpectTag(58)) goto parse_album;
         break;
       }
 
-      // repeated .Arcusical.LocalMusicStore.SongFile files = 6;
-      case 6: {
-        if (tag == 50) {
+      // required string album = 7;
+      case 7: {
+        if (tag == 58) {
+         parse_album:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_album()));
+          ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
+            this->album().data(), this->album().length(),
+            ::google::protobuf::internal::WireFormat::PARSE,
+            "album");
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(66)) goto parse_files;
+        break;
+      }
+
+      // repeated .Arcusical.LocalMusicStore.SongFile files = 8;
+      case 8: {
+        if (tag == 66) {
          parse_files:
           DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
                 input, add_files()));
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(50)) goto parse_files;
+        if (input->ExpectTag(66)) goto parse_files;
         if (input->ExpectAtEnd()) goto success;
         break;
       }
@@ -877,15 +905,25 @@ void CachedSong::SerializeWithCachedSizes(
       4, this->artist(), output);
   }
 
-  // required int64 length = 5;
+  // required int64 length = 6;
   if (has_length()) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt64(5, this->length(), output);
+    ::google::protobuf::internal::WireFormatLite::WriteInt64(6, this->length(), output);
   }
 
-  // repeated .Arcusical.LocalMusicStore.SongFile files = 6;
+  // required string album = 7;
+  if (has_album()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
+      this->album().data(), this->album().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE,
+      "album");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      7, this->album(), output);
+  }
+
+  // repeated .Arcusical.LocalMusicStore.SongFile files = 8;
   for (int i = 0; i < this->files_size(); i++) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      6, this->files(i), output);
+      8, this->files(i), output);
   }
 
   if (!unknown_fields().empty()) {
@@ -927,16 +965,27 @@ void CachedSong::SerializeWithCachedSizes(
         4, this->artist(), target);
   }
 
-  // required int64 length = 5;
+  // required int64 length = 6;
   if (has_length()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(5, this->length(), target);
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(6, this->length(), target);
   }
 
-  // repeated .Arcusical.LocalMusicStore.SongFile files = 6;
+  // required string album = 7;
+  if (has_album()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
+      this->album().data(), this->album().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE,
+      "album");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        7, this->album(), target);
+  }
+
+  // repeated .Arcusical.LocalMusicStore.SongFile files = 8;
   for (int i = 0; i < this->files_size(); i++) {
     target = ::google::protobuf::internal::WireFormatLite::
       WriteMessageNoVirtualToArray(
-        6, this->files(i), target);
+        8, this->files(i), target);
   }
 
   if (!unknown_fields().empty()) {
@@ -972,15 +1021,22 @@ int CachedSong::ByteSize() const {
           this->artist());
     }
 
-    // required int64 length = 5;
+    // required int64 length = 6;
     if (has_length()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::Int64Size(
           this->length());
     }
 
+    // required string album = 7;
+    if (has_album()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::StringSize(
+          this->album());
+    }
+
   }
-  // repeated .Arcusical.LocalMusicStore.SongFile files = 6;
+  // repeated .Arcusical.LocalMusicStore.SongFile files = 8;
   total_size += 1 * this->files_size();
   for (int i = 0; i < this->files_size(); i++) {
     total_size +=
@@ -1027,6 +1083,9 @@ void CachedSong::MergeFrom(const CachedSong& from) {
     if (from.has_length()) {
       set_length(from.length());
     }
+    if (from.has_album()) {
+      set_album(from.album());
+    }
   }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
 }
@@ -1044,7 +1103,7 @@ void CachedSong::CopyFrom(const CachedSong& from) {
 }
 
 bool CachedSong::IsInitialized() const {
-  if ((_has_bits_[0] & 0x0000000f) != 0x0000000f) return false;
+  if ((_has_bits_[0] & 0x0000001f) != 0x0000001f) return false;
 
   if (has_id()) {
     if (!this->id().IsInitialized()) return false;
@@ -1059,6 +1118,7 @@ void CachedSong::Swap(CachedSong* other) {
     std::swap(title_, other->title_);
     std::swap(artist_, other->artist_);
     std::swap(length_, other->length_);
+    std::swap(album_, other->album_);
     files_.Swap(&other->files_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);

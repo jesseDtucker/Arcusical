@@ -35,6 +35,7 @@ message CachedSong
 	required GUID id = 1;
 	required string title = 2;
 	required string artist = 4;
-	required int64 length = 5;
-	repeated SongFile files = 6;
+	required int64 length = 6;
+	required string album = 7;
+	repeated SongFile files = 8;
 }
