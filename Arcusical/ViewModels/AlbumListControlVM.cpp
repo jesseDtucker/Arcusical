@@ -18,7 +18,11 @@ namespace Arcusical
 
 		void AlbumListControlVM::AlbumCallback(Model::AlbumCollection& albums)
 		{
-			AlbumList = ref new AlbumListVM(albums);
+			auto promise = Arcusical::DispatchToUI([this, &albums]()
+			{
+				AlbumList = ref new AlbumListVM(albums);
+			});
+			promise.get();
 		}
 	}
 }

@@ -12,23 +12,16 @@ namespace ViewModel{
 
 	AlbumListVM::AlbumListVM(Model::AlbumCollection& albums)
 	{
-		//TODO::JT fix the threading issue that is here!
-		this->Albums = ref new Platform::Collections::Vector<AlbumVM^>();
-
-		int j = 1, i = 1;
-		// arbitrary delay
-		while (this->Albums == nullptr);
+		auto future = Arcusical::DispatchToUI([this, &albums]()
 		{
-			j = (i + j) / 2;
-			++i;
-		}
+			this->Albums = ref new Platform::Collections::Vector<AlbumVM^>();
 
-		// DNS
-		ARC_ASSERT(this->Albums != nullptr);
-		for (auto& album : albums)
-		{
-			this->Albums->Append(ref new AlbumVM(album.second));
-		}
+			for (auto& album : albums)
+			{
+				this->Albums->Append(ref new AlbumVM(album.second));
+			}
+		});
+		future.get(); // wait for UI to complete before returning
 	}
 
 }

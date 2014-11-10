@@ -24,7 +24,11 @@ namespace ViewModel{
 
 	void SongListControlViewModel::MusicCallback(Model::SongCollection& localSongs)
 	{
-		this->SongList = ref new SongListVM(localSongs);
+		auto promise = DispatchToUI([this, &localSongs]()
+		{
+			this->SongList = ref new SongListVM(localSongs);
+		});
+		promise.get();
 	}
 
 }

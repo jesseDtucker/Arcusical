@@ -12,8 +12,6 @@ namespace ViewModel{
 
 	SongListVM::SongListVM(Model::SongCollection& songs)
 	{
-		List = ref new Platform::Collections::Vector<SongVM^>();
-
 		// temp hack
 		std::vector<Model::Song*> sortedSongs;
 
@@ -27,10 +25,17 @@ namespace ViewModel{
 			return a->GetTitle() < b->GetTitle();
 		});
 
-		for (auto& song : sortedSongs)
+		auto future = Arcusical::DispatchToUI([this, &sortedSongs]()
 		{
-			List->Append(ref new SongVM(*song));
-		}
+			List = ref new Platform::Collections::Vector<SongVM^>();
+
+			for (auto& song : sortedSongs)
+			{
+				List->Append(ref new SongVM(*song));
+			}
+		});
+
+		future.get(); // wait for the above code to complete!
 	}
 
 }

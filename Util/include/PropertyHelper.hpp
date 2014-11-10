@@ -48,14 +48,12 @@ property dataType externalName							\
 	dataType get() { return m_ ## externalName; }		\
 	void set(dataType value)							\
 	{													\
-		Arcusical::DispatchToUI([this, value]()			\
+		ARC_ASSERT_MSG(Arcusical::HasThreadAccess(), "Property can only be accessed by UI thread!"); \
+		if (value != m_ ## externalName)				\
 		{												\
-			if (value != m_ ## externalName)			\
-			{											\
-				m_ ## externalName = value;				\
-				OnPropertyChanged(#externalName);		\
-			}											\
-		});												\
+			m_ ## externalName = value;					\
+			OnPropertyChanged(#externalName);			\
+		}												\
 	}													\
 }														\
 

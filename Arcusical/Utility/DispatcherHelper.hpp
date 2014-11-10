@@ -2,10 +2,12 @@
 #define DISPATCHER_HELPER_HPP
 
 #include <functional>
+#include <future>
 
 namespace Arcusical 
 {
-	void DispatchToUI(std::function<void()> func);
+	std::future<void> DispatchToUI(std::function<void()> func);
+	bool HasThreadAccess();
 }
 
 #endif
