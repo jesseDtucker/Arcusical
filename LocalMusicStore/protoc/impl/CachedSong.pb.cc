@@ -126,12 +126,12 @@ void protobuf_AddDesc_CachedSong_2eproto() {
     "(\0132\037.Arcusical.LocalMusicStore.GUID\022\r\n\005t"
     "itle\030\002 \002(\t\022\016\n\006artist\030\004 \002(\t\022\016\n\006length\030\006 \002"
     "(\003\022\r\n\005album\030\007 \002(\t\0222\n\005files\030\010 \003(\0132#.Arcus"
-    "ical.LocalMusicStore.SongFile*F\n\010Encodin"
+    "ical.LocalMusicStore.SongFile*O\n\010Encodin"
     "g\022\024\n\020UNKNOWN_ENCODING\020\000\022\007\n\003AAC\020\001\022\010\n\004ALAC"
-    "\020\002\022\007\n\003MP3\020\003\022\010\n\004FLAC\020\004*q\n\tContainer\022\025\n\021UN"
-    "KNOWN_CONTAINER\020\000\022\021\n\rMP3_CONTAINER\020\001\022\023\n\017"
-    "MPEG4_CONTAINER\020\002\022\022\n\016FLAC_CONTAINER\020\003\022\021\n"
-    "\rWAV_CONTAINER\020\004", 616);
+    "\020\002\022\007\n\003MP3\020\003\022\010\n\004FLAC\020\004\022\007\n\003WAV\020\005*q\n\tContai"
+    "ner\022\025\n\021UNKNOWN_CONTAINER\020\000\022\021\n\rMP3_CONTAI"
+    "NER\020\001\022\023\n\017MPEG4_CONTAINER\020\002\022\022\n\016FLAC_CONTA"
+    "INER\020\003\022\021\n\rWAV_CONTAINER\020\004", 625);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "CachedSong.proto", &protobuf_RegisterTypes);
   SongFile::default_instance_ = new SongFile();
@@ -158,6 +158,7 @@ bool Encoding_IsValid(int value) {
     case 2:
     case 3:
     case 4:
+    case 5:
       return true;
     default:
       return false;

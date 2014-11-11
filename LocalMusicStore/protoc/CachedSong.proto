@@ -9,6 +9,7 @@ enum Encoding
 	ALAC = 2;
 	MP3 = 3;
 	FLAC = 4;
+	WAV = 5;
 }
 
 enum Container

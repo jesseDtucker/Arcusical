@@ -83,6 +83,7 @@ namespace Model
 		{
 			AudioFormat::ALAC,
 			AudioFormat::FLAC,
+			AudioFormat::WAV,
 			AudioFormat::AAC,
 			AudioFormat::MP3
 		};

@@ -20,6 +20,7 @@ namespace Arcusical { namespace MPEG4 {
 		JPEG,
 		PNG,
 		EXIF,
+		BMP,
 		UNKNOWN
 	};
 
@@ -28,6 +29,7 @@ namespace Arcusical { namespace MPEG4 {
 		{ ImageType::JPEG, "jpg" },
 		{ ImageType::PNG, "png" },
 		{ ImageType::EXIF, "jpg" }, // stored in a jpg
+		{ ImageType::BMP, "bmp" },
 		{ ImageType::UNKNOWN, "Unknown" }
 	};
 
@@ -36,6 +38,7 @@ namespace Arcusical { namespace MPEG4 {
 		{ ImageType::JPEG, L"jpg" },
 		{ ImageType::PNG, L"png" },
 		{ ImageType::EXIF, L"jpg" }, // stored in a jpg
+		{ ImageType::BMP, L"bmp" },
 		{ ImageType::UNKNOWN, L"Unknown" }
 	};
 

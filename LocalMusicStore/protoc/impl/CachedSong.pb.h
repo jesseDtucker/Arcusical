@@ -44,11 +44,12 @@ enum Encoding {
   AAC = 1,
   ALAC = 2,
   MP3 = 3,
-  FLAC = 4
+  FLAC = 4,
+  WAV = 5
 };
 bool Encoding_IsValid(int value);
 const Encoding Encoding_MIN = UNKNOWN_ENCODING;
-const Encoding Encoding_MAX = FLAC;
+const Encoding Encoding_MAX = WAV;
 const int Encoding_ARRAYSIZE = Encoding_MAX + 1;
 
 const ::google::protobuf::EnumDescriptor* Encoding_descriptor();

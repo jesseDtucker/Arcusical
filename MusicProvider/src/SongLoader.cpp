@@ -8,6 +8,7 @@
 #endif
 
 #include <codecvt>
+#include <ppltasks.h>
 #include <string>
 #include <vector>
 
@@ -27,10 +28,12 @@ namespace Arcusical
 namespace MusicProvider
 {
 	static Model::Song LoadMpeg4Song(FileSystem::IFile& file);
+	static Model::Song DefaultSongLoad(FileSystem::IFile& file, Model::AudioFormat encoding = Model::AudioFormat::UNKNOWN, Model::ContainerType container = Model::ContainerType::UNKNOWN);
 	static Model::Song LoadMP3(FileSystem::IFile& file);
 	static Model::Song LoadWav(FileSystem::IFile& file);
 
 	static std::wstring LoadAlbumImage(Model::Song& song, const std::wstring& albumName);
+	static std::pair<bool, std::wstring> DefaultLoadAlbumImage(FileSystem::IFile& file, const std::wstring& albumName);
 	static std::pair<bool, std::wstring> LoadAlbumImageFromMpeg4(FileSystem::IFile& file, const std::wstring& albumName);
 	static std::wstring SaveImageFile(std::vector<unsigned char>& imgData, const std::wstring& albumName, MPEG4::ImageType imageType);
 
@@ -69,8 +72,7 @@ namespace MusicProvider
 		}
 		else
 		{
-			ARC_FAIL("Attempted to load an unsupported format!");
-			// TODO::JT need to return something reasonable or throw
+			result = DefaultSongLoad(file);
 		}
 
 		return result;
@@ -146,48 +148,47 @@ namespace MusicProvider
 		return result;
 	}
 
-	Model::Song LoadMP3(FileSystem::IFile& file)
+	Model::Song DefaultSongLoad(FileSystem::IFile& file, Model::AudioFormat encoding, Model::ContainerType container)
 	{
+#ifdef __cplusplus_winrt
+		using namespace concurrency;
+
 		auto result = Model::Song();
-
-		result.SetArtist(L"Some Artist");
+		auto musicProperties = create_task(file.GetRawHandle()->Properties->GetMusicPropertiesAsync()).get();
+		
+		result.SetArtist(std::wstring(musicProperties->Artist->Data()));
 		result.SetId(s_idGenerator()); // generate a random id, the odds of collision are slim to none
-		result.SetLength(100);
-		result.SetTitle(L"Some MP3");
-
-		Model::AudioFormat songFormat = Model::AudioFormat::MP3;
+		result.SetLength(musicProperties->Duration.Duration / 1000); // Duration is provided is ms, but we need it in seconds
+		result.SetTitle(std::wstring(musicProperties->Title->Data()));
 
 		Model::SongFile songFile;
 		songFile.filePath = file.GetFullPath();
-		songFile.bitRate = 0;
-		songFile.channelCount = 0;
-		songFile.sampleSize = 0;
-		songFile.format = songFormat;
-		songFile.container = Model::ContainerType::MP3;
+		songFile.bitRate = musicProperties->Bitrate;
+		songFile.channelCount = 0; // no idea how to determine this without parsing...
+		songFile.sampleSize = 0; // no idea how to determine this without parsing...
+		songFile.format = encoding;
+		songFile.container = container;
 		result.AddFile(songFile);
 
+		if (result.GetTitle().length() == 0)
+		{
+			result.SetTitle(file.GetName());
+		}
+
 		return result;
+#elif
+#error "Unsupported platform!"
+#endif
+	}
+
+	Model::Song LoadMP3(FileSystem::IFile& file)
+	{
+		return DefaultSongLoad(file, Model::AudioFormat::MP3, Model::ContainerType::MP3);
 	}
 
 	Model::Song LoadWav(FileSystem::IFile& file)
 	{
-		auto result = Model::Song();
-
-		result.SetArtist(L"Some Artist");
-		result.SetId(s_idGenerator()); // generate a random id, the odds of collision are slim to none
-		result.SetLength(100);
-		result.SetTitle(L"Some WAV");
-
-		Model::SongFile songFile;
-		songFile.filePath = file.GetFullPath();
-		songFile.bitRate = 0;
-		songFile.channelCount = 0;
-		songFile.sampleSize = 0;
-		songFile.format = Model::AudioFormat::WAV;
-		songFile.container = Model::ContainerType::WAV;
-		result.AddFile(songFile);
-
-		return result;
+		return DefaultSongLoad(file, Model::AudioFormat::WAV, Model::ContainerType::WAV);
 	}
 
 	std::wstring LoadAlbumImage(Model::Song& song, const std::wstring& albumName)
@@ -215,7 +216,25 @@ namespace MusicProvider
 
 		if (filePath.length() == 0)
 		{
-			filePath = L"\\Assets\\albumBackground.png";
+			// attempt secondary loads
+			// first try to find the album art on disk
+			// TODO::JT add the search disk logic!
+			
+			if (filePath.length() == 0)
+			{
+				// attempt tertiary load
+				// try and use the thumbnail provided by the system
+				for (auto& audioFile : files)
+				{
+					auto storageFile = FileSystem::Storage::LoadFileFromPath(audioFile.second.filePath);
+					auto result = DefaultLoadAlbumImage(*storageFile, albumName);
+					if (result.first)
+					{
+						filePath = result.second;
+						break;
+					}
+				}
+			}
 		}
 
 		return filePath;
@@ -239,6 +258,13 @@ namespace MusicProvider
 		}
 
 		return result;
+	}
+
+	std::pair<bool, std::wstring> DefaultLoadAlbumImage(FileSystem::IFile& file, const std::wstring& albumName)
+	{
+		auto thumbnail = file.GetThumbnail(); // hopefully the thumbnail is the album art, probably won't work well for .wav or .flac...
+		auto path = SaveImageFile(thumbnail, albumName, MPEG4::ImageType::BMP);
+		return { true, path };
 	}
 
 	std::wstring SaveImageFile(std::vector<unsigned char>& imgData, const std::wstring& albumName, MPEG4::ImageType imageType)

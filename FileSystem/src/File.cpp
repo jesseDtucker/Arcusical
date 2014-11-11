@@ -5,6 +5,7 @@
 
 #include "Arc_Assert.hpp"
 #include "NativeBufferWrapper.hpp"
+#include "CheckedCasts.hpp"
 #include "StorageExceptions.hpp"
 
 using namespace std;
@@ -101,5 +102,35 @@ namespace FileSystem
 		auto propertiesTask = create_task(m_file->GetBasicPropertiesAsync());
 		return propertiesTask.get()->Size;
 	}
+
+	std::vector<unsigned char> File::GetThumbnail()
+	{
+		std::vector<unsigned char> buffer;
+
+		try
+		{
+			auto thumbnailStream = create_task(m_file->GetThumbnailAsync(Windows::Storage::FileProperties::ThumbnailMode::SingleItem)).get();
+			
+			auto nativeBuffer = NativeBufferWrapper::WrapBuffer(&buffer);
+			auto length = Util::SafeIntCast<size_t, decltype(thumbnailStream->Size)>(thumbnailStream->Size);
+			buffer.resize(length);
+
+			auto inStream = thumbnailStream->GetInputStreamAt(0);
+			create_task(inStream->ReadAsync(nativeBuffer, Util::SafeIntCast<unsigned int, decltype(length)>(length), Windows::Storage::Streams::InputStreamOptions::None)).wait();
+		}
+		catch (Platform::COMException^ ex)
+		{
+			ARC_FAIL("Unhandled exception!");
+		}
+
+		return buffer;
+	}
+
+#ifdef __cplusplus_winrt
+	Windows::Storage::StorageFile^ File::GetRawHandle() const
+	{
+		return m_file;
+	}
+#endif
 
 }

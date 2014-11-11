@@ -17,10 +17,17 @@ namespace FileSystem
 		virtual std::wstring GetExtension() const = 0;
 		virtual std::wstring GetFullPath() const = 0;
 
+		virtual std::vector<unsigned char> GetThumbnail() = 0;
+
 		virtual unsigned long long GetFileSize() = 0;
 
 		virtual void WriteToFile(std::vector<unsigned char>& data) = 0;
 		virtual void ReadFromFile(std::vector<unsigned char>& buffer, unsigned int length = 0, unsigned long long startPosition = 0) = 0;
+
+#ifdef __cplusplus_winrt
+		virtual Windows::Storage::StorageFile^ GetRawHandle() const = 0;
+#endif
+
 	};
 }
 

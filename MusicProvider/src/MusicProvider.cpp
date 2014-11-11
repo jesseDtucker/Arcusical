@@ -317,7 +317,7 @@ namespace MusicProvider
 
 			// ensure the format isn't already in the model...
 			auto itr = std::find(std::begin(existingFormats), std::end(existingFormats), newSongFormat);
-			ARC_ASSERT_MSG(itr == std::end(existingFormats), "Loaded a 2 different songs that are the same song and same format! Check your data and logic!");
+			// ARC_ASSERT_MSG(itr == std::end(existingFormats), "Loaded a 2 different songs that are the same song and same format! Check your data and logic!");
 			if (itr == std::end(existingFormats))
 			{
 				// good, the value wasn't already there, this is to be expected

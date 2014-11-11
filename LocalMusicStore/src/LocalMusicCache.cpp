@@ -32,7 +32,8 @@ namespace Arcusical
 			{ LocalMusicStore::AAC,					Model::AudioFormat::AAC},
 			{ LocalMusicStore::ALAC,				Model::AudioFormat::ALAC},
 			{ LocalMusicStore::MP3,					Model::AudioFormat::MP3},
-			{ LocalMusicStore::FLAC,				Model::AudioFormat::FLAC}
+			{ LocalMusicStore::FLAC,				Model::AudioFormat::FLAC},
+			{ LocalMusicStore::WAV,					Model::AudioFormat::WAV}
 		};
 
 		static const std::unordered_map<Model::AudioFormat, LocalMusicStore::Encoding> MODEL_ENCODING_TO_CACHE =
@@ -41,7 +42,8 @@ namespace Arcusical
 			{ Model::AudioFormat::AAC,		LocalMusicStore::AAC},
 			{ Model::AudioFormat::ALAC,		LocalMusicStore::ALAC},
 			{ Model::AudioFormat::MP3,		LocalMusicStore::MP3},
-			{ Model::AudioFormat::FLAC,		LocalMusicStore::FLAC}
+			{ Model::AudioFormat::FLAC,		LocalMusicStore::FLAC},
+			{ Model::AudioFormat::WAV,		LocalMusicStore::WAV}
 		};
 
 		static const std::unordered_map<LocalMusicStore::Container, Model::ContainerType> CACHE_CONTAINER_TO_MODEL =
