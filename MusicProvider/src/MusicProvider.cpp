@@ -206,7 +206,7 @@ namespace MusicProvider
 		return haveFilesBeenAdded;
 	}
 
-	bool MusicProvider::MergeAlbumCollections(const Model::AlbumCollection& existingAlbums, Model::SongCollection& songs)
+	bool MusicProvider::MergeAlbumCollections(Model::AlbumCollection& existingAlbums, Model::SongCollection& songs)
 	{
 		using namespace boost::uuids;
 
@@ -247,7 +247,7 @@ namespace MusicProvider
 					ARC_ASSERT(albumItr != std::end(newAlbums));
 				}
 
-				auto album = albumItr->second;
+				auto* album = &(albumItr->second);
 				
 				for (auto& possibleAlbumId : albumLookupItr->second)
 				{
@@ -263,7 +263,7 @@ namespace MusicProvider
 					{
 						// we found an album that has a matching artist
 						// given that the artist and album name are the same we will assume they are the same album
-						album = possibleAlbum;
+						album = &possibleAlbum;
 						break;
 					}
 				}
@@ -271,12 +271,19 @@ namespace MusicProvider
 				if (!newContentAdded)
 				{
 					// if we haven't added anything new yet check if we are adding something new now
-					auto& albumIds = album.GetMutableSongIds();
+					auto& albumIds = album->GetMutableSongIds();
 					newContentAdded = albumIds.find(song.GetId()) == std::end(albumIds);
 				}
 
 				// id's is a set so inserting duplicates is a non issue
-				album.GetMutableSongIds().insert(song.GetId());
+				album->GetMutableSongIds().insert(song.GetId());
+				if (album->GetImageFilePath().size() == 0)
+				{
+					// we have not yet managed to located the albums art
+					// try again with this song
+					auto path = LoadAlbumImage(song, album->GetTitle());
+					album->SetImageFilePath(path);
+				}
 			}
 			else
 			{

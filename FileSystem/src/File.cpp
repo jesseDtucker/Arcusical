@@ -4,6 +4,7 @@
 #include <ppltasks.h>
 
 #include "Arc_Assert.hpp"
+#include "Folder.hpp"
 #include "NativeBufferWrapper.hpp"
 #include "CheckedCasts.hpp"
 #include "StorageExceptions.hpp"
@@ -103,20 +104,29 @@ namespace FileSystem
 		return propertiesTask.get()->Size;
 	}
 
-	std::vector<unsigned char> File::GetThumbnail()
+	std::shared_ptr<IFolder> File::GetParent()
+	{
+		auto parent = create_task(m_file->GetParentAsync()).get();
+		return std::make_shared<Folder>(parent);
+	}
+
+	std::vector<unsigned char> File::GetThumbnail(bool allowIcon)
 	{
 		std::vector<unsigned char> buffer;
 
 		try
 		{
 			auto thumbnailStream = create_task(m_file->GetThumbnailAsync(Windows::Storage::FileProperties::ThumbnailMode::SingleItem)).get();
-			
-			auto nativeBuffer = NativeBufferWrapper::WrapBuffer(&buffer);
-			auto length = Util::SafeIntCast<size_t, decltype(thumbnailStream->Size)>(thumbnailStream->Size);
-			buffer.resize(length);
 
-			auto inStream = thumbnailStream->GetInputStreamAt(0);
-			create_task(inStream->ReadAsync(nativeBuffer, Util::SafeIntCast<unsigned int, decltype(length)>(length), Windows::Storage::Streams::InputStreamOptions::None)).wait();
+			if (allowIcon || thumbnailStream->Type == Windows::Storage::FileProperties::ThumbnailType::Image)
+			{
+				auto nativeBuffer = NativeBufferWrapper::WrapBuffer(&buffer);
+				auto length = Util::SafeIntCast<size_t, decltype(thumbnailStream->Size)>(thumbnailStream->Size);
+				buffer.resize(length);
+
+				auto inStream = thumbnailStream->GetInputStreamAt(0);
+				create_task(inStream->ReadAsync(nativeBuffer, Util::SafeIntCast<unsigned int, decltype(length)>(length), Windows::Storage::Streams::InputStreamOptions::None)).wait();
+			}
 		}
 		catch (Platform::COMException^ ex)
 		{

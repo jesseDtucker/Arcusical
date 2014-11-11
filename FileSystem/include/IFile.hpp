@@ -9,6 +9,8 @@
 
 namespace FileSystem
 {
+	class IFolder;
+
 	class EXPORT IFile
 	{
 	public:
@@ -17,8 +19,8 @@ namespace FileSystem
 		virtual std::wstring GetExtension() const = 0;
 		virtual std::wstring GetFullPath() const = 0;
 
-		virtual std::vector<unsigned char> GetThumbnail() = 0;
-
+		virtual std::shared_ptr<IFolder> GetParent() = 0;
+		virtual std::vector<unsigned char> GetThumbnail(bool allowIcon = true) = 0;
 		virtual unsigned long long GetFileSize() = 0;
 
 		virtual void WriteToFile(std::vector<unsigned char>& data) = 0;

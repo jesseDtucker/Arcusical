@@ -30,6 +30,7 @@ namespace MusicProvider
 
 	Model::Song LoadSong(FileSystem::IFile& file);
 	Model::Album CreateAlbum(std::wstring& name, Model::Song& song, std::shared_ptr<SongIdMapper>& mapper);
+	std::wstring LoadAlbumImage(Model::Song& song, const std::wstring& albumName, bool checkFileSystem = false);
 }
 }
 

@@ -42,6 +42,14 @@ namespace Arcusical { namespace MPEG4 {
 		{ ImageType::UNKNOWN, L"Unknown" }
 	};
 
+	const std::unordered_map<std::wstring, ImageType> WStringToImageType =
+	{
+		{ L"jpg", ImageType::JPEG },
+		{ L"jpeg", ImageType::JPEG },
+		{ L"png", ImageType::PNG },
+		{ L"bmp", ImageType::BMP }
+	};
+
 	std::ostream& operator << (std::ostream& outStream, ImageType type);
 
 } /*namespace: MPEG4*/}/*namespace: Arcusical*/ 

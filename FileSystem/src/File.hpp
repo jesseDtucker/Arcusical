@@ -18,9 +18,9 @@ namespace FileSystem
 		virtual std::wstring GetExtension() const override;
 		virtual std::wstring GetFullPath() const override;
 
+		virtual std::shared_ptr<IFolder> GetParent() override;
 		virtual unsigned long long GetFileSize() override;
-
-		virtual std::vector<unsigned char> GetThumbnail() override;
+		virtual std::vector<unsigned char> GetThumbnail(bool allowIcon = true) override;
 
 		virtual void WriteToFile(std::vector<unsigned char>& data) override;
 		virtual void ReadFromFile(std::vector<unsigned char>& buffer, unsigned int length = 0, unsigned long long startPosition = 0) override;
