@@ -5,17 +5,23 @@
 	xmlns:local="using:Arcusical"
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	VerticalAlignment="Stretch"
 	mc:Ignorable="d">
 
-	<Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-		<StackPanel Orientation="Horizontal">
-			<local:SongListControl x:Name="v_songListControl" Width="600"/>
-			<local:AlbumListControl x:Name="v_albumListControl" Width="1400"/>
-		</StackPanel>
-		<StackPanel HorizontalAlignment="Center" VerticalAlignment="Bottom" 
-					Margin="0,0,0,40" Background="White" Width="800" Height="100">
-			<local:SongPlayer VerticalAlignment="Center" HorizontalAlignment="Center"/>
-		</StackPanel>
-		
+	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="70"/>
+			<RowDefinition Height="*"/>
+		</Grid.RowDefinitions>
+		<local:SongPlayer Grid.Row="0"  Height="70"/>
+		<Grid Background="WhiteSmoke" Grid.Row="1">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="20*"/>
+				<ColumnDefinition Width="45*"/>
+			</Grid.ColumnDefinitions>
+			<local:SongListControl Grid.Column="0" x:Name="v_songListControl"/>
+			<local:AlbumListControl Grid.Column="1" x:Name="v_albumListControl"/>
+		</Grid>
 	</Grid>
+
 </Page>

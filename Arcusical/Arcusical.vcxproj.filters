@@ -198,5 +198,11 @@
     <Image Include="Assets\albumBackground.png">
       <Filter>Assets</Filter>
     </Image>
+    <Image Include="Assets\Icons\Forward.png">
+      <Filter>Assets\Icons</Filter>
+    </Image>
+    <Image Include="Assets\Icons\Reverse.png">
+      <Filter>Assets\Icons</Filter>
+    </Image>
   </ItemGroup>
 </Project>

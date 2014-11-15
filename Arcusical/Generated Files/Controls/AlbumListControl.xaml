@@ -17,12 +17,14 @@
 			<Setter Property="Foreground" Value="WhiteSmoke"/>
 			<Setter Property="FontWeight" Value="Bold"/>
 			<Setter Property="Width" Value="{StaticResource ItemSize}"/>
+			<Setter Property="Margin" Value="10.0, 10.0, 0.0, 0.0"/>
 		</Style>
 		<Style x:Key="AlbumArtistStyle" TargetType="TextBlock">
 			<Setter Property="FontSize" Value="12"/>
 			<Setter Property="Foreground" Value="WhiteSmoke"/>
 			<Setter Property="FontWeight" Value="Bold"/>
 			<Setter Property="Width" Value="{StaticResource ItemSize}"/>
+			<Setter Property="Margin" Value="10.0, 0.0, 0.0, 0.0"/>
 		</Style>
 		<Style x:Key="AlbumImageStyle" TargetType="Image">
 			<Setter Property="Width" Value="{StaticResource ItemSize}"/>
@@ -31,12 +33,11 @@
 		
 		<!-- Album template-->
 		<DataTemplate x:Key="AlbumListItemTemplate">
-			<Button>
+			<Button BorderThickness="0">
 				<StackPanel Orientation="Vertical">
 					<Image Source="{Binding Path=ImagePath}" Style="{StaticResource AlbumImageStyle}"/>
-					<TextBlock Text="{Binding Path=Title}" Style="{StaticResource AlbumTitleStyle}"/>
-					<TextBlock Text="{Binding Path=Artist}" Style="{StaticResource AlbumArtistStyle}"/>
-					<TextBlock Text="{Binding Path=ImagePath}" Style="{StaticResource AlbumArtistStyle}" FontSize="6"/>
+					<TextBlock HorizontalAlignment="Center"  Text="{Binding Path=Title}" Style="{StaticResource AlbumTitleStyle}"/>
+					<TextBlock HorizontalAlignment="Center"  Text="{Binding Path=Artist}" Style="{StaticResource AlbumArtistStyle}"/>
 				</StackPanel>
 			</Button>
 		</DataTemplate>
@@ -53,9 +54,8 @@
 			<Setter Property="ItemTemplate" Value="{StaticResource AlbumListItemTemplate}"/>
 		</Style>
 	</UserControl.Resources>
-	<Grid Margin="100">
-		<TextBlock Text="Albums:" FontSize="36" Foreground="WhiteSmoke"/>
-		<ScrollViewer Margin="20,50,0,0">
+	<Grid>
+		<ScrollViewer>
 			<ItemsControl Height="Auto"  ItemsSource="{Binding Path=AlbumList.Albums}" Style="{StaticResource AlbumListStyle}"/>
 		</ScrollViewer>
 	</Grid>

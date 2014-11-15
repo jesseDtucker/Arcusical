@@ -22,8 +22,6 @@ void ::Arcusical::SongPlayer::InitializeComponent()
     // Call LoadComponent on ms-appx:///Controls/SongPlayer.xaml
     ::Windows::UI::Xaml::Application::LoadComponent(this, ref new ::Windows::Foundation::Uri(L"ms-appx:///Controls/SongPlayer.xaml"), ::Windows::UI::Xaml::Controls::Primitives::ComponentResourceLocation::Application);
 
-    // Get the MediaElement named 'v_mediaElement'
-    v_mediaElement = safe_cast<::Windows::UI::Xaml::Controls::MediaElement^>(static_cast<Windows::UI::Xaml::IFrameworkElement^>(this)->FindName(L"v_mediaElement"));
 }
 
 void ::Arcusical::SongPlayer::Connect(int connectionId, Platform::Object^ target)

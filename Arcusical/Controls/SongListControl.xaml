@@ -15,10 +15,11 @@
 			</StackPanel>
 		</DataTemplate>
 	</UserControl.Resources>
-	<Grid Margin="100">
-		<TextBlock Text="Songs: " FontSize="40" Foreground="White" VerticalAlignment="Top"/>
-		<ScrollViewer Margin="20,50,0,0">
-			<ListView Height="Auto" ItemsSource="{Binding SongList.List}" ItemTemplate="{StaticResource SongListItemTemplate}" ItemClick="SongClicked" IsItemClickEnabled="True"/>
-		</ScrollViewer>
+	<Grid Background="#343C5C">
+		<Border BorderThickness="0, 0, 2, 0" BorderBrush="#1D2133">
+			<ScrollViewer>
+				<ListView Height="Auto" ItemsSource="{Binding SongList.List}" ItemTemplate="{StaticResource SongListItemTemplate}" ItemClick="SongClicked" IsItemClickEnabled="True"/>
+			</ScrollViewer>
+		</Border>
 	</Grid>
 </UserControl>

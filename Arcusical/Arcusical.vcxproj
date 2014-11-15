@@ -376,8 +376,10 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\albumBackground.png" />
+    <Image Include="Assets\Icons\Forward.png" />
     <Image Include="Assets\Icons\Pause.png" />
     <Image Include="Assets\Icons\Play.png" />
+    <Image Include="Assets\Icons\Reverse.png" />
     <Image Include="Assets\Logo.scale-100.png" />
     <Image Include="Assets\SmallLogo.scale-100.png" />
     <Image Include="Assets\StoreLogo.scale-100.png" />

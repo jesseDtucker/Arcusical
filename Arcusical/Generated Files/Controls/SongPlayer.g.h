@@ -8,15 +8,6 @@
 //     the code is regenerated.
 //------------------------------------------------------------------------------
 
-namespace Windows {
-    namespace UI {
-        namespace Xaml {
-            namespace Controls {
-                ref class MediaElement;
-            }
-        }
-    }
-}
 
 namespace Arcusical
 {
@@ -30,7 +21,6 @@ namespace Arcusical
     private:
         bool _contentLoaded;
     
-        private: ::Windows::UI::Xaml::Controls::MediaElement^ v_mediaElement;
     };
 }
 
