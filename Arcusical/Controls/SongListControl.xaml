@@ -10,7 +10,7 @@
 	d:DesignWidth="400">
 	<UserControl.Resources>
 		<DataTemplate x:Key="SongListItemTemplate" >
-			<StackPanel Orientation="Horizontal" DoubleTapped="StackPanel_DoubleTapped">
+			<StackPanel Orientation="Horizontal">
 				<TextBlock Text="{Binding Title}"/>
 			</StackPanel>
 		</DataTemplate>
@@ -18,7 +18,8 @@
 	<Grid Background="#343C5C">
 		<Border BorderThickness="0, 0, 2, 0" BorderBrush="#1D2133">
 			<ScrollViewer>
-				<ListView Height="Auto" ItemsSource="{Binding SongList.List}" ItemTemplate="{StaticResource SongListItemTemplate}" ItemClick="SongClicked" IsItemClickEnabled="True"/>
+				<ListView Height="Auto" ItemsSource="{Binding SongList.List}" ItemTemplate="{StaticResource SongListItemTemplate}" 
+						  ItemClick="SongClicked" IsItemClickEnabled="True"/>
 			</ScrollViewer>
 		</Border>
 	</Grid>

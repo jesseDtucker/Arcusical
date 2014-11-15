@@ -1,15 +1,20 @@
 #ifndef SONG_LIST_CONTROL_VM_HPP
 #define SONG_LIST_CONTROL_VM_HPP
 
-#include "IMusicProvider.hpp"
-#include "ViewModels/SongListVM.hpp"
 #include "Utility/XamlMacros.hpp"
+#include "Subscription.hpp"
 
 namespace Arcusical{
+	namespace Events
+	{
+		class AlbumSelectedEvent;
+}
 namespace ViewModel{
 
+	ref class SongListVM;
+
 	[Windows::UI::Xaml::Data::Bindable]
-	public ref class SongListControlViewModel sealed : INotifyPropertyChanged_t
+	public ref class SongListControlVM sealed : INotifyPropertyChanged_t
 	{
 	public:
 		NOTIFY_PROPERTY_CHANGED_IMPL;
@@ -17,13 +22,10 @@ namespace ViewModel{
 		PROP_SET_AND_GET_WINRT(SongListVM^, SongList);
 
 	internal:
-		SongListControlViewModel(MusicProvider::MusicProviderLocator::ServiceRef providerService);
+		SongListControlVM();
 	private:
-
-		void MusicCallback(Model::SongCollection& localSongs);
-
-		MusicProvider::MusicProviderLocator::ServiceRef m_providerService;
-		MusicProvider::MusicProviderSubscription m_subscription;
+		void OnAlbumSelected(const Events::AlbumSelectedEvent& event);
+		Util::SubscriptionPtr m_albumSelectedSubscription;
 	};
 
 }

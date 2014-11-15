@@ -26,6 +26,13 @@ void ::Arcusical::AlbumListControl::InitializeComponent()
 
 void ::Arcusical::AlbumListControl::Connect(int connectionId, Platform::Object^ target)
 {
+    switch (connectionId)
+    {
+    case 1:
+        (safe_cast<::Windows::UI::Xaml::Controls::ListViewBase^>(target))->ItemClick +=
+            ref new ::Windows::UI::Xaml::Controls::ItemClickEventHandler(this, (void (::Arcusical::AlbumListControl::*)(Platform::Object^, Windows::UI::Xaml::Controls::ItemClickEventArgs^))&AlbumListControl::AlbumClicked);
+        break;
+    }
     (void)connectionId; // Unused parameter
     (void)target; // Unused parameter
     _contentLoaded = true;

@@ -2,7 +2,6 @@
 // AlbumListControl.xaml.h
 // Declaration of the AlbumListControl class
 //
-
 #pragma once
 
 #include "Controls/AlbumListControl.g.h"
@@ -14,5 +13,8 @@ namespace Arcusical
 	{
 	public:
 		AlbumListControl();
+
+	private:
+		void AlbumClicked(Platform::Object^ sender, Windows::UI::Xaml::Controls::ItemClickEventArgs^ e);
 	};
 }

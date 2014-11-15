@@ -1,7 +1,6 @@
 #pragma once
 #ifndef SONG_SELECTED_EVENT_HPP
-
-#include "PropertyHelper.hpp"
+#define SONG_SELECTED_EVENT_HPP
 
 namespace Arcusical
 {

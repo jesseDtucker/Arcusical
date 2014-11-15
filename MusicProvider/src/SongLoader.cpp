@@ -166,6 +166,7 @@ namespace MusicProvider
 		result.SetId(s_idGenerator()); // generate a random id, the odds of collision are slim to none
 		result.SetLength(musicProperties->Duration.Duration / 1000); // Duration is provided is ms, but we need it in seconds
 		result.SetTitle(std::wstring(musicProperties->Title->Data()));
+		result.SetAlbumName(std::wstring(musicProperties->Album->Data()));
 
 		Model::SongFile songFile;
 		songFile.filePath = file.GetFullPath();
@@ -302,8 +303,15 @@ namespace MusicProvider
 		ARC_ASSERT_MSG(!Storage::ApplicationFolder().ContainsFile(fileName), "an album image with this name already exists!");
 		auto imgFile = Storage::ApplicationFolder().CreateNewFile(fileName);
 
-		imgFile->WriteToFile(imgData);
-		return imgFile->GetFullPath();
+		if (nullptr != imgFile)
+		{
+			imgFile->WriteToFile(imgData);
+			return imgFile->GetFullPath();
+		}
+		else
+		{
+			return L"";
+		}
 	}
 
 	std::pair<bool, std::wstring> AttemptToFindAlbumArt(FileSystem::IFile& file, const std::wstring& albumName)

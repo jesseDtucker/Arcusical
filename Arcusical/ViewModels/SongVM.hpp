@@ -4,6 +4,7 @@
 #include <memory>
 
 #include "Commands/PlaySongCommand.hpp"
+#include "Song.hpp"
 #include "Stream.hpp"
 #include "PropertyHelper.hpp"
 #include "Utility/XamlMacros.hpp"
@@ -12,10 +13,6 @@ namespace Arcusical {
 namespace Commands
 {
 	ref class CommandWrapper;
-}
-namespace Model 
-{
-	class Song;
 }
 namespace Player
 {

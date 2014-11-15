@@ -25,7 +25,7 @@ namespace Model
 		return !(*this == rhs);
 	}
 
-	std::unordered_map<boost::uuids::uuid, Song*>* Album::GetSongs()
+	SongPtrCollection* Album::GetSongs() const
 	{
 		if (this->m_songs.size() == 0)
 		{

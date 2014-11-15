@@ -21,7 +21,7 @@ namespace FileSystem
 	IFolder* Storage::s_applicationFolder = nullptr;
 
 	static std::mutex s_loadingLock;
-	static const std::unordered_set<wchar_t> ILLEGAL_CHARACTERS = { '?', '<', '>', ':', '*', '|', '^', };
+	static const std::unordered_set<wchar_t> ILLEGAL_CHARACTERS = { '?', '<', '>', ':', '*', '|', '^', '/' };
 
 #ifdef __cplusplus_winrt
 	
@@ -118,6 +118,8 @@ namespace FileSystem
 
 	void Storage::RemoveIllegalCharacters(std::wstring& filePath, wchar_t replacementCharacter /* = '_' */)
 	{
+		std::replace(filePath.begin(), filePath.end(), L'/', L'\\');
+
 		for (auto& badChar : ILLEGAL_CHARACTERS)
 		{
 			std::replace(std::begin(filePath), std::end(filePath), badChar, replacementCharacter);

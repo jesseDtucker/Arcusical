@@ -1,10 +1,16 @@
 #ifndef SUBSCRIPTION_HPP
 #define SUBSCRIPTION_HPP
 
+#include <memory>
+
 #include "Delegate.hpp"
 
 namespace Util
 {
+	class Subscription;
+
+	typedef std::unique_ptr<Subscription> SubscriptionPtr;
+
 	class Subscription final
 	{
 	public:

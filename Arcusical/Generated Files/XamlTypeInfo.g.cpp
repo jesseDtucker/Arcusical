@@ -294,7 +294,7 @@
         return userType;
     }
 
-    if (typeName == L"Arcusical.ViewModel.SongListControlViewModel")
+    if (typeName == L"Arcusical.ViewModel.SongListControlVM")
     {
         ::XamlTypeInfo::InfoProvider::XamlUserType^ userType = ref new ::XamlTypeInfo::InfoProvider::XamlUserType(this, typeName, GetXamlTypeByName(L"Object"));
         userType->KindOfType = ::Windows::UI::Xaml::Interop::TypeKind::Custom;
@@ -575,20 +575,20 @@
         return xamlMember;
     }
 
-    if (longMemberName == L"Arcusical.ViewModel.SongListControlViewModel.SongList")
+    if (longMemberName == L"Arcusical.ViewModel.SongListControlVM.SongList")
     {
         ::XamlTypeInfo::InfoProvider::XamlMember^ xamlMember = ref new ::XamlTypeInfo::InfoProvider::XamlMember(this, L"SongList", L"Arcusical.ViewModel.SongListVM");
         xamlMember->Getter =
             [](Object^ instance) -> Object^
             {
-                auto that = (::Arcusical::ViewModel::SongListControlViewModel^)instance;
+                auto that = (::Arcusical::ViewModel::SongListControlVM^)instance;
                 return that->SongList;
             };
 
         xamlMember->Setter =
             [](Object^ instance, Object^ value) -> void
             {
-                auto that = (::Arcusical::ViewModel::SongListControlViewModel^)instance;
+                auto that = (::Arcusical::ViewModel::SongListControlVM^)instance;
                 that->SongList = (::Arcusical::ViewModel::SongListVM^)value;
             };
         return xamlMember;

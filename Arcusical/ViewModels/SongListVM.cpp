@@ -10,14 +10,14 @@
 namespace Arcusical{
 namespace ViewModel{
 
-	SongListVM::SongListVM(Model::SongCollection& songs)
+	SongListVM::SongListVM(const Model::SongPtrCollection& songs)
 	{
 		// temp hack
 		std::vector<Model::Song*> sortedSongs;
 
 		for (auto& song : songs)
 		{
-			sortedSongs.push_back(&song.second);
+			sortedSongs.push_back(song.second);
 		}
 
 		std::sort(sortedSongs.begin(), sortedSongs.end(), [](Model::Song* a, Model::Song* b)
@@ -25,7 +25,7 @@ namespace ViewModel{
 			return a->GetTitle() < b->GetTitle();
 		});
 
-		auto future = Arcusical::DispatchToUI([this, &sortedSongs]()
+		auto future = Arcusical::DispatchToUI([this, sortedSongs]()
 		{
 			List = ref new Platform::Collections::Vector<SongVM^>();
 

@@ -12,13 +12,26 @@ namespace ViewModel{
 
 	AlbumListVM::AlbumListVM(Model::AlbumCollection& albums)
 	{
-		auto future = Arcusical::DispatchToUI([this, &albums]()
+		// sort songs in alphabetical order
+		std::vector<Model::Album*> sortedAlbums;
+
+		for (auto& album : albums)
+		{
+			sortedAlbums.push_back(&album.second);
+		}
+
+		std::sort(std::begin(sortedAlbums), std::end(sortedAlbums), [](Model::Album* a, Model::Album* b)
+		{
+			return a->GetTitle() < b->GetTitle();
+		});
+
+		auto future = Arcusical::DispatchToUI([this, &sortedAlbums]()
 		{
 			this->Albums = ref new Platform::Collections::Vector<AlbumVM^>();
 
-			for (auto& album : albums)
+			for (auto& album : sortedAlbums)
 			{
-				this->Albums->Append(ref new AlbumVM(album.second));
+				this->Albums->Append(ref new AlbumVM(*album));
 			}
 		});
 		future.get(); // wait for UI to complete before returning

@@ -3,33 +3,29 @@
 #include "SongListControlVM.hpp"
 
 #include "Arc_Assert.hpp"
+#include "Events/AlbumSelectedEvent.hpp"
+#include "Events/EventService.hpp"
 #include "SongListVM.hpp"
 
 using namespace Windows::UI::Xaml::Data;
+using namespace Arcusical::Events;
 
 namespace Arcusical {
 namespace ViewModel{
 
-	SongListControlViewModel::SongListControlViewModel(
-		MusicProvider::MusicProviderLocator::ServiceRef providerService)
-		: m_providerService(providerService)
+	SongListControlVM::SongListControlVM()
 	{
-		auto service = providerService.lock();
-		ARC_ASSERT(service != nullptr);
-		m_subscription = service->SubscribeSongs(MusicProvider::SongsChangedCallback([this](Model::SongCollection& localSongs)
+		std::function<void(const Events::AlbumSelectedEvent&)> callback = [this](const Events::AlbumSelectedEvent& event)
 		{
-			this->MusicCallback(localSongs);
-		}));
+			this->OnAlbumSelected(event);
+		};
+		m_albumSelectedSubscription = EventService<AlbumSelectedEvent>::RegisterListener(callback);
 	}
 
-	void SongListControlViewModel::MusicCallback(Model::SongCollection& localSongs)
+	void SongListControlVM::OnAlbumSelected(const Events::AlbumSelectedEvent& event)
 	{
-		auto promise = DispatchToUI([this, &localSongs]()
-		{
-			this->SongList = ref new SongListVM(localSongs);
-		});
-		promise.get();
+		auto album = event.GetSelectedAlbum();
+		this->SongList = album->Songs;
 	}
-
 }
 }

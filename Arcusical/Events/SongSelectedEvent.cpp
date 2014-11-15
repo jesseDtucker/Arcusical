@@ -1,7 +1,6 @@
 #include "pch.h"
 
 #include "Events/SongSelectedEvent.hpp"
-#include "Events/EventService.hpp"
 
 namespace Arcusical
 {

@@ -18,6 +18,8 @@ namespace Model
 	class Song;
 	class IAlbumToSongMapper;
 
+	typedef std::unordered_map<boost::uuids::uuid, Song*> SongPtrCollection;
+
 	class Album final
 	{
 	public:
@@ -31,13 +33,13 @@ namespace Model
 		PROP_SET_AND_GET(std::wstring, ImageFilePath);
 		PROP_SET_AND_GET(std::set<boost::uuids::uuid>, SongIds);
 
-		std::unordered_map<boost::uuids::uuid, Song*>* GetSongs();
+		SongPtrCollection* GetSongs() const;
 
 		bool operator==(const Album& rhs) const;
 		bool operator!=(const Album& rhs) const;
 	private:
 		std::shared_ptr<IAlbumToSongMapper> m_songMapper;
-		std::unordered_map<boost::uuids::uuid, Song*> m_songs;
+		mutable SongPtrCollection m_songs; // these are fetched on demand
 	};
 }
 }

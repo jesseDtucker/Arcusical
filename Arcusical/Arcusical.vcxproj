@@ -323,6 +323,7 @@
       <DependentUpon>Controls\SongPlayer.xaml</DependentUpon>
     </ClInclude>
     <ClInclude Include="Converters\IsPlayingToIconPath.hpp" />
+    <ClInclude Include="Events\AlbumSelectedEvent.hpp" />
     <ClInclude Include="Events\EventService.hpp" />
     <ClInclude Include="Events\SongSelectedEvent.hpp" />
     <ClInclude Include="ViewModels\AlbumListControlVM.hpp" />
@@ -396,6 +397,7 @@
       <DependentUpon>Controls\SongPlayer.xaml</DependentUpon>
     </ClCompile>
     <ClCompile Include="Converters\IsPlayingToIcon.cpp" />
+    <ClCompile Include="Events\AlbumSelectedEvent.cpp" />
     <ClCompile Include="Events\SongSelectedEvent.cpp" />
     <ClCompile Include="ViewModels\AlbumListControlVM.cpp" />
     <ClCompile Include="ViewModels\AlbumListVM.cpp" />
@@ -432,9 +434,6 @@
     <ProjectReference Include="..\WinrtMediaEngine\WinrtMediaEngine.vcxproj">
       <Project>{0ed4ba89-2570-4236-ae8b-39689a79700a}</Project>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <DesignData Include="SampleData\AlbumListControlVMSampleData.xaml" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
