@@ -142,7 +142,7 @@ namespace FileSystem
 
 				m_currentPosition = m_buffer.begin();
 				ARC_ASSERT(m_buffer.size() >= bytesToStoreInBuffer);
-				m_endPosition = m_buffer.begin() + std::min(bytesToStoreInBuffer, Util::SafeIntCast<decltype(remainingBytes)>(m_buffer.size()));
+				m_endPosition = m_buffer.begin() + std::min(bytesToStoreInBuffer, Util::SafeIntCast<decltype(bytesToStoreInBuffer)>(m_buffer.size()));
 
 				m_bytesReadFromFile += bytesToReadFromFile;
 			}
