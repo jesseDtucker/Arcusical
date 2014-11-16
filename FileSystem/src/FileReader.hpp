@@ -136,13 +136,13 @@ namespace FileSystem
 				m_file->ReadFromFile(bytesFromFile, bytesToReadFromFile, m_bytesRead + availableBytes);
 
 				ARC_ASSERT(bytesFromFile.size() >= remainingBytes);
-				auto bytesToInsert = std::min(remainingBytes, bytesFromFile.size());
+				auto bytesToInsert = std::min(remainingBytes, Util::SafeIntCast<decltype(remainingBytes)>(bytesFromFile.size()));
 				bytes.insert(bytes.end(), bytesFromFile.begin(), bytesFromFile.begin() + bytesToInsert);
 				std::copy(bytesFromFile.begin() + bytesToInsert, bytesFromFile.end(), m_buffer.begin());
 
 				m_currentPosition = m_buffer.begin();
 				ARC_ASSERT(m_buffer.size() >= bytesToStoreInBuffer);
-				m_endPosition = m_buffer.begin() + std::min(bytesToStoreInBuffer, m_buffer.size());
+				m_endPosition = m_buffer.begin() + std::min(bytesToStoreInBuffer, Util::SafeIntCast<decltype(remainingBytes)>(m_buffer.size()));
 
 				m_bytesReadFromFile += bytesToReadFromFile;
 			}
