@@ -17,6 +17,12 @@ namespace FileSystem
 		static IFolder& MusicFolder();
 		static IFolder& ApplicationFolder();
 
+		static bool IsFolder(std::wstring filePath);
+		static bool IsFile(std::wstring filePath);
+		static bool FolderExists(std::wstring filePath);
+		static bool FileExists(std::wstring filePath);
+		static bool Exists(std::wstring filePath);
+
 		static std::shared_ptr<IFile> LoadFileFromPath(std::wstring filePath);
 
 		static std::shared_ptr<IFileReader> GetReader(IFile* file);

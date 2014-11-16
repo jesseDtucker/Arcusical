@@ -20,9 +20,14 @@ namespace FileSystem
 
 	}
 
-	std::wstring Folder::GetName()
+	std::wstring Folder::GetName() const
 	{
 		return std::wstring(m_folder->Name->Data());
+	}
+
+	std::wstring Folder::GetFullPath() const
+	{
+		return std::wstring(m_folder->Path->Data());
 	}
 
 	std::vector<std::shared_ptr<IFolder>> Folder::GetSubfolders()
@@ -91,6 +96,21 @@ namespace FileSystem
 		return std::make_shared<File>(create_task(m_folder->GetFileAsync(winrt_fileName)).get());
 	}
 
+	std::shared_ptr<IFolder> Folder::GetParent()
+	{
+		std::shared_ptr<IFolder> result = nullptr;
+		try
+		{
+			auto parent = create_task(m_folder->GetParentAsync()).get();
+			result = std::make_shared<Folder>(parent);
+		}
+		catch (Platform::COMException^ ex)
+		{
+			ARC_FAIL("Unhandled exception!");
+		}
+		return result;
+	}
+
 	std::shared_ptr<IFile> Folder::CreateNewFile(const std::wstring& fileName)
 	{
 		const std::wstring* fn = &fileName;
@@ -115,8 +135,18 @@ namespace FileSystem
 			ARC_FAIL("Unhandled exception!");
 			return nullptr;
 		}
-		
 	}
+
+	bool Folder::operator==(const IFolder& rhs) const
+	{
+		return this->GetFullPath() == rhs.GetFullPath();
+	}
+
+	bool Folder::operator!=(const IFolder& rhs) const
+	{
+		return !(*this == rhs);
+	}
+
 #else
 #error UNKNOWN_PLATFORM!
 #endif

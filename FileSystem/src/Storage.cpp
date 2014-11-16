@@ -126,6 +126,53 @@ namespace FileSystem
 		}
 	}
 
+	bool Storage::IsFile(std::wstring filePath)
+	{
+		auto result = false;
+		try
+		{
+			auto res = create_task(Windows::Storage::StorageFile::GetFileFromPathAsync(ref new Platform::String(filePath.c_str()))).get();
+			result = true;
+		}
+		catch (Platform::COMException^ ex)
+		{
+			ARC_FAIL("TODO::JT");
+		}
+		
+		return result;
+	}
+
+	bool Storage::IsFolder(std::wstring filePath)
+	{
+		auto result = false;
+		try
+		{
+			auto res = create_task(Windows::Storage::StorageFolder::GetFolderFromPathAsync(ref new Platform::String(filePath.c_str()))).get();
+			result = true;
+		}
+		catch (Platform::COMException^ ex)
+		{
+			ARC_ASSERT_MSG(ex->HResult == E_INVALIDARG, "unexpected HRESULT!");
+		}
+
+		return result;
+	}
+
+	bool Storage::FileExists(std::wstring filePath)
+	{
+		return IsFile(filePath);
+	}
+
+	bool Storage::FolderExists(std::wstring filePath)
+	{
+		return IsFolder(filePath);
+	}
+
+	bool Storage::Exists(std::wstring filePath)
+	{
+		return FileExists(filePath) || FolderExists(filePath);
+	}
+
 #else
 #error UNSUPPORTED PLATFORM!
 #endif

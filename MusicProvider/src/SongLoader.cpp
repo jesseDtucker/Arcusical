@@ -39,6 +39,7 @@ namespace MusicProvider
 	static std::pair<bool, std::wstring> DefaultLoadAlbumImage(FileSystem::IFile& file, const std::wstring& albumName);
 	static std::pair<bool, std::wstring> LoadAlbumImageFromMpeg4(FileSystem::IFile& file, const std::wstring& albumName);
 	static std::pair<bool, std::wstring> AttemptToFindAlbumArt(FileSystem::IFile& file, const std::wstring& albumName);
+	static std::pair<bool, std::wstring> AttemptToFindAlbumArt(FileSystem::IFolder& folder, const std::wstring& albumName);
 	static std::wstring SaveImageFile(std::vector<unsigned char>& imgData, const std::wstring& albumName, MPEG4::ImageType imageType);
 
 	static boost::uuids::random_generator s_idGenerator;
@@ -79,6 +80,11 @@ namespace MusicProvider
 		else
 		{
 			result = DefaultSongLoad(file);
+		}
+
+		if (result.GetTitle().length() == 0)
+		{
+			result.SetTitle(file.GetName());
 		}
 
 		return result;
@@ -176,11 +182,6 @@ namespace MusicProvider
 		songFile.format = encoding;
 		songFile.container = container;
 		result.AddFile(songFile);
-
-		if (result.GetTitle().length() == 0)
-		{
-			result.SetTitle(file.GetName());
-		}
 
 		return result;
 #elif
@@ -316,13 +317,15 @@ namespace MusicProvider
 
 	std::pair<bool, std::wstring> AttemptToFindAlbumArt(FileSystem::IFile& file, const std::wstring& albumName)
 	{
-		using namespace concurrency;
+		return AttemptToFindAlbumArt(*file.GetParent(), albumName);
+	}
 
+	std::pair<bool, std::wstring> AttemptToFindAlbumArt(FileSystem::IFolder& folder, const std::wstring& albumName)
+	{
 		std::pair<bool, std::wstring> result = { false, L"" };
 		std::shared_ptr<FileSystem::IFile> albumArtFile = nullptr;
 
-		auto parentFolder = file.GetParent();
-		auto files = parentFolder->GetFiles();
+		auto files = folder.GetFiles();
 		const std::ctype<wchar_t>& f = std::use_facet< std::ctype<wchar_t> >(std::locale());
 		decltype(files) possibleAlbumArtFiles;
 		for (auto& file : files)
@@ -349,7 +352,7 @@ namespace MusicProvider
 			// first criteria is select any that contain the album name
 			// second criteria is any that contain any of the following: 'cover', 'art', 'album'
 			// finally if none pass select a random one
-			
+
 			std::wstring albumNameLower = albumName;
 			f.tolower(&albumNameLower[0], &albumNameLower[0] + albumNameLower.size());
 			for (auto& file : possibleAlbumArtFiles)
@@ -407,7 +410,16 @@ namespace MusicProvider
 			auto path = SaveImageFile(buffer, albumName, imageType);
 			result = { true, path };
 		}
-		
+		else
+		{
+			// try again on the parent folder if the parent folder is not the root music folder
+			auto parent = folder.GetParent();
+			if (parent != nullptr && *parent != FileSystem::Storage::MusicFolder())
+			{
+				result = AttemptToFindAlbumArt(*parent, albumName);
+			}
+		}
+
 		return result;
 	}
 

@@ -16,13 +16,18 @@ namespace FileSystem
 	{
 	public:
 
-		virtual std::wstring GetName();
-		virtual std::vector<std::shared_ptr<IFolder>> GetSubfolders();
-		virtual std::vector<std::shared_ptr<IFile>> GetFiles();
-		virtual bool ContainsFile(const std::wstring& fileName);
-		virtual std::shared_ptr<IFile> GetFile(const std::wstring& fileName);
+		virtual std::wstring GetName() const override;
+		virtual std::wstring GetFullPath() const override;
+		virtual std::shared_ptr<IFolder> GetParent() override;
+		virtual std::vector<std::shared_ptr<IFolder>> GetSubfolders() override;
+		virtual std::vector<std::shared_ptr<IFile>> GetFiles() override;
+		virtual bool ContainsFile(const std::wstring& fileName) override;
+		virtual std::shared_ptr<IFile> GetFile(const std::wstring& fileName) override;
 
-		virtual std::shared_ptr<IFile> CreateNewFile(const std::wstring& filename);
+		virtual std::shared_ptr<IFile> CreateNewFile(const std::wstring& filename) override;
+
+		virtual bool operator==(const IFolder& rhs) const override;
+		virtual bool operator!=(const IFolder& rhs) const override;
 
 #ifdef __cplusplus_winrt
 		Folder(Windows::Storage::StorageFolder^ folder);

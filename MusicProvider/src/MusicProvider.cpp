@@ -1,5 +1,7 @@
 #include "pch.h"
 
+#include <cctype>
+#include <codecvt>
 #include <memory>
 #include <future>
 
@@ -12,12 +14,17 @@
 #include "SongIdMapper.hpp"
 #include "Storage.hpp"
 
+#undef max
+#undef min
+
 const std::string Arcusical::MusicProvider::IMusicProvider::ServiceName("MusicProvider");
 
 namespace Arcusical
 {
 namespace MusicProvider
 {
+	static void FixupAlbumName(Model::Song& song, const std::vector<Model::Song>& newSongs, const Model::SongCollection& existingSongs);
+
 	MusicProvider::MusicProvider()
 		: m_songCallbackSet()
 	{
@@ -197,6 +204,8 @@ namespace MusicProvider
 			}
 		}
 
+		FixupSongs(newSongs, existingSongs);
+
 		if (haveFilesBeenAdded)
 		{
 			m_musicCache->AddToCache(newSongs);
@@ -204,6 +213,97 @@ namespace MusicProvider
 		}
 		
 		return haveFilesBeenAdded;
+	}
+
+	void MusicProvider::FixupSongs(std::vector<Model::Song>& newSongs, Model::SongCollection& existingSongs)
+	{
+		for (auto& song : newSongs)
+		{
+			if (song.GetAlbumName().size() == 0)
+			{
+				FixupAlbumName(song, newSongs, existingSongs);
+			}
+		}
+	}
+
+	void FixupAlbumName(Model::Song& song, const std::vector<Model::Song>& newSongs, const Model::SongCollection& existingSongs)
+	{
+		// then we haven't determined the name of this song.
+		// first try to find matching songs in the existing songs
+		auto existingMatchItr = std::find_if(std::begin(existingSongs), std::end(existingSongs), [&song](Model::SongCollection::value_type other)
+		{
+			return other.second.IsSameSong(song);
+		});
+		if (existingMatchItr != std::end(existingSongs))
+		{
+			// one of the existing songs appears to be the same song!
+			song.SetAlbumName(existingMatchItr->second.GetAlbumName());
+		}
+
+		if (song.GetAlbumName().size() == 0)
+		{
+			// then we have not yet located the song, try again with the new songs
+			auto newMatchItr = std::find_if(std::begin(newSongs), std::end(newSongs), [&song](const Model::Song& other)
+			{
+				return other.IsSameSong(song);
+			});
+			if (newMatchItr != std::end(newSongs))
+			{
+				song.SetAlbumName(newMatchItr->GetAlbumName());
+			}
+		}
+
+		if (song.GetAlbumName().size() == 0)
+		{
+			// if we did not find any matching songs then we will instead try to locate
+			// the album name based on the folder structure
+			
+			// firstly we'll take each file and determine a common base directory
+			std::wstring basePath = L"";
+			for (auto& audioFile : song.GetFiles())
+			{
+				auto path = audioFile.second.filePath;
+				if (basePath.size() == 0)
+				{
+					basePath = path;
+				}
+				else
+				{
+					auto length = std::min(basePath.size(), path.size());
+					for (unsigned int i = 0; i < length; ++i)
+					{
+						if (basePath[i] != path[i])
+						{
+							// cut the string at this point
+							basePath = basePath.substr(0, i);
+							break;
+						}
+					}
+				}
+			}
+
+			// now assume the common base folder is the album name
+			std::wstring albumName = L"";
+			std::set<std::wstring> invalidAlbumNames = {L"mp3", L"wav", L"alac", L"flac"};
+			const std::ctype<wchar_t>& f = std::use_facet< std::ctype<wchar_t> >(std::locale());
+			auto isValidAlbumName = false;
+			do 
+			{
+				auto cutPoint = basePath.find_last_of('\\');
+				if (FileSystem::Storage::IsFolder(basePath))
+				{
+					albumName = basePath.substr(cutPoint + 1, basePath.size() - cutPoint);
+					std::wstring albumNameLower = albumName;
+					f.tolower(&albumNameLower[0], &albumNameLower[0] + albumNameLower.size());
+					isValidAlbumName = invalidAlbumNames.find(albumNameLower) == std::end(invalidAlbumNames);
+				}
+				basePath = basePath.substr(0, cutPoint);
+			} while ((!isValidAlbumName || albumName.size() == 0) && basePath.find_last_of('\\') != basePath.find_first_of('\\'));
+
+			song.SetAlbumName(albumName);
+		}
+
+		ARC_ASSERT_MSG(song.GetAlbumName().size() != 0, "Failed to fixup album name for song!");
 	}
 
 	bool MusicProvider::MergeAlbumCollections(Model::AlbumCollection& existingAlbums, Model::SongCollection& songs)

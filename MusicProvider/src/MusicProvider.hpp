@@ -56,6 +56,7 @@ namespace MusicProvider
 		void PublishAlbums();
 
 		bool MergeSongCollections(Model::SongCollection& existingSongs, std::vector<std::shared_ptr<FileSystem::IFile>>& locatedFiles);
+		void FixupSongs(std::vector<Model::Song>& newSongs, Model::SongCollection& existingSongs);
 		void AddNewSongToExisting(const Model::Song& newSong, Model::Song& existingSong, std::wstring fullPath);
 
 		bool MergeAlbumCollections(Model::AlbumCollection& existingAlbums, Model::SongCollection& songs);
