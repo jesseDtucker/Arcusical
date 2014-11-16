@@ -17,7 +17,7 @@ namespace FileSystem
 	Folder::Folder(Windows::Storage::StorageFolder^ folder)
 		: m_folder(folder)
 	{
-
+		ARC_ASSERT(folder != nullptr);
 	}
 
 	std::wstring Folder::GetName() const
@@ -102,7 +102,10 @@ namespace FileSystem
 		try
 		{
 			auto parent = create_task(m_folder->GetParentAsync()).get();
-			result = std::make_shared<Folder>(parent);
+			if (parent != nullptr)
+			{
+				result = std::make_shared<Folder>(parent);
+			}
 		}
 		catch (Platform::COMException^ ex)
 		{
@@ -139,7 +142,9 @@ namespace FileSystem
 
 	bool Folder::operator==(const IFolder& rhs) const
 	{
-		return this->GetFullPath() == rhs.GetFullPath();
+		auto t2 = this->GetFullPath();
+		auto t3 = rhs.GetFullPath();
+		return t2 == t3;
 	}
 
 	bool Folder::operator!=(const IFolder& rhs) const

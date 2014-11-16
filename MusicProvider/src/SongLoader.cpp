@@ -414,7 +414,7 @@ namespace MusicProvider
 		{
 			// try again on the parent folder if the parent folder is not the root music folder
 			auto parent = folder.GetParent();
-			if (parent != nullptr && *parent != FileSystem::Storage::MusicFolder())
+			if (parent != nullptr)
 			{
 				result = AttemptToFindAlbumArt(*parent, albumName);
 			}

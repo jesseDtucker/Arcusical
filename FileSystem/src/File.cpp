@@ -22,7 +22,7 @@ namespace FileSystem
 	File::File(Windows::Storage::StorageFile^ file)
 		: m_file(file)
 	{
-		
+		ARC_ASSERT(file != nullptr);
 	}
 
 	wstring File::GetExtension() const
