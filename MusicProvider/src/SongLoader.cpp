@@ -84,7 +84,9 @@ namespace MusicProvider
 
 		if (result.GetTitle().length() == 0)
 		{
-			result.SetTitle(file.GetName());
+			auto fileName = file.GetName();
+			std::replace(std::begin(fileName), std::end(fileName), '_', ' ');
+			result.SetTitle(fileName);
 		}
 
 		return result;
