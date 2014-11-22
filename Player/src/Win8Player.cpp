@@ -88,8 +88,7 @@ namespace Player
 			result = ::MFCreateMFByteStreamOnStreamEx(pStreamUnk.Get(), &pMFStream);
 			ARC_ThrowIfFailed(result);
 
-			//CComBSTR path = stream.songData.filePath.c_str();
-			CComBSTR path = "test.alac";
+			CComBSTR path = stream.songData.filePath.c_str();
 			result = m_mediaEngine->SetSourceFromByteStream(pMFStream.Get(), path);
 			ARC_ThrowIfFailed(result);
 		}
@@ -126,6 +125,14 @@ namespace Player
 
 	HRESULT MediaEngineNotify::EventNotify(_In_ DWORD event, _In_ DWORD_PTR param1, _In_ DWORD param2)
 	{
+		// TODO::JT
+		switch (event)
+		{
+		case MF_MEDIA_ENGINE_EVENT_PLAYING :
+			break;
+		case MF_MEDIA_ENGINE_EVENT_ENDED:
+			break;
+		}
 		ARC_ASSERT(event != MF_MEDIA_ENGINE_EVENT_ERROR);
 
 		return S_OK;
