@@ -1,0 +1,8 @@
+package Arcusical.Web;
+
+message CachedCrawl
+{
+	repeated string checkedUrls = 1;
+	repeated string uncheckedUrls = 2;
+	repeated string allFoundUrls = 3;
+}

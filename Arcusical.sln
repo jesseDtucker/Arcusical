@@ -56,6 +56,12 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "WinrtMediaEngine", "WinrtMe
 		{528BEFE7-F405-436E-B1F6-3E86D296AA44} = {528BEFE7-F405-436E-B1F6-3E86D296AA44}
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "WebCrawler", "WebCrawler\WebCrawler.vcxproj", "{CEEFB915-9D34-4515-B4C7-155CD41363DD}"
+	ProjectSection(ProjectDependencies) = postProject
+		{D5C20956-C4C0-4549-AD72-92AC37D6120B} = {D5C20956-C4C0-4549-AD72-92AC37D6120B}
+		{528BEFE7-F405-436E-B1F6-3E86D296AA44} = {528BEFE7-F405-436E-B1F6-3E86D296AA44}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|ARM = Debug|ARM
@@ -285,6 +291,24 @@ Global
 		{0ED4BA89-2570-4236-AE8B-39689A79700A}.Release|Win32.Build.0 = Release|Win32
 		{0ED4BA89-2570-4236-AE8B-39689A79700A}.Release|x64.ActiveCfg = Release|x64
 		{0ED4BA89-2570-4236-AE8B-39689A79700A}.Release|x64.Build.0 = Release|x64
+		{CEEFB915-9D34-4515-B4C7-155CD41363DD}.Debug|ARM.ActiveCfg = Debug|ARM
+		{CEEFB915-9D34-4515-B4C7-155CD41363DD}.Debug|ARM.Build.0 = Debug|ARM
+		{CEEFB915-9D34-4515-B4C7-155CD41363DD}.Debug|Win32.ActiveCfg = Debug|Win32
+		{CEEFB915-9D34-4515-B4C7-155CD41363DD}.Debug|Win32.Build.0 = Debug|Win32
+		{CEEFB915-9D34-4515-B4C7-155CD41363DD}.Debug|x64.ActiveCfg = Debug|x64
+		{CEEFB915-9D34-4515-B4C7-155CD41363DD}.Debug|x64.Build.0 = Debug|x64
+		{CEEFB915-9D34-4515-B4C7-155CD41363DD}.DebugWithCodeAnalysis|ARM.ActiveCfg = Debug|ARM
+		{CEEFB915-9D34-4515-B4C7-155CD41363DD}.DebugWithCodeAnalysis|ARM.Build.0 = Debug|ARM
+		{CEEFB915-9D34-4515-B4C7-155CD41363DD}.DebugWithCodeAnalysis|Win32.ActiveCfg = Debug|Win32
+		{CEEFB915-9D34-4515-B4C7-155CD41363DD}.DebugWithCodeAnalysis|Win32.Build.0 = Debug|Win32
+		{CEEFB915-9D34-4515-B4C7-155CD41363DD}.DebugWithCodeAnalysis|x64.ActiveCfg = Debug|x64
+		{CEEFB915-9D34-4515-B4C7-155CD41363DD}.DebugWithCodeAnalysis|x64.Build.0 = Debug|x64
+		{CEEFB915-9D34-4515-B4C7-155CD41363DD}.Release|ARM.ActiveCfg = Release|ARM
+		{CEEFB915-9D34-4515-B4C7-155CD41363DD}.Release|ARM.Build.0 = Release|ARM
+		{CEEFB915-9D34-4515-B4C7-155CD41363DD}.Release|Win32.ActiveCfg = Release|Win32
+		{CEEFB915-9D34-4515-B4C7-155CD41363DD}.Release|Win32.Build.0 = Release|Win32
+		{CEEFB915-9D34-4515-B4C7-155CD41363DD}.Release|x64.ActiveCfg = Release|x64
+		{CEEFB915-9D34-4515-B4C7-155CD41363DD}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
