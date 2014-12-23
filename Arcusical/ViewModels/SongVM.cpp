@@ -107,7 +107,7 @@ namespace ViewModel {
 		ARC_ASSERT(player != nullptr);
 		if (player != nullptr)
 		{
-			isPlaying = player->GetIsPlaying() && player->GetCurrentSong() == this->GetModel();
+			isPlaying = player->GetIsPlaying() && *player->GetCurrentSong() == *this->GetModel();
 		}
 
 		return isPlaying;
