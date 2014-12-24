@@ -4,6 +4,7 @@
 #include <unordered_set>
 
 #include "Delegate.hpp"
+#include "Subscription.hpp"
 
 namespace Util
 {
@@ -14,10 +15,10 @@ namespace Util
 		MulticastDelegate() = default;
 
 		template<typename... Args>
-		void operator()(Args&&... args);
+		void operator()(Args&&... args) const;
 
-		void operator+=(const Delegate<T>& rhs);
-		Delegate<T> operator+=(const std::function<T>& rhs);
+		Subscription operator+=(const Delegate<T>& rhs);
+		Subscription operator+=(const std::function<T>& rhs);
 		void operator-=(const Delegate<T>& rhs);
 	private:
 		std::unordered_set<Delegate<T>> m_delegates;
@@ -29,7 +30,7 @@ namespace Util
 
 	template<typename T>
 	template<typename... Args>
-	void MulticastDelegate<T>::operator()(Args&&... args)
+	void MulticastDelegate<T>::operator()(Args&&... args) const
 	{
 		for (auto del : m_delegates)
 		{
@@ -38,17 +39,18 @@ namespace Util
 	}
 
 	template<typename T>
-	void MulticastDelegate<T>::operator+=(const Delegate<T>& rhs)
+	Subscription MulticastDelegate<T>::operator+=(const Delegate<T>& rhs)
 	{
+		Subscription sub([rhs, this](){ (*this) -= rhs; });
 		m_delegates.insert(rhs);
+		return sub;
 	}
 
 	template<typename T>
-	Delegate<T> MulticastDelegate<T>::operator+=(const std::function<T>& rhs)
+	Subscription MulticastDelegate<T>::operator+=(const std::function<T>& rhs)
 	{
-		Delegate<T> result(rhs);
-		(*this) += result;
-		return result;
+		Delegate<T> del(rhs);
+		return ((*this) += del);
 	}
 
 	template<typename T>

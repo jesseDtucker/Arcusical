@@ -24,6 +24,7 @@ namespace Player
 		, m_factory(nullptr)
 		, m_attributes(nullptr)
 		, m_isCurrentSongSetForPlay(false)
+		, m_mediaEngineNotify()
 	{
 		ComPtr<IMFMediaEngine> engine;
 
@@ -57,6 +58,8 @@ namespace Player
 
 		m_extensionManager = ref new MediaExtensionManager();
 		m_extensionManager->RegisterAudioDecoder("ALACDecoder.ALACDecoder", alacInputId, alacOutputId);
+
+		m_mediaEngineNotify.SetPlayer(this);
 	}
 
 	Win8Player::~Win8Player()
@@ -123,19 +126,55 @@ namespace Player
 		return &m_currentSong;
 	}
 
+	double Win8Player::GetCurrentTime()
+	{
+		return m_mediaEngine->GetCurrentTime();
+	}
+
+	double Win8Player::GetDuration()
+	{
+		return m_mediaEngine->GetDuration();
+	}
+
+	//////////////////////////////////////////////////////////////////////////
+	//
+	//	Media Engine Notify
+	// 
+	//////////////////////////////////////////////////////////////////////////
+
 	HRESULT MediaEngineNotify::EventNotify(_In_ DWORD event, _In_ DWORD_PTR param1, _In_ DWORD param2)
 	{
-		// TODO::JT
-		switch (event)
+		if (m_player != nullptr)
 		{
-		case MF_MEDIA_ENGINE_EVENT_PLAYING :
-			break;
-		case MF_MEDIA_ENGINE_EVENT_ENDED:
-			break;
+			switch (event)
+			{
+			case MF_MEDIA_ENGINE_EVENT_PLAYING:
+				m_player->GetPlaying()();
+				break;
+			case MF_MEDIA_ENGINE_EVENT_PAUSE:
+				m_player->GetPaused()();
+				break;
+			case MF_MEDIA_ENGINE_EVENT_ENDED:
+				m_player->GetEnded()();
+				break;
+			case MF_MEDIA_ENGINE_EVENT_TIMEUPDATE:
+				m_player->GetTimeUpdate()(m_player->GetCurrentTime());
+				break;
+			case MF_MEDIA_ENGINE_EVENT_DURATIONCHANGE:
+				m_player->GetDurationChanged()(m_player->GetDuration());
+				break;
+			}
 		}
+		
 		ARC_ASSERT(event != MF_MEDIA_ENGINE_EVENT_ERROR);
 
 		return S_OK;
+	}
+
+	void MediaEngineNotify::SetPlayer(Win8Player* player)
+	{
+		ARC_ASSERT(player != nullptr);
+		m_player = player;
 	}
 
 	ULONG MediaEngineNotify::AddRef()

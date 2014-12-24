@@ -18,9 +18,14 @@ namespace Arcusical
 	}
 namespace Player
 {
+	class Win8Player;
+
 	class MediaEngineNotify : public IMFMediaEngineNotify
 	{
 	public:
+
+		void SetPlayer(Win8Player* player);
+
 		// IMFMediaEngineNotify + IUnknown interface
 		virtual HRESULT STDMETHODCALLTYPE EventNotify
 			(
@@ -38,6 +43,7 @@ namespace Player
 
 	private:
 		std::atomic<ULONG> m_refCount = 1;
+		Win8Player* m_player = nullptr;
 	};
 
 	class Win8Player final : public IPlayer
@@ -51,6 +57,9 @@ namespace Player
 
 		virtual void Play() override;
 		virtual void Stop() override;
+
+		virtual double GetCurrentTime() override;
+		virtual double GetDuration() override;
 
 	private:
 		void PlayNativeSong(Model::SongStream& stream);

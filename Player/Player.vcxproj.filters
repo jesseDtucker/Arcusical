@@ -25,12 +25,18 @@
     <ClInclude Include="src\Win8Player.hpp">
       <Filter>src</Filter>
     </ClInclude>
+    <ClInclude Include="include\Playlist.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\pch.cpp">
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\Win8Player.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Playlist.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>

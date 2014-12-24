@@ -342,6 +342,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="include\IPlayer.hpp" />
+    <ClInclude Include="include\Playlist.hpp" />
     <ClInclude Include="src\pch.h" />
     <ClInclude Include="src\targetver.h" />
     <ClInclude Include="src\Win8Player.hpp" />
@@ -358,6 +359,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='DebugWithCodeAnalysis|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="src\Playlist.cpp" />
     <ClCompile Include="src\Win8Player.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
