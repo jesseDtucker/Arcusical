@@ -13,6 +13,8 @@
 #include <vector>
 
 #include "IMusicProvider.hpp"
+#include "LocalMusicCache.hpp"
+#include "MusicFinder.hpp"
 #include "MusicTypes.hpp"
 #include "SongLoader.hpp"
 
@@ -23,11 +25,6 @@ namespace FileSystem
 
 namespace Arcusical
 {
-namespace LocalMusicStore
-{
-	class LocalMusicCache;
-	class MusicFinder;
-}
 namespace Model
 {
 	class Song;
@@ -46,6 +43,7 @@ namespace MusicProvider
 		MusicProvider();
 		virtual MusicProviderSubscription SubscribeSongs(SongsChangedCallback callback) override;
 		virtual MusicProviderSubscription SubscribeAlbums(AlbumsChangedCallback callback) override;
+		virtual SongSelector* GetSongSelector() override;
 	private:
 
 		void Unsubscribe(SongsChangedCallback callback);
@@ -67,8 +65,9 @@ namespace MusicProvider
 		std::mutex m_songCallbackLock;
 
 		std::shared_ptr<SongIdMapper> m_songMapper;
-		std::shared_ptr<LocalMusicStore::LocalMusicCache> m_musicCache;
-		std::shared_ptr<LocalMusicStore::MusicFinder> m_musicFinder;
+		std::unique_ptr<LocalMusicStore::LocalMusicCache> m_musicCache;
+		LocalMusicStore::MusicFinder m_musicFinder;
+		SongSelector m_songSelector;
 
 		MusicProviderSubscription m_albumSubscription;
 

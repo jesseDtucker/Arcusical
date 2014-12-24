@@ -1,9 +1,8 @@
-#include "pch.h"
-
 #include <cctype>
 #include <codecvt>
 #include <memory>
 #include <future>
+#include <vector>
 
 #include "Album.hpp"
 #include "IFile.hpp"
@@ -27,15 +26,18 @@ namespace MusicProvider
 
 	MusicProvider::MusicProvider()
 		: m_songCallbackSet()
+		, m_musicCache(nullptr)
+		, m_musicFinder()
+		, m_songSelector(nullptr)
 	{
 		SongIdMapper::GetSongsCall getLocalSongs = [this]()
 		{ 
-			return this->m_musicCache->GetLocalSongs().get();
+			return this->m_musicCache->GetLocalSongs();
 		};
 
 		m_songMapper = std::make_shared<SongIdMapper>(getLocalSongs);
-		m_musicFinder = std::make_shared<LocalMusicStore::MusicFinder>();
-		m_musicCache = std::make_shared<LocalMusicStore::LocalMusicCache>(std::shared_ptr<Arcusical::Model::IAlbumToSongMapper>(m_songMapper));
+		m_musicCache = std::make_unique<LocalMusicStore::LocalMusicCache>(m_songMapper);
+		m_songSelector = { m_musicCache.get() };
 	}
 
 	MusicProviderSubscription MusicProvider::SubscribeSongs(SongsChangedCallback callback)
@@ -56,7 +58,7 @@ namespace MusicProvider
 			}
 			else
 			{
-				callback(*m_musicCache->GetLocalSongs().get());
+				callback(*m_musicCache->GetLocalSongs());
 			}
 		}
 
@@ -81,11 +83,16 @@ namespace MusicProvider
 			}
 			else
 			{
-				callback(*m_musicCache->GetLocalAlbums().get());
+				callback(*m_musicCache->GetLocalAlbums());
 			}
 		}
 
 		return subscription;
+	}
+
+	SongSelector* MusicProvider::GetSongSelector()
+	{
+		return &m_songSelector;
 	}
 
 	void MusicProvider::Unsubscribe(SongsChangedCallback callback)
@@ -109,14 +116,17 @@ namespace MusicProvider
 		// 4) Check remote - Publish // TODO::JT will do this later
 
 		// kick off a concurrent load from disk
-		auto musicFinderFuture = m_musicFinder->FindSongs();
+		auto musicFinderFuture = m_musicFinder.FindSongs();
 
 		// and publish what we have in the cache
 		PublishSongs();
 
-		auto songs = m_musicCache->GetLocalSongs().get();
+		// intentionally taking a copy of the cache here because we don't want to hold the lock
+		// the merge can take a very long time, and would block any access to the cache until we
+		// are done. Taking a local copy allows the lock to release right away.
+		auto songs = *m_musicCache->GetLocalSongs();
 		auto musicFinderResults = musicFinderFuture.get();
-		if (MergeSongCollections(*songs, musicFinderResults) == true)
+		if (MergeSongCollections(songs, musicFinderResults) == true)
 		{
 			// then some songs were merged, we need to republish!
 			PublishSongs();
@@ -131,7 +141,7 @@ namespace MusicProvider
 		// now subscribe to the music search service
 		std::function<void(Model::SongCollection&)> songsCallback = [this](Model::SongCollection& localSongs)
 		{
-			auto albums = m_musicCache->GetLocalAlbums().get();
+			auto albums = m_musicCache->GetLocalAlbums();
 			if (MergeAlbumCollections(*albums, localSongs))
 			{
 				PublishAlbums();
@@ -439,7 +449,7 @@ namespace MusicProvider
 
 	void MusicProvider::PublishSongs()
 	{
-		auto songs = *m_musicCache->GetLocalSongs().get();
+		auto songs = *m_musicCache->GetLocalSongs();
 
 		std::unique_lock<std::mutex> callbackLock(m_songCallbackLock);
 		for (auto& callback : m_songCallbackSet)
@@ -450,7 +460,7 @@ namespace MusicProvider
 
 	void MusicProvider::PublishAlbums()
 	{
-		auto albums = *m_musicCache->GetLocalAlbums().get();
+		auto albums = *m_musicCache->GetLocalAlbums();
 
 		std::unique_lock<std::mutex> callbackLock(m_albumCallbackLock);
 		for (auto& callback : m_albumCallbackSet)

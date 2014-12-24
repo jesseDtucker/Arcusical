@@ -74,6 +74,7 @@ namespace Player
 
 		Windows::Media::MediaExtensionManager^ m_extensionManager;
 		
+		friend MediaEngineNotify;
 	};
 }
 }

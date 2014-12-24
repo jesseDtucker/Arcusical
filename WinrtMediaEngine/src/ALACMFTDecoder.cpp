@@ -1,7 +1,7 @@
-#include "pch.h"
-
+#include <functional>
 #include <wrl\module.h>
 #include <Mferror.h>
+#include "mfapi.h"
 
 #include "ALACBitUtilities.h"
 #include "ALACMFTDecoder.hpp"

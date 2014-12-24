@@ -18,6 +18,7 @@ namespace Model
 	class Song;
 	class IAlbumToSongMapper;
 
+	// TODO::JT potentially bad ptr....
 	typedef std::unordered_map<boost::uuids::uuid, Song*> SongPtrCollection;
 
 	class Album final

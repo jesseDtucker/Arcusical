@@ -13,21 +13,22 @@
 
 // needed for properties that have multiple template arguments in their type
 #define COMMA ,
+#define NOT_CONST // used for non const getters that shouldn't have setters.
 
-#define PROP_GET_EX(dataType, externalName, internalName)	\
+#define PROP_GET_EX(dataType, externalName, internalName, constModifier)	\
 protected:													\
 dataType internalName;										\
 public:														\
-const dataType& Get ## externalName()	const				\
+constModifier dataType& Get ## externalName()	constModifier		\
 {															\
 	return internalName;									\
 }															\
 
 
-#define PROP_GET(dataType, externalName) PROP_GET_EX(dataType, externalName, m_ ## externalName)
+#define PROP_GET(dataType, externalName) PROP_GET_EX(dataType, externalName, m_ ## externalName, const)
 
-#define PROP_SET_AND_GET_EX(dataType, externalName, internalName)	\
-PROP_GET_EX(dataType, externalName, internalName)					\
+#define PROP_SET_AND_GET_EX(dataType, externalName, internalName, constModifier)	\
+PROP_GET_EX(dataType, externalName, internalName, constModifier)					\
 void Set ## externalName(dataType value)							\
 {																	\
 	internalName = value;											\
@@ -37,7 +38,7 @@ dataType& GetMutable ## externalName()								\
 	return internalName;											\
 }																	\
 
-#define PROP_SET_AND_GET(dataType, externalName) PROP_SET_AND_GET_EX(dataType, externalName, m_ ## externalName)
+#define PROP_SET_AND_GET(dataType, externalName) PROP_SET_AND_GET_EX(dataType, externalName, m_ ## externalName, const)
 
 #define PROP_SET_AND_GET_WINRT(dataType, externalName)	\
 private:												\

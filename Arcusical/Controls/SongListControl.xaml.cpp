@@ -6,7 +6,6 @@
 #include "pch.h"
 #include "SongListControl.xaml.h"
 
-#include "Commands/CommandBase.hpp"
 #include "Events/EventService.hpp"
 #include "Events/SongSelectedEvent.hpp"
 

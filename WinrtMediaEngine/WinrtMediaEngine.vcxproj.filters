@@ -13,17 +13,11 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="pch.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="src\ALACMFTDecoder.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="pch.h">
-      <Filter>include</Filter>
-    </ClInclude>
     <ClInclude Include="include\ALACMFTDecoder.hpp">
       <Filter>include</Filter>
     </ClInclude>

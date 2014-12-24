@@ -187,7 +187,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <CompileAsWinRT>true</CompileAsWinRT>
       <SDLCheck>true</SDLCheck>
       <AdditionalOptions>-D_SCL_SECURE_NO_WARNINGS /d2Zi+ %(AdditionalOptions)</AdditionalOptions>
@@ -211,7 +211,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DebugWithCodeAnalysis|Win32'">
     <ClCompile>
-      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <CompileAsWinRT>true</CompileAsWinRT>
       <SDLCheck>true</SDLCheck>
       <AdditionalOptions>-D_SCL_SECURE_NO_WARNINGS /d2Zi+ %(AdditionalOptions)</AdditionalOptions>
@@ -235,7 +235,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <CompileAsWinRT>true</CompileAsWinRT>
       <SDLCheck>true</SDLCheck>
       <AdditionalOptions>-D_SCL_SECURE_NO_WARNINGS /d2Zi+ %(AdditionalOptions)</AdditionalOptions>
@@ -254,7 +254,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|arm'">
     <ClCompile>
-      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <CompileAsWinRT>true</CompileAsWinRT>
       <SDLCheck>true</SDLCheck>
       <AdditionalOptions>-D_SCL_SECURE_NO_WARNINGS /d2Zi+ %(AdditionalOptions)</AdditionalOptions>
@@ -273,7 +273,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DebugWithCodeAnalysis|arm'">
     <ClCompile>
-      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <CompileAsWinRT>true</CompileAsWinRT>
       <SDLCheck>true</SDLCheck>
       <AdditionalOptions>-D_SCL_SECURE_NO_WARNINGS /d2Zi+ %(AdditionalOptions)</AdditionalOptions>
@@ -292,7 +292,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|arm'">
     <ClCompile>
-      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <CompileAsWinRT>true</CompileAsWinRT>
       <SDLCheck>true</SDLCheck>
       <AdditionalOptions>-D_SCL_SECURE_NO_WARNINGS /d2Zi+ %(AdditionalOptions)</AdditionalOptions>
@@ -311,7 +311,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <CompileAsWinRT>true</CompileAsWinRT>
       <SDLCheck>true</SDLCheck>
       <AdditionalOptions>-D_SCL_SECURE_NO_WARNINGS /d2Zi+ %(AdditionalOptions)</AdditionalOptions>
@@ -330,7 +330,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DebugWithCodeAnalysis|x64'">
     <ClCompile>
-      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <CompileAsWinRT>true</CompileAsWinRT>
       <SDLCheck>true</SDLCheck>
       <AdditionalOptions>-D_SCL_SECURE_NO_WARNINGS /d2Zi+ %(AdditionalOptions)</AdditionalOptions>
@@ -349,7 +349,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <CompileAsWinRT>true</CompileAsWinRT>
       <SDLCheck>true</SDLCheck>
       <AdditionalOptions>-D_SCL_SECURE_NO_WARNINGS /d2Zi+ %(AdditionalOptions)</AdditionalOptions>
@@ -368,27 +368,17 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="include\IMusicProvider.hpp" />
+    <ClInclude Include="include\SongSelector.hpp" />
     <ClInclude Include="src\SongIdMapper.hpp" />
     <ClInclude Include="src\MusicProvider.hpp" />
-    <ClInclude Include="src\pch.h" />
     <ClInclude Include="src\SongLoader.hpp" />
     <ClInclude Include="src\targetver.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\MusicProvider.cpp" />
-    <ClCompile Include="src\pch.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='DebugWithCodeAnalysis|Win32'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='DebugWithCodeAnalysis|ARM'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='DebugWithCodeAnalysis|x64'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
-    </ClCompile>
     <ClCompile Include="src\SongIdMapper.cpp" />
     <ClCompile Include="src\SongLoader.cpp" />
+    <ClCompile Include="src\SongSelector.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

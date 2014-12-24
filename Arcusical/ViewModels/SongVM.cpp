@@ -4,8 +4,7 @@
 #include <unordered_map>
 
 #include "IPlayer.hpp"
-#include "Commands/CommandBase.hpp"
-#include "Commands/CommandWrapper.hpp"
+#include "Playlist.hpp"
 #include "Song.hpp"
 #include "SongVM.hpp"
 #include "Utility/DispatcherHelper.hpp"
@@ -25,29 +24,15 @@ namespace ViewModel {
 
 	SongVM::SongVM(const Model::Song& song)
 		: m_song(song)
-		, m_playSongCommand([this](SongVM^ selectedSong){ ARC_ASSERT( selectedSong == nullptr || selectedSong == this); this->Play(); })
-		, m_pauseSongCommand([this](SongVM^ selectedSong){ ARC_ASSERT(selectedSong == nullptr || selectedSong == this); this->Pause(); })
 	{
 		Title = ref new Platform::String(m_song.GetTitle().c_str());
 		Artist = ref new Platform::String(m_song.GetArtist().c_str());
 		Length = m_song.GetLength();
-		PlaySongCmd = ref new Commands::CommandWrapper(m_playSongCommand);
-		PauseSongCmd = ref new Commands::CommandWrapper(m_pauseSongCommand);
 	}
 
 	Model::Song* SongVM::GetModel()
 	{
 		return &m_song;
-	}
-
-	Commands::PlaySongCommand& SongVM::PlaySong()
-	{
-		return m_playSongCommand;
-	}
-
-	Commands::PlaySongCommand& SongVM::PauseSong()
-	{
-		return m_pauseSongCommand;
 	}
 
 	SongStreamVM^ SongVM::GetMediaStream()
@@ -67,12 +52,11 @@ namespace ViewModel {
 	{
 		std::async([this]()
 		{
-			auto player = Player::PlayerLocator::ResolveService().lock();
-			ARC_ASSERT(player != nullptr)
-			if (player != nullptr)
+			auto playList = Player::PlaylistLocator::ResolveService().lock();
+			ARC_ASSERT(playList != nullptr);
+			if (playList != nullptr)
 			{
-				player->SetSong(m_song);
-				player->Play();
+				playList->Enqueue(m_song);
 			}
 
 			DispatchToUI([this]()
@@ -87,7 +71,7 @@ namespace ViewModel {
 		std::async([this]()
 		{
 			auto player = Player::PlayerLocator::ResolveService().lock();
-			ARC_ASSERT(player != nullptr)
+			ARC_ASSERT(player != nullptr);
 			if (player != nullptr)
 			{
 				player->Stop();

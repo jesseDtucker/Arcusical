@@ -14,6 +14,7 @@
 
 
 #include "IMusicProvider.hpp"
+#include "Playlist.hpp"
 #include "../src/MusicProvider.hpp" // This is a hack for the time being. I need something similar to flow engine for resolving dependencies...
 #include "../src/Win8Player.hpp" // This is a hack for the time being. I need something similar to flow engine for resolving dependencies...
 
@@ -56,7 +57,9 @@ void App::SetupApplication()
 	// some of the services use COM and so should not be initialized on the UI thread
 	std::async([&]()
 	{
-		Player::PlayerLocator::RegisterSingleton(std::make_shared<Player::Win8Player>());
+		auto player = std::make_shared<Player::Win8Player>();
+		Player::PlayerLocator::RegisterSingleton(player);
+		Player::PlaylistLocator::RegisterSingleton(std::make_shared<Player::Playlist>(player.get()));
 		MusicProvider::MusicProviderLocator::RegisterSingleton(std::make_shared<MusicProvider::MusicProvider>());
 		
 		std::unique_lock<std::mutex> lckGrd(loadingLock);

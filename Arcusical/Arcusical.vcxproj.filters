@@ -47,9 +47,6 @@
     <Filter Include="Styles">
       <UniqueIdentifier>{8f76c218-587e-4eed-b77b-dea853ed827c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Commands">
-      <UniqueIdentifier>{900c3221-00bb-4d14-9fd5-7edf7096454b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Converters">
       <UniqueIdentifier>{45894702-a8ea-42a7-85aa-7be06133e59d}</UniqueIdentifier>
     </Filter>
@@ -85,14 +82,8 @@
       <Filter>ViewModels</Filter>
     </ClCompile>
     <ClCompile Include="Controls\SongPlayer.xaml.cpp" />
-    <ClCompile Include="Commands\PlaySongCommand.cpp">
-      <Filter>Commands</Filter>
-    </ClCompile>
     <ClCompile Include="Converters\IsPlayingToIcon.cpp">
       <Filter>Converters</Filter>
-    </ClCompile>
-    <ClCompile Include="Commands\CommandWrapper.cpp">
-      <Filter>Commands</Filter>
     </ClCompile>
     <ClCompile Include="Events\SongSelectedEvent.cpp">
       <Filter>Events</Filter>
@@ -135,17 +126,8 @@
       <Filter>ViewModels</Filter>
     </ClInclude>
     <ClInclude Include="Controls\SongPlayer.xaml.h" />
-    <ClInclude Include="Commands\CommandBase.hpp">
-      <Filter>Commands</Filter>
-    </ClInclude>
-    <ClInclude Include="Commands\PlaySongCommand.hpp">
-      <Filter>Commands</Filter>
-    </ClInclude>
     <ClInclude Include="Converters\IsPlayingToIconPath.hpp">
       <Filter>Converters</Filter>
-    </ClInclude>
-    <ClInclude Include="Commands\CommandWrapper.hpp">
-      <Filter>Commands</Filter>
     </ClInclude>
     <ClInclude Include="Events\EventService.hpp">
       <Filter>Events</Filter>

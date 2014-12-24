@@ -1,4 +1,6 @@
-﻿#ifndef MUSIC_FINDER_HPP
+﻿#pragma once
+#ifndef MUSIC_FINDER_HPP
+#define MUSIC_FINDER_HPP
 
 #include <vector>
 #include <future>

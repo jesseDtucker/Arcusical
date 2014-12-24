@@ -1,6 +1,7 @@
 #ifndef MULTICAST_DELEGATE_HPP
 #define MULTICAST_DELEGATE_HPP
 
+#include <memory>
 #include <unordered_set>
 
 #include "Delegate.hpp"
@@ -17,8 +18,8 @@ namespace Util
 		template<typename... Args>
 		void operator()(Args&&... args) const;
 
-		Subscription operator+=(const Delegate<T>& rhs);
-		Subscription operator+=(const std::function<T>& rhs);
+		std::unique_ptr<Subscription> operator+=(const Delegate<T>& rhs);
+		std::unique_ptr<Subscription> operator+=(const std::function<T>& rhs);
 		void operator-=(const Delegate<T>& rhs);
 	private:
 		std::unordered_set<Delegate<T>> m_delegates;
@@ -39,15 +40,15 @@ namespace Util
 	}
 
 	template<typename T>
-	Subscription MulticastDelegate<T>::operator+=(const Delegate<T>& rhs)
+	std::unique_ptr<Subscription> MulticastDelegate<T>::operator+=(const Delegate<T>& rhs)
 	{
-		Subscription sub([rhs, this](){ (*this) -= rhs; });
+		auto sub = std::make_unique<Subscription>([rhs, this](){ (*this) -= rhs; });
 		m_delegates.insert(rhs);
 		return sub;
 	}
 
 	template<typename T>
-	Subscription MulticastDelegate<T>::operator+=(const std::function<T>& rhs)
+	std::unique_ptr<Subscription> MulticastDelegate<T>::operator+=(const std::function<T>& rhs)
 	{
 		Delegate<T> del(rhs);
 		return ((*this) += del);

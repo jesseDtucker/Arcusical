@@ -1,5 +1,3 @@
-#include "pch.h"
-
 #include "Arc_Assert.hpp"
 #include "Subscription.hpp"
 

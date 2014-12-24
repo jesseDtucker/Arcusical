@@ -1,6 +1,7 @@
 #include "pch.h"
 
 #include <AudioSessionTypes.h>
+#include <future>
 #include <ppltasks.h>
 
 #include "Song.hpp"
@@ -98,8 +99,6 @@ namespace Player
 
 		result = m_mediaEngine->Play();
 		ARC_ThrowIfFailed(result);
-
-		m_IsPlaying = true;
 		m_isCurrentSongSetForPlay = true;
 	}
 
@@ -107,8 +106,6 @@ namespace Player
 	{
 		auto result = m_mediaEngine->Pause();
 		ARC_ThrowIfFailed(result);
-
-		m_IsPlaying = false;
 	}
 
 	void Win8Player::SetSong(const Model::Song& song)
@@ -144,27 +141,36 @@ namespace Player
 
 	HRESULT MediaEngineNotify::EventNotify(_In_ DWORD event, _In_ DWORD_PTR param1, _In_ DWORD param2)
 	{
-		if (m_player != nullptr)
+		std::async([this, event, param1, param2]()
 		{
-			switch (event)
+			if (m_player != nullptr)
 			{
-			case MF_MEDIA_ENGINE_EVENT_PLAYING:
-				m_player->GetPlaying()();
-				break;
-			case MF_MEDIA_ENGINE_EVENT_PAUSE:
-				m_player->GetPaused()();
-				break;
-			case MF_MEDIA_ENGINE_EVENT_ENDED:
-				m_player->GetEnded()();
-				break;
-			case MF_MEDIA_ENGINE_EVENT_TIMEUPDATE:
-				m_player->GetTimeUpdate()(m_player->GetCurrentTime());
-				break;
-			case MF_MEDIA_ENGINE_EVENT_DURATIONCHANGE:
-				m_player->GetDurationChanged()(m_player->GetDuration());
-				break;
+				switch (event)
+				{
+				case MF_MEDIA_ENGINE_EVENT_PLAYING:
+					m_player->m_IsPlaying = true;
+					m_player->m_IsPaused = false;
+					m_player->GetPlaying()();
+					break;
+				case MF_MEDIA_ENGINE_EVENT_PAUSE:
+					m_player->m_IsPlaying = false;
+					m_player->m_IsPaused = true;
+					m_player->GetPaused()();
+					break;
+				case MF_MEDIA_ENGINE_EVENT_ENDED:
+					m_player->m_IsPlaying = false;
+					m_player->m_IsPaused = false;
+					m_player->GetEnded()();
+					break;
+				case MF_MEDIA_ENGINE_EVENT_TIMEUPDATE:
+					m_player->GetTimeUpdate()(m_player->GetCurrentTime());
+					break;
+				case MF_MEDIA_ENGINE_EVENT_DURATIONCHANGE:
+					m_player->GetDurationChanged()(m_player->GetDuration());
+					break;
+				}
 			}
-		}
+		});
 		
 		ARC_ASSERT(event != MF_MEDIA_ENGINE_EVENT_ERROR);
 

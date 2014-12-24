@@ -168,22 +168,11 @@
         ::XamlTypeInfo::InfoProvider::XamlUserType^ userType = ref new ::XamlTypeInfo::InfoProvider::XamlUserType(this, typeName, GetXamlTypeByName(L"Object"));
         userType->KindOfType = ::Windows::UI::Xaml::Interop::TypeKind::Custom;
         userType->AddMemberName(L"IsPlaying");
-        userType->AddMemberName(L"PauseSongCmd");
-        userType->AddMemberName(L"PlaySongCmd");
         userType->AddMemberName(L"Format");
         userType->AddMemberName(L"Length");
         userType->AddMemberName(L"Artist");
         userType->AddMemberName(L"Title");
         userType->SetIsBindable();
-        userType->SetIsLocalType();
-        return userType;
-    }
-
-    if (typeName == L"Arcusical.Commands.CommandWrapper")
-    {
-        ::XamlTypeInfo::InfoProvider::XamlUserType^ userType = ref new ::XamlTypeInfo::InfoProvider::XamlUserType(this, typeName, GetXamlTypeByName(L"Object"));
-        userType->KindOfType = ::Windows::UI::Xaml::Interop::TypeKind::Custom;
-        userType->SetIsReturnTypeStub();
         userType->SetIsLocalType();
         return userType;
     }
@@ -321,44 +310,6 @@
             };
 
         xamlMember->SetIsReadOnly();
-        return xamlMember;
-    }
-
-    if (longMemberName == L"Arcusical.ViewModel.SongVM.PauseSongCmd")
-    {
-        ::XamlTypeInfo::InfoProvider::XamlMember^ xamlMember = ref new ::XamlTypeInfo::InfoProvider::XamlMember(this, L"PauseSongCmd", L"Arcusical.Commands.CommandWrapper");
-        xamlMember->Getter =
-            [](Object^ instance) -> Object^
-            {
-                auto that = (::Arcusical::ViewModel::SongVM^)instance;
-                return that->PauseSongCmd;
-            };
-
-        xamlMember->Setter =
-            [](Object^ instance, Object^ value) -> void
-            {
-                auto that = (::Arcusical::ViewModel::SongVM^)instance;
-                that->PauseSongCmd = (::Arcusical::Commands::CommandWrapper^)value;
-            };
-        return xamlMember;
-    }
-
-    if (longMemberName == L"Arcusical.ViewModel.SongVM.PlaySongCmd")
-    {
-        ::XamlTypeInfo::InfoProvider::XamlMember^ xamlMember = ref new ::XamlTypeInfo::InfoProvider::XamlMember(this, L"PlaySongCmd", L"Arcusical.Commands.CommandWrapper");
-        xamlMember->Getter =
-            [](Object^ instance) -> Object^
-            {
-                auto that = (::Arcusical::ViewModel::SongVM^)instance;
-                return that->PlaySongCmd;
-            };
-
-        xamlMember->Setter =
-            [](Object^ instance, Object^ value) -> void
-            {
-                auto that = (::Arcusical::ViewModel::SongVM^)instance;
-                that->PlaySongCmd = (::Arcusical::Commands::CommandWrapper^)value;
-            };
         return xamlMember;
     }
 

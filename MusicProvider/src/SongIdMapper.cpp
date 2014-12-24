@@ -1,5 +1,3 @@
-#include "pch.h"
-
 #include "SongIdMapper.hpp"
 
 #include <algorithm>

@@ -9,7 +9,6 @@
 #include <future>
 
 #include "Arc_Assert.hpp"
-#include "Commands/PlaySongCommand.hpp"
 #include "Events/EventService.hpp"
 #include "Events/SongSelectedEvent.hpp"
 #include "IPlayer.hpp"
@@ -51,11 +50,11 @@ void SongPlayer::PlayPauseButton_Clicked(Platform::Object^ sender, Windows::UI::
 	{
 		if (m_currentSong->IsPlaying)
 		{
-			m_currentSong->PauseSong().Execute();
+			m_currentSong->Pause();
 		}
 		else
 		{
-			m_currentSong->PlaySong().Execute();
+			m_currentSong->Play();
 		}
 	}
 }

@@ -30,10 +30,12 @@ namespace LocalMusicStore
 	class LocalMusicCache final
 	{
 	public:
-		LocalMusicCache(std::shared_ptr<Model::IAlbumToSongMapper>& songMapper);
+		LocalMusicCache(std::shared_ptr<Model::IAlbumToSongMapper> songMapper);
+		LocalMusicCache(const LocalMusicCache& rhs);
+		LocalMusicCache& operator=(const LocalMusicCache& rhs);
 
-		std::future<Model::SongCollectionPtr> GetLocalSongs();
-		std::future<Model::AlbumCollectionPtr> GetLocalAlbums();
+		Model::SongCollectionLockedPtr GetLocalSongs();
+		Model::AlbumCollectionLockedPtr GetLocalAlbums();
 
 		void ClearCache();
 		void AddToCache(const std::vector<Model::Album>& albums);
@@ -68,8 +70,8 @@ namespace LocalMusicStore
 		std::mutex m_songsLoadingLock;
 		std::mutex m_albumsLoadingLock;
 
-		std::mutex m_albumsEditLock;
-		std::mutex m_songsEditLock;
+		std::recursive_mutex m_albumsEditLock;
+		std::recursive_mutex m_songsEditLock;
 
 		std::shared_ptr<Model::IAlbumToSongMapper> m_songMapper;
 

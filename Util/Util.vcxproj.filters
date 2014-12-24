@@ -9,9 +9,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\pch.h">
-      <Filter>include</Filter>
-    </ClInclude>
     <ClInclude Include="include\targetver.h">
       <Filter>include</Filter>
     </ClInclude>
@@ -54,11 +51,11 @@
     <ClInclude Include="include\ScopeGuard.hpp">
       <Filter>include</Filter>
     </ClInclude>
+    <ClInclude Include="include\LockedPtrHelper.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\pch.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="src\Subscription.cpp">
       <Filter>src</Filter>
     </ClCompile>

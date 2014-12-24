@@ -130,61 +130,61 @@
   <PropertyGroup />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <GenerateManifest>false</GenerateManifest>
-    <IncludePath>$(ProjectDir)include;$(ProjectDir)src;$(SolutionDir)Util\include;$(SolutionDir)Model\include;$(SolutionDir)..\boost_1_56_0;$(SolutionDir)ServiceModel\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)include;$(ProjectDir)src;$(SolutionDir)Util\include;$(SolutionDir)Model\include;$(SolutionDir)..\boost_1_56_0;$(SolutionDir)ServiceModel\include;$(SolutionDir)MusicProvider\include;$(SolutionDir)LocalMusicStore\include;$(IncludePath)</IncludePath>
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\$(MSBuildProjectName)\</OutDir>
     <IntDir>$(ProjectDir)$(Platform)\$(Configuration)\$(MSBuildProjectName)\</IntDir>
     <RunCodeAnalysis>false</RunCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DebugWithCodeAnalysis|Win32'">
     <GenerateManifest>false</GenerateManifest>
-    <IncludePath>$(ProjectDir)include;$(ProjectDir)src;$(SolutionDir)Util\include;$(SolutionDir)Model\include;$(SolutionDir)..\boost_1_56_0;$(SolutionDir)ServiceModel\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)include;$(ProjectDir)src;$(SolutionDir)Util\include;$(SolutionDir)Model\include;$(SolutionDir)..\boost_1_56_0;$(SolutionDir)ServiceModel\include;$(SolutionDir)MusicProvider\include;$(SolutionDir)LocalMusicStore\include;$(IncludePath)</IncludePath>
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\$(MSBuildProjectName)\</OutDir>
     <IntDir>$(ProjectDir)$(Platform)\$(Configuration)\$(MSBuildProjectName)\</IntDir>
     <RunCodeAnalysis>true</RunCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <GenerateManifest>false</GenerateManifest>
-    <IncludePath>$(ProjectDir)include;$(ProjectDir)src;$(SolutionDir)Util\include;$(SolutionDir)Model\include;$(SolutionDir)..\boost_1_56_0;$(SolutionDir)ServiceModel\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)include;$(ProjectDir)src;$(SolutionDir)Util\include;$(SolutionDir)Model\include;$(SolutionDir)..\boost_1_56_0;$(SolutionDir)ServiceModel\include;$(SolutionDir)MusicProvider\include;$(SolutionDir)LocalMusicStore\include;$(IncludePath)</IncludePath>
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\$(MSBuildProjectName)\</OutDir>
     <IntDir>$(ProjectDir)$(Platform)\$(Configuration)\$(MSBuildProjectName)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
     <GenerateManifest>false</GenerateManifest>
-    <IncludePath>$(ProjectDir)include;$(ProjectDir)src;$(SolutionDir)Util\include;$(SolutionDir)Model\include;$(SolutionDir)..\boost_1_56_0;$(SolutionDir)ServiceModel\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)include;$(ProjectDir)src;$(SolutionDir)Util\include;$(SolutionDir)Model\include;$(SolutionDir)..\boost_1_56_0;$(SolutionDir)ServiceModel\include;$(SolutionDir)MusicProvider\include;$(SolutionDir)LocalMusicStore\include;$(IncludePath)</IncludePath>
     <IntDir>$(ProjectDir)$(Platform)\$(Configuration)\$(MSBuildProjectName)\</IntDir>
     <RunCodeAnalysis>false</RunCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DebugWithCodeAnalysis|ARM'">
     <GenerateManifest>false</GenerateManifest>
-    <IncludePath>$(ProjectDir)include;$(ProjectDir)src;$(SolutionDir)Util\include;$(SolutionDir)Model\include;$(SolutionDir)..\boost_1_56_0;$(SolutionDir)ServiceModel\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)include;$(ProjectDir)src;$(SolutionDir)Util\include;$(SolutionDir)Model\include;$(SolutionDir)..\boost_1_56_0;$(SolutionDir)ServiceModel\include;$(SolutionDir)MusicProvider\include;$(SolutionDir)LocalMusicStore\include;$(IncludePath)</IncludePath>
     <IntDir>$(ProjectDir)$(Platform)\$(Configuration)\$(MSBuildProjectName)\</IntDir>
     <RunCodeAnalysis>true</RunCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
     <GenerateManifest>false</GenerateManifest>
-    <IncludePath>$(ProjectDir)include;$(ProjectDir)src;$(SolutionDir)Util\include;$(SolutionDir)Model\include;$(SolutionDir)..\boost_1_56_0;$(SolutionDir)ServiceModel\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)include;$(ProjectDir)src;$(SolutionDir)Util\include;$(SolutionDir)Model\include;$(SolutionDir)..\boost_1_56_0;$(SolutionDir)ServiceModel\include;$(SolutionDir)MusicProvider\include;$(SolutionDir)LocalMusicStore\include;$(IncludePath)</IncludePath>
     <IntDir>$(ProjectDir)$(Platform)\$(Configuration)\$(MSBuildProjectName)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <GenerateManifest>false</GenerateManifest>
-    <IncludePath>$(ProjectDir)include;$(ProjectDir)src;$(SolutionDir)Util\include;$(SolutionDir)Model\include;$(SolutionDir)..\boost_1_56_0;$(SolutionDir)ServiceModel\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)include;$(ProjectDir)src;$(SolutionDir)Util\include;$(SolutionDir)Model\include;$(SolutionDir)..\boost_1_56_0;$(SolutionDir)ServiceModel\include;$(SolutionDir)MusicProvider\include;$(SolutionDir)LocalMusicStore\include;$(IncludePath)</IncludePath>
     <IntDir>$(ProjectDir)$(Platform)\$(Configuration)\$(MSBuildProjectName)\</IntDir>
     <RunCodeAnalysis>false</RunCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DebugWithCodeAnalysis|x64'">
     <GenerateManifest>false</GenerateManifest>
-    <IncludePath>$(ProjectDir)include;$(ProjectDir)src;$(SolutionDir)Util\include;$(SolutionDir)Model\include;$(SolutionDir)..\boost_1_56_0;$(SolutionDir)ServiceModel\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)include;$(ProjectDir)src;$(SolutionDir)Util\include;$(SolutionDir)Model\include;$(SolutionDir)..\boost_1_56_0;$(SolutionDir)ServiceModel\include;$(SolutionDir)MusicProvider\include;$(SolutionDir)LocalMusicStore\include;$(IncludePath)</IncludePath>
     <IntDir>$(ProjectDir)$(Platform)\$(Configuration)\$(MSBuildProjectName)\</IntDir>
     <RunCodeAnalysis>true</RunCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <GenerateManifest>false</GenerateManifest>
-    <IncludePath>$(ProjectDir)include;$(ProjectDir)src;$(SolutionDir)Util\include;$(SolutionDir)Model\include;$(SolutionDir)..\boost_1_56_0;$(SolutionDir)ServiceModel\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)include;$(ProjectDir)src;$(SolutionDir)Util\include;$(SolutionDir)Model\include;$(SolutionDir)..\boost_1_56_0;$(SolutionDir)ServiceModel\include;$(SolutionDir)MusicProvider\include;$(SolutionDir)LocalMusicStore\include;$(IncludePath)</IncludePath>
     <IntDir>$(ProjectDir)$(Platform)\$(Configuration)\$(MSBuildProjectName)\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <CompileAsWinRT>true</CompileAsWinRT>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_SCL_SECURE_NO_WARNINGS;_UNICODE;UNICODE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -205,7 +205,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DebugWithCodeAnalysis|Win32'">
     <ClCompile>
-      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <CompileAsWinRT>true</CompileAsWinRT>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_SCL_SECURE_NO_WARNINGS;_UNICODE;UNICODE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -226,7 +226,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <CompileAsWinRT>true</CompileAsWinRT>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_SCL_SECURE_NO_WARNINGS;_UNICODE;UNICODE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -242,7 +242,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|arm'">
     <ClCompile>
-      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <CompileAsWinRT>true</CompileAsWinRT>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_SCL_SECURE_NO_WARNINGS;_UNICODE;UNICODE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -259,7 +259,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DebugWithCodeAnalysis|arm'">
     <ClCompile>
-      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <CompileAsWinRT>true</CompileAsWinRT>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_SCL_SECURE_NO_WARNINGS;_UNICODE;UNICODE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -276,7 +276,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|arm'">
     <ClCompile>
-      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <CompileAsWinRT>true</CompileAsWinRT>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_SCL_SECURE_NO_WARNINGS;_UNICODE;UNICODE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -292,7 +292,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <CompileAsWinRT>true</CompileAsWinRT>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_SCL_SECURE_NO_WARNINGS;_UNICODE;UNICODE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -309,7 +309,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DebugWithCodeAnalysis|x64'">
     <ClCompile>
-      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <CompileAsWinRT>true</CompileAsWinRT>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_SCL_SECURE_NO_WARNINGS;_UNICODE;UNICODE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -326,7 +326,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <CompileAsWinRT>true</CompileAsWinRT>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_SCL_SECURE_NO_WARNINGS;_UNICODE;UNICODE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -343,22 +343,10 @@
   <ItemGroup>
     <ClInclude Include="include\IPlayer.hpp" />
     <ClInclude Include="include\Playlist.hpp" />
-    <ClInclude Include="src\pch.h" />
     <ClInclude Include="src\targetver.h" />
     <ClInclude Include="src\Win8Player.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\pch.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='DebugWithCodeAnalysis|Win32'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='DebugWithCodeAnalysis|ARM'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='DebugWithCodeAnalysis|x64'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
-    </ClCompile>
     <ClCompile Include="src\Playlist.cpp" />
     <ClCompile Include="src\Win8Player.cpp" />
   </ItemGroup>

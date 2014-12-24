@@ -9,6 +9,7 @@
 #include "IFolder.hpp"
 #include "IFile.hpp"
 #include "IAlbumToSongMapper.hpp"
+#include "LockedPtrHelper.hpp"
 #include "Storage.hpp"
 #include "Song.hpp"
 
@@ -64,7 +65,7 @@ namespace Arcusical
 			{ Model::ContainerType::WAV,	LocalMusicStore::WAV_CONTAINER }
 		};
 
-		LocalMusicCache::LocalMusicCache(std::shared_ptr<Model::IAlbumToSongMapper>& songMapper)
+		LocalMusicCache::LocalMusicCache(std::shared_ptr<Model::IAlbumToSongMapper> songMapper)
 			: m_songMapper(songMapper)
 			, m_localSongs()
 			, m_localAlbums()
@@ -75,9 +76,8 @@ namespace Arcusical
 			std::async([this](){this->LoadAlbums(); });
 		}
 
-		std::future<Model::SongCollectionPtr> LocalMusicCache::GetLocalSongs()
+		Model::SongCollectionLockedPtr LocalMusicCache::GetLocalSongs()
 		{
-			auto result = std::async([this]()
 			{
 				std::unique_lock<std::mutex> lock(m_songsLoadingLock);
 				if (!m_areSongsLoaded)
@@ -85,16 +85,13 @@ namespace Arcusical
 					// if we haven't loaded, then wait until we have
 					m_songLoading.wait(lock);
 				}
+			}
 
-				return &m_localSongs;
-			});
-
-			return result;
+			return CreateLockedPointer(m_songsEditLock, &m_localSongs);
 		}
 
-		std::future<Model::AlbumCollectionPtr> LocalMusicCache::GetLocalAlbums()
+		Model::AlbumCollectionLockedPtr LocalMusicCache::GetLocalAlbums()
 		{
-			auto result = std::async([this]()
 			{
 				std::unique_lock<std::mutex> lock(m_albumsLoadingLock);
 				if (!m_areAlbumsLoaded)
@@ -102,17 +99,15 @@ namespace Arcusical
 					// if we haven't loaded, then wait until we have
 					m_albumsLoading.wait(lock);
 				}
+			}
 
-				return &m_localAlbums;
-			});
-
-			return result;
+			return CreateLockedPointer(m_albumsEditLock, &m_localAlbums);
 		}
 
 		void LocalMusicCache::ClearCache()
 		{
-			std::lock_guard<std::mutex> songGuard(m_songsEditLock);
-			std::lock_guard<std::mutex> albumGuard(m_albumsEditLock);
+			std::lock_guard<std::recursive_mutex> songGuard(m_songsEditLock);
+			std::lock_guard<std::recursive_mutex> albumGuard(m_albumsEditLock);
 
 			m_localAlbums.clear();
 			m_localSongs.clear();
@@ -120,7 +115,7 @@ namespace Arcusical
 
 		void LocalMusicCache::AddToCache(const std::vector<Model::Album>& albums)
 		{
-			std::lock_guard<std::mutex> albumGuard(m_albumsEditLock);
+			std::lock_guard<std::recursive_mutex> albumGuard(m_albumsEditLock);
 
 			for (auto& album : albums)
 			{
@@ -130,7 +125,7 @@ namespace Arcusical
 
 		void LocalMusicCache::AddToCache(const std::vector<Model::Song>& songs)
 		{
-			std::lock_guard<std::mutex> songGuard(m_songsEditLock);
+			std::lock_guard<std::recursive_mutex> songGuard(m_songsEditLock);
 
 			for (auto& song : songs)
 			{
@@ -141,7 +136,7 @@ namespace Arcusical
 
 		void LocalMusicCache::LoadAlbums()
 		{
-			std::lock_guard<std::mutex> albumGuard(m_albumsEditLock);
+			std::lock_guard<std::recursive_mutex> albumGuard(m_albumsEditLock);
 
 			if (Storage::ApplicationFolder().ContainsFile(ALBUM_CACHE_FILE))
 			{
@@ -167,7 +162,7 @@ namespace Arcusical
 
 		void LocalMusicCache::LoadSongs()
 		{
-			std::lock_guard<std::mutex> songGuard(m_songsEditLock);
+			std::lock_guard<std::recursive_mutex> songGuard(m_songsEditLock);
 
 			if (Storage::ApplicationFolder().ContainsFile(SONG_CACHE_FILE))
 			{
@@ -198,7 +193,7 @@ namespace Arcusical
 			decltype(m_localAlbums) localAlbums;
 
 			{
-				std::lock_guard<std::mutex> albumGuard(m_albumsEditLock);
+				std::lock_guard<std::recursive_mutex> albumGuard(m_albumsEditLock);
 				localAlbums = m_localAlbums;
 			}
 
@@ -227,7 +222,7 @@ namespace Arcusical
 			decltype(m_localSongs) localSongs;
 
 			{
-				std::lock_guard<std::mutex> songsGuard(m_songsEditLock);
+				std::lock_guard<std::recursive_mutex> songsGuard(m_songsEditLock);
 				localSongs = m_localSongs;
 			}
 

@@ -10,6 +10,7 @@
 #include "MusicTypes.hpp"
 #include "Subscription.hpp"
 #include "ServiceResolver.hpp"
+#include "SongSelector.hpp"
 
 namespace Arcusical{
 namespace Model
@@ -37,6 +38,8 @@ namespace MusicProvider
 
 		virtual MusicProviderSubscription SubscribeSongs(SongsChangedCallback callback) = 0;
 		virtual MusicProviderSubscription SubscribeAlbums(AlbumsChangedCallback callback) = 0;
+
+		virtual SongSelector* GetSongSelector() = 0;
 
 		static const std::string ServiceName;
 	};

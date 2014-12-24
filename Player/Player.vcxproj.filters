@@ -13,9 +13,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\pch.h">
-      <Filter>src</Filter>
-    </ClInclude>
     <ClInclude Include="src\targetver.h">
       <Filter>src</Filter>
     </ClInclude>
@@ -30,9 +27,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\pch.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="src\Win8Player.cpp">
       <Filter>src</Filter>
     </ClCompile>

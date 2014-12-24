@@ -1,5 +1,3 @@
-#include "pch.h"
-
 #define PARSER_VERSOBE 0
 
 #if PARSER_VERSOBE

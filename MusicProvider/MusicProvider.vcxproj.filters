@@ -4,13 +4,13 @@
     <ClCompile Include="src\MusicProvider.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\pch.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="src\SongIdMapper.cpp">
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\SongLoader.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SongSelector.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
@@ -21,9 +21,6 @@
     <ClInclude Include="src\MusicProvider.hpp">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="src\pch.h">
-      <Filter>src</Filter>
-    </ClInclude>
     <ClInclude Include="src\targetver.h">
       <Filter>src</Filter>
     </ClInclude>
@@ -32,6 +29,9 @@
     </ClInclude>
     <ClInclude Include="src\SongLoader.hpp">
       <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="include\SongSelector.hpp">
+      <Filter>include</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
