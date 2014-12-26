@@ -119,7 +119,10 @@ namespace Player {
 		{
 			m_Shuffle = true;
 			auto randomSongs = songSelector->GetRandomSongs(RANDOM_SIZE, songFilter);
-			Enqueue(begin(randomSongs), end(randomSongs), false);
+			if (randomSongs.size() > 0)
+			{
+				Enqueue(begin(randomSongs), end(randomSongs), false);
+			}
 		}
 	}
 }
