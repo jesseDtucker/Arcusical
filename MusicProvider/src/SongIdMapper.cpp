@@ -15,9 +15,9 @@ namespace MusicProvider
 		
 	}
 
-	std::unordered_map<boost::uuids::uuid, Model::Song*> SongIdMapper::GetSongsFromIds(const std::set<boost::uuids::uuid>& ids)
+	std::unordered_map<boost::uuids::uuid, Model::Song> SongIdMapper::GetSongsFromIds(const std::set<boost::uuids::uuid>& ids)
 	{
-		std::unordered_map<boost::uuids::uuid, Model::Song*> results;
+		std::unordered_map<boost::uuids::uuid, Model::Song> results;
 
 		auto localSongs = m_getLocalSongs();
 		ARC_ASSERT_MSG(localSongs != nullptr, "Local songs returned a null ptr! This should never happen!");
@@ -28,7 +28,7 @@ namespace MusicProvider
 			{
 				if (localSongs->find(id) != localSongs->end())
 				{
-					results[id] = &localSongs->at(id);
+					results[id] = localSongs->at(id);
 				}
 			}
 		}

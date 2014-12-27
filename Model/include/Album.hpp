@@ -10,16 +10,15 @@
 
 #include "boost\uuid\uuid.hpp"
 
+#include "Song.hpp"
 #include "Util.hpp"
 
 namespace Arcusical{
 namespace Model
 {
-	class Song;
 	class IAlbumToSongMapper;
 
-	// TODO::JT potentially bad ptr....
-	typedef std::unordered_map<boost::uuids::uuid, Song*> SongPtrCollection;
+	typedef std::unordered_map<boost::uuids::uuid, Song> SongPtrCollection;
 
 	class Album final
 	{

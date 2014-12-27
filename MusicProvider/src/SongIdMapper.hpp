@@ -25,7 +25,7 @@ namespace MusicProvider
 		typedef const std::function<Model::SongCollectionLockedPtr()> GetSongsCall;
 		SongIdMapper(GetSongsCall getLocalSongs);
 
-		std::unordered_map<boost::uuids::uuid, Model::Song*> GetSongsFromIds(const std::set<boost::uuids::uuid>& ids) override;
+		std::unordered_map<boost::uuids::uuid, Model::Song> GetSongsFromIds(const std::set<boost::uuids::uuid>& ids) override;
 	private:
 		GetSongsCall m_getLocalSongs;
 	};

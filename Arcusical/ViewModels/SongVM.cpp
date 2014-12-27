@@ -56,6 +56,7 @@ namespace ViewModel {
 			ARC_ASSERT(playList != nullptr);
 			if (playList != nullptr)
 			{
+				playList->Clear();
 				playList->Enqueue(m_song);
 			}
 
