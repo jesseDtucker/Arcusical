@@ -65,9 +65,9 @@ namespace Arcusical
 			{
 				for (auto& songs : *album->GetSongs())
 				{
-					if (filter(songs.second))
+					if (filter(songs))
 					{
-						result.push_back(songs.second);
+						result.push_back(songs);
 					}
 				}
 			}

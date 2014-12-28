@@ -10,7 +10,7 @@
 namespace Arcusical{
 namespace ViewModel{
 
-	SongListVM::SongListVM(const Model::SongPtrCollection& songs)
+	SongListVM::SongListVM(const std::vector<Model::Song>& songs)
 	{
 		auto future = Arcusical::DispatchToUI([this, songs]()
 		{
@@ -18,7 +18,7 @@ namespace ViewModel{
 
 			for (auto& song : songs)
 			{
-				List->Append(ref new SongVM(song.second));
+				List->Append(ref new SongVM(song));
 			}
 		});
 

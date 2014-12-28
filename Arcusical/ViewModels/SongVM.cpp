@@ -1,6 +1,7 @@
 #include "pch.h"
 
 #include <future>
+#include <string>
 #include <unordered_map>
 
 #include "IPlayer.hpp"
@@ -9,12 +10,13 @@
 #include "SongVM.hpp"
 #include "Utility/DispatcherHelper.hpp"
 
+using namespace std;
 using namespace Windows::UI::Xaml::Data;
 
 namespace Arcusical{
 namespace ViewModel {
 
-	static std::unordered_map<Model::AudioFormat, ViewModel::AudioFormat> FORMAT_MAPPING =
+	static unordered_map<Model::AudioFormat, ViewModel::AudioFormat> FORMAT_MAPPING =
 	{
 		{ Model::AudioFormat::AAC, ViewModel::AudioFormat::AAC },
 		{ Model::AudioFormat::ALAC, ViewModel::AudioFormat::ALAC },
@@ -28,6 +30,11 @@ namespace ViewModel {
 		Title = ref new Platform::String(m_song.GetTitle().c_str());
 		Artist = ref new Platform::String(m_song.GetArtist().c_str());
 		Length = m_song.GetLength();
+
+		if (m_song.GetTrackNumber().first != 0)
+		{
+			Title = ref new Platform::String((to_wstring(m_song.GetTrackNumber().first) + L" - ").c_str()) + Title;
+		}
 	}
 
 	Model::Song* SongVM::GetModel()
@@ -50,7 +57,7 @@ namespace ViewModel {
 
 	void SongVM::Play()
 	{
-		std::async([this]()
+		async([this]()
 		{
 			auto playList = Player::PlaylistLocator::ResolveService().lock();
 			ARC_ASSERT(playList != nullptr);
@@ -69,7 +76,7 @@ namespace ViewModel {
 
 	void SongVM::Pause()
 	{
-		std::async([this]()
+		async([this]()
 		{
 			auto player = Player::PlayerLocator::ResolveService().lock();
 			ARC_ASSERT(player != nullptr);

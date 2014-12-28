@@ -1,15 +1,19 @@
 #include "pch.h"
 
-#include "Album.hpp"
+#include <algorithm>
+#include <functional>
+#include <unordered_map>
 
+
+#include "Album.hpp"
 #include "IAlbumToSongMapper.hpp"
 
-#include <unordered_map>
+using namespace std;
 
 namespace Arcusical{
 namespace Model
 {
-	Album::Album(std::shared_ptr<IAlbumToSongMapper> songMapper)
+	Album::Album(shared_ptr<IAlbumToSongMapper> songMapper)
 		: m_songMapper(songMapper)
 	{
 
@@ -25,11 +29,17 @@ namespace Model
 		return !(*this == rhs);
 	}
 
-	SongPtrCollection* Album::GetSongs() const
+	vector<Song>* Album::GetSongs() const
 	{
 		if (this->m_songs.size() == 0)
 		{
-			m_songs = m_songMapper->GetSongsFromIds(m_SongIds);
+			auto songs = m_songMapper->GetSongsFromIds(m_SongIds);
+			for (auto& song : songs)
+			{
+				m_songs.push_back(song.second);
+			}
+
+			sort(begin(m_songs), end(m_songs), less<Song>());
 		}
 
 		return &m_songs;

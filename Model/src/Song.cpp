@@ -1,17 +1,25 @@
 #include "pch.h"
 
 #include <algorithm>
+#include <limits>
 
 #include "Storage.hpp"
 #include "IFileReader.hpp"
 #include "Song.hpp"
 #include "IFile.hpp"
 
+#undef max
+#undef min
+
+using namespace std;
+
 namespace Arcusical{
 namespace Model
 {
 	Song::Song()
 		: m_Length(0)
+		, m_TrackNumber({ 0, 0 })
+		, m_DiskNumber({ 0, 0 })
 	{
 		
 	}
@@ -31,6 +39,66 @@ namespace Model
 		// they are considered equal if and only if they have the same title and artist
 		return	this->GetTitle() == otherSong.GetTitle() &&
 			this->GetArtist() == otherSong.GetArtist();
+	}
+
+	bool Song::operator<(const Song& other) const
+	{
+		// ordering is defined by a series of precedents
+		// disk number takes priority
+		// followed by track number
+		// followed by lexicographical order of the title
+		// 
+		// zeros are considered 'no info' and so are considered to be after all other elements
+
+		const auto MAX_INT = numeric_limits<int>::max();
+
+		auto thisDiskNum = m_DiskNumber.first;
+		auto thisTrackNum = m_TrackNumber.first;
+
+		auto otherDiskNum = other.m_DiskNumber.first;
+		auto otherTrackNum = other.m_TrackNumber.first;
+
+		// treat zero as Int.max, we want those that have info to come first, others come second
+		thisDiskNum = thisDiskNum != 0 ? thisDiskNum : MAX_INT;
+		thisTrackNum = thisTrackNum != 0 ? thisTrackNum : MAX_INT;
+
+		otherDiskNum = otherDiskNum != 0 ? otherDiskNum : MAX_INT;
+		otherTrackNum = otherTrackNum != 0 ? otherTrackNum : MAX_INT;
+
+		if (thisDiskNum != MAX_INT || otherDiskNum != MAX_INT)
+		{
+			// they one has a disk number, if they don't match compare those instead of the track number
+			if (thisDiskNum != otherDiskNum)
+			{
+				return thisDiskNum < otherDiskNum;
+			}
+		}
+
+		if (thisTrackNum != MAX_INT || otherTrackNum != MAX_INT)
+		{
+			// one of them has a track number, compare that
+			if (thisTrackNum != otherTrackNum)
+			{
+				return thisTrackNum < otherTrackNum;
+			}
+		}
+
+		return m_Title < other.m_Title;
+	}
+
+	bool Song::operator>(const Song& other) const
+	{
+		return !(*this <= other);
+	}
+
+	bool Song::operator>=(const Song& other) const
+	{
+		return (*this == other) || (*this > other);
+	}
+
+	bool Song::operator<=(const Song& other) const
+	{
+		return (*this == other) || (*this < other);
 	}
 
 	void Song::AddFile(const SongFile& songFile)
@@ -55,7 +123,7 @@ namespace Model
 	{
 		ARC_ASSERT_MSG(this->GetFiles().size() > 0, "Cannot get a stream! There are no files associated with this song!");
 
-		auto isFormatAvailable = std::find(std::begin(m_AvailableFormats), std::end(m_AvailableFormats), specificFormat) != std::end(m_AvailableFormats);
+		auto isFormatAvailable = find(begin(m_AvailableFormats), end(m_AvailableFormats), specificFormat) != end(m_AvailableFormats);
 		ARC_ASSERT_MSG(isFormatAvailable, "Attempted to get a format that is not available!");
 		// correct the mistake and pick one for the user
 		if (!isFormatAvailable)
@@ -70,7 +138,7 @@ namespace Model
 		SongStream result;
 
 		result.songData = songFile;
-		result.stream = std::static_pointer_cast<Util::Stream>(fileReader);
+		result.stream = static_pointer_cast<Util::Stream>(fileReader);
 
 		return result;
 	}
@@ -79,7 +147,7 @@ namespace Model
 	{
 		// try and select what I think the best format is likely to be
 		// assuming lossless is best, followed by AAC followed by mp3
-		static std::vector<AudioFormat> FORMATS =
+		static vector<AudioFormat> FORMATS =
 		{
 			AudioFormat::ALAC,
 			AudioFormat::FLAC,
@@ -90,8 +158,8 @@ namespace Model
 
 		for (const auto audioFormat : FORMATS)
 		{
-			auto itr = std::find(std::begin(m_AvailableFormats), std::end(m_AvailableFormats), audioFormat);
-			if (itr != std::end(m_AvailableFormats))
+			auto itr = find(begin(m_AvailableFormats), end(m_AvailableFormats), audioFormat);
+			if (itr != end(m_AvailableFormats))
 			{
 				return audioFormat;
 			}

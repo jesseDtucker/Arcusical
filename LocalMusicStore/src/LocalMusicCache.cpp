@@ -264,7 +264,7 @@ namespace Arcusical
 			for (const auto& song : *(modelAlbum.GetSongs()))
 			{
 				auto songGuid = cachedAlbum.add_songlist();
-				SerializeGuid(songGuid->mutable_rawdata(), song.first);
+				SerializeGuid(songGuid->mutable_rawdata(), song.GetId());
 			}
 		}
 

@@ -98,11 +98,11 @@ namespace Arcusical { namespace MPEG4 {
 	{
 		if(m_iTrackNumber != nullptr)
 		{
-			return std::make_pair<uint16_t, uint16_t>(m_iTrackNumber->GetTrackNumber(), m_iTrackNumber->GetMaxTrack());
+			return { m_iTrackNumber->GetTrackNumber(), m_iTrackNumber->GetMaxTrack() };
 		}
 		else
 		{
-			return std::make_pair<uint16_t, uint16_t>(0,0);
+			return { 0, 0 };
 		}
 	}
 
@@ -110,11 +110,11 @@ namespace Arcusical { namespace MPEG4 {
 	{
 		if(m_iDiskNumber != nullptr)
 		{
-			return std::make_pair<uint16_t, uint16_t>(m_iDiskNumber->GetDiskNumber(), m_iDiskNumber->GetMaxDisk());
+			return { m_iDiskNumber->GetDiskNumber(), m_iDiskNumber->GetMaxDisk() };
 		}
 		else
 		{
-			return std::make_pair<uint16_t, uint16_t>(0,0);
+			return { 0, 0 };
 		}
 	}
 

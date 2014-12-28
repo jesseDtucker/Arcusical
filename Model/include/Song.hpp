@@ -70,6 +70,8 @@ namespace Model
 		PROP_SET_AND_GET(std::wstring, Artist);
 		PROP_SET_AND_GET(unsigned long long, Length);
 		PROP_SET_AND_GET(std::wstring, AlbumName);
+		PROP_SET_AND_GET(std::pair<int COMMA int>, TrackNumber);
+		PROP_SET_AND_GET(std::pair<int COMMA int>, DiskNumber);
 
 		PROP_GET(std::vector<AudioFormat>, AvailableFormats);
 		PROP_GET(std::unordered_map<AudioFormat COMMA SongFile>, Files);
@@ -81,6 +83,11 @@ namespace Model
 		bool operator==(const Song& rhs) const;
 		bool operator!=(const Song& rhs) const;
 		bool IsSameSong(const Song& otherSong) const; // unlike the comparison operators this checks if the songs references the same content, but does not have identical meta data
+	
+		bool operator<(const Song& other) const;
+		bool operator>(const Song& other) const;
+		bool operator>=(const Song& other) const;
+		bool operator<=(const Song& other) const;
 	private:
 		AudioFormat DetermineBestFormat();
 	};

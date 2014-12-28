@@ -2,10 +2,9 @@
 #define SONG_LIST_VM_HPP
 
 #include <collection.h>
-#include "boost\uuid\uuid.hpp"
-#include <unordered_map>
+#include <vector>
 
-#include "Album.hpp"
+#include "MusicTypes.hpp"
 #include "ViewModels/SongVM.hpp"
 #include "Utility/XamlMacros.hpp"
 
@@ -25,7 +24,7 @@ namespace ViewModel
 		PROP_SET_AND_GET_WINRT(Windows::Foundation::Collections::IVector<ViewModel::SongVM^>^, List);
 
 	internal:
-		SongListVM(const Model::SongPtrCollection& songs);
+		SongListVM(const std::vector<Model::Song>& songs);
 	private:
 		
 	};

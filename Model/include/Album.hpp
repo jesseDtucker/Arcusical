@@ -6,7 +6,7 @@
 #include <memory>
 #include <string>
 #include <set>
-#include <unordered_map>
+#include <vector>
 
 #include "boost\uuid\uuid.hpp"
 
@@ -17,8 +17,6 @@ namespace Arcusical{
 namespace Model
 {
 	class IAlbumToSongMapper;
-
-	typedef std::unordered_map<boost::uuids::uuid, Song> SongPtrCollection;
 
 	class Album final
 	{
@@ -33,13 +31,13 @@ namespace Model
 		PROP_SET_AND_GET(std::wstring, ImageFilePath);
 		PROP_SET_AND_GET(std::set<boost::uuids::uuid>, SongIds);
 
-		SongPtrCollection* GetSongs() const;
+		std::vector<Model::Song>* GetSongs() const;
 
 		bool operator==(const Album& rhs) const;
 		bool operator!=(const Album& rhs) const;
 	private:
 		std::shared_ptr<IAlbumToSongMapper> m_songMapper;
-		mutable SongPtrCollection m_songs; // these are fetched on demand
+		mutable std::vector<Model::Song> m_songs; // these are fetched on demand
 	};
 }
 }

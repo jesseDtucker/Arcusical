@@ -122,6 +122,11 @@ namespace MusicProvider
 		result.SetTitle(converter.from_bytes(mpegSong->GetTitle()));
 		result.SetAlbumName(converter.from_bytes(mpegSong->GetAlbum()));
 
+		auto trackNum = mpegSong->GetTrackNumber();
+		auto diskNum = mpegSong->GetDiskNumber();
+		result.SetTrackNumber({ trackNum.first, trackNum.second });
+		result.SetDiskNumber({ diskNum.first, diskNum.second });
+
 		Model::AudioFormat songFormat = Model::AudioFormat::UNKNOWN;
 		auto encodingItr = MPEG4_TO_MODEL_MAPPING.find(mpegSong->GetEncoding());
 		ARC_ASSERT(encodingItr != std::end(MPEG4_TO_MODEL_MAPPING));
@@ -173,6 +178,7 @@ namespace MusicProvider
 		result.SetLength(musicProperties->Duration.Duration / 1000); // Duration is provided is ms, but we need it in seconds
 		result.SetTitle(std::wstring(musicProperties->Title->Data()));
 		result.SetAlbumName(std::wstring(musicProperties->Album->Data()));
+		result.SetTrackNumber({ musicProperties->TrackNumber, musicProperties->TrackNumber }); // TODO::JT need to get the max tracks in album set correctly... fixup album?
 
 		Model::SongFile songFile;
 		songFile.filePath = file.GetFullPath();
