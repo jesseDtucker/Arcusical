@@ -101,7 +101,7 @@ namespace Player {
 
 		if (!m_Shuffle)
 		{
-			auto prevSong = m_recentlyPlayed.front();
+			auto prevSong = m_recentlyPlayed.back();
 			auto albumSongs = songSelector->GetFromSameAlbum(prevSong, songFilter);
 			if (albumSongs.size() > 0)
 			{
