@@ -284,6 +284,12 @@ namespace Arcusical
 			cachedSong.set_album(converter.to_bytes(modelSong.GetAlbumName()));
 			cachedSong.set_length(modelSong.GetLength());
 
+			// set track and disk numbers
+			cachedSong.set_tracknumber(modelSong.GetTrackNumber().first);
+			cachedSong.set_maxtracknumber(modelSong.GetTrackNumber().second);
+			cachedSong.set_disknumber(modelSong.GetDiskNumber().first);
+			cachedSong.set_maxdisknumber(modelSong.GetDiskNumber().second);
+
 			for (const auto& file : modelSong.GetFiles())
 			{
 				auto songFile = cachedSong.add_files();
@@ -357,6 +363,9 @@ namespace Arcusical
 			modelSong.SetLength(cachedSong.length());
 			modelSong.SetTitle(converter.from_bytes(cachedSong.title()));
 			modelSong.SetAlbumName(converter.from_bytes(cachedSong.album()));
+
+			modelSong.SetTrackNumber({ cachedSong.tracknumber(), cachedSong.maxtracknumber()});
+			modelSong.SetDiskNumber({cachedSong.disknumber(), cachedSong.maxdisknumber()});
 			
 			for (const auto& cachedFile : cachedSong.files())
 			{

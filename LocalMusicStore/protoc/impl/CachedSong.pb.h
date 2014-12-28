@@ -337,6 +337,34 @@ class CachedSong : public ::google::protobuf::Message {
   inline ::google::protobuf::RepeatedPtrField< ::Arcusical::LocalMusicStore::SongFile >*
       mutable_files();
 
+  // required int32 trackNumber = 9;
+  inline bool has_tracknumber() const;
+  inline void clear_tracknumber();
+  static const int kTrackNumberFieldNumber = 9;
+  inline ::google::protobuf::int32 tracknumber() const;
+  inline void set_tracknumber(::google::protobuf::int32 value);
+
+  // required int32 maxTrackNumber = 10;
+  inline bool has_maxtracknumber() const;
+  inline void clear_maxtracknumber();
+  static const int kMaxTrackNumberFieldNumber = 10;
+  inline ::google::protobuf::int32 maxtracknumber() const;
+  inline void set_maxtracknumber(::google::protobuf::int32 value);
+
+  // required int32 diskNumber = 11;
+  inline bool has_disknumber() const;
+  inline void clear_disknumber();
+  static const int kDiskNumberFieldNumber = 11;
+  inline ::google::protobuf::int32 disknumber() const;
+  inline void set_disknumber(::google::protobuf::int32 value);
+
+  // required int32 maxDiskNumber = 12;
+  inline bool has_maxdisknumber() const;
+  inline void clear_maxdisknumber();
+  static const int kMaxDiskNumberFieldNumber = 12;
+  inline ::google::protobuf::int32 maxdisknumber() const;
+  inline void set_maxdisknumber(::google::protobuf::int32 value);
+
   // @@protoc_insertion_point(class_scope:Arcusical.LocalMusicStore.CachedSong)
  private:
   inline void set_has_id();
@@ -349,6 +377,14 @@ class CachedSong : public ::google::protobuf::Message {
   inline void clear_has_length();
   inline void set_has_album();
   inline void clear_has_album();
+  inline void set_has_tracknumber();
+  inline void clear_has_tracknumber();
+  inline void set_has_maxtracknumber();
+  inline void clear_has_maxtracknumber();
+  inline void set_has_disknumber();
+  inline void clear_has_disknumber();
+  inline void set_has_maxdisknumber();
+  inline void clear_has_maxdisknumber();
 
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
 
@@ -360,6 +396,10 @@ class CachedSong : public ::google::protobuf::Message {
   ::google::protobuf::int64 length_;
   ::std::string* album_;
   ::google::protobuf::RepeatedPtrField< ::Arcusical::LocalMusicStore::SongFile > files_;
+  ::google::protobuf::int32 tracknumber_;
+  ::google::protobuf::int32 maxtracknumber_;
+  ::google::protobuf::int32 disknumber_;
+  ::google::protobuf::int32 maxdisknumber_;
   friend void  protobuf_AddDesc_CachedSong_2eproto();
   friend void protobuf_AssignDesc_CachedSong_2eproto();
   friend void protobuf_ShutdownFile_CachedSong_2eproto();
@@ -897,6 +937,102 @@ inline ::google::protobuf::RepeatedPtrField< ::Arcusical::LocalMusicStore::SongF
 CachedSong::mutable_files() {
   // @@protoc_insertion_point(field_mutable_list:Arcusical.LocalMusicStore.CachedSong.files)
   return &files_;
+}
+
+// required int32 trackNumber = 9;
+inline bool CachedSong::has_tracknumber() const {
+  return (_has_bits_[0] & 0x00000040u) != 0;
+}
+inline void CachedSong::set_has_tracknumber() {
+  _has_bits_[0] |= 0x00000040u;
+}
+inline void CachedSong::clear_has_tracknumber() {
+  _has_bits_[0] &= ~0x00000040u;
+}
+inline void CachedSong::clear_tracknumber() {
+  tracknumber_ = 0;
+  clear_has_tracknumber();
+}
+inline ::google::protobuf::int32 CachedSong::tracknumber() const {
+  // @@protoc_insertion_point(field_get:Arcusical.LocalMusicStore.CachedSong.trackNumber)
+  return tracknumber_;
+}
+inline void CachedSong::set_tracknumber(::google::protobuf::int32 value) {
+  set_has_tracknumber();
+  tracknumber_ = value;
+  // @@protoc_insertion_point(field_set:Arcusical.LocalMusicStore.CachedSong.trackNumber)
+}
+
+// required int32 maxTrackNumber = 10;
+inline bool CachedSong::has_maxtracknumber() const {
+  return (_has_bits_[0] & 0x00000080u) != 0;
+}
+inline void CachedSong::set_has_maxtracknumber() {
+  _has_bits_[0] |= 0x00000080u;
+}
+inline void CachedSong::clear_has_maxtracknumber() {
+  _has_bits_[0] &= ~0x00000080u;
+}
+inline void CachedSong::clear_maxtracknumber() {
+  maxtracknumber_ = 0;
+  clear_has_maxtracknumber();
+}
+inline ::google::protobuf::int32 CachedSong::maxtracknumber() const {
+  // @@protoc_insertion_point(field_get:Arcusical.LocalMusicStore.CachedSong.maxTrackNumber)
+  return maxtracknumber_;
+}
+inline void CachedSong::set_maxtracknumber(::google::protobuf::int32 value) {
+  set_has_maxtracknumber();
+  maxtracknumber_ = value;
+  // @@protoc_insertion_point(field_set:Arcusical.LocalMusicStore.CachedSong.maxTrackNumber)
+}
+
+// required int32 diskNumber = 11;
+inline bool CachedSong::has_disknumber() const {
+  return (_has_bits_[0] & 0x00000100u) != 0;
+}
+inline void CachedSong::set_has_disknumber() {
+  _has_bits_[0] |= 0x00000100u;
+}
+inline void CachedSong::clear_has_disknumber() {
+  _has_bits_[0] &= ~0x00000100u;
+}
+inline void CachedSong::clear_disknumber() {
+  disknumber_ = 0;
+  clear_has_disknumber();
+}
+inline ::google::protobuf::int32 CachedSong::disknumber() const {
+  // @@protoc_insertion_point(field_get:Arcusical.LocalMusicStore.CachedSong.diskNumber)
+  return disknumber_;
+}
+inline void CachedSong::set_disknumber(::google::protobuf::int32 value) {
+  set_has_disknumber();
+  disknumber_ = value;
+  // @@protoc_insertion_point(field_set:Arcusical.LocalMusicStore.CachedSong.diskNumber)
+}
+
+// required int32 maxDiskNumber = 12;
+inline bool CachedSong::has_maxdisknumber() const {
+  return (_has_bits_[0] & 0x00000200u) != 0;
+}
+inline void CachedSong::set_has_maxdisknumber() {
+  _has_bits_[0] |= 0x00000200u;
+}
+inline void CachedSong::clear_has_maxdisknumber() {
+  _has_bits_[0] &= ~0x00000200u;
+}
+inline void CachedSong::clear_maxdisknumber() {
+  maxdisknumber_ = 0;
+  clear_has_maxdisknumber();
+}
+inline ::google::protobuf::int32 CachedSong::maxdisknumber() const {
+  // @@protoc_insertion_point(field_get:Arcusical.LocalMusicStore.CachedSong.maxDiskNumber)
+  return maxdisknumber_;
+}
+inline void CachedSong::set_maxdisknumber(::google::protobuf::int32 value) {
+  set_has_maxdisknumber();
+  maxdisknumber_ = value;
+  // @@protoc_insertion_point(field_set:Arcusical.LocalMusicStore.CachedSong.maxDiskNumber)
 }
 
 

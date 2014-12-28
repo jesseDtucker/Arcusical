@@ -60,13 +60,17 @@ void protobuf_AssignDesc_CachedSong_2eproto() {
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(SongFile));
   CachedSong_descriptor_ = file->message_type(1);
-  static const int CachedSong_offsets_[6] = {
+  static const int CachedSong_offsets_[10] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(CachedSong, id_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(CachedSong, title_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(CachedSong, artist_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(CachedSong, length_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(CachedSong, album_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(CachedSong, files_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(CachedSong, tracknumber_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(CachedSong, maxtracknumber_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(CachedSong, disknumber_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(CachedSong, maxdisknumber_),
   };
   CachedSong_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
@@ -122,16 +126,18 @@ void protobuf_AddDesc_CachedSong_2eproto() {
     "oding\022\014\n\004file\030\002 \002(\t\022\017\n\007bitRate\030\003 \002(\005\022\022\n\n"
     "sampleSize\030\004 \002(\005\022\024\n\014channelCount\030\005 \002(\005\0227"
     "\n\tcontainer\030\006 \002(\0162$.Arcusical.LocalMusic"
-    "Store.Container\"\253\001\n\nCachedSong\022+\n\002id\030\001 \002"
+    "Store.Container\"\203\002\n\nCachedSong\022+\n\002id\030\001 \002"
     "(\0132\037.Arcusical.LocalMusicStore.GUID\022\r\n\005t"
     "itle\030\002 \002(\t\022\016\n\006artist\030\004 \002(\t\022\016\n\006length\030\006 \002"
     "(\003\022\r\n\005album\030\007 \002(\t\0222\n\005files\030\010 \003(\0132#.Arcus"
-    "ical.LocalMusicStore.SongFile*O\n\010Encodin"
-    "g\022\024\n\020UNKNOWN_ENCODING\020\000\022\007\n\003AAC\020\001\022\010\n\004ALAC"
-    "\020\002\022\007\n\003MP3\020\003\022\010\n\004FLAC\020\004\022\007\n\003WAV\020\005*q\n\tContai"
-    "ner\022\025\n\021UNKNOWN_CONTAINER\020\000\022\021\n\rMP3_CONTAI"
-    "NER\020\001\022\023\n\017MPEG4_CONTAINER\020\002\022\022\n\016FLAC_CONTA"
-    "INER\020\003\022\021\n\rWAV_CONTAINER\020\004", 625);
+    "ical.LocalMusicStore.SongFile\022\023\n\013trackNu"
+    "mber\030\t \002(\005\022\026\n\016maxTrackNumber\030\n \002(\005\022\022\n\ndi"
+    "skNumber\030\013 \002(\005\022\025\n\rmaxDiskNumber\030\014 \002(\005*O\n"
+    "\010Encoding\022\024\n\020UNKNOWN_ENCODING\020\000\022\007\n\003AAC\020\001"
+    "\022\010\n\004ALAC\020\002\022\007\n\003MP3\020\003\022\010\n\004FLAC\020\004\022\007\n\003WAV\020\005*q"
+    "\n\tContainer\022\025\n\021UNKNOWN_CONTAINER\020\000\022\021\n\rMP"
+    "3_CONTAINER\020\001\022\023\n\017MPEG4_CONTAINER\020\002\022\022\n\016FL"
+    "AC_CONTAINER\020\003\022\021\n\rWAV_CONTAINER\020\004", 713);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "CachedSong.proto", &protobuf_RegisterTypes);
   SongFile::default_instance_ = new SongFile();
@@ -655,6 +661,10 @@ const int CachedSong::kArtistFieldNumber;
 const int CachedSong::kLengthFieldNumber;
 const int CachedSong::kAlbumFieldNumber;
 const int CachedSong::kFilesFieldNumber;
+const int CachedSong::kTrackNumberFieldNumber;
+const int CachedSong::kMaxTrackNumberFieldNumber;
+const int CachedSong::kDiskNumberFieldNumber;
+const int CachedSong::kMaxDiskNumberFieldNumber;
 #endif  // !_MSC_VER
 
 CachedSong::CachedSong()
@@ -682,6 +692,10 @@ void CachedSong::SharedCtor() {
   artist_ = const_cast< ::std::string*>(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   length_ = GOOGLE_LONGLONG(0);
   album_ = const_cast< ::std::string*>(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  tracknumber_ = 0;
+  maxtracknumber_ = 0;
+  disknumber_ = 0;
+  maxdisknumber_ = 0;
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -727,7 +741,18 @@ CachedSong* CachedSong::New() const {
 }
 
 void CachedSong::Clear() {
-  if (_has_bits_[0 / 32] & 31) {
+#define OFFSET_OF_FIELD_(f) (reinterpret_cast<char*>(      \
+  &reinterpret_cast<CachedSong*>(16)->f) - \
+   reinterpret_cast<char*>(16))
+
+#define ZR_(first, last) do {                              \
+    size_t f = OFFSET_OF_FIELD_(first);                    \
+    size_t n = OFFSET_OF_FIELD_(last) - f + sizeof(last);  \
+    ::memset(&first, 0, n);                                \
+  } while (0)
+
+  if (_has_bits_[0 / 32] & 223) {
+    ZR_(tracknumber_, maxtracknumber_);
     if (has_id()) {
       if (id_ != NULL) id_->::Arcusical::LocalMusicStore::GUID::Clear();
     }
@@ -748,6 +773,11 @@ void CachedSong::Clear() {
       }
     }
   }
+  ZR_(disknumber_, maxdisknumber_);
+
+#undef OFFSET_OF_FIELD_
+#undef ZR_
+
   files_.Clear();
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
   mutable_unknown_fields()->Clear();
@@ -851,6 +881,66 @@ bool CachedSong::MergePartialFromCodedStream(
           goto handle_unusual;
         }
         if (input->ExpectTag(66)) goto parse_files;
+        if (input->ExpectTag(72)) goto parse_trackNumber;
+        break;
+      }
+
+      // required int32 trackNumber = 9;
+      case 9: {
+        if (tag == 72) {
+         parse_trackNumber:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &tracknumber_)));
+          set_has_tracknumber();
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(80)) goto parse_maxTrackNumber;
+        break;
+      }
+
+      // required int32 maxTrackNumber = 10;
+      case 10: {
+        if (tag == 80) {
+         parse_maxTrackNumber:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &maxtracknumber_)));
+          set_has_maxtracknumber();
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(88)) goto parse_diskNumber;
+        break;
+      }
+
+      // required int32 diskNumber = 11;
+      case 11: {
+        if (tag == 88) {
+         parse_diskNumber:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &disknumber_)));
+          set_has_disknumber();
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(96)) goto parse_maxDiskNumber;
+        break;
+      }
+
+      // required int32 maxDiskNumber = 12;
+      case 12: {
+        if (tag == 96) {
+         parse_maxDiskNumber:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &maxdisknumber_)));
+          set_has_maxdisknumber();
+        } else {
+          goto handle_unusual;
+        }
         if (input->ExpectAtEnd()) goto success;
         break;
       }
@@ -927,6 +1017,26 @@ void CachedSong::SerializeWithCachedSizes(
       8, this->files(i), output);
   }
 
+  // required int32 trackNumber = 9;
+  if (has_tracknumber()) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(9, this->tracknumber(), output);
+  }
+
+  // required int32 maxTrackNumber = 10;
+  if (has_maxtracknumber()) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(10, this->maxtracknumber(), output);
+  }
+
+  // required int32 diskNumber = 11;
+  if (has_disknumber()) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(11, this->disknumber(), output);
+  }
+
+  // required int32 maxDiskNumber = 12;
+  if (has_maxdisknumber()) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(12, this->maxdisknumber(), output);
+  }
+
   if (!unknown_fields().empty()) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         unknown_fields(), output);
@@ -989,6 +1099,26 @@ void CachedSong::SerializeWithCachedSizes(
         8, this->files(i), target);
   }
 
+  // required int32 trackNumber = 9;
+  if (has_tracknumber()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(9, this->tracknumber(), target);
+  }
+
+  // required int32 maxTrackNumber = 10;
+  if (has_maxtracknumber()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(10, this->maxtracknumber(), target);
+  }
+
+  // required int32 diskNumber = 11;
+  if (has_disknumber()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(11, this->disknumber(), target);
+  }
+
+  // required int32 maxDiskNumber = 12;
+  if (has_maxdisknumber()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(12, this->maxdisknumber(), target);
+  }
+
   if (!unknown_fields().empty()) {
     target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
         unknown_fields(), target);
@@ -1034,6 +1164,36 @@ int CachedSong::ByteSize() const {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::StringSize(
           this->album());
+    }
+
+    // required int32 trackNumber = 9;
+    if (has_tracknumber()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::Int32Size(
+          this->tracknumber());
+    }
+
+    // required int32 maxTrackNumber = 10;
+    if (has_maxtracknumber()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::Int32Size(
+          this->maxtracknumber());
+    }
+
+  }
+  if (_has_bits_[8 / 32] & (0xffu << (8 % 32))) {
+    // required int32 diskNumber = 11;
+    if (has_disknumber()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::Int32Size(
+          this->disknumber());
+    }
+
+    // required int32 maxDiskNumber = 12;
+    if (has_maxdisknumber()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::Int32Size(
+          this->maxdisknumber());
     }
 
   }
@@ -1087,6 +1247,20 @@ void CachedSong::MergeFrom(const CachedSong& from) {
     if (from.has_album()) {
       set_album(from.album());
     }
+    if (from.has_tracknumber()) {
+      set_tracknumber(from.tracknumber());
+    }
+    if (from.has_maxtracknumber()) {
+      set_maxtracknumber(from.maxtracknumber());
+    }
+  }
+  if (from._has_bits_[8 / 32] & (0xffu << (8 % 32))) {
+    if (from.has_disknumber()) {
+      set_disknumber(from.disknumber());
+    }
+    if (from.has_maxdisknumber()) {
+      set_maxdisknumber(from.maxdisknumber());
+    }
   }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
 }
@@ -1104,7 +1278,7 @@ void CachedSong::CopyFrom(const CachedSong& from) {
 }
 
 bool CachedSong::IsInitialized() const {
-  if ((_has_bits_[0] & 0x0000001f) != 0x0000001f) return false;
+  if ((_has_bits_[0] & 0x000003df) != 0x000003df) return false;
 
   if (has_id()) {
     if (!this->id().IsInitialized()) return false;
@@ -1121,6 +1295,10 @@ void CachedSong::Swap(CachedSong* other) {
     std::swap(length_, other->length_);
     std::swap(album_, other->album_);
     files_.Swap(&other->files_);
+    std::swap(tracknumber_, other->tracknumber_);
+    std::swap(maxtracknumber_, other->maxtracknumber_);
+    std::swap(disknumber_, other->disknumber_);
+    std::swap(maxdisknumber_, other->maxdisknumber_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);

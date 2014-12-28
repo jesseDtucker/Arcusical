@@ -39,4 +39,8 @@ message CachedSong
 	required int64 length = 6;
 	required string album = 7;
 	repeated SongFile files = 8;
+	required int32 trackNumber = 9;
+	required int32 maxTrackNumber = 10;
+	required int32 diskNumber = 11;
+	required int32 maxDiskNumber = 12;
 }
