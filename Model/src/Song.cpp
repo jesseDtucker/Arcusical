@@ -1,3 +1,4 @@
+DetermineBestFormat
 #include "pch.h"
 
 #include <algorithm>
@@ -113,15 +114,20 @@ namespace Model
 		}
 	}
 
+	bool Song::HasStream()
+	{
+		return this->GetFiles().size() > 0;
+	}
+
 	SongStream Song::GetStream()
 	{
-		ARC_ASSERT_MSG(this->GetFiles().size() > 0, "Cannot get a stream! There are no files associated with this song!");
+		ARC_ASSERT_MSG(HasStream(), "Cannot get a stream! There are no files associated with this song!");
 		return GetStream(DetermineBestFormat());
 	}
 
 	SongStream Song::GetStream(AudioFormat specificFormat)
 	{
-		ARC_ASSERT_MSG(this->GetFiles().size() > 0, "Cannot get a stream! There are no files associated with this song!");
+		ARC_ASSERT_MSG(HasStream(), "Cannot get a stream! There are no files associated with this song!");
 
 		auto isFormatAvailable = find(begin(m_AvailableFormats), end(m_AvailableFormats), specificFormat) != end(m_AvailableFormats);
 		ARC_ASSERT_MSG(isFormatAvailable, "Attempted to get a format that is not available!");

@@ -28,40 +28,25 @@ using namespace Windows::UI::Xaml::Input;
 using namespace Windows::UI::Xaml::Media;
 using namespace Windows::UI::Xaml::Navigation;
 
+using namespace Arcusical::ViewModel;
+
 // The User Control item template is documented at http://go.microsoft.com/fwlink/?LinkId=234236
 
 SongPlayer::SongPlayer()
-: m_currentSong(nullptr)
+: m_playerVM(ref new SongPlayerVM())
 {
 	InitializeComponent();
-	this->DataContext = nullptr; // TODO::JT needs to be an empty song
-
-	std::function<void(const Events::SongSelectedEvent&)> songSelectedCallback = [this]
-		(const Events::SongSelectedEvent& selectedSongEvent)
-	{ 
-		this->OnSongSelected(selectedSongEvent); 
-	};
-	m_songSelectedSubscription = Events::EventService<Events::SongSelectedEvent>::RegisterListener(songSelectedCallback);
+	this->DataContext = m_playerVM;
 }
 
 void SongPlayer::PlayPauseButton_Clicked(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
 {
-	if (m_currentSong != nullptr)
+	if (m_playerVM->IsPlaying)
 	{
-		if (m_currentSong->IsPlaying)
-		{
-			m_currentSong->Pause();
-		}
-		else
-		{
-			m_currentSong->Play();
-		}
+		m_playerVM->Pause();
 	}
-}
-
-void SongPlayer::OnSongSelected(const Events::SongSelectedEvent& selectedSongEvent)
-{
-	ARC_ASSERT(selectedSongEvent.GetSelectedSong() != nullptr);
-	m_currentSong = selectedSongEvent.GetSelectedSong();
-	this->DataContext = m_currentSong;
+	else
+	{
+		m_playerVM->Play();
+	}
 }

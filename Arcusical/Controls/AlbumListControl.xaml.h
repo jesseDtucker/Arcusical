@@ -13,8 +13,10 @@ namespace Arcusical
 	{
 	public:
 		AlbumListControl();
-
+		
 	private:
 		void AlbumClicked(Platform::Object^ sender, Windows::UI::Xaml::Controls::ItemClickEventArgs^ e);
+
+		ViewModel::AlbumListControlVM^ m_vm;
 	};
 }

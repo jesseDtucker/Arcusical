@@ -82,9 +82,6 @@
       <Filter>ViewModels</Filter>
     </ClCompile>
     <ClCompile Include="Controls\SongPlayer.xaml.cpp" />
-    <ClCompile Include="Converters\IsPlayingToIcon.cpp">
-      <Filter>Converters</Filter>
-    </ClCompile>
     <ClCompile Include="Events\SongSelectedEvent.cpp">
       <Filter>Events</Filter>
     </ClCompile>
@@ -93,6 +90,12 @@
     </ClCompile>
     <ClCompile Include="Events\AlbumSelectedEvent.cpp">
       <Filter>Events</Filter>
+    </ClCompile>
+    <ClCompile Include="ViewModels\SongPlayerVM.cpp">
+      <Filter>ViewModels</Filter>
+    </ClCompile>
+    <ClCompile Include="Converters\IsPlayingToIconPath.cpp">
+      <Filter>Converters</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -137,6 +140,9 @@
     </ClInclude>
     <ClInclude Include="Events\AlbumSelectedEvent.hpp">
       <Filter>Events</Filter>
+    </ClInclude>
+    <ClInclude Include="ViewModels\SongPlayerVM.hpp">
+      <Filter>ViewModels</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

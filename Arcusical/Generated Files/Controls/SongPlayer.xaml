@@ -38,6 +38,13 @@
 				<Image Source="/Assets/Icons/Forward.png" Margin="0,10,0,10"/>
 			</Grid>
 		</Button>
+		<StackPanel DataContext="{Binding Path=CurrentSong}">
+			<TextBlock Text="{Binding Path=Title}" Width="400"/>
+		</StackPanel>
+		<StackPanel>
+			<TextBlock Text="{Binding Path =AmountPlayed}"/>
+			<TextBlock Text="{Binding Path=AmoutRemaining}"/>
+		</StackPanel>
 	</StackPanel>
 
 </UserControl>

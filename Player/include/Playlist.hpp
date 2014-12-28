@@ -35,14 +35,14 @@ namespace Arcusical{
 
 		private:
 
-			bool TryStartPlayback(const Model::Song& song);
+			bool TryStartPlayback();
 
 			void SelectMoreSongs();
 
 			std::vector<Model::Song> m_recentlyPlayed;
 			IPlayer* m_player = nullptr;
 			bool m_wasRecentlyCleared = false;
-			std::unique_ptr<Util::Subscription> m_songEndedSub = nullptr;
+			Util::Subscription m_songEndedSub = nullptr;
 		};
 
 		template<typename T>
@@ -56,7 +56,7 @@ namespace Arcusical{
 			if (startPlayback)
 			{
 				m_Shuffle = false;
-				TryStartPlayback(*begin);
+				TryStartPlayback();
 			}
 		}
 

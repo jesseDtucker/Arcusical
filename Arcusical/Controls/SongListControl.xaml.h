@@ -7,7 +7,7 @@
 
 #include "Controls/SongListControl.g.h"
 
-#include "ViewModels/SongListVM.hpp"
+#include "ViewModels/SongListControlVM.hpp"
 
 using namespace Windows::UI::Xaml;
 
@@ -19,8 +19,9 @@ namespace Arcusical
 	public:
 		SongListControl();
 	private:
-		static DependencyProperty^ d_songs;
 
-		void SongClicked(Platform::Object^ sender, Windows::UI::Xaml::Controls::ItemClickEventArgs^ e);
+		void SongDoubleTapped(Platform::Object^ sender, Windows::UI::Xaml::Input::DoubleTappedRoutedEventArgs^ e);
+
+		ViewModel::SongListControlVM^ m_vm;
 	};
 }

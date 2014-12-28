@@ -5,6 +5,7 @@ namespace Util
 {
 	Subscription::Subscription(UnsubscribeCallback unsubscribeCallback)
 		: m_unsubscribeCallback(unsubscribeCallback)
+		, m_isSubscribed(true)
 	{}
 
 	Subscription::Subscription(Subscription&& other)
@@ -12,7 +13,20 @@ namespace Util
 		, m_isSubscribed(other.m_isSubscribed)
 	{
 		other.m_isSubscribed = false;
-		other.m_unsubscribeCallback = [](){}; // just assign to an empty function
+		other.m_unsubscribeCallback = nullptr;
+	}
+
+	Subscription::Subscription()
+		: m_unsubscribeCallback(nullptr)
+		, m_isSubscribed(false)
+	{
+
+	}
+
+	Subscription::Subscription(std::nullptr_t)
+		: Subscription()
+	{
+
 	}
 
 	Subscription& Subscription::operator=(Subscription&& other)
@@ -26,7 +40,7 @@ namespace Util
 			m_unsubscribeCallback = other.m_unsubscribeCallback;
 
 			other.m_isSubscribed = false;
-			other.m_unsubscribeCallback = [](){}; // just assign to an empty function
+			other.m_unsubscribeCallback = nullptr;
 		}
 
 		return *this;
@@ -41,7 +55,10 @@ namespace Util
 	{
 		if (m_isSubscribed)
 		{
-			m_unsubscribeCallback();
+			if (m_unsubscribeCallback != nullptr)
+			{
+				m_unsubscribeCallback();
+			}
 			m_isSubscribed = false;
 		}
 	}

@@ -48,14 +48,15 @@ namespace Player {
 		}
 	}
 
-	bool Playlist::TryStartPlayback(const Model::Song& song)
+	bool Playlist::TryStartPlayback()
 	{
 		// start playback only if no song is playing and it is not currently paused
 		bool startNext = !m_player->GetIsPlaying() && !m_player->GetIsPaused();
-		if (startNext)
+		if (m_wasRecentlyCleared || startNext)
 		{
 			PlayNext();
 		}
+		m_wasRecentlyCleared = false;
 
 		return startNext;
 	}
@@ -66,7 +67,7 @@ namespace Player {
 		if (startPlayback)
 		{
 			m_Shuffle = false;
-			TryStartPlayback(song);
+			TryStartPlayback();
 		}
 	}
 
@@ -74,6 +75,7 @@ namespace Player {
 	{
 		m_SongQueue = {};
 		m_Shuffle = false;
+		m_wasRecentlyCleared = true;
 	}
 
 	void Playlist::SelectMoreSongs()

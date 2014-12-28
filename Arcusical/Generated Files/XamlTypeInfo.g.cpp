@@ -83,17 +83,22 @@
         return ref new XamlSystemBaseType(typeName);
     }
 
-    if (typeName == L"Boolean")
-    {
-        return ref new XamlSystemBaseType(typeName);
-    }
-
     if (typeName == L"UInt64")
     {
         return ref new XamlSystemBaseType(typeName);
     }
 
     if (typeName == L"String")
+    {
+        return ref new XamlSystemBaseType(typeName);
+    }
+
+    if (typeName == L"Boolean")
+    {
+        return ref new XamlSystemBaseType(typeName);
+    }
+
+    if (typeName == L"Double")
     {
         return ref new XamlSystemBaseType(typeName);
     }
@@ -167,7 +172,6 @@
     {
         ::XamlTypeInfo::InfoProvider::XamlUserType^ userType = ref new ::XamlTypeInfo::InfoProvider::XamlUserType(this, typeName, GetXamlTypeByName(L"Object"));
         userType->KindOfType = ::Windows::UI::Xaml::Interop::TypeKind::Custom;
-        userType->AddMemberName(L"IsPlaying");
         userType->AddMemberName(L"Format");
         userType->AddMemberName(L"Length");
         userType->AddMemberName(L"Artist");
@@ -293,26 +297,29 @@
         return userType;
     }
 
+    if (typeName == L"Arcusical.ViewModel.SongPlayerVM")
+    {
+        ::XamlTypeInfo::InfoProvider::XamlUserType^ userType = ref new ::XamlTypeInfo::InfoProvider::XamlUserType(this, typeName, GetXamlTypeByName(L"Object"));
+        userType->KindOfType = ::Windows::UI::Xaml::Interop::TypeKind::Custom;
+        userType->Activator =
+            []() -> Platform::Object^ 
+            {
+                return ref new ::Arcusical::ViewModel::SongPlayerVM(); 
+            };
+        userType->AddMemberName(L"IsPlaying");
+        userType->AddMemberName(L"AmoutRemaining");
+        userType->AddMemberName(L"AmountPlayed");
+        userType->AddMemberName(L"CurrentSong");
+        userType->SetIsBindable();
+        userType->SetIsLocalType();
+        return userType;
+    }
+
     return nullptr;
 }
 
 ::Windows::UI::Xaml::Markup::IXamlMember^ ::XamlTypeInfo::InfoProvider::XamlTypeInfoProvider::CreateXamlMember(::Platform::String^ longMemberName)
 {
-    if (longMemberName == L"Arcusical.ViewModel.SongVM.IsPlaying")
-    {
-        ::XamlTypeInfo::InfoProvider::XamlMember^ xamlMember = ref new ::XamlTypeInfo::InfoProvider::XamlMember(this, L"IsPlaying", L"Boolean");
-        xamlMember->Getter =
-            [](Object^ instance) -> Object^
-            {
-                auto that = (::Arcusical::ViewModel::SongVM^)instance;
-                auto value = ref new ::Platform::Box<::Platform::Boolean>(that->IsPlaying);
-                return value;
-            };
-
-        xamlMember->SetIsReadOnly();
-        return xamlMember;
-    }
-
     if (longMemberName == L"Arcusical.ViewModel.SongVM.Format")
     {
         ::XamlTypeInfo::InfoProvider::XamlMember^ xamlMember = ref new ::XamlTypeInfo::InfoProvider::XamlMember(this, L"Format", L"Arcusical.ViewModel.AudioFormat");
@@ -541,6 +548,88 @@
             {
                 auto that = (::Arcusical::ViewModel::SongListControlVM^)instance;
                 that->SongList = (::Arcusical::ViewModel::SongListVM^)value;
+            };
+        return xamlMember;
+    }
+
+    if (longMemberName == L"Arcusical.ViewModel.SongPlayerVM.IsPlaying")
+    {
+        ::XamlTypeInfo::InfoProvider::XamlMember^ xamlMember = ref new ::XamlTypeInfo::InfoProvider::XamlMember(this, L"IsPlaying", L"Boolean");
+        xamlMember->Getter =
+            [](Object^ instance) -> Object^
+            {
+                auto that = (::Arcusical::ViewModel::SongPlayerVM^)instance;
+                auto value = ref new ::Platform::Box<::Platform::Boolean>(that->IsPlaying);
+                return value;
+            };
+
+        xamlMember->Setter =
+            [](Object^ instance, Object^ value) -> void
+            {
+                auto that = (::Arcusical::ViewModel::SongPlayerVM^)instance;
+                auto boxedValue = (::Platform::IBox<::Platform::Boolean>^)value;
+                that->IsPlaying = boxedValue->Value;
+            };
+        return xamlMember;
+    }
+
+    if (longMemberName == L"Arcusical.ViewModel.SongPlayerVM.AmoutRemaining")
+    {
+        ::XamlTypeInfo::InfoProvider::XamlMember^ xamlMember = ref new ::XamlTypeInfo::InfoProvider::XamlMember(this, L"AmoutRemaining", L"Double");
+        xamlMember->Getter =
+            [](Object^ instance) -> Object^
+            {
+                auto that = (::Arcusical::ViewModel::SongPlayerVM^)instance;
+                auto value = ref new ::Platform::Box<::default::float64>(that->AmoutRemaining);
+                return value;
+            };
+
+        xamlMember->Setter =
+            [](Object^ instance, Object^ value) -> void
+            {
+                auto that = (::Arcusical::ViewModel::SongPlayerVM^)instance;
+                auto boxedValue = (::Platform::IBox<::default::float64>^)value;
+                that->AmoutRemaining = boxedValue->Value;
+            };
+        return xamlMember;
+    }
+
+    if (longMemberName == L"Arcusical.ViewModel.SongPlayerVM.AmountPlayed")
+    {
+        ::XamlTypeInfo::InfoProvider::XamlMember^ xamlMember = ref new ::XamlTypeInfo::InfoProvider::XamlMember(this, L"AmountPlayed", L"Double");
+        xamlMember->Getter =
+            [](Object^ instance) -> Object^
+            {
+                auto that = (::Arcusical::ViewModel::SongPlayerVM^)instance;
+                auto value = ref new ::Platform::Box<::default::float64>(that->AmountPlayed);
+                return value;
+            };
+
+        xamlMember->Setter =
+            [](Object^ instance, Object^ value) -> void
+            {
+                auto that = (::Arcusical::ViewModel::SongPlayerVM^)instance;
+                auto boxedValue = (::Platform::IBox<::default::float64>^)value;
+                that->AmountPlayed = boxedValue->Value;
+            };
+        return xamlMember;
+    }
+
+    if (longMemberName == L"Arcusical.ViewModel.SongPlayerVM.CurrentSong")
+    {
+        ::XamlTypeInfo::InfoProvider::XamlMember^ xamlMember = ref new ::XamlTypeInfo::InfoProvider::XamlMember(this, L"CurrentSong", L"Arcusical.ViewModel.SongVM");
+        xamlMember->Getter =
+            [](Object^ instance) -> Object^
+            {
+                auto that = (::Arcusical::ViewModel::SongPlayerVM^)instance;
+                return that->CurrentSong;
+            };
+
+        xamlMember->Setter =
+            [](Object^ instance, Object^ value) -> void
+            {
+                auto that = (::Arcusical::ViewModel::SongPlayerVM^)instance;
+                that->CurrentSong = (::Arcusical::ViewModel::SongVM^)value;
             };
         return xamlMember;
     }

@@ -9,10 +9,6 @@
 #include "Utility/XamlMacros.hpp"
 
 namespace Arcusical {
-namespace Commands
-{
-	ref class CommandWrapper;
-}
 namespace Player
 {
 	class IPlayer;
@@ -54,11 +50,6 @@ namespace Arcusical{ namespace ViewModel {
 		PROP_SET_AND_GET_WINRT(unsigned long long, Length);
 		PROP_SET_AND_GET_WINRT(AudioFormat, Format);
 		
-		property Platform::Boolean IsPlaying
-		{
-			Platform::Boolean get();
-		}
-
 		SongStreamVM^ GetMediaStream();
 
 		void Play();

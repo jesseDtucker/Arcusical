@@ -18,8 +18,8 @@ namespace Util
 		template<typename... Args>
 		void operator()(Args&&... args) const;
 
-		std::unique_ptr<Subscription> operator+=(const Delegate<T>& rhs);
-		std::unique_ptr<Subscription> operator+=(const std::function<T>& rhs);
+		Subscription operator+=(const Delegate<T>& rhs);
+		Subscription operator+=(const std::function<T>& rhs);
 		void operator-=(const Delegate<T>& rhs);
 	private:
 		std::unordered_set<Delegate<T>> m_delegates;
@@ -40,15 +40,15 @@ namespace Util
 	}
 
 	template<typename T>
-	std::unique_ptr<Subscription> MulticastDelegate<T>::operator+=(const Delegate<T>& rhs)
+	Subscription MulticastDelegate<T>::operator+=(const Delegate<T>& rhs)
 	{
-		auto sub = std::make_unique<Subscription>([rhs, this](){ (*this) -= rhs; });
+		Subscription sub{ [rhs, this](){ (*this) -= rhs; } };
 		m_delegates.insert(rhs);
 		return sub;
 	}
 
 	template<typename T>
-	std::unique_ptr<Subscription> MulticastDelegate<T>::operator+=(const std::function<T>& rhs)
+	Subscription MulticastDelegate<T>::operator+=(const std::function<T>& rhs)
 	{
 		Delegate<T> del(rhs);
 		return ((*this) += del);

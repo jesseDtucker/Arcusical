@@ -39,10 +39,10 @@ namespace Player
 		virtual double GetCurrentTime() = 0; // in seconds
 
 		PROP_GET_EX(Util::MulticastDelegate<void(double)>, DurationChanged, m_durationChanged, NOT_CONST);
-		PROP_GET_EX(Util::MulticastDelegate<void()>, Playing, m_playing, NOT_CONST);
-		PROP_GET_EX(Util::MulticastDelegate<void()>, Paused, m_paused, NOT_CONST);
+		PROP_GET_EX(Util::MulticastDelegate<void(bool)>, Playing, m_playing, NOT_CONST);
 		PROP_GET_EX(Util::MulticastDelegate<void()>, Ended, m_ended, NOT_CONST);
 		PROP_GET_EX(Util::MulticastDelegate<void(double)>, TimeUpdate, m_timeUpdate, NOT_CONST);
+		PROP_GET_EX(Util::MulticastDelegate<void(const Model::Song&)>, SongChanged, m_songChanged, NOT_CONST);
 	};
 
 	typedef Arcusical::ServiceModel::ServiceResolver<IPlayer> PlayerLocator;

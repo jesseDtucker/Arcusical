@@ -4,10 +4,9 @@
 //
 
 #include "pch.h"
-#include "SongListControl.xaml.h"
 
-#include "Events/EventService.hpp"
-#include "Events/SongSelectedEvent.hpp"
+#include "SongListControl.xaml.h"
+#include "ViewModels/SongVM.hpp"
 
 using namespace Arcusical;
 
@@ -23,17 +22,26 @@ using namespace Windows::UI::Xaml::Media;
 using namespace Windows::UI::Xaml::Navigation;
 // The User Control item template is documented at http://go.microsoft.com/fwlink/?LinkId=234236
 
+using namespace ViewModel;
+
 SongListControl::SongListControl()
+	:m_vm(ref new SongListControlVM())
 {
 	InitializeComponent();
+	DataContext = m_vm;
 }
 
-void Arcusical::SongListControl::SongClicked(Platform::Object^ sender, Windows::UI::Xaml::Controls::ItemClickEventArgs^ e)
+void Arcusical::SongListControl::SongDoubleTapped(Platform::Object^ sender, Windows::UI::Xaml::Input::DoubleTappedRoutedEventArgs^ e)
 {
-	auto clickedSong = dynamic_cast<ViewModel::SongVM^>(e->ClickedItem);
-	if (clickedSong != nullptr)
+	auto uiElement = dynamic_cast<FrameworkElement^>(sender);
+	ARC_ASSERT(uiElement != nullptr);
+	if (uiElement != nullptr)
 	{
-		Events::SongSelectedEvent selectedEvent(clickedSong);
-		Events::EventService<Events::SongSelectedEvent>::BroadcastEvent(selectedEvent);
+		auto song = dynamic_cast<SongVM^>(uiElement->DataContext);
+		ARC_ASSERT(song != nullptr);
+		if (song != nullptr)
+		{
+			m_vm->PlaySongsAfterAndIncluding(song);
+		}
 	}
 }

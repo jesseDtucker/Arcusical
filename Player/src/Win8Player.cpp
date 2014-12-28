@@ -72,8 +72,11 @@ namespace Player
 
 	void Win8Player::Play()
 	{
-		auto stream = m_currentSong.GetStream();
-		PlayNativeSong(stream);
+		if (m_currentSong.HasStream())
+		{
+			auto stream = m_currentSong.GetStream();
+			PlayNativeSong(stream);
+		}
 	}
 
 	void Win8Player::PlayNativeSong(Model::SongStream& stream)
@@ -115,6 +118,7 @@ namespace Player
 			m_currentSong = song;
 			m_isCurrentSongSetForPlay = false;
 			Stop();
+			m_songChanged(m_currentSong);
 		}
 	}
 
@@ -150,12 +154,12 @@ namespace Player
 				case MF_MEDIA_ENGINE_EVENT_PLAYING:
 					m_player->m_IsPlaying = true;
 					m_player->m_IsPaused = false;
-					m_player->GetPlaying()();
+					m_player->GetPlaying()(true);
 					break;
 				case MF_MEDIA_ENGINE_EVENT_PAUSE:
 					m_player->m_IsPlaying = false;
 					m_player->m_IsPaused = true;
-					m_player->GetPaused()();
+					m_player->GetPlaying()(false);
 					break;
 				case MF_MEDIA_ENGINE_EVENT_ENDED:
 					m_player->m_IsPlaying = false;

@@ -8,7 +8,7 @@
 #include <memory>
 
 #include "Controls\SongPlayer.g.h"
-#include "ViewModels\SongVM.hpp"
+#include "ViewModels\SongPlayerVM.hpp"
 
 namespace Arcusical
 {
@@ -31,9 +31,7 @@ namespace Arcusical
 	private:
 		// control input callbacks
 		void PlayPauseButton_Clicked(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
-		void OnSongSelected(const Events::SongSelectedEvent& selectedSong);
 
-		ViewModel::SongVM^ m_currentSong;
-		std::shared_ptr<Util::Subscription> m_songSelectedSubscription;
+		ViewModel::SongPlayerVM^ m_playerVM;
 	};
 }

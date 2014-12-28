@@ -27,8 +27,13 @@ using namespace Windows::UI::Xaml::Navigation;
 using namespace ViewModel;
 
 AlbumListControl::AlbumListControl()
+	: m_vm(nullptr)
 {
 	InitializeComponent();
+
+	auto musicProviderService = MusicProvider::MusicProviderLocator::ResolveService().lock();
+	m_vm = ref new AlbumListControlVM(musicProviderService);
+	DataContext = m_vm;
 }
 
 void Arcusical::AlbumListControl::AlbumClicked(Platform::Object^ sender, Windows::UI::Xaml::Controls::ItemClickEventArgs^ e)

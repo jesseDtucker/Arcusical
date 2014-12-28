@@ -15,6 +15,8 @@ namespace Util
 	{
 	public:
 		typedef std::function<void()> UnsubscribeCallback;
+		Subscription();
+		Subscription(std::nullptr_t);
 		Subscription(UnsubscribeCallback unsubscribeCallback);
 		Subscription(Subscription&&);
 		Subscription& operator =(Subscription&&);

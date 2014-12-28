@@ -27,13 +27,13 @@ namespace ViewModel {
 	SongVM::SongVM(const Model::Song& song)
 		: m_song(song)
 	{
-		Title = ref new Platform::String(m_song.GetTitle().c_str());
-		Artist = ref new Platform::String(m_song.GetArtist().c_str());
-		Length = m_song.GetLength();
+		m_Title = ref new Platform::String(m_song.GetTitle().c_str());
+		m_Artist = ref new Platform::String(m_song.GetArtist().c_str());
+		m_Length = m_song.GetLength();
 
 		if (m_song.GetTrackNumber().first != 0)
 		{
-			Title = ref new Platform::String((to_wstring(m_song.GetTrackNumber().first) + L" - ").c_str()) + Title;
+			m_Title = ref new Platform::String((to_wstring(m_song.GetTrackNumber().first) + L" - ").c_str()) + Title;
 		}
 	}
 
@@ -66,11 +66,6 @@ namespace ViewModel {
 				playList->Clear();
 				playList->Enqueue(m_song);
 			}
-
-			DispatchToUI([this]()
-			{
-				this->OnPropertyChanged("IsPlaying");
-			});
 		});
 	}
 
@@ -84,25 +79,7 @@ namespace ViewModel {
 			{
 				player->Stop();
 			}
-
-			DispatchToUI([this]()
-			{
-				this->OnPropertyChanged("IsPlaying");
-			});
 		});
-	}
-
-	Platform::Boolean SongVM::IsPlaying::get()
-	{
-		bool isPlaying = false;
-		auto player = Player::PlayerLocator::ResolveService().lock();
-		ARC_ASSERT(player != nullptr);
-		if (player != nullptr)
-		{
-			isPlaying = player->GetIsPlaying() && *player->GetCurrentSong() == *this->GetModel();
-		}
-
-		return isPlaying;
 	}
 }
 }

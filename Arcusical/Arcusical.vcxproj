@@ -339,6 +339,7 @@
     </ClInclude>
     <ClInclude Include="ViewModels\SongListControlVM.hpp" />
     <ClInclude Include="ViewModels\SongListVM.hpp" />
+    <ClInclude Include="ViewModels\SongPlayerVM.hpp" />
     <ClInclude Include="ViewModels\SongVM.hpp" />
     <ClInclude Include="Utility\XamlMacros.hpp" />
   </ItemGroup>
@@ -391,7 +392,7 @@
     <ClCompile Include="Controls\SongPlayer.xaml.cpp">
       <DependentUpon>Controls\SongPlayer.xaml</DependentUpon>
     </ClCompile>
-    <ClCompile Include="Converters\IsPlayingToIcon.cpp" />
+    <ClCompile Include="Converters\IsPlayingToIconPath.cpp" />
     <ClCompile Include="Events\AlbumSelectedEvent.cpp" />
     <ClCompile Include="Events\SongSelectedEvent.cpp" />
     <ClCompile Include="ViewModels\AlbumListControlVM.cpp" />
@@ -420,6 +421,7 @@
     </ClCompile>
     <ClCompile Include="ViewModels\SongListControlVM.cpp" />
     <ClCompile Include="ViewModels\SongListVM.cpp" />
+    <ClCompile Include="ViewModels\SongPlayerVM.cpp" />
     <ClCompile Include="ViewModels\SongVM.cpp" />
   </ItemGroup>
   <ItemGroup>
