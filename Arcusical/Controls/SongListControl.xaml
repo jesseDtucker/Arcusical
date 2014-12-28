@@ -10,15 +10,22 @@
 	d:DesignWidth="400">
 	<UserControl.Resources>
 		<DataTemplate x:Key="SongListItemTemplate" >
-			<Grid DoubleTapped="SongDoubleTapped" Background="Orange" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-				<TextBlock Text="{Binding Title}"/>
+			<Grid DoubleTapped="SongDoubleTapped" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+				<TextBlock Text="{Binding Title}" VerticalAlignment="Center" Margin="5" FontSize="16"/>
 			</Grid>
 		</DataTemplate>
 	</UserControl.Resources>
 	<Grid Background="#343C5C">
 		<Border BorderThickness="0, 0, 2, 0" BorderBrush="#1D2133">
 			<ScrollViewer>
-				<ListView Height="Auto" ItemsSource="{Binding SongList.List}" ItemTemplate="{StaticResource SongListItemTemplate}"/>
+				<ListView Height="Auto" ItemsSource="{Binding SongList.List}" ItemTemplate="{StaticResource SongListItemTemplate}">
+					<ListView.ItemContainerStyle>
+						<Style TargetType="ListViewItem">
+							<Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+							<Setter Property="VerticalContentAlignment" Value="Stretch"/>
+						</Style>
+					</ListView.ItemContainerStyle>
+				</ListView>
 			</ScrollViewer>
 		</Border>
 	</Grid>

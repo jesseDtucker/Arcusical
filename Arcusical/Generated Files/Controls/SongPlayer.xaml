@@ -42,7 +42,7 @@
 			<TextBlock Text="{Binding Path=Title}" Width="400"/>
 		</StackPanel>
 		<StackPanel>
-			<TextBlock Text="{Binding Path =AmountPlayed}"/>
+			<TextBlock Text="{Binding Path=AmountPlayed}"/>
 			<TextBlock Text="{Binding Path=AmoutRemaining}"/>
 		</StackPanel>
 	</StackPanel>
