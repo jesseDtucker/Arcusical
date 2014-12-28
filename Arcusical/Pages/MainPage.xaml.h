@@ -16,6 +16,11 @@ namespace Arcusical
 	{
 	public:
 		MainPage();
+	private:
+		void SetupTransportControls();
+		void OnTransportControlButtonPressed(Windows::Media::SystemMediaTransportControls^ sender, Windows::Media::SystemMediaTransportControlsButtonPressedEventArgs^ args);
 
+		Util::Subscription m_isPlayingSub;
+		Util::Subscription m_songChangedSub;
 	};
 }

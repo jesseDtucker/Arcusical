@@ -18,8 +18,6 @@
 #include "../src/MusicProvider.hpp" // This is a hack for the time being. I need something similar to flow engine for resolving dependencies...
 #include "../src/Win8Player.hpp" // This is a hack for the time being. I need something similar to flow engine for resolving dependencies...
 
-using namespace Arcusical;
-
 using namespace Platform;
 using namespace Windows::ApplicationModel;
 using namespace Windows::ApplicationModel::Activation;
@@ -34,7 +32,10 @@ using namespace Windows::UI::Xaml::Interop;
 using namespace Windows::UI::Xaml::Media;
 using namespace Windows::UI::Xaml::Navigation;
 
-// The Blank Application template is documented at http://go.microsoft.com/fwlink/?LinkId=234227
+using namespace std;
+using namespace Arcusical;
+using namespace Arcusical::Player;
+using namespace Arcusical::MusicProvider;
 
 /// <summary>
 /// Initializes the singleton application object.  This is the first line of authored code
@@ -50,19 +51,19 @@ App::App()
 
 void App::SetupApplication()
 {
-	std::mutex loadingLock;
-	std::unique_lock<std::mutex> lockGuard(loadingLock);
-	std::condition_variable loadingWait;
+	mutex loadingLock;
+	unique_lock<mutex> lockGuard(loadingLock);
+	condition_variable loadingWait;
 
 	// some of the services use COM and so should not be initialized on the UI thread
-	std::async([&]()
+	async([&]()
 	{
-		auto player = std::make_shared<Player::Win8Player>();
-		Player::PlayerLocator::RegisterSingleton(player);
-		Player::PlaylistLocator::RegisterSingleton(std::make_shared<Player::Playlist>(player.get()));
-		MusicProvider::MusicProviderLocator::RegisterSingleton(std::make_shared<MusicProvider::MusicProvider>());
+		auto player = make_shared<Win8Player>();
+		PlayerLocator::RegisterSingleton(player);
+		PlaylistLocator::RegisterSingleton(make_shared<Player::Playlist>(player.get()));
+		MusicProviderLocator::RegisterSingleton(make_shared<MusicProvider::MusicProvider>());
 		
-		std::unique_lock<std::mutex> lckGrd(loadingLock);
+		unique_lock<mutex> lckGrd(loadingLock);
 		loadingWait.notify_all();
 	});
 

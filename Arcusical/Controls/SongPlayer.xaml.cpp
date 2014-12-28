@@ -14,7 +14,7 @@
 #include "IPlayer.hpp"
 #include "ViewModels/SongVM.hpp"
 
-using namespace Arcusical;
+
 
 using namespace Platform;
 using namespace Windows::Foundation;
@@ -28,6 +28,8 @@ using namespace Windows::UI::Xaml::Input;
 using namespace Windows::UI::Xaml::Media;
 using namespace Windows::UI::Xaml::Navigation;
 
+using namespace std;
+using namespace Arcusical;
 using namespace Arcusical::ViewModel;
 
 // The User Control item template is documented at http://go.microsoft.com/fwlink/?LinkId=234236
@@ -41,12 +43,15 @@ SongPlayer::SongPlayer()
 
 void SongPlayer::PlayPauseButton_Clicked(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
 {
-	if (m_playerVM->IsPlaying)
+	async([this]()
 	{
-		m_playerVM->Pause();
-	}
-	else
-	{
-		m_playerVM->Play();
-	}
+		if (m_playerVM->IsPlaying)
+		{
+			m_playerVM->Pause();
+		}
+		else
+		{
+			m_playerVM->Play();
+		}
+	});
 }
