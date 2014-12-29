@@ -35,8 +35,6 @@ using namespace Arcusical::Model;
 using namespace Arcusical::Player;
 using namespace FileSystem;
 
-// The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
-
 MainPage::MainPage()
 {
 	using namespace ViewModel;
@@ -77,24 +75,30 @@ void MainPage::SetupTransportControls()
 			}
 		};
 
-		m_songChangedSub = player->GetSongChanged() += [mediaControl](const Song& newSong)
+		m_songChangedSub = player->GetSongChanged() += [this, mediaControl](const Song& newSong)
 		{
 			auto displayUpdater = mediaControl->DisplayUpdater;
-			displayUpdater->ClearAll();
 
 			displayUpdater->Type = MediaPlaybackType::Music;
 			displayUpdater->MusicProperties->Title = ref new Platform::String(newSong.GetTitle().c_str());
 			displayUpdater->MusicProperties->Artist = ref new Platform::String(newSong.GetArtist().c_str());
 
-			std::async([newSong, displayUpdater]()
+			std::async([this, newSong, displayUpdater]()
 			{
 				auto musicProvider = MusicProvider::MusicProviderLocator::ResolveService().lock();
 				ARC_ASSERT(musicProvider != nullptr);
 				auto album = musicProvider->GetAlbum(newSong.GetAlbumName());
 				auto imagePath = album.GetImageFilePath();
 
-				if (imagePath.size() > 0)
+				if (imagePath.size() == 0)
 				{
+					auto defaultAlbumImg = ref new Uri("ms-appx:///Assets/albumBackground.png");
+					displayUpdater->Thumbnail = Windows::Storage::Streams::RandomAccessStreamReference::CreateFromUri(defaultAlbumImg);
+					displayUpdater->Update();
+				}
+				else if(oldImagePath != imagePath)
+				{
+					oldImagePath = imagePath;
 					auto file = Storage::LoadFileFromPath(imagePath);
 					if (file != nullptr)
 					{

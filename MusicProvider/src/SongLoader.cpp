@@ -304,8 +304,11 @@ namespace MusicProvider
 	{
 		using namespace FileSystem;
 
-		auto fileName = L"albumImgs\\" + albumName + L"." + MPEG4::ImageTypeToWString.at(imageType);
+		auto fileName = albumName + L"." + MPEG4::ImageTypeToWString.at(imageType);
 		Storage::RemoveIllegalCharacters(fileName);
+		replace(begin(fileName), end(fileName), '\\', '_');
+		replace(begin(fileName), end(fileName), '/', '_');
+		fileName = L"albumImgs\\" + fileName;
 
 		ARC_ASSERT_MSG(!Storage::ApplicationFolder().ContainsFile(fileName), "an album image with this name already exists!");
 		auto imgFile = Storage::ApplicationFolder().CreateNewFile(fileName);

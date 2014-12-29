@@ -20,6 +20,8 @@ namespace Arcusical
 		void SetupTransportControls();
 		void OnTransportControlButtonPressed(Windows::Media::SystemMediaTransportControls^ sender, Windows::Media::SystemMediaTransportControlsButtonPressedEventArgs^ args);
 
+		std::wstring oldImagePath;
+
 		Util::Subscription m_isPlayingSub;
 		Util::Subscription m_songChangedSub;
 		Util::Subscription m_isEndedSub;
