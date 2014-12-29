@@ -34,7 +34,7 @@
 		
 		<!-- Album template-->
 		<DataTemplate x:Key="AlbumListItemTemplate">
-			<StackPanel Orientation="Vertical">
+			<StackPanel Orientation="Vertical" DoubleTapped="Album_DoubleTapped">
 				<Image Source="{Binding Path=ImagePath}" Style="{StaticResource AlbumImageStyle}"/>
 				<TextBlock HorizontalAlignment="Center"  Text="{Binding Path=Title}" Style="{StaticResource AlbumTitleStyle}"/>
 				<TextBlock HorizontalAlignment="Center"  Text="{Binding Path=Artist}" Style="{StaticResource AlbumArtistStyle}"/>

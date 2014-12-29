@@ -16,6 +16,7 @@ namespace Arcusical
 		
 	private:
 		void AlbumClicked(Platform::Object^ sender, Windows::UI::Xaml::Controls::ItemClickEventArgs^ e);
+		void Album_DoubleTapped(Platform::Object^ sender, Windows::UI::Xaml::Input::DoubleTappedRoutedEventArgs^ e);
 
 		ViewModel::AlbumListControlVM^ m_vm;
 	};

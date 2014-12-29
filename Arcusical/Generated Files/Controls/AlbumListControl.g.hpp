@@ -29,6 +29,10 @@ void ::Arcusical::AlbumListControl::Connect(int connectionId, Platform::Object^ 
     switch (connectionId)
     {
     case 1:
+        (safe_cast<::Windows::UI::Xaml::UIElement^>(target))->DoubleTapped +=
+            ref new ::Windows::UI::Xaml::Input::DoubleTappedEventHandler(this, (void (::Arcusical::AlbumListControl::*)(Platform::Object^, Windows::UI::Xaml::Input::DoubleTappedRoutedEventArgs^))&AlbumListControl::Album_DoubleTapped);
+        break;
+    case 2:
         (safe_cast<::Windows::UI::Xaml::Controls::ListViewBase^>(target))->ItemClick +=
             ref new ::Windows::UI::Xaml::Controls::ItemClickEventHandler(this, (void (::Arcusical::AlbumListControl::*)(Platform::Object^, Windows::UI::Xaml::Controls::ItemClickEventArgs^))&AlbumListControl::AlbumClicked);
         break;

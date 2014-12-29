@@ -45,3 +45,19 @@ void Arcusical::AlbumListControl::AlbumClicked(Platform::Object^ sender, Windows
 		Events::EventService<Events::AlbumSelectedEvent>::BroadcastEvent(selectedEvent);
 	}
 }
+
+
+void Arcusical::AlbumListControl::Album_DoubleTapped(Platform::Object^ sender, Windows::UI::Xaml::Input::DoubleTappedRoutedEventArgs^ e)
+{
+	auto uiElement = dynamic_cast<FrameworkElement^>(sender);
+	ARC_ASSERT(uiElement != nullptr);
+	if (uiElement != nullptr)
+	{
+		auto album = dynamic_cast<AlbumVM^>(uiElement->DataContext);
+		ARC_ASSERT(song != nullptr);
+		if (album != nullptr)
+		{
+			album->Play();
+		}
+	}
+}

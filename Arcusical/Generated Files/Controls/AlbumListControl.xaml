@@ -34,7 +34,7 @@
 		
 		<!-- Album template-->
 		<DataTemplate x:Key="AlbumListItemTemplate">
-			<StackPanel Orientation="Vertical">
+			<StackPanel x:ConnectionId='1' Orientation="Vertical"                                  >
 				<Image Source="{Binding Path=ImagePath}" Style="{StaticResource AlbumImageStyle}"/>
 				<TextBlock HorizontalAlignment="Center"  Text="{Binding Path=Title}" Style="{StaticResource AlbumTitleStyle}"/>
 				<TextBlock HorizontalAlignment="Center"  Text="{Binding Path=Artist}" Style="{StaticResource AlbumArtistStyle}"/>
@@ -55,7 +55,7 @@
 	</UserControl.Resources>
 	<Grid>
 		<ScrollViewer>
-			<ListView x:ConnectionId='1' Height="Auto"  ItemsSource="{Binding Path=AlbumList.Albums}" 
+			<ListView x:ConnectionId='2' Height="Auto"  ItemsSource="{Binding Path=AlbumList.Albums}" 
 						  Style="{StaticResource AlbumListStyle}"
 						                           IsItemClickEnabled="True"/>
 		</ScrollViewer>
