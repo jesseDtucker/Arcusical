@@ -6,8 +6,6 @@
 #include "pch.h"
 #include "SongPlayer.xaml.h"
 
-#include <future>
-
 #include "Arc_Assert.hpp"
 #include "Events/EventService.hpp"
 #include "Events/SongSelectedEvent.hpp"
@@ -28,7 +26,6 @@ using namespace Windows::UI::Xaml::Input;
 using namespace Windows::UI::Xaml::Media;
 using namespace Windows::UI::Xaml::Navigation;
 
-using namespace std;
 using namespace Arcusical;
 using namespace Arcusical::ViewModel;
 
@@ -43,31 +40,22 @@ SongPlayer::SongPlayer()
 
 void SongPlayer::PlayPauseButton_Clicked(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
 {
-	async([this]()
+	if (m_playerVM->IsPlaying)
 	{
-		if (m_playerVM->IsPlaying)
-		{
-			m_playerVM->Pause();
-		}
-		else
-		{
-			m_playerVM->Play();
-		}
-	});
+		m_playerVM->Pause();
+	}
+	else
+	{
+		m_playerVM->Play();
+	}
 }
 
 void Arcusical::SongPlayer::Previous_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
 {
-	async([this]()
-	{
-		m_playerVM->Previous();
-	});
+	m_playerVM->Previous();
 }
 
 void Arcusical::SongPlayer::Next_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
 {
-	async([this]()
-	{
-		m_playerVM->Next();
-	});
+	m_playerVM->Next();
 }

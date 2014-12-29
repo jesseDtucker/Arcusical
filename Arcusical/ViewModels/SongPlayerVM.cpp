@@ -1,11 +1,14 @@
 #include "pch.h"
 
+#include <future>
+
 #include "Arc_Assert.hpp"
 #include "IPlayer.hpp"
 #include "Playlist.hpp"
 #include "Song.hpp"
 #include "SongPlayerVM.hpp"
 
+using namespace std;
 using namespace Arcusical::Model;
 using namespace Arcusical::Player;
 
@@ -62,16 +65,44 @@ namespace Arcusical
 
 		void SongPlayerVM::Play()
 		{
-			auto player = PlayerLocator::ResolveService().lock();
-			ARC_ASSERT(player != nullptr);
-			player->Play();
+			async([]()
+			{
+				auto player = PlayerLocator::ResolveService().lock();
+				ARC_ASSERT(player != nullptr);
+				player->Play();
+			});
 		}
 
 		void SongPlayerVM::Pause()
 		{
-			auto player = PlayerLocator::ResolveService().lock();
-			ARC_ASSERT(player != nullptr);
-			player->Stop();
+			async([]()
+			{
+				auto player = PlayerLocator::ResolveService().lock();
+				ARC_ASSERT(player != nullptr);
+				player->Stop();
+			});
+		}
+
+		void SongPlayerVM::Previous()
+		{
+			async([]()
+			{
+				auto playlist = PlaylistLocator::ResolveService().lock();
+				ARC_ASSERT(playlist != nullptr);
+
+				playlist->PlayPrevious();
+			});
+		}
+
+		void SongPlayerVM::Next()
+		{
+			async([]()
+			{
+				auto playlist = PlaylistLocator::ResolveService().lock();
+				ARC_ASSERT(playlist != nullptr);
+
+				playlist->PlayNext();
+			});
 		}
 
 		void SongPlayerVM::UpdateTime(double amountPlayed, double duration)
@@ -79,22 +110,6 @@ namespace Arcusical
 			m_songLength = duration;
 			AmountPlayed = amountPlayed;
 			AmoutRemaining = duration - amountPlayed;
-		}
-
-		void SongPlayerVM::Previous()
-		{
-			auto playlist = PlaylistLocator::ResolveService().lock();
-			ARC_ASSERT(playlist != nullptr);
-
-			playlist->PlayPrevious();
-		}
-
-		void SongPlayerVM::Next()
-		{
-			auto playlist = PlaylistLocator::ResolveService().lock();
-			ARC_ASSERT(playlist != nullptr);
-
-			playlist->PlayNext();
 		}
 
 	}
