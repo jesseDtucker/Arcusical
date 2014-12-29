@@ -9,6 +9,7 @@
 #include "IPlayer.hpp"
 #include "Controls/SongListControl.xaml.h"
 #include "Controls/AlbumListControl.xaml.h"
+#include "Playlist.hpp"
 #include "ViewModels/AlbumListControlVM.hpp"
 
 #include "IMusicProvider.hpp"
@@ -94,7 +95,9 @@ void MainPage::SetupTransportControls()
 void MainPage::OnTransportControlButtonPressed(SystemMediaTransportControls^ sender, SystemMediaTransportControlsButtonPressedEventArgs^ args)
 {
 	auto player = PlayerLocator::ResolveService().lock();
+	auto playlist = PlaylistLocator::ResolveService().lock();
 	ARC_ASSERT(player != nullptr);
+	ARC_ASSERT(playlist != nullptr);
 
 	switch (args->Button)
 	{
@@ -105,10 +108,10 @@ void MainPage::OnTransportControlButtonPressed(SystemMediaTransportControls^ sen
 		player->Stop();
 		break;
 	case SystemMediaTransportControlsButton::Next:
-		ARC_FAIL("TODO::JT");
+		playlist->PlayNext();
 		break;
 	case SystemMediaTransportControlsButton::Previous:
-		ARC_FAIL("TODO::JT");
+		playlist->PlayPrevious();
 		break;
 	default:
 		ARC_FAIL("Missed a button!");

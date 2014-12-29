@@ -27,6 +27,8 @@ namespace Arcusical
 
 			void Play();
 			void Pause();
+			void Previous();
+			void Next();
 		private:
 			void UpdateTime(double amountPlayed, double duration);
 

@@ -22,5 +22,6 @@ namespace Arcusical
 
 		Util::Subscription m_isPlayingSub;
 		Util::Subscription m_songChangedSub;
+		Util::Subscription m_isEndedSub;
 	};
 }

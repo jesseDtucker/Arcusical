@@ -37,6 +37,7 @@ namespace Player
 
 		virtual double GetDuration() = 0; // in seconds
 		virtual double GetCurrentTime() = 0; // in seconds
+		virtual void SetCurrentTime(double time) = 0; // in seconds
 
 		PROP_GET_EX(Util::MulticastDelegate<void(double)>, DurationChanged, m_durationChanged, NOT_CONST);
 		PROP_GET_EX(Util::MulticastDelegate<void(bool)>, Playing, m_playing, NOT_CONST);

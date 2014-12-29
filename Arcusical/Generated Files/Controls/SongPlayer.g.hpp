@@ -30,7 +30,15 @@ void ::Arcusical::SongPlayer::Connect(int connectionId, Platform::Object^ target
     {
     case 1:
         (safe_cast<::Windows::UI::Xaml::Controls::Primitives::ButtonBase^>(target))->Click +=
+            ref new ::Windows::UI::Xaml::RoutedEventHandler(this, (void (::Arcusical::SongPlayer::*)(Platform::Object^, Windows::UI::Xaml::RoutedEventArgs^))&SongPlayer::Previous_Click);
+        break;
+    case 2:
+        (safe_cast<::Windows::UI::Xaml::Controls::Primitives::ButtonBase^>(target))->Click +=
             ref new ::Windows::UI::Xaml::RoutedEventHandler(this, (void (::Arcusical::SongPlayer::*)(Platform::Object^, Windows::UI::Xaml::RoutedEventArgs^))&SongPlayer::PlayPauseButton_Clicked);
+        break;
+    case 3:
+        (safe_cast<::Windows::UI::Xaml::Controls::Primitives::ButtonBase^>(target))->Click +=
+            ref new ::Windows::UI::Xaml::RoutedEventHandler(this, (void (::Arcusical::SongPlayer::*)(Platform::Object^, Windows::UI::Xaml::RoutedEventArgs^))&SongPlayer::Next_Click);
         break;
     }
     (void)connectionId; // Unused parameter

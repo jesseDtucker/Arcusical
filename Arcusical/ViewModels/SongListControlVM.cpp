@@ -59,7 +59,7 @@ namespace ViewModel{
 			if (distance(begin(songsToPlay), end(songsToPlay)) > 0)
 			{
 				playlist->Clear();
-				playlist->Enqueue(begin(songsToPlay), end(songsToPlay));
+				playlist->Enqueue(songsToPlay);
 			}
 		});
 	}

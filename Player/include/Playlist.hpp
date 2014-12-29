@@ -23,14 +23,15 @@ namespace Arcusical{
 			static const std::string ServiceName;
 
 			template<typename T>
-			void Enqueue(T begin, T end, bool startPlayback = true);
+			void Enqueue(const T& collection, bool startPlayback = true);
 			void Enqueue(const Model::Song& song, bool startPlayback = true);
 
 			void PlayNext();
+			void PlayPrevious(double goToStartThreshold = 5.0); // if the song is beyond the threshold (in seconds) then just go to the start of the song
 
 			void Clear();
 
-			PROP_GET(std::queue<Model::Song>, SongQueue);
+			PROP_GET(std::vector<Model::Song>, SongQueue);
 			PROP_GET(bool, Shuffle);
 
 		private:
@@ -46,12 +47,11 @@ namespace Arcusical{
 		};
 
 		template<typename T>
-		void Playlist::Enqueue(T begin, T end, bool startPlayback)
+		void Playlist::Enqueue(const T& collection, bool startPlayback)
 		{
-			ARC_ASSERT(begin != end);
-			for (; begin != end; ++begin)
+			for (auto itr = crbegin(collection); itr != crend(collection); ++itr)
 			{
-				m_SongQueue.push(*begin);
+				m_SongQueue.push_back(*itr);
 			}
 			if (startPlayback)
 			{

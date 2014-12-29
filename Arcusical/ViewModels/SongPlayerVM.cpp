@@ -2,10 +2,12 @@
 
 #include "Arc_Assert.hpp"
 #include "IPlayer.hpp"
+#include "Playlist.hpp"
 #include "Song.hpp"
 #include "SongPlayerVM.hpp"
 
 using namespace Arcusical::Model;
+using namespace Arcusical::Player;
 
 namespace Arcusical
 {
@@ -18,7 +20,7 @@ namespace Arcusical
 			, m_IsPlaying(false)
 		{
 			// listen to the song player and respond to changes in state
-			auto player = Player::PlayerLocator::ResolveService().lock();
+			auto player = PlayerLocator::ResolveService().lock();
 			ARC_ASSERT(player != nullptr);
 
 			m_durationSub = player->GetDurationChanged() += [this, player](double duration)
@@ -60,14 +62,14 @@ namespace Arcusical
 
 		void SongPlayerVM::Play()
 		{
-			auto player = Player::PlayerLocator::ResolveService().lock();
+			auto player = PlayerLocator::ResolveService().lock();
 			ARC_ASSERT(player != nullptr);
 			player->Play();
 		}
 
 		void SongPlayerVM::Pause()
 		{
-			auto player = Player::PlayerLocator::ResolveService().lock();
+			auto player = PlayerLocator::ResolveService().lock();
 			ARC_ASSERT(player != nullptr);
 			player->Stop();
 		}
@@ -77,6 +79,22 @@ namespace Arcusical
 			m_songLength = duration;
 			AmountPlayed = amountPlayed;
 			AmoutRemaining = duration - amountPlayed;
+		}
+
+		void SongPlayerVM::Previous()
+		{
+			auto playlist = PlaylistLocator::ResolveService().lock();
+			ARC_ASSERT(playlist != nullptr);
+
+			playlist->PlayPrevious();
+		}
+
+		void SongPlayerVM::Next()
+		{
+			auto playlist = PlaylistLocator::ResolveService().lock();
+			ARC_ASSERT(playlist != nullptr);
+
+			playlist->PlayNext();
 		}
 
 	}

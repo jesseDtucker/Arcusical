@@ -61,6 +61,8 @@ namespace Player
 		virtual double GetCurrentTime() override;
 		virtual double GetDuration() override;
 
+		virtual void SetCurrentTime(double time) override;
+
 	private:
 		void PlayNativeSong(Model::SongStream& stream);
 

@@ -137,6 +137,13 @@ namespace Player
 		return m_mediaEngine->GetDuration();
 	}
 
+	void Win8Player::SetCurrentTime(double time)
+	{
+		ARC_ASSERT(time < GetDuration());
+		time = time < GetDuration() ? time : GetDuration();
+		m_mediaEngine->SetCurrentTime(time);
+	}
+
 	//////////////////////////////////////////////////////////////////////////
 	//
 	//	Media Engine Notify
@@ -164,6 +171,7 @@ namespace Player
 				case MF_MEDIA_ENGINE_EVENT_ENDED:
 					m_player->m_IsPlaying = false;
 					m_player->m_IsPaused = false;
+					m_player->GetPlaying()(false);
 					m_player->GetEnded()();
 					break;
 				case MF_MEDIA_ENGINE_EVENT_TIMEUPDATE:

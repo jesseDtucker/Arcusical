@@ -55,3 +55,19 @@ void SongPlayer::PlayPauseButton_Clicked(Platform::Object^ sender, Windows::UI::
 		}
 	});
 }
+
+void Arcusical::SongPlayer::Previous_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
+{
+	async([this]()
+	{
+		m_playerVM->Previous();
+	});
+}
+
+void Arcusical::SongPlayer::Next_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
+{
+	async([this]()
+	{
+		m_playerVM->Next();
+	});
+}
