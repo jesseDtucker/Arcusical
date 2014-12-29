@@ -15,8 +15,8 @@ namespace Model
 	typedef std::unordered_map<boost::uuids::uuid, Arcusical::Model::Song> SongCollection;
 	typedef std::unordered_map<boost::uuids::uuid, Arcusical::Model::Album> AlbumCollection;
 
-	typedef std::shared_ptr<SongCollection> SongCollectionLockedPtr;
-	typedef std::shared_ptr<AlbumCollection> AlbumCollectionLockedPtr;
+	typedef std::unique_ptr<SongCollection, std::function<void(SongCollection*)>> SongCollectionLockedPtr;
+	typedef std::unique_ptr<AlbumCollection, std::function<void(AlbumCollection*)>> AlbumCollectionLockedPtr;
 
 	typedef SongCollection* SongCollectionPtr;
 	typedef AlbumCollection* AlbumCollectionPtr;

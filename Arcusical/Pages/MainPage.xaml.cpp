@@ -6,15 +6,17 @@
 #include "pch.h"
 #include "MainPage.xaml.h"
 
+#include "IFile.hpp"
 #include "IPlayer.hpp"
 #include "Controls/SongListControl.xaml.h"
 #include "Controls/AlbumListControl.xaml.h"
 #include "Playlist.hpp"
+#include "Storage.hpp"
 #include "ViewModels/AlbumListControlVM.hpp"
 
 #include "IMusicProvider.hpp"
 
-
+using namespace concurrency;
 using namespace Platform;
 using namespace Windows::Foundation;
 using namespace Windows::Foundation::Collections;
@@ -31,6 +33,7 @@ using namespace std;
 using namespace Arcusical;
 using namespace Arcusical::Model;
 using namespace Arcusical::Player;
+using namespace FileSystem;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -83,6 +86,24 @@ void MainPage::SetupTransportControls()
 			displayUpdater->MusicProperties->Title = ref new Platform::String(newSong.GetTitle().c_str());
 			displayUpdater->MusicProperties->Artist = ref new Platform::String(newSong.GetArtist().c_str());
 
+			std::async([newSong, displayUpdater]()
+			{
+				auto musicProvider = MusicProvider::MusicProviderLocator::ResolveService().lock();
+				ARC_ASSERT(musicProvider != nullptr);
+				auto album = musicProvider->GetAlbum(newSong.GetAlbumName());
+				auto imagePath = album.GetImageFilePath();
+
+				if (imagePath.size() > 0)
+				{
+					auto file = Storage::LoadFileFromPath(imagePath);
+					if (file != nullptr)
+					{
+						displayUpdater->Thumbnail = Windows::Storage::Streams::RandomAccessStreamReference::CreateFromFile(file->GetRawHandle());
+						displayUpdater->Update();
+					}
+				}
+			});
+			
 			displayUpdater->Update();
 		};
 	}

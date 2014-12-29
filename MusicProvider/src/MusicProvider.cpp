@@ -16,13 +16,16 @@
 #undef max
 #undef min
 
-const std::string Arcusical::MusicProvider::IMusicProvider::ServiceName("MusicProvider");
+using namespace std;
+using namespace Arcusical::Model;
+
+const string Arcusical::MusicProvider::IMusicProvider::ServiceName("MusicProvider");
 
 namespace Arcusical
 {
 namespace MusicProvider
 {
-	static void FixupAlbumName(Model::Song& song, const std::vector<Model::Song>& newSongs, const Model::SongCollection& existingSongs);
+	static void FixupAlbumName(Song& song, const vector<Song>& newSongs, const SongCollection& existingSongs);
 
 	MusicProvider::MusicProvider()
 		: m_songCallbackSet()
@@ -35,26 +38,26 @@ namespace MusicProvider
 			return this->m_musicCache->GetLocalSongs();
 		};
 
-		m_songMapper = std::make_shared<SongIdMapper>(getLocalSongs);
-		m_musicCache = std::make_unique<LocalMusicStore::LocalMusicCache>(m_songMapper);
+		m_songMapper = make_shared<SongIdMapper>(getLocalSongs);
+		m_musicCache = make_unique<LocalMusicStore::LocalMusicCache>(m_songMapper);
 		m_songSelector = { m_musicCache.get() };
 	}
 
 	MusicProviderSubscription MusicProvider::SubscribeSongs(SongsChangedCallback callback)
 	{
-		std::unique_lock<std::mutex> callbackLock(m_songCallbackLock);
+		unique_lock<mutex> callbackLock(m_songCallbackLock);
 
-		std::function<void()> unsubscribeCallback = [callback, this](){ this->Unsubscribe(callback); };
-		auto subscription = std::make_unique<Util::Subscription>(unsubscribeCallback);
+		function<void()> unsubscribeCallback = [callback, this](){ this->Unsubscribe(callback); };
+		auto subscription = make_unique<Util::Subscription>(unsubscribeCallback);
 		m_songCallbackSet.insert(callback);
 
 		{
-			std::unique_lock<std::mutex> loadingLock(m_isLoadingLock);
+			unique_lock<mutex> loadingLock(m_isLoadingLock);
 
 			if (!m_hasSongLoadingBegun)
 			{
 				m_hasSongLoadingBegun = true;
-				std::async([this](){ LoadSongs(); });
+				async([this](){ LoadSongs(); });
 			}
 			else
 			{
@@ -67,19 +70,19 @@ namespace MusicProvider
 
 	MusicProviderSubscription MusicProvider::SubscribeAlbums(AlbumsChangedCallback callback)
 	{
-		std::unique_lock<std::mutex> callbackLock(m_albumCallbackLock);
+		unique_lock<mutex> callbackLock(m_albumCallbackLock);
 
-		std::function<void()> unsubscribeCallback = [callback, this]() { this->Unsubscribe(callback); };
-		auto subscription = std::make_unique<Util::Subscription>(unsubscribeCallback);
+		function<void()> unsubscribeCallback = [callback, this]() { this->Unsubscribe(callback); };
+		auto subscription = make_unique<Util::Subscription>(unsubscribeCallback);
 		m_albumCallbackSet.insert(callback);
 
 		{
-			std::unique_lock<std::mutex> loadingLock(m_isLoadingLock);
+			unique_lock<mutex> loadingLock(m_isLoadingLock);
 
 			if (!m_hasAlbumLoadingBegun)
 			{
 				m_hasAlbumLoadingBegun = true;
-				std::async([this](){ this->LoadAlbums(); });
+				async([this](){ this->LoadAlbums(); });
 			}
 			else
 			{
@@ -97,13 +100,13 @@ namespace MusicProvider
 
 	void MusicProvider::Unsubscribe(SongsChangedCallback callback)
 	{
-		std::unique_lock<std::mutex> callbackLock(m_songCallbackLock);
+		unique_lock<mutex> callbackLock(m_songCallbackLock);
 		m_songCallbackSet.erase(callback);
 	}
 
 	void MusicProvider::Unsubscribe(AlbumsChangedCallback callback)
 	{
-		std::unique_lock<std::mutex> callbackLock(m_albumCallbackLock);
+		unique_lock<mutex> callbackLock(m_albumCallbackLock);
 		m_albumCallbackSet.erase(callback);
 	}
 
@@ -139,10 +142,10 @@ namespace MusicProvider
 		PublishAlbums();
 
 		// now subscribe to the music search service
-		std::function<void(Model::SongCollection&)> songsCallback = [this](Model::SongCollection& localSongs)
+		function<void(SongCollection&)> songsCallback = [this](SongCollection& localSongs)
 		{
-			auto albums = m_musicCache->GetLocalAlbums();
-			if (MergeAlbumCollections(*albums, localSongs))
+			auto albums = *m_musicCache->GetLocalAlbums();
+			if (MergeAlbumCollections(albums, localSongs))
 			{
 				PublishAlbums();
 			}
@@ -151,12 +154,12 @@ namespace MusicProvider
 		m_albumSubscription = this->SubscribeSongs(songsCallback);
 	}
 
-	bool MusicProvider::MergeSongCollections(Model::SongCollection& existingSongs, std::vector<std::shared_ptr<FileSystem::IFile>>& locatedFiles)
+	bool MusicProvider::MergeSongCollections(SongCollection& existingSongs, vector<shared_ptr<FileSystem::IFile>>& locatedFiles)
 	{
 		bool haveFilesBeenAdded = false;
 
-		std::set<std::wstring> existingSongFiles;
-		std::vector<Model::Song> newSongs;
+		set<wstring> existingSongFiles;
+		vector<Song> newSongs;
 
 		for (auto& song : existingSongs)
 		{
@@ -177,8 +180,8 @@ namespace MusicProvider
 				// now we need to see if this song is simply another copy of an existing song or if it is
 				// an entirely new song. If it is existing then we can simply add the file to the existing song
 				// if not we need to add the song to the cache and the list of existing songs
-				typedef Model::SongCollection::value_type SongIdPair;
-				auto matchingSongItr = std::find_if(existingSongs.begin(), existingSongs.end(), [&song](const SongIdPair& pair)
+				typedef SongCollection::value_type SongIdPair;
+				auto matchingSongItr = find_if(existingSongs.begin(), existingSongs.end(), [&song](const SongIdPair& pair)
 				{
 					return song.IsSameSong(pair.second);
 				});
@@ -195,7 +198,7 @@ namespace MusicProvider
 				else
 				{
 					// we must also check the new songs to avoid a duplicate, but only if it hasn't already been found
-					auto matchingNewSongItr = std::find_if(newSongs.begin(), newSongs.end(), [&song](const Model::Song otherSong)
+					auto matchingNewSongItr = find_if(newSongs.begin(), newSongs.end(), [&song](const Song otherSong)
 					{
 						return otherSong.IsSameSong(song);
 					});
@@ -225,7 +228,7 @@ namespace MusicProvider
 		return haveFilesBeenAdded;
 	}
 
-	void MusicProvider::FixupSongs(std::vector<Model::Song>& newSongs, Model::SongCollection& existingSongs)
+	void MusicProvider::FixupSongs(vector<Song>& newSongs, SongCollection& existingSongs)
 	{
 		for (auto& song : newSongs)
 		{
@@ -236,15 +239,15 @@ namespace MusicProvider
 		}
 	}
 
-	void FixupAlbumName(Model::Song& song, const std::vector<Model::Song>& newSongs, const Model::SongCollection& existingSongs)
+	void FixupAlbumName(Song& song, const vector<Song>& newSongs, const SongCollection& existingSongs)
 	{
 		// then we haven't determined the name of this song.
 		// first try to find matching songs in the existing songs
-		auto existingMatchItr = std::find_if(std::begin(existingSongs), std::end(existingSongs), [&song](Model::SongCollection::value_type other)
+		auto existingMatchItr = find_if(begin(existingSongs), end(existingSongs), [&song](SongCollection::value_type other)
 		{
 			return other.second.IsSameSong(song);
 		});
-		if (existingMatchItr != std::end(existingSongs))
+		if (existingMatchItr != end(existingSongs))
 		{
 			// one of the existing songs appears to be the same song!
 			song.SetAlbumName(existingMatchItr->second.GetAlbumName());
@@ -253,11 +256,11 @@ namespace MusicProvider
 		if (song.GetAlbumName().size() == 0)
 		{
 			// then we have not yet located the song, try again with the new songs
-			auto newMatchItr = std::find_if(std::begin(newSongs), std::end(newSongs), [&song](const Model::Song& other)
+			auto newMatchItr = find_if(begin(newSongs), end(newSongs), [&song](const Song& other)
 			{
 				return other.IsSameSong(song);
 			});
-			if (newMatchItr != std::end(newSongs))
+			if (newMatchItr != end(newSongs))
 			{
 				song.SetAlbumName(newMatchItr->GetAlbumName());
 			}
@@ -269,7 +272,7 @@ namespace MusicProvider
 			// the album name based on the folder structure
 			
 			// firstly we'll take each file and determine a common base directory
-			std::wstring basePath = L"";
+			wstring basePath = L"";
 			for (auto& audioFile : song.GetFiles())
 			{
 				auto path = audioFile.second.filePath;
@@ -279,7 +282,7 @@ namespace MusicProvider
 				}
 				else
 				{
-					auto length = std::min(basePath.size(), path.size());
+					auto length = min(basePath.size(), path.size());
 					for (unsigned int i = 0; i < length; ++i)
 					{
 						if (basePath[i] != path[i])
@@ -293,9 +296,9 @@ namespace MusicProvider
 			}
 
 			// now assume the common base folder is the album name
-			std::wstring albumName = L"";
-			std::set<std::wstring> invalidAlbumNames = {L"mp3", L"wav", L"alac", L"flac"};
-			const std::ctype<wchar_t>& f = std::use_facet< std::ctype<wchar_t> >(std::locale());
+			wstring albumName = L"";
+			set<wstring> invalidAlbumNames = {L"mp3", L"wav", L"alac", L"flac"};
+			const ctype<wchar_t>& f = use_facet< ctype<wchar_t> >(locale());
 			auto isValidAlbumName = false;
 			do 
 			{
@@ -303,9 +306,9 @@ namespace MusicProvider
 				if (FileSystem::Storage::IsFolder(basePath))
 				{
 					albumName = basePath.substr(cutPoint + 1, basePath.size() - cutPoint);
-					std::wstring albumNameLower = albumName;
+					wstring albumNameLower = albumName;
 					f.tolower(&albumNameLower[0], &albumNameLower[0] + albumNameLower.size());
-					isValidAlbumName = invalidAlbumNames.find(albumNameLower) == std::end(invalidAlbumNames);
+					isValidAlbumName = invalidAlbumNames.find(albumNameLower) == end(invalidAlbumNames);
 				}
 				basePath = basePath.substr(0, cutPoint);
 			} while ((!isValidAlbumName || albumName.size() == 0) && basePath.find_last_of('\\') != basePath.find_first_of('\\'));
@@ -316,13 +319,13 @@ namespace MusicProvider
 		ARC_ASSERT_MSG(song.GetAlbumName().size() != 0, "Failed to fixup album name for song!");
 	}
 
-	bool MusicProvider::MergeAlbumCollections(Model::AlbumCollection& existingAlbums, Model::SongCollection& songs)
+	bool MusicProvider::MergeAlbumCollections(AlbumCollection& existingAlbums, SongCollection& songs)
 	{
 		using namespace boost::uuids;
 
 		// map a title to a possible list of uuids, we need a list as there could be multiple albums with the same name
-		std::unordered_map<std::wstring, std::vector<uuid>> albumLookup;
-		Model::AlbumCollection newAlbums;
+		unordered_map<wstring, vector<uuid>> albumLookup;
+		AlbumCollection newAlbums;
 		bool newContentAdded = false;
 		
 		// first build up a map of song names to their uuids
@@ -344,17 +347,17 @@ namespace MusicProvider
 
 			auto albumLookupItr = albumLookup.find(albumName);
 
-			if (albumLookupItr != std::end(albumLookup))
+			if (albumLookupItr != end(albumLookup))
 			{
 				ARC_ASSERT(albumLookupItr->second.size() > 0);
 
 				// we now have a list of albums ids, start by assuming it is the first one and if any matches are found in artist assume it is actually that one
 				// for finding the album: it may be in the existing albums or the new albums lists
 				auto albumItr = existingAlbums.find(albumLookupItr->second[0]);
-				if (albumItr == std::end(existingAlbums))
+				if (albumItr == end(existingAlbums))
 				{
 					albumItr = newAlbums.find(albumLookupItr->second[0]);
-					ARC_ASSERT(albumItr != std::end(newAlbums));
+					ARC_ASSERT(albumItr != end(newAlbums));
 				}
 
 				auto* album = &(albumItr->second);
@@ -362,10 +365,10 @@ namespace MusicProvider
 				for (auto& possibleAlbumId : albumLookupItr->second)
 				{
 					auto possibleAlbumItr = existingAlbums.find(possibleAlbumId);
-					if (possibleAlbumItr == std::end(existingAlbums))
+					if (possibleAlbumItr == end(existingAlbums))
 					{
 						possibleAlbumItr = newAlbums.find(possibleAlbumId);
-						ARC_ASSERT(possibleAlbumItr != std::end(newAlbums));
+						ARC_ASSERT(possibleAlbumItr != end(newAlbums));
 					}
 
 					auto& possibleAlbum = possibleAlbumItr->second;
@@ -382,7 +385,7 @@ namespace MusicProvider
 				{
 					// if we haven't added anything new yet check if we are adding something new now
 					auto& albumIds = album->GetMutableSongIds();
-					newContentAdded = albumIds.find(song.GetId()) == std::end(albumIds);
+					newContentAdded = albumIds.find(song.GetId()) == end(albumIds);
 				}
 
 				// id's is a set so inserting duplicates is a non issue
@@ -408,7 +411,7 @@ namespace MusicProvider
 		if (newContentAdded)
 		{
 			// need to convert the map into a vector
-			std::vector<Model::Album> newAlbumsVec;
+			vector<Album> newAlbumsVec;
 
 			for (auto& albumPair : newAlbums)
 			{
@@ -422,7 +425,7 @@ namespace MusicProvider
 		return newContentAdded;
 	}
 
-	void MusicProvider::AddNewSongToExisting(const Model::Song& newSong, Model::Song& existingSong, std::wstring fullPath)
+	void MusicProvider::AddNewSongToExisting(const Song& newSong, Song& existingSong, wstring fullPath)
 	{
 		auto& newSongFormats = newSong.GetAvailableFormats();
 		ARC_ASSERT_MSG(newSongFormats.size() == 1, "This should not be possible. We only loaded one song, it must have a format!");
@@ -433,9 +436,9 @@ namespace MusicProvider
 			auto& existingFormats = existingFile.GetAvailableFormats();
 
 			// ensure the format isn't already in the model...
-			auto itr = std::find(std::begin(existingFormats), std::end(existingFormats), newSongFormat);
-			// ARC_ASSERT_MSG(itr == std::end(existingFormats), "Loaded a 2 different songs that are the same song and same format! Check your data and logic!");
-			if (itr == std::end(existingFormats))
+			auto itr = find(begin(existingFormats), end(existingFormats), newSongFormat);
+			// ARC_ASSERT_MSG(itr == end(existingFormats), "Loaded a 2 different songs that are the same song and same format! Check your data and logic!");
+			if (itr == end(existingFormats))
 			{
 				// good, the value wasn't already there, this is to be expected
 				auto files = newSong.GetFiles();
@@ -451,7 +454,7 @@ namespace MusicProvider
 	{
 		auto songs = *m_musicCache->GetLocalSongs();
 
-		std::unique_lock<std::mutex> callbackLock(m_songCallbackLock);
+		unique_lock<mutex> callbackLock(m_songCallbackLock);
 		for (auto& callback : m_songCallbackSet)
 		{
 			callback(songs);
@@ -462,11 +465,29 @@ namespace MusicProvider
 	{
 		auto albums = *m_musicCache->GetLocalAlbums();
 
-		std::unique_lock<std::mutex> callbackLock(m_albumCallbackLock);
+		unique_lock<mutex> callbackLock(m_albumCallbackLock);
 		for (auto& callback : m_albumCallbackSet)
 		{
 			callback(albums);
 		}
 	}
+
+	Album MusicProvider::GetAlbum(const wstring& name)
+	{
+		Album result(m_songMapper);
+		auto albums = m_musicCache->GetLocalAlbums();
+
+		for (auto& album : *albums)
+		{
+			if (album.second.GetTitle() == name)
+			{
+				result = album.second;
+				break;
+			}
+		}
+
+		return result;
+	}
+
 }
 }

@@ -44,6 +44,7 @@ namespace MusicProvider
 		virtual MusicProviderSubscription SubscribeSongs(SongsChangedCallback callback) override;
 		virtual MusicProviderSubscription SubscribeAlbums(AlbumsChangedCallback callback) override;
 		virtual SongSelector* GetSongSelector() override;
+		virtual Model::Album GetAlbum(const std::wstring& name) override;
 	private:
 
 		void Unsubscribe(SongsChangedCallback callback);

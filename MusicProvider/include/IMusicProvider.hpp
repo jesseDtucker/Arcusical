@@ -5,6 +5,7 @@
 
 #include "boost\uuid\uuid.hpp"
 #include <memory>
+#include <string>
 
 #include "Delegate.hpp"
 #include "MusicTypes.hpp"
@@ -40,6 +41,7 @@ namespace MusicProvider
 		virtual MusicProviderSubscription SubscribeAlbums(AlbumsChangedCallback callback) = 0;
 
 		virtual SongSelector* GetSongSelector() = 0;
+		virtual Model::Album GetAlbum(const std::wstring& name) = 0;
 
 		static const std::string ServiceName;
 	};
