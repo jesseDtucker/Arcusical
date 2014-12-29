@@ -34,7 +34,8 @@
 		
 		<!-- Album template-->
 		<DataTemplate x:Key="AlbumListItemTemplate">
-			<StackPanel Orientation="Vertical" DoubleTapped="Album_DoubleTapped">
+			<StackPanel Orientation="Vertical" DoubleTapped="Album_DoubleTapped" Background="White" 
+						HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
 				<Image Source="{Binding Path=ImagePath}" Style="{StaticResource AlbumImageStyle}"/>
 				<TextBlock HorizontalAlignment="Center"  Text="{Binding Path=Title}" Style="{StaticResource AlbumTitleStyle}"/>
 				<TextBlock HorizontalAlignment="Center"  Text="{Binding Path=Artist}" Style="{StaticResource AlbumArtistStyle}"/>
@@ -57,7 +58,14 @@
 		<ScrollViewer>
 			<ListView Height="Auto"  ItemsSource="{Binding Path=AlbumList.Albums}" 
 						  Style="{StaticResource AlbumListStyle}"
-						  ItemClick="AlbumClicked" IsItemClickEnabled="True"/>
+						  ItemClick="AlbumClicked" IsItemClickEnabled="True">
+				<ListView.ItemContainerStyle>
+					<Style TargetType="ListViewItem">
+						<Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+						<Setter Property="VerticalContentAlignment" Value="Stretch"/>
+					</Style>
+				</ListView.ItemContainerStyle>
+			</ListView>
 		</ScrollViewer>
 	</Grid>
 </UserControl>
