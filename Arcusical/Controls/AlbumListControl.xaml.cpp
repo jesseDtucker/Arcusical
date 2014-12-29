@@ -54,7 +54,7 @@ void Arcusical::AlbumListControl::Album_DoubleTapped(Platform::Object^ sender, W
 	if (uiElement != nullptr)
 	{
 		auto album = dynamic_cast<AlbumVM^>(uiElement->DataContext);
-		ARC_ASSERT(song != nullptr);
+		ARC_ASSERT(album != nullptr);
 		if (album != nullptr)
 		{
 			album->Play();
