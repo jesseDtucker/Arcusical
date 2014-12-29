@@ -25,7 +25,8 @@ namespace Arcusical
 				randomizedSongs.push_back(song.second);
 			}
 
-			shuffle(begin(randomizedSongs), end(randomizedSongs), default_random_engine());
+			random_device rd;
+			shuffle(begin(randomizedSongs), end(randomizedSongs), default_random_engine(rd()));
 
 			results.resize(count);
 			auto newEnd = copy_if(begin(randomizedSongs), end(randomizedSongs), begin(results), [&count, &filter](const Model::Song& song)
