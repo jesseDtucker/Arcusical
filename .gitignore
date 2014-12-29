@@ -5,6 +5,7 @@
 *.suo
 *.user
 *.sln.docstates
+Generated Files\
 Generated Files/
 
 # Build results
