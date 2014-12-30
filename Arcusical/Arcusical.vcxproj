@@ -320,6 +320,7 @@
       <DependentUpon>Controls\SongPlayer.xaml</DependentUpon>
     </ClInclude>
     <ClInclude Include="Converters\IsPlayingToIconPath.hpp" />
+    <ClInclude Include="Converters\SongListSizeToVisiblity.hpp" />
     <ClInclude Include="Events\AlbumSelectedEvent.hpp" />
     <ClInclude Include="Events\EventService.hpp" />
     <ClInclude Include="Events\SongSelectedEvent.hpp" />
@@ -393,6 +394,7 @@
       <DependentUpon>Controls\SongPlayer.xaml</DependentUpon>
     </ClCompile>
     <ClCompile Include="Converters\IsPlayingToIconPath.cpp" />
+    <ClCompile Include="Converters\SongListSizeToVisiblity.cpp" />
     <ClCompile Include="Events\AlbumSelectedEvent.cpp" />
     <ClCompile Include="Events\SongSelectedEvent.cpp" />
     <ClCompile Include="ViewModels\AlbumListControlVM.cpp" />

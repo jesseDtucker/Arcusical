@@ -28,3 +28,4 @@
 
 
 #include "Converters/IsPlayingToIconPath.hpp"
+#include "Converters/SongListSizeToVisiblity.hpp"

@@ -20,7 +20,6 @@ using namespace Windows::UI::Xaml::Data;
 using namespace Windows::UI::Xaml::Input;
 using namespace Windows::UI::Xaml::Media;
 using namespace Windows::UI::Xaml::Navigation;
-// The User Control item template is documented at http://go.microsoft.com/fwlink/?LinkId=234236
 
 using namespace ViewModel;
 
@@ -44,4 +43,10 @@ void Arcusical::SongListControl::SongDoubleTapped(Platform::Object^ sender, Wind
 			m_vm->PlaySongsAfterAndIncluding(song);
 		}
 	}
+}
+
+
+void Arcusical::SongListControl::Shuffle_Clicked(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
+{
+	m_vm->Shuffle();
 }

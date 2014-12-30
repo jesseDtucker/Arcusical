@@ -1,5 +1,7 @@
 #include "pch.h"
 
+#include <algorithm>
+#include <random>
 #include <vector>
 
 #include "SongListControlVM.hpp"
@@ -62,6 +64,38 @@ namespace ViewModel{
 				playlist->Enqueue(songsToPlay);
 			}
 		});
+	}
+
+	void SongListControlVM::Shuffle()
+	{
+		if (SongList == nullptr)
+		{
+			return;
+		}
+
+		std::async([this]()
+		{
+			auto itr = SongList->List->First();
+			vector<Song> songsToPlay;
+			while (itr->HasCurrent)
+			{
+				songsToPlay.push_back(*itr->Current->GetModel());
+				itr->MoveNext();
+			}
+
+			if (songsToPlay.size() > 0)
+			{
+				random_device rd;
+				shuffle(begin(songsToPlay), end(songsToPlay), default_random_engine(rd()));
+
+				auto playlist = Player::PlaylistLocator::ResolveService().lock();
+				ARC_ASSERT(playlist != nullptr);
+
+				playlist->Clear();
+				playlist->Enqueue(songsToPlay);
+			}
+		});
+		
 	}
 
 }

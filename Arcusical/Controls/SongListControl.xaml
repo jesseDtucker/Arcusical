@@ -9,23 +9,34 @@
 	d:DesignHeight="300"
 	d:DesignWidth="400">
 	<UserControl.Resources>
-		<DataTemplate x:Key="SongListItemTemplate" >
-			<Grid DoubleTapped="SongDoubleTapped" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-				<TextBlock Text="{Binding Title}" VerticalAlignment="Center" Margin="5" FontSize="16"/>
-			</Grid>
-		</DataTemplate>
+		<ResourceDictionary>
+			<DataTemplate x:Key="SongListItemTemplate" >
+				<Grid DoubleTapped="SongDoubleTapped" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+					<TextBlock Text="{Binding Title}" VerticalAlignment="Center" Margin="5" FontSize="16"/>
+				</Grid>
+			</DataTemplate>
+			<ResourceDictionary.MergedDictionaries>
+				<ResourceDictionary Source="/Converters/Converters.xaml"/>
+			</ResourceDictionary.MergedDictionaries>
+		</ResourceDictionary>
 	</UserControl.Resources>
 	<Grid Background="#343C5C">
 		<Border BorderThickness="0, 0, 2, 0" BorderBrush="#1D2133">
 			<ScrollViewer>
-				<ListView Height="Auto" ItemsSource="{Binding SongList.List}" ItemTemplate="{StaticResource SongListItemTemplate}">
-					<ListView.ItemContainerStyle>
-						<Style TargetType="ListViewItem">
-							<Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-							<Setter Property="VerticalContentAlignment" Value="Stretch"/>
-						</Style>
-					</ListView.ItemContainerStyle>
-				</ListView>
+				<StackPanel>
+					<Button HorizontalAlignment="Stretch" Click="Shuffle_Clicked" 
+							Visibility="{Binding Path=SongList, Converter={StaticResource SongListVisibilityConverter}}">
+						<TextBlock Text="SHUFFLE"/>
+					</Button>
+					<ListView Height="Auto" ItemsSource="{Binding SongList.List}" ItemTemplate="{StaticResource SongListItemTemplate}">
+						<ListView.ItemContainerStyle>
+							<Style TargetType="ListViewItem">
+								<Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+								<Setter Property="VerticalContentAlignment" Value="Stretch"/>
+							</Style>
+						</ListView.ItemContainerStyle>
+					</ListView>
+				</StackPanel>
 			</ScrollViewer>
 		</Border>
 	</Grid>

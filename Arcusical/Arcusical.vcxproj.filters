@@ -97,6 +97,9 @@
     <ClCompile Include="Converters\IsPlayingToIconPath.cpp">
       <Filter>Converters</Filter>
     </ClCompile>
+    <ClCompile Include="Converters\SongListSizeToVisiblity.cpp">
+      <Filter>Converters</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -143,6 +146,9 @@
     </ClInclude>
     <ClInclude Include="ViewModels\SongPlayerVM.hpp">
       <Filter>ViewModels</Filter>
+    </ClInclude>
+    <ClInclude Include="Converters\SongListSizeToVisiblity.hpp">
+      <Filter>Converters</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

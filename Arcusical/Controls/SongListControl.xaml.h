@@ -23,5 +23,6 @@ namespace Arcusical
 		void SongDoubleTapped(Platform::Object^ sender, Windows::UI::Xaml::Input::DoubleTappedRoutedEventArgs^ e);
 
 		ViewModel::SongListControlVM^ m_vm;
+		void Shuffle_Clicked(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
 	};
 }

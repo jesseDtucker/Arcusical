@@ -4,4 +4,5 @@
 	xmlns:local="using:Arcusical"
 	xmlns:converters="using:Arcusical.Converters">
 	<converters:IsPlayingToIconPath x:Key="IconConverter"/>
+	<converters:SongListSizeToVisibility x:Key="SongListVisibilityConverter"/>
 </ResourceDictionary>
