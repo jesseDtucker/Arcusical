@@ -50,7 +50,7 @@ namespace Player {
 
 	void Playlist::PlayPrevious(double goToStartThreshold /* = 5.0 */)
 	{
-		if (m_player->GetCurrentTime() > goToStartThreshold)
+		if (m_player->GetCurrentTime() > goToStartThreshold || m_recentlyPlayed.size() <= 1)
 		{
 			// then just go to the start of the song
 			m_player->SetCurrentTime(0.0);

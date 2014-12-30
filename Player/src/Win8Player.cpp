@@ -1,6 +1,7 @@
 #include "pch.h"
 
 #include <AudioSessionTypes.h>
+#include <cmath>
 #include <future>
 #include <ppltasks.h>
 
@@ -139,9 +140,12 @@ namespace Player
 
 	void Win8Player::SetCurrentTime(double time)
 	{
-		ARC_ASSERT(time < GetDuration());
-		time = time < GetDuration() ? time : GetDuration();
-		m_mediaEngine->SetCurrentTime(time);
+		if (!std::isnan(GetDuration()))
+		{
+			ARC_ASSERT(time <= GetDuration());
+			time = time < GetDuration() ? time : GetDuration();
+			m_mediaEngine->SetCurrentTime(time);
+		}
 	}
 
 	//////////////////////////////////////////////////////////////////////////
