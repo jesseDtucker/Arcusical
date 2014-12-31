@@ -31,14 +31,13 @@ namespace MusicProvider
 
 	typedef Util::Delegate<void(Model::SongCollection&)> SongsChangedCallback;
 	typedef Util::Delegate<void(Model::AlbumCollection&)> AlbumsChangedCallback;
-	typedef std::unique_ptr<Util::Subscription> MusicProviderSubscription;
 
 	class IMusicProvider
 	{
 	public:
 
-		virtual MusicProviderSubscription SubscribeSongs(SongsChangedCallback callback) = 0;
-		virtual MusicProviderSubscription SubscribeAlbums(AlbumsChangedCallback callback) = 0;
+		virtual Util::Subscription SubscribeSongs(SongsChangedCallback callback) = 0;
+		virtual Util::Subscription SubscribeAlbums(AlbumsChangedCallback callback) = 0;
 
 		virtual SongSelector* GetSongSelector() = 0;
 		virtual Model::Album GetAlbum(const std::wstring& name) = 0;

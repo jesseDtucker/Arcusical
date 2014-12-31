@@ -41,6 +41,9 @@
     <Filter Include="Events">
       <UniqueIdentifier>{79e0332e-97cb-4762-afbb-d6d179050887}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Assets\DefaultAlbumBackgrounds">
+      <UniqueIdentifier>{0aa294ca-de10-4d74-85ea-d586f35ee772}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml" />
@@ -249,6 +252,42 @@
     </Image>
     <Image Include="Assets\SmallLogo.scale-80.png">
       <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\DefaultAlbumBackgrounds\default_black.png">
+      <Filter>Assets\DefaultAlbumBackgrounds</Filter>
+    </Image>
+    <Image Include="Assets\DefaultAlbumBackgrounds\default_cyan.png">
+      <Filter>Assets\DefaultAlbumBackgrounds</Filter>
+    </Image>
+    <Image Include="Assets\DefaultAlbumBackgrounds\default_dark_blue.png">
+      <Filter>Assets\DefaultAlbumBackgrounds</Filter>
+    </Image>
+    <Image Include="Assets\DefaultAlbumBackgrounds\default_dark_red.png">
+      <Filter>Assets\DefaultAlbumBackgrounds</Filter>
+    </Image>
+    <Image Include="Assets\DefaultAlbumBackgrounds\default_fuchsia.png">
+      <Filter>Assets\DefaultAlbumBackgrounds</Filter>
+    </Image>
+    <Image Include="Assets\DefaultAlbumBackgrounds\default_green.png">
+      <Filter>Assets\DefaultAlbumBackgrounds</Filter>
+    </Image>
+    <Image Include="Assets\DefaultAlbumBackgrounds\default_light_cyan.png">
+      <Filter>Assets\DefaultAlbumBackgrounds</Filter>
+    </Image>
+    <Image Include="Assets\DefaultAlbumBackgrounds\default_light_green.png">
+      <Filter>Assets\DefaultAlbumBackgrounds</Filter>
+    </Image>
+    <Image Include="Assets\DefaultAlbumBackgrounds\default_lime.png">
+      <Filter>Assets\DefaultAlbumBackgrounds</Filter>
+    </Image>
+    <Image Include="Assets\DefaultAlbumBackgrounds\default_orange.png">
+      <Filter>Assets\DefaultAlbumBackgrounds</Filter>
+    </Image>
+    <Image Include="Assets\DefaultAlbumBackgrounds\default_red.png">
+      <Filter>Assets\DefaultAlbumBackgrounds</Filter>
+    </Image>
+    <Image Include="Assets\DefaultAlbumBackgrounds\default_violet.png">
+      <Filter>Assets\DefaultAlbumBackgrounds</Filter>
     </Image>
   </ItemGroup>
 </Project>

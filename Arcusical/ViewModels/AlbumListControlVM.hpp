@@ -28,7 +28,7 @@ namespace ViewModel{
 		void AlbumCallback(Model::AlbumCollection& albums);
 
 		MusicProvider::MusicProviderLocator::ServiceRef m_providerService;
-		MusicProvider::MusicProviderSubscription m_albumSubscription;
+		Util::Subscription m_albumSubscription;
 	};
 
 }

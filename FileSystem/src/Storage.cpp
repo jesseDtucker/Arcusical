@@ -14,166 +14,176 @@
 #include "Storage.hpp"
 
 using namespace concurrency;
+using namespace FileSystem;
+using namespace Platform;
+using namespace std;
+using namespace Windows::Foundation;
+using namespace Windows::Storage;
 
-namespace FileSystem
-{
-	IFolder* Storage::s_musicFolder = nullptr;
-	IFolder* Storage::s_applicationFolder = nullptr;
+IFolder* Storage::s_musicFolder = nullptr;
+IFolder* Storage::s_applicationFolder = nullptr;
 
-	static std::mutex s_loadingLock;
-	static const std::unordered_set<wchar_t> ILLEGAL_CHARACTERS = { '?', '<', '>', ':', '*', '|', '^', '/' };
+static mutex s_loadingLock;
+static const unordered_set<wchar_t> ILLEGAL_CHARACTERS = { '?', '<', '>', ':', '*', '|', '^', '/' };
 
 #ifdef __cplusplus_winrt
 	
-	IFolder& Storage::MusicFolder()
+IFolder& Storage::MusicFolder()
+{
+	if (s_musicFolder == nullptr)
 	{
+		unique_lock<mutex> lockguard(s_loadingLock);
 		if (s_musicFolder == nullptr)
 		{
-			std::unique_lock<std::mutex> lockguard(s_loadingLock);
-			if (s_musicFolder == nullptr)
-			{
-				s_musicFolder = new Folder(Windows::Storage::KnownFolders::MusicLibrary);
-			}
+			s_musicFolder = new Folder(::KnownFolders::MusicLibrary);
 		}
+	}
 
-		auto& folder = *s_musicFolder;
+	auto& folder = *s_musicFolder;
 
 #ifdef _DEBUG
-		static std::shared_ptr<IFolder> debugFolder = nullptr;
-		auto folders = folder.GetSubfolders();
-		for (auto& f : folders)
+	static shared_ptr<IFolder> debugFolder = nullptr;
+	auto folders = folder.GetSubfolders();
+	for (auto& f : folders)
+	{
+		if (f->GetName() == L"Test")
 		{
-			if (f->GetName() == L"Test")
-			{
-				debugFolder = f;
-				break;
-			}
+			debugFolder = f;
+			break;
 		}
+	}
 
-		if (debugFolder != nullptr)
-		{
-			return *debugFolder;
-		}
+	if (debugFolder != nullptr)
+	{
+		return *debugFolder;
+	}
 #endif
 
-		return folder;
-	}
+	return folder;
+}
 
-	IFolder& Storage::ApplicationFolder()
+IFolder& Storage::ApplicationFolder()
+{
+	if (s_applicationFolder == nullptr)
 	{
+		unique_lock<mutex> lockguard(s_loadingLock);
 		if (s_applicationFolder == nullptr)
 		{
-			std::unique_lock<std::mutex> lockguard(s_loadingLock);
-			if (s_applicationFolder == nullptr)
-			{
-				s_applicationFolder = new Folder(Windows::Storage::ApplicationData::Current->LocalFolder);
-			}
+			s_applicationFolder = new Folder(::ApplicationData::Current->LocalFolder);
 		}
-
-		return *s_applicationFolder;
 	}
 
-	std::shared_ptr<IFileReader> Storage::GetReader(IFile* file)
-	{
-		return std::make_shared<FileReader<IFile*>>(file);
-	}
+	return *s_applicationFolder;
+}
 
-	std::shared_ptr<IFileReader> Storage::GetReader(std::shared_ptr<IFile> file)
-	{
-		return std::make_shared<FileReader<std::shared_ptr<IFile>>>(file);
-	}
+shared_ptr<IFileReader> Storage::GetReader(IFile* file)
+{
+	return make_shared<FileReader<IFile*>>(file);
+}
 
-	std::shared_ptr<IFile> Storage::LoadFileFromPath(std::wstring filePath)
-	{
-		ARC_ASSERT_MSG(CheckForIllegalCharacters(filePath), "Path to load contained illegal characters!");
-		std::replace(filePath.begin(), filePath.end(), L'/', L'\\');
+shared_ptr<IFileReader> Storage::GetReader(shared_ptr<IFile> file)
+{
+	return make_shared<FileReader<shared_ptr<IFile>>>(file);
+}
 
-		std::shared_ptr<IFile> file = nullptr;
+shared_ptr<IFile> Storage::LoadFileFromPath(wstring filePath)
+{
+	ARC_ASSERT_MSG(CheckForIllegalCharacters(filePath), "Path to load contained illegal characters!");
+	shared_ptr<IFile> file = nullptr;
 		
-		try
+	try
+	{
+		if (filePath.find(L"ms-appx") != wstring::npos)
 		{
-			auto winRTfile = create_task(Windows::Storage::StorageFile::GetFileFromPathAsync(ref new Platform::String(filePath.c_str()))).get();
-			file = std::make_shared<File>(winRTfile);
+			auto uri = ref new Uri(ref new String(filePath.c_str()));
+			auto winRTfile = create_task(StorageFile::GetFileFromApplicationUriAsync(uri)).get();
+			file = make_shared<File>(winRTfile);
 		}
-		catch (Platform::Exception^ ex)
+		else
 		{
-			ARC_FAIL(std::wstring(ex->Message->Data()).c_str());
+			replace(filePath.begin(), filePath.end(), L'/', L'\\');
+			auto winRTfile = create_task(StorageFile::GetFileFromPathAsync(ref new String(filePath.c_str()))).get();
+			file = make_shared<File>(winRTfile);
 		}
-
-		return file;
+	}
+	catch (Exception^ ex)
+	{
+		ARC_FAIL(wstring(ex->Message->Data()).c_str());
 	}
 
-	bool Storage::CheckForIllegalCharacters(const std::wstring& filePath)
+	return file;
+}
+
+bool Storage::CheckForIllegalCharacters(const wstring& filePath)
+{
+	for (auto& badChar : ILLEGAL_CHARACTERS)
 	{
-		for (auto& badChar : ILLEGAL_CHARACTERS)
+		if (filePath.find(badChar) != basic_string<wchar_t>::npos)
 		{
-			if (filePath.find(badChar) != std::basic_string<wchar_t>::npos)
-			{
-				return true;
-			}
-		}
-
-		return false;
-	}
-
-	void Storage::RemoveIllegalCharacters(std::wstring& filePath, wchar_t replacementCharacter /* = '_' */)
-	{
-		std::replace(filePath.begin(), filePath.end(), L'/', L'\\');
-
-		for (auto& badChar : ILLEGAL_CHARACTERS)
-		{
-			std::replace(std::begin(filePath), std::end(filePath), badChar, replacementCharacter);
+			return true;
 		}
 	}
 
-	bool Storage::IsFile(std::wstring filePath)
+	return false;
+}
+
+void Storage::RemoveIllegalCharacters(wstring& filePath, wchar_t replacementCharacter /* = '_' */)
+{
+	replace(filePath.begin(), filePath.end(), L'/', L'\\');
+
+	for (auto& badChar : ILLEGAL_CHARACTERS)
 	{
-		auto result = false;
-		try
-		{
-			auto res = create_task(Windows::Storage::StorageFile::GetFileFromPathAsync(ref new Platform::String(filePath.c_str()))).get();
-			result = true;
-		}
-		catch (Platform::COMException^ ex)
-		{
-			ARC_FAIL("TODO::JT");
-		}
+		replace(begin(filePath), end(filePath), badChar, replacementCharacter);
+	}
+}
+
+bool Storage::IsFile(wstring filePath)
+{
+	auto result = false;
+	try
+	{
+		auto res = create_task(StorageFile::GetFileFromPathAsync(ref new String(filePath.c_str()))).get();
+		result = true;
+	}
+	catch (COMException^ ex)
+	{
+		ARC_FAIL("TODO::JT");
+	}
 		
-		return result;
-	}
+	return result;
+}
 
-	bool Storage::IsFolder(std::wstring filePath)
+bool Storage::IsFolder(wstring filePath)
+{
+	auto result = false;
+	try
 	{
-		auto result = false;
-		try
-		{
-			auto res = create_task(Windows::Storage::StorageFolder::GetFolderFromPathAsync(ref new Platform::String(filePath.c_str()))).get();
-			result = true;
-		}
-		catch (Platform::COMException^ ex)
-		{
-			ARC_ASSERT_MSG(ex->HResult == E_INVALIDARG, "unexpected HRESULT!");
-		}
-
-		return result;
+		auto res = create_task(::StorageFolder::GetFolderFromPathAsync(ref new String(filePath.c_str()))).get();
+		result = true;
 	}
-
-	bool Storage::FileExists(std::wstring filePath)
+	catch (COMException^ ex)
 	{
-		return IsFile(filePath);
+		ARC_ASSERT_MSG(ex->HResult == E_INVALIDARG, "unexpected HRESULT!");
 	}
 
-	bool Storage::FolderExists(std::wstring filePath)
-	{
-		return IsFolder(filePath);
-	}
+	return result;
+}
 
-	bool Storage::Exists(std::wstring filePath)
-	{
-		return FileExists(filePath) || FolderExists(filePath);
-	}
+bool Storage::FileExists(wstring filePath)
+{
+	return IsFile(filePath);
+}
+
+bool Storage::FolderExists(wstring filePath)
+{
+	return IsFolder(filePath);
+}
+
+bool Storage::Exists(wstring filePath)
+{
+	return FileExists(filePath) || FolderExists(filePath);
+}
 
 #else
 #error UNSUPPORTED PLATFORM!
 #endif
-}

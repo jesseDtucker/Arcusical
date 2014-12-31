@@ -375,6 +375,18 @@
     <None Include="Arcusical_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="Assets\DefaultAlbumBackgrounds\default_black.png" />
+    <Image Include="Assets\DefaultAlbumBackgrounds\default_cyan.png" />
+    <Image Include="Assets\DefaultAlbumBackgrounds\default_dark_blue.png" />
+    <Image Include="Assets\DefaultAlbumBackgrounds\default_dark_red.png" />
+    <Image Include="Assets\DefaultAlbumBackgrounds\default_fuchsia.png" />
+    <Image Include="Assets\DefaultAlbumBackgrounds\default_green.png" />
+    <Image Include="Assets\DefaultAlbumBackgrounds\default_light_cyan.png" />
+    <Image Include="Assets\DefaultAlbumBackgrounds\default_light_green.png" />
+    <Image Include="Assets\DefaultAlbumBackgrounds\default_lime.png" />
+    <Image Include="Assets\DefaultAlbumBackgrounds\default_orange.png" />
+    <Image Include="Assets\DefaultAlbumBackgrounds\default_red.png" />
+    <Image Include="Assets\DefaultAlbumBackgrounds\default_violet.png" />
     <Image Include="Assets\Icons\Forward.png" />
     <Image Include="Assets\Icons\Pause.png" />
     <Image Include="Assets\Icons\Play.png" />

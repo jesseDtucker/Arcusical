@@ -41,8 +41,8 @@ namespace MusicProvider
 	{
 	public:
 		MusicProvider();
-		virtual MusicProviderSubscription SubscribeSongs(SongsChangedCallback callback) override;
-		virtual MusicProviderSubscription SubscribeAlbums(AlbumsChangedCallback callback) override;
+		virtual Util::Subscription SubscribeSongs(SongsChangedCallback callback) override;
+		virtual Util::Subscription SubscribeAlbums(AlbumsChangedCallback callback) override;
 		virtual SongSelector* GetSongSelector() override;
 		virtual Model::Album GetAlbum(const std::wstring& name) override;
 	private:
@@ -57,6 +57,8 @@ namespace MusicProvider
 		bool MergeSongCollections(Model::SongCollection& existingSongs, std::vector<std::shared_ptr<FileSystem::IFile>>& locatedFiles);
 		void FixupSongs(std::vector<Model::Song>& newSongs, Model::SongCollection& existingSongs);
 		void AddNewSongToExisting(const Model::Song& newSong, Model::Song& existingSong, std::wstring fullPath);
+		void FixupAlbums(std::vector<Model::Album>& newAlbums);
+		void FixupAlbumImage(Model::Album& album);
 
 		bool MergeAlbumCollections(Model::AlbumCollection& existingAlbums, Model::SongCollection& songs);
 
@@ -70,7 +72,9 @@ namespace MusicProvider
 		LocalMusicStore::MusicFinder m_musicFinder;
 		SongSelector m_songSelector;
 
-		MusicProviderSubscription m_albumSubscription;
+		Util::Subscription m_albumSubscription;
+
+		std::vector<std::wstring> m_defaultAlbumImgBag;
 
 		bool m_isLoading = true;
 		bool m_hasSongLoadingBegun = false;

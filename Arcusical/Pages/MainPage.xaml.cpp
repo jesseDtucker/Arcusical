@@ -92,7 +92,7 @@ void MainPage::SetupTransportControls()
 
 				if (imagePath.size() == 0)
 				{
-					auto defaultAlbumImg = ref new Uri("ms-appx:///Assets/albumBackground.png");
+					auto defaultAlbumImg = ref new Uri("ms-appx:///Assets/DefaultAlbumBackgrounds/default_cyan.png");
 					displayUpdater->Thumbnail = Windows::Storage::Streams::RandomAccessStreamReference::CreateFromUri(defaultAlbumImg);
 					displayUpdater->Update();
 				}
