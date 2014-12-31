@@ -25,6 +25,7 @@
 #include "ViewModels/SongListControlVM.hpp"
 #include "ViewModels/SongListVM.hpp"
 #include "ViewModels/SongVM.hpp"
+#include "ViewModels/VolumeSilderVM.hpp"
 
 
 #include "Converters/IsPlayingToIconPath.hpp"

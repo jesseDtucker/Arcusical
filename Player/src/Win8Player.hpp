@@ -58,10 +58,12 @@ namespace Player
 		virtual void Play() override;
 		virtual void Stop() override;
 
-		virtual double GetCurrentTime() override;
-		virtual double GetDuration() override;
-
+		virtual double GetCurrentTime() const override;
+		virtual double GetDuration() const override;
 		virtual void SetCurrentTime(double time) override;
+
+		virtual void SetVolume(double volume) override;
+		virtual double GetVolume() const override;
 
 	private:
 		void PlayNativeSong(Model::SongStream& stream);

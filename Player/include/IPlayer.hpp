@@ -35,9 +35,12 @@ namespace Player
 		virtual void Play() = 0;
 		virtual void Stop() = 0;
 
-		virtual double GetDuration() = 0; // in seconds
-		virtual double GetCurrentTime() = 0; // in seconds
+		virtual double GetDuration() const = 0; // in seconds
+		virtual double GetCurrentTime() const = 0; // in seconds
 		virtual void SetCurrentTime(double time) = 0; // in seconds
+
+		virtual void SetVolume(double volume) = 0;
+		virtual double GetVolume() const = 0;
 
 		PROP_GET_EX(Util::MulticastDelegate<void(double)>, DurationChanged, m_durationChanged, NOT_CONST);
 		PROP_GET_EX(Util::MulticastDelegate<void(bool)>, Playing, m_playing, NOT_CONST);

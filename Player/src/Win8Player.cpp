@@ -14,6 +14,7 @@ using namespace Microsoft::WRL;
 using namespace concurrency;
 
 const std::string Arcusical::Player::IPlayer::ServiceName("Win8Player");
+const double DEFAULT_VOLUME = 0.5;
 
 namespace Arcusical
 {
@@ -52,6 +53,8 @@ namespace Player
 
 		result = engine.Get()->QueryInterface(__uuidof(IMFMediaEngine), (void**)(&m_mediaEngine));
 		ARC_ThrowIfFailed(result);
+
+		SetVolume(DEFAULT_VOLUME);
 
 		auto alacInputId = MFMPEG4Format_Base;
 		alacInputId.Data1 = 'alac';
@@ -128,12 +131,12 @@ namespace Player
 		return &m_currentSong;
 	}
 
-	double Win8Player::GetCurrentTime()
+	double Win8Player::GetCurrentTime() const
 	{
 		return m_mediaEngine->GetCurrentTime();
 	}
 
-	double Win8Player::GetDuration()
+	double Win8Player::GetDuration() const
 	{
 		return m_mediaEngine->GetDuration();
 	}
@@ -146,6 +149,17 @@ namespace Player
 			time = time < GetDuration() ? time : GetDuration();
 			m_mediaEngine->SetCurrentTime(time);
 		}
+	}
+
+	void Win8Player::SetVolume(double volume)
+	{
+		auto hr = m_mediaEngine->SetVolume(volume);
+		ARC_ThrowIfFailed(hr);
+	}
+
+	double Win8Player::GetVolume() const
+	{
+		return m_mediaEngine->GetVolume();
 	}
 
 	//////////////////////////////////////////////////////////////////////////

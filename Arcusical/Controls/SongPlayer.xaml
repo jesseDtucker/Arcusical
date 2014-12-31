@@ -43,10 +43,11 @@
 		<StackPanel DataContext="{Binding Path=CurrentSong}">
 			<TextBlock Text="{Binding Path=Title}" Width="400"/>
 		</StackPanel>
-		<StackPanel>
+		<StackPanel Width="200">
 			<TextBlock Text="{Binding Path=AmountPlayed}"/>
 			<TextBlock Text="{Binding Path=AmoutRemaining}"/>
 		</StackPanel>
+		<local:VolumeSilder VerticalAlignment="Center"/>
 	</StackPanel>
 
 </UserControl>

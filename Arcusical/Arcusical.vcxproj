@@ -319,6 +319,9 @@
     <ClInclude Include="Controls\SongPlayer.xaml.h">
       <DependentUpon>Controls\SongPlayer.xaml</DependentUpon>
     </ClInclude>
+    <ClInclude Include="Controls\VolumeSilder.xaml.h">
+      <DependentUpon>Controls\VolumeSilder.xaml</DependentUpon>
+    </ClInclude>
     <ClInclude Include="Converters\IsPlayingToIconPath.hpp" />
     <ClInclude Include="Converters\SongListSizeToVisiblity.hpp" />
     <ClInclude Include="Events\AlbumSelectedEvent.hpp" />
@@ -343,6 +346,7 @@
     <ClInclude Include="ViewModels\SongPlayerVM.hpp" />
     <ClInclude Include="ViewModels\SongVM.hpp" />
     <ClInclude Include="Utility\XamlMacros.hpp" />
+    <ClInclude Include="ViewModels\VolumeSilderVM.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -352,6 +356,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Controls\SongPlayer.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\VolumeSilder.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Converters\Converters.xaml">
@@ -468,6 +475,9 @@
     <ClCompile Include="Controls\SongPlayer.xaml.cpp">
       <DependentUpon>Controls\SongPlayer.xaml</DependentUpon>
     </ClCompile>
+    <ClCompile Include="Controls\VolumeSilder.xaml.cpp">
+      <DependentUpon>Controls\VolumeSilder.xaml</DependentUpon>
+    </ClCompile>
     <ClCompile Include="Converters\IsPlayingToIconPath.cpp" />
     <ClCompile Include="Converters\SongListSizeToVisiblity.cpp" />
     <ClCompile Include="Events\AlbumSelectedEvent.cpp" />
@@ -500,6 +510,7 @@
     <ClCompile Include="ViewModels\SongListVM.cpp" />
     <ClCompile Include="ViewModels\SongPlayerVM.cpp" />
     <ClCompile Include="ViewModels\SongVM.cpp" />
+    <ClCompile Include="ViewModels\VolumeSliderVM.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FileSystem\FileSystem.vcxproj">
