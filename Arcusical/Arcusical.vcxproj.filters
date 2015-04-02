@@ -94,6 +94,7 @@
     <ClCompile Include="ViewModels\VolumeSliderVM.cpp">
       <Filter>ViewModels</Filter>
     </ClCompile>
+    <ClCompile Include="Controls\VolumeSilder.xaml.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -147,6 +148,7 @@
     <ClInclude Include="ViewModels\VolumeSilderVM.hpp">
       <Filter>ViewModels</Filter>
     </ClInclude>
+    <ClInclude Include="Controls\VolumeSilder.xaml.h" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest" />

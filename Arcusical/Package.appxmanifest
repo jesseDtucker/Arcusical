@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/2010/manifest" xmlns:m2="http://schemas.microsoft.com/appx/2013/manifest">
-  <Identity Name="1e7dffd0-f47e-4e5f-96e8-5d421c732371" Publisher="CN=Jesse" Version="0.0.1.0" />
+  <Identity Name="Arcusical" Publisher="CN=Jesse" Version="0.0.1.0" />
   <Properties>
     <DisplayName>Arcusical</DisplayName>
     <PublisherDisplayName>Jesse</PublisherDisplayName>
