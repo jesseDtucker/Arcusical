@@ -372,6 +372,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="include\Arc_Assert.hpp" />
+    <ClInclude Include="include\CancellationToken.hpp" />
     <ClInclude Include="include\CheckedCasts.hpp" />
     <ClInclude Include="include\Delegate.hpp" />
     <ClInclude Include="include\Export.hpp" />
@@ -386,8 +387,10 @@
     <ClInclude Include="include\targetver.h" />
     <ClInclude Include="include\PropertyHelper.hpp" />
     <ClInclude Include="include\Util.hpp" />
+    <ClInclude Include="include\XAlgorithm.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\CancellationToken.cpp" />
     <ClCompile Include="src\InMemoryStream.cpp" />
     <ClCompile Include="src\Stream.cpp">
       <DisableSpecificWarnings Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">4996</DisableSpecificWarnings>

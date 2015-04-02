@@ -13,6 +13,9 @@
     <ClCompile Include="src\SongSelector.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\MusicSearcher.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\IMusicProvider.hpp">
@@ -31,6 +34,9 @@
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="include\SongSelector.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\MusicSearcher.hpp">
       <Filter>include</Filter>
     </ClInclude>
   </ItemGroup>

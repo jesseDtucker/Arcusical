@@ -33,6 +33,7 @@ namespace Model
 	{
 		if (this->m_songs.size() == 0)
 		{
+			ARC_ASSERT(m_songMapper != nullptr);
 			auto songs = m_songMapper->GetSongsFromIds(m_SongIds);
 			for (auto& song : songs)
 			{
