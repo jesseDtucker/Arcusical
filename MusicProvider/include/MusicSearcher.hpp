@@ -27,7 +27,6 @@ namespace MusicProvider
 {
 	struct SearchResult
 	{
-		SearchResult() = default;
 		SearchResult(Util::CancellationTokenRef token);
 		std::vector<Model::Song> Songs;
 		std::vector<Model::Album> Albums;
@@ -38,7 +37,7 @@ namespace MusicProvider
 	{
 	public:
 		MusicSearcher(LocalMusicStore::LocalMusicCache* musicCache);
-		std::future<SearchResult> Find(std::wstring searchTerm, Util::CancellationTokenRef cancellationToken);
+		SearchResult Find(std::wstring searchTerm, Util::CancellationTokenRef cancellationToken);
 
 	private:
 		LocalMusicStore::LocalMusicCache* m_musicCache;
