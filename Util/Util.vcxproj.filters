@@ -57,9 +57,6 @@
     <ClInclude Include="include\CancellationToken.hpp">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="include\XAlgorithm.hpp">
-      <Filter>include</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Subscription.cpp">

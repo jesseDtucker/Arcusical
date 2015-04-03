@@ -387,7 +387,6 @@
     <ClInclude Include="include\targetver.h" />
     <ClInclude Include="include\PropertyHelper.hpp" />
     <ClInclude Include="include\Util.hpp" />
-    <ClInclude Include="include\XAlgorithm.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\CancellationToken.cpp" />

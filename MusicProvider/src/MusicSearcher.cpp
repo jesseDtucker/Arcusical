@@ -1,11 +1,11 @@
 #include "MusicSearcher.hpp"
 
 #include <algorithm>
+#include <numeric>
 #include "boost/algorithm/string/predicate.hpp"
 
 #include "Arc_Assert.hpp"
 #include "LocalMusicCache.hpp"
-#include "XAlgorithm.hpp"
 
 
 using namespace std;
@@ -105,7 +105,7 @@ void FindAlbums(wstring& searchTerm, SearchResult& result, LocalMusicCache& cach
 	}
 
 	auto foundAlbums = { albumsThatContain, albumsThatStartWith, startsWithAlbumArtist, containsAlbumArtist };
-	auto albumCount = Util::Reduce(begin(foundAlbums), end(foundAlbums), 0, [](size_t acc, decltype(albumsThatContain) albums)
+	auto albumCount = accumulate(begin(foundAlbums), end(foundAlbums), 0, [](size_t acc, decltype(albumsThatContain) albums)
 	{
 		return acc + albums.size();
 	});
