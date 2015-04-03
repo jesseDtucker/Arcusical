@@ -1,0 +1,17 @@
+﻿<UserControl
+	x:Class="Arcusical.Search"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:local="using:Arcusical"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	mc:Ignorable="d"
+	d:DesignHeight="40"
+	d:DesignWidth="250"
+	Background="Transparent"
+	HorizontalAlignment="Stretch">
+	<Grid>
+		<TextBox HorizontalAlignment="Stretch" VerticalAlignment="Center" TextAlignment="Right" Text="Search"/>
+		<Image Source="/Assets/Icons/SearchIcon.png" HorizontalAlignment="Left" Margin="7" Opacity="0.5"/>
+	</Grid>
+</UserControl>

@@ -5,8 +5,13 @@
 
 #pragma once
 
+#include <memory>
+
 #include "App.g.h"
 #include "Subscription.hpp"
+
+#include "LocalMusicCache.hpp"
+#include "MusicSearcher.hpp"
 
 namespace Arcusical
 {
@@ -26,6 +31,9 @@ namespace Arcusical
 	private:
 		void OnSuspending(Platform::Object^ sender, Windows::ApplicationModel::SuspendingEventArgs^ e);
 		void OnNavigationFailed(Platform::Object ^sender, Windows::UI::Xaml::Navigation::NavigationFailedEventArgs ^e);
+
+		LocalMusicStore::LocalMusicCache m_cache;
+		MusicProvider::MusicSearcher m_searcher;
 		
 	};
 }

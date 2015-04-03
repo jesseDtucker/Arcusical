@@ -16,17 +16,18 @@
 
 #include "Album.hpp"
 #include "Arc_Assert.hpp"
+#include "IAlbumToSongMapper.hpp"
 #include "IFileReader.hpp"
 #include "IFile.hpp"
 #include "IFolder.hpp"
 #include "ImageTypes.hpp"
 #include "Song.hpp"
-#include "SongIdMapper.hpp"
 #include "SongLoader.hpp"
 #include "Storage.hpp"
 
 using namespace std;
 using namespace Arcusical;
+using namespace Arcusical::Model;
 using namespace Arcusical::MusicProvider;
 
 static Model::Song LoadMpeg4Song(FileSystem::IFile& file);
@@ -90,7 +91,7 @@ Model::Song MusicProvider::LoadSong(FileSystem::IFile& file)
 	return result;
 }
 
-Model::Album MusicProvider::CreateAlbum(wstring& name, Model::Song& song, shared_ptr<SongIdMapper>& mapper)
+Model::Album MusicProvider::CreateAlbum(wstring& name, Model::Song& song, IAlbumToSongMapper* mapper)
 {
 	auto newAlbum = Model::Album(mapper);
 

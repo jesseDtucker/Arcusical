@@ -4,9 +4,6 @@
     <ClCompile Include="src\MusicProvider.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\SongIdMapper.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="src\SongLoader.cpp">
       <Filter>src</Filter>
     </ClCompile>
@@ -25,9 +22,6 @@
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="src\targetver.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="src\SongIdMapper.hpp">
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="src\SongLoader.hpp">

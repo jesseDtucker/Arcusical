@@ -17,6 +17,7 @@
 #include "Playlist.hpp"
 #include "../src/MusicProvider.hpp" // This is a hack for the time being. I need something similar to flow engine for resolving dependencies...
 #include "../src/Win8Player.hpp" // This is a hack for the time being. I need something similar to flow engine for resolving dependencies...
+#include "MusicSearcher.hpp"
 
 using namespace Platform;
 using namespace Windows::ApplicationModel;
@@ -34,14 +35,17 @@ using namespace Windows::UI::Xaml::Navigation;
 
 using namespace std;
 using namespace Arcusical;
-using namespace Arcusical::Player;
+using namespace Arcusical::LocalMusicStore;
 using namespace Arcusical::MusicProvider;
+using namespace Arcusical::Player;
 
 /// <summary>
 /// Initializes the singleton application object.  This is the first line of authored code
 /// executed, and as such is the logical equivalent of main() or WinMain().
 /// </summary>
 App::App()
+	: m_cache()
+	, m_searcher(&m_cache)
 {
 	InitializeComponent();
 	Suspending += ref new SuspendingEventHandler(this, &App::OnSuspending);
@@ -59,10 +63,11 @@ void App::SetupApplication()
 	async([&]()
 	{
 		auto player = make_shared<Win8Player>();
+
 		PlayerLocator::RegisterSingleton(player);
 		PlaylistLocator::RegisterSingleton(make_shared<Player::Playlist>(player.get()));
-		MusicProviderLocator::RegisterSingleton(make_shared<MusicProvider::MusicProvider>());
-		
+		MusicProviderLocator::RegisterSingleton(make_shared<MusicProvider::MusicProvider>(&m_cache));
+
 		unique_lock<mutex> lckGrd(loadingLock);
 		loadingWait.notify_all();
 	});

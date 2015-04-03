@@ -13,7 +13,7 @@ using namespace std;
 namespace Arcusical{
 namespace Model
 {
-	Album::Album(shared_ptr<IAlbumToSongMapper> songMapper)
+	Album::Album(IAlbumToSongMapper* songMapper)
 		: m_songMapper(songMapper)
 	{
 

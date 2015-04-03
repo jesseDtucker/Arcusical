@@ -9,12 +9,12 @@
 #include <unordered_map>
 
 #include "boost\uuid\uuid.hpp"
+#include "IAlbumToSongMapper.hpp"
 #include "MusicTypes.hpp"
 
 namespace Arcusical{
 namespace Model
 {
-	class IAlbumToSongMapper;
 	class Song;
 	class Album;
 }
@@ -27,10 +27,10 @@ namespace LocalMusicStore
 	class CachedAlbum;
 	class CachedSong;
 
-	class LocalMusicCache final
+	class LocalMusicCache final : public Model::IAlbumToSongMapper
 	{
 	public:
-		LocalMusicCache(std::shared_ptr<Model::IAlbumToSongMapper> songMapper);
+		LocalMusicCache();
 		LocalMusicCache(const LocalMusicCache& rhs);
 		LocalMusicCache& operator=(const LocalMusicCache& rhs);
 
@@ -43,6 +43,8 @@ namespace LocalMusicStore
 
 		void SaveAlbums();
 		void SaveSongs();
+
+		std::unordered_map<boost::uuids::uuid, Model::Song> GetSongsFromIds(const std::set<boost::uuids::uuid>& ids);
 
 	private:
 
@@ -61,8 +63,8 @@ namespace LocalMusicStore
 		Model::AlbumCollection m_localAlbums;
 		Model::SongCollection m_localSongs;
 
-		bool m_areSongsLoaded;
-		bool m_areAlbumsLoaded;
+		bool m_areSongsLoaded = false;
+		bool m_areAlbumsLoaded = false;
 
 		std::condition_variable m_songLoading;
 		std::condition_variable m_albumsLoading;
@@ -72,8 +74,6 @@ namespace LocalMusicStore
 
 		std::recursive_mutex m_albumsEditLock;
 		std::recursive_mutex m_songsEditLock;
-
-		std::shared_ptr<Model::IAlbumToSongMapper> m_songMapper;
 
 		const static std::wstring ALBUM_CACHE_FILE;
 		const static std::wstring SONG_CACHE_FILE;

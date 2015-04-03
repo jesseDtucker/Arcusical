@@ -1,6 +1,9 @@
 #ifndef PROPERTY_HELPER_HPP
 #define PROPERTY_HELPER_HPP
 
+#include "MulticastDelegate.hpp"
+#include "Subscription.hpp"
+
 /************************************************************************/
 /* Author: Jesse Tucker
 /* Date: Dec. 21st 2013
@@ -37,12 +40,15 @@ dataType& GetMutable ## externalName()								\
 {																	\
 	return internalName;											\
 }																	\
+Util::MulticastDelegate<void(dataType&)> On ## externalName ## Changed; \
 
 #define PROP_SET_AND_GET(dataType, externalName) PROP_SET_AND_GET_EX(dataType, externalName, m_ ## externalName, const)
 
 #define PROP_SET_AND_GET_WINRT(dataType, externalName)	\
 private:												\
 dataType m_ ## externalName;							\
+internal:												\
+Util::MulticastDelegate<void(dataType&)> On ## externalName ## Changed; \
 public:													\
 property dataType externalName							\
 {														\

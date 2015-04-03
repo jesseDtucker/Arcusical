@@ -20,7 +20,7 @@
 			</ResourceDictionary.MergedDictionaries>
 		</ResourceDictionary>
 	</UserControl.Resources>
-	<StackPanel Background="#2A2E2E" Orientation="Horizontal" VerticalAlignment="Stretch">
+	<StackPanel Orientation="Horizontal" VerticalAlignment="Stretch">
 		<Button Style="{StaticResource IconStyle}"  BorderThickness="0" MinWidth="100"  VerticalAlignment="Stretch"
 				Click="Previous_Click">
 			<Grid>

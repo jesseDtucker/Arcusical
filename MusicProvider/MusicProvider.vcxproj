@@ -370,7 +370,6 @@
     <ClInclude Include="include\IMusicProvider.hpp" />
     <ClInclude Include="include\MusicSearcher.hpp" />
     <ClInclude Include="include\SongSelector.hpp" />
-    <ClInclude Include="src\SongIdMapper.hpp" />
     <ClInclude Include="src\MusicProvider.hpp" />
     <ClInclude Include="src\SongLoader.hpp" />
     <ClInclude Include="src\targetver.h" />
@@ -378,7 +377,6 @@
   <ItemGroup>
     <ClCompile Include="src\MusicProvider.cpp" />
     <ClCompile Include="src\MusicSearcher.cpp" />
-    <ClCompile Include="src\SongIdMapper.cpp" />
     <ClCompile Include="src\SongLoader.cpp" />
     <ClCompile Include="src\SongSelector.cpp" />
   </ItemGroup>

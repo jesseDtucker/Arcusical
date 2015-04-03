@@ -22,6 +22,7 @@
 #include "ViewModels/AlbumVM.hpp"
 #include "ViewModels/AlbumListVM.hpp"
 #include "ViewModels/AlbumListControlVM.hpp"
+#include "ViewModels/SearchVM.hpp"
 #include "ViewModels/SongListControlVM.hpp"
 #include "ViewModels/SongListVM.hpp"
 #include "ViewModels/SongVM.hpp"

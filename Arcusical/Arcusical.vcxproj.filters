@@ -95,6 +95,10 @@
       <Filter>ViewModels</Filter>
     </ClCompile>
     <ClCompile Include="Controls\VolumeSilder.xaml.cpp" />
+    <ClCompile Include="Controls\Search.xaml.cpp" />
+    <ClCompile Include="ViewModels\SearchVM.cpp">
+      <Filter>ViewModels</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -149,6 +153,10 @@
       <Filter>ViewModels</Filter>
     </ClInclude>
     <ClInclude Include="Controls\VolumeSilder.xaml.h" />
+    <ClInclude Include="Controls\Search.xaml.h" />
+    <ClInclude Include="ViewModels\SearchVM.hpp">
+      <Filter>ViewModels</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest" />
@@ -179,6 +187,9 @@
       <Filter>Converters</Filter>
     </Page>
     <Page Include="Controls\VolumeSilder.xaml">
+      <Filter>Controls</Filter>
+    </Page>
+    <Page Include="Controls\Search.xaml">
       <Filter>Controls</Filter>
     </Page>
   </ItemGroup>
@@ -299,6 +310,9 @@
     </Image>
     <Image Include="Assets\DefaultAlbumBackgrounds\default_violet.png">
       <Filter>Assets\DefaultAlbumBackgrounds</Filter>
+    </Image>
+    <Image Include="Assets\Icons\SearchIcon.png">
+      <Filter>Assets\Icons</Filter>
     </Image>
   </ItemGroup>
 </Project>

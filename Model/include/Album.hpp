@@ -21,7 +21,7 @@ namespace Model
 	class Album final
 	{
 	public:
-		Album(std::shared_ptr<IAlbumToSongMapper> songMapper);
+		Album(IAlbumToSongMapper* songMapper);
 		Album(const Album&) = default;
 		Album& operator=(const Album& other) = default;
 
@@ -36,7 +36,7 @@ namespace Model
 		bool operator==(const Album& rhs) const;
 		bool operator!=(const Album& rhs) const;
 	private:
-		std::shared_ptr<IAlbumToSongMapper> m_songMapper;
+		IAlbumToSongMapper* m_songMapper;
 		mutable std::vector<Model::Song> m_songs; // these are fetched on demand
 	};
 }

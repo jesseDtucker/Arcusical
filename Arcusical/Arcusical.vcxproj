@@ -316,6 +316,9 @@
     <ClInclude Include="Controls\AlbumListControl.xaml.h">
       <DependentUpon>Controls\AlbumListControl.xaml</DependentUpon>
     </ClInclude>
+    <ClInclude Include="Controls\Search.xaml.h">
+      <DependentUpon>Controls\Search.xaml</DependentUpon>
+    </ClInclude>
     <ClInclude Include="Controls\SongPlayer.xaml.h">
       <DependentUpon>Controls\SongPlayer.xaml</DependentUpon>
     </ClInclude>
@@ -341,6 +344,7 @@
     <ClInclude Include="Controls\SongListControl.xaml.h">
       <DependentUpon>Controls\SongListControl.xaml</DependentUpon>
     </ClInclude>
+    <ClInclude Include="ViewModels\SearchVM.hpp" />
     <ClInclude Include="ViewModels\SongListControlVM.hpp" />
     <ClInclude Include="ViewModels\SongListVM.hpp" />
     <ClInclude Include="ViewModels\SongPlayerVM.hpp" />
@@ -353,6 +357,9 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Page Include="Controls\AlbumListControl.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\Search.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Controls\SongPlayer.xaml">
@@ -398,6 +405,7 @@
     <Image Include="Assets\Icons\Pause.png" />
     <Image Include="Assets\Icons\Play.png" />
     <Image Include="Assets\Icons\Reverse.png" />
+    <Image Include="Assets\Icons\SearchIcon.png" />
     <Image Include="Assets\Logo.scale-100.png">
       <DeploymentContent>true</DeploymentContent>
     </Image>
@@ -472,6 +480,9 @@
     <ClCompile Include="Controls\AlbumListControl.xaml.cpp">
       <DependentUpon>Controls\AlbumListControl.xaml</DependentUpon>
     </ClCompile>
+    <ClCompile Include="Controls\Search.xaml.cpp">
+      <DependentUpon>Controls\Search.xaml</DependentUpon>
+    </ClCompile>
     <ClCompile Include="Controls\SongPlayer.xaml.cpp">
       <DependentUpon>Controls\SongPlayer.xaml</DependentUpon>
     </ClCompile>
@@ -506,6 +517,7 @@
     <ClCompile Include="Controls\SongListControl.xaml.cpp">
       <DependentUpon>Controls\SongListControl.xaml</DependentUpon>
     </ClCompile>
+    <ClCompile Include="ViewModels\SearchVM.cpp" />
     <ClCompile Include="ViewModels\SongListControlVM.cpp" />
     <ClCompile Include="ViewModels\SongListVM.cpp" />
     <ClCompile Include="ViewModels\SongPlayerVM.cpp" />

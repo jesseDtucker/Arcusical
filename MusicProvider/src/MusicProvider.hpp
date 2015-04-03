@@ -35,12 +35,10 @@ namespace Arcusical
 {
 namespace MusicProvider
 {
-	class SongIdMapper;
-
 	class MusicProvider final : public IMusicProvider
 	{
 	public:
-		MusicProvider();
+		MusicProvider(LocalMusicStore::LocalMusicCache* cache);
 		virtual Util::Subscription SubscribeSongs(SongsChangedCallback callback) override;
 		virtual Util::Subscription SubscribeAlbums(AlbumsChangedCallback callback) override;
 		virtual SongSelector* GetSongSelector() override;
@@ -67,8 +65,7 @@ namespace MusicProvider
 		std::mutex m_albumCallbackLock;
 		std::mutex m_songCallbackLock;
 
-		std::shared_ptr<SongIdMapper> m_songMapper;
-		std::unique_ptr<LocalMusicStore::LocalMusicCache> m_musicCache;
+		LocalMusicStore::LocalMusicCache* m_musicCache;
 		LocalMusicStore::MusicFinder m_musicFinder;
 		SongSelector m_songSelector;
 

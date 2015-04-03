@@ -12,7 +12,6 @@
 #include "MusicFinder.hpp"
 #include "MusicProvider.hpp"
 #include "Song.hpp"
-#include "SongIdMapper.hpp"
 #include "Storage.hpp"
 
 #undef max
@@ -28,21 +27,12 @@ const string Arcusical::MusicProvider::IMusicProvider::ServiceName("MusicProvide
 
 static void FixupAlbumName(Song& song, const vector<Song>& newSongs, const SongCollection& existingSongs);
 
-MusicProvider::MusicProvider()
+MusicProvider::MusicProvider(LocalMusicCache* cache)
 	: m_songCallbackSet()
-	, m_musicCache(nullptr)
+	, m_musicCache(cache)
 	, m_musicFinder()
-	, m_songSelector(nullptr)
-{
-	SongIdMapper::GetSongsCall getLocalSongs = [this]()
-	{ 
-		return this->m_musicCache->GetLocalSongs();
-	};
-
-	m_songMapper = make_shared<SongIdMapper>(getLocalSongs);
-	m_musicCache = make_unique<LocalMusicCache>(m_songMapper);
-	m_songSelector = { m_musicCache.get() };
-}
+	, m_songSelector(m_musicCache)
+{ }
 
 Subscription MusicProvider::SubscribeSongs(SongsChangedCallback callback)
 {
@@ -446,7 +436,7 @@ bool MusicProvider::MergeAlbumCollections(AlbumCollection& existingAlbums, SongC
 		else
 		{
 			// we don't have this album yet, so we need to create a new one
-			auto newAlbum = CreateAlbum(albumName, song, m_songMapper);
+			auto newAlbum = CreateAlbum(albumName, song, m_musicCache);
 			newContentAdded = true;
 			newAlbums.insert({ newAlbum.GetId(), newAlbum });
 			albumLookup[newAlbum.GetTitle()].push_back(newAlbum.GetId());
@@ -521,7 +511,7 @@ void MusicProvider::PublishAlbums()
 
 Album MusicProvider::GetAlbum(const wstring& name)
 {
-	Album result(m_songMapper);
+	Album result(m_musicCache);
 	auto albums = m_musicCache->GetLocalAlbums();
 
 	for (auto& album : *albums)
