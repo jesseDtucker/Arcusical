@@ -34,7 +34,12 @@ constModifier dataType& Get ## externalName()	constModifier		\
 PROP_GET_EX(dataType, externalName, internalName, constModifier)					\
 void Set ## externalName(dataType value)							\
 {																	\
-	internalName = value;											\
+	if(internalName != value)										\
+	{																\
+		internalName = value;										\
+		On ## externalName ## Changed(internalName);				\
+	}																\
+																	\
 }																	\
 dataType& GetMutable ## externalName()								\
 {																	\
@@ -59,6 +64,7 @@ property dataType externalName							\
 		if (value != m_ ## externalName)				\
 		{												\
 			m_ ## externalName = value;					\
+			On ## externalName ## Changed(m_ ## externalName); \
 			OnPropertyChanged(#externalName);			\
 		}												\
 	}													\

@@ -7,6 +7,8 @@
 #include "Arc_Assert.hpp"
 #include "LocalMusicCache.hpp"
 
+// the number of characters before searches in the middle of names will be considered
+static const int MIN_FOR_MIDDLE_SEARCH = 3;
 
 using namespace std;
 using namespace Arcusical::LocalMusicStore;
@@ -30,10 +32,12 @@ MusicSearcher::MusicSearcher(LocalMusicCache* musicCache)
 	m_musicCache = musicCache;
 }
 
-void FindSongs(wstring& searchTerm, SearchResult& result, LocalMusicCache& cache)
+void FindSongs(const wstring& searchTerm, SearchResult& result, LocalMusicCache& cache)
 {
 	std::vector<Song*> songsThatStartWith;
 	std::vector<Song*> songsThatContain;
+
+	auto termLength = searchTerm.size();
 
 	// search song titles
 	auto songs = cache.GetLocalSongs();
@@ -48,7 +52,7 @@ void FindSongs(wstring& searchTerm, SearchResult& result, LocalMusicCache& cache
 		{
 			songsThatStartWith.push_back(&song);
 		}
-		else if (boost::icontains(title, searchTerm))
+		else if (termLength > MIN_FOR_MIDDLE_SEARCH && boost::icontains(title, searchTerm))
 		{
 			songsThatContain.push_back(&song);
 		}
@@ -62,7 +66,7 @@ void FindSongs(wstring& searchTerm, SearchResult& result, LocalMusicCache& cache
 	{
 		CHECK_CANCEL;
 
-		next = transform(begin(*songList), end(*songList), begin(result.Songs), [](Song* song)
+		next = transform(begin(*songList), end(*songList), next, [](Song* song)
 		{
 			return *song;
 		});
@@ -70,12 +74,14 @@ void FindSongs(wstring& searchTerm, SearchResult& result, LocalMusicCache& cache
 	ARC_ASSERT(next == end(result.Songs));
 }
 
-void FindAlbums(wstring& searchTerm, SearchResult& result, LocalMusicCache& cache)
+void FindAlbums(const wstring& searchTerm, SearchResult& result, LocalMusicCache& cache)
 {
 	std::vector<Album*> albumsThatStartWith;
 	std::vector<Album*> albumsThatContain;
 	std::vector<Album*> startsWithAlbumArtist;
 	std::vector<Album*> containsAlbumArtist;
+
+	auto termLength = searchTerm.size();
 
 	auto albums = cache.GetLocalAlbums();
 	for (auto& albumPair : *albums)
@@ -90,7 +96,7 @@ void FindAlbums(wstring& searchTerm, SearchResult& result, LocalMusicCache& cach
 		{
 			albumsThatStartWith.push_back(&album);
 		}
-		else if (boost::icontains(title, searchTerm))
+		else if (termLength > MIN_FOR_MIDDLE_SEARCH && boost::icontains(title, searchTerm))
 		{
 			albumsThatContain.push_back(&album);
 		}
@@ -98,7 +104,7 @@ void FindAlbums(wstring& searchTerm, SearchResult& result, LocalMusicCache& cach
 		{
 			startsWithAlbumArtist.push_back(&album);
 		}
-		else if (boost::icontains(artist, searchTerm))
+		else if (termLength > MIN_FOR_MIDDLE_SEARCH && boost::icontains(artist, searchTerm))
 		{
 			containsAlbumArtist.push_back(&album);
 		}

@@ -6,7 +6,7 @@
 #include "pch.h"
 #include "Search.xaml.h"
 
-using namespace Arcusical;
+//#include "ViewModels/SearchVM.hpp"
 
 using namespace Platform;
 using namespace Windows::Foundation;
@@ -19,9 +19,29 @@ using namespace Windows::UI::Xaml::Input;
 using namespace Windows::UI::Xaml::Media;
 using namespace Windows::UI::Xaml::Navigation;
 
-// The User Control item template is documented at http://go.microsoft.com/fwlink/?LinkId=234236
+using namespace Arcusical;
+using namespace Arcusical::ViewModel;
+using namespace Arcusical::MusicProvider;
 
-Search::Search()
+
+Arcusical::Search::Search()
+	: m_searcher(nullptr)
 {
 	InitializeComponent();
+}
+
+void Search::SetSearchProvider(MusicSearcher* musicSearcher)
+{
+	ARC_ASSERT(musicSearcher != nullptr);
+	m_searcher = musicSearcher;
+	m_vm = ref new SearchVM(*musicSearcher);
+	this->DataContext = m_vm;
+}
+
+void Arcusical::Search::TextBox_KeyDown(Platform::Object^ sender, Windows::UI::Xaml::Input::KeyRoutedEventArgs^ e)
+{
+	if (e->Key == Windows::System::VirtualKey::Enter)
+	{
+		m_vm->SelectCurrent();
+	}
 }

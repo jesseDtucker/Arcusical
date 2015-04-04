@@ -11,7 +11,9 @@
 	Background="Transparent"
 	HorizontalAlignment="Stretch">
 	<Grid>
-		<TextBox HorizontalAlignment="Stretch" VerticalAlignment="Center" TextAlignment="Right" Text="Search"/>
+		<TextBox HorizontalAlignment="Stretch" VerticalAlignment="Center" TextAlignment="Right" 
+				 Text="{Binding Path=SearchTerm, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" x:Name="v_searchBox"
+				 KeyDown="TextBox_KeyDown"/>
 		<Image Source="/Assets/Icons/SearchIcon.png" HorizontalAlignment="Left" Margin="7" Opacity="0.5"/>
 	</Grid>
 </UserControl>

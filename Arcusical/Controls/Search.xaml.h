@@ -6,6 +6,15 @@
 #pragma once
 
 #include "Controls\Search.g.h"
+#include "ViewModels\SearchVM.hpp"
+
+namespace Arcusical
+{
+namespace MusicProvider
+{
+	class MusicSearcher;
+}
+}
 
 namespace Arcusical
 {
@@ -14,5 +23,11 @@ namespace Arcusical
 	{
 	public:
 		Search();
+	internal:
+		void SetSearchProvider(MusicProvider::MusicSearcher* musicSearcher);
+	private:
+		MusicProvider::MusicSearcher* m_searcher;
+		ViewModel::SearchVM^ m_vm;
+		void TextBox_KeyDown(Platform::Object^ sender, Windows::UI::Xaml::Input::KeyRoutedEventArgs^ e);
 	};
 }

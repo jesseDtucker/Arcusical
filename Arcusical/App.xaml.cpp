@@ -121,10 +121,17 @@ void App::OnLaunched(Windows::ApplicationModel::Activation::LaunchActivatedEvent
 			// parameter
 			rootFrame->Navigate(TypeName(MainPage::typeid), e->Arguments);
 		}
+
+		MainPage^ mainPage = dynamic_cast<MainPage^>(rootFrame->Content);
+		ARC_ASSERT(mainPage != nullptr);
+		mainPage->SetSearchProvider(&m_searcher);
+
 		// Place the frame in the current Window
 		Window::Current->Content = rootFrame;
 		// Ensure the current window is active
 		Window::Current->Activate();
+
+		
 	}
 	else
 	{

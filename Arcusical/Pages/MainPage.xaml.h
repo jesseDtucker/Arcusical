@@ -9,6 +9,14 @@
 
 namespace Arcusical
 {
+namespace MusicProvider
+{
+	class MusicSearcher;
+}
+}
+
+namespace Arcusical
+{
 	/// <summary>
 	/// An empty page that can be used on its own or navigated to within a Frame.
 	/// </summary>
@@ -16,6 +24,8 @@ namespace Arcusical
 	{
 	public:
 		MainPage();
+	internal:
+		void SetSearchProvider(MusicProvider::MusicSearcher* musicSearcher);
 	private:
 		void SetupTransportControls();
 		void OnTransportControlButtonPressed(Windows::Media::SystemMediaTransportControls^ sender, Windows::Media::SystemMediaTransportControlsButtonPressedEventArgs^ args);

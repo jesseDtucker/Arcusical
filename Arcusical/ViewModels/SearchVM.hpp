@@ -26,6 +26,8 @@ namespace ViewModel{
 		PROP_SET_AND_GET_WINRT(Platform::Boolean, IsDefault);
 		PROP_SET_AND_GET_WINRT(Platform::String^, SearchTerm);
 
+		void SelectCurrent();
+
 	internal:
 		SearchVM(MusicProvider::MusicSearcher& searcher);
 
@@ -35,6 +37,7 @@ namespace ViewModel{
 
 		MusicProvider::MusicSearcher& m_searcher;
 		Util::CancellationTokenRef m_searchCancelToken = nullptr;
+		Util::Subscription m_onSearchTermChangedSub;
 	};
 }
 }

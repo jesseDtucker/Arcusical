@@ -8,8 +8,9 @@
 
 #include "IFile.hpp"
 #include "IPlayer.hpp"
-#include "Controls/SongListControl.xaml.h"
 #include "Controls/AlbumListControl.xaml.h"
+#include "Controls/SongListControl.xaml.h"
+#include "Controls/Search.xaml.h"
 #include "Playlist.hpp"
 #include "Storage.hpp"
 #include "ViewModels/AlbumListControlVM.hpp"
@@ -141,4 +142,9 @@ void MainPage::OnTransportControlButtonPressed(SystemMediaTransportControls^ sen
 	default:
 		ARC_FAIL("Missed a button!");
 	}
+}
+
+void Arcusical::MainPage::SetSearchProvider(MusicProvider::MusicSearcher* musicSearcher)
+{
+	this->v_search->SetSearchProvider(musicSearcher);
 }

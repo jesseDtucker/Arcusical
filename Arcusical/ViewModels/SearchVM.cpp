@@ -11,7 +11,8 @@ using namespace Util;
 SearchVM::SearchVM(MusicSearcher& searcher)
 	: m_searcher(searcher)
 {
-	this->OnSearchTermChanged += [this](Platform::String^ newValue)
+	this->SearchTerm = "Search";
+	m_onSearchTermChangedSub = this->OnSearchTermChanged += [this](Platform::String^ newValue)
 	{
 		this->StartSearch(newValue);
 	};
@@ -32,7 +33,12 @@ void Arcusical::ViewModel::SearchVM::StartSearch(Platform::String^ searchTerm)
 		auto results = m_searcher.Find(term, m_searchCancelToken);
 		if (!results.CancellationToken->IsCanceled())
 		{
-
+			ARC_FAIL("TODO::JT");
 		}
 	});
+}
+
+void Arcusical::ViewModel::SearchVM::SelectCurrent()
+{
+	ARC_FAIL("TODO::JT");
 }
