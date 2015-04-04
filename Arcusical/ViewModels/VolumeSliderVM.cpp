@@ -13,9 +13,17 @@ VolumeSliderVM::VolumeSliderVM()
 
 double VolumeSliderVM::Volume::get()
 {
-	auto player = PlayerLocator::ResolveService().lock();
-	ARC_ASSERT(player != nullptr);
-	return player->GetVolume() * 100.0;
+	// do this check to keep the designer from crashing
+	if (Windows::ApplicationModel::DesignMode::DesignModeEnabled)
+	{
+		return 50.0;
+	}
+	else
+	{
+		auto player = PlayerLocator::ResolveService().lock();
+		ARC_ASSERT(player != nullptr);
+		return player->GetVolume() * 100.0;
+	}
 }
 
 

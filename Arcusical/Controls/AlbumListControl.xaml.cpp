@@ -31,9 +31,12 @@ AlbumListControl::AlbumListControl()
 {
 	InitializeComponent();
 
-	auto musicProviderService = MusicProvider::MusicProviderLocator::ResolveService().lock();
-	m_vm = ref new AlbumListControlVM(musicProviderService);
-	DataContext = m_vm;
+	if (!Windows::ApplicationModel::DesignMode::DesignModeEnabled)
+	{
+		auto musicProviderService = MusicProvider::MusicProviderLocator::ResolveService().lock();
+		m_vm = ref new AlbumListControlVM(musicProviderService);
+		DataContext = m_vm;
+	}
 }
 
 void Arcusical::AlbumListControl::AlbumClicked(Platform::Object^ sender, Windows::UI::Xaml::Controls::ItemClickEventArgs^ e)

@@ -9,7 +9,7 @@
 	d:DesignHeight="40"
 	d:DesignWidth="160">
 	
-	<Grid Width="160" Height="40">
+	<Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
 		<TextBlock Text="VOLUME" HorizontalAlignment="Center"/>
 		<Slider HorizontalAlignment="Stretch" Value="{Binding Path=Volume, Mode=TwoWay}"/>
 	</Grid>

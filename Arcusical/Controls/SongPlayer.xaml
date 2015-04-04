@@ -47,7 +47,7 @@
 			<TextBlock Text="{Binding Path=AmountPlayed}"/>
 			<TextBlock Text="{Binding Path=AmoutRemaining}"/>
 		</StackPanel>
-		<local:VolumeSilder VerticalAlignment="Center"/>
+		<local:VolumeSilder VerticalAlignment="Center" Height="40" Width="160"/>
 	</StackPanel>
 
 </UserControl>

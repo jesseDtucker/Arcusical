@@ -22,6 +22,12 @@ namespace Arcusical
 			, m_AmoutRemaining(0.0f)
 			, m_IsPlaying(false)
 		{
+			if (Windows::ApplicationModel::DesignMode::DesignModeEnabled)
+			{
+				// early out to not crash the designer
+				return;
+			}
+
 			// listen to the song player and respond to changes in state
 			auto player = PlayerLocator::ResolveService().lock();
 			ARC_ASSERT(player != nullptr);
