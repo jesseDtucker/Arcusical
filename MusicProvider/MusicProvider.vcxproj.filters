@@ -15,12 +15,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\IMusicProvider.hpp">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="src\MusicProvider.hpp">
-      <Filter>src</Filter>
-    </ClInclude>
     <ClInclude Include="src\targetver.h">
       <Filter>src</Filter>
     </ClInclude>
@@ -31,6 +25,9 @@
       <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="include\MusicSearcher.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\MusicProvider.hpp">
       <Filter>include</Filter>
     </ClInclude>
   </ItemGroup>

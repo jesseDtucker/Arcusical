@@ -9,6 +9,14 @@
 #include "Song.hpp"
 #include "Subscription.hpp"
 
+namespace Arcusical
+{
+namespace MusicProvider
+{
+	class MusicProvider;
+}
+}
+
 namespace Arcusical{
 
 	namespace Player{
@@ -18,7 +26,7 @@ namespace Arcusical{
 		class Playlist final
 		{
 		public:
-			Playlist(IPlayer* player);
+			Playlist(IPlayer* player, MusicProvider::MusicProvider* musicProvider);
 
 			static const std::string ServiceName;
 
@@ -42,6 +50,7 @@ namespace Arcusical{
 
 			std::vector<Model::Song> m_recentlyPlayed;
 			IPlayer* m_player = nullptr;
+			MusicProvider::MusicProvider* m_musicProvider = nullptr;
 			bool m_wasRecentlyCleared = false;
 			Util::Subscription m_songEndedSub = nullptr;
 		};
@@ -59,8 +68,6 @@ namespace Arcusical{
 				TryStartPlayback();
 			}
 		}
-
-		typedef Arcusical::ServiceModel::ServiceResolver<Playlist> PlaylistLocator;
 	}
 }
 

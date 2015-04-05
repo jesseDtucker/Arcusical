@@ -15,7 +15,7 @@
 		</Grid.RowDefinitions>
 		<Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
 			  Grid.Row="0"  Height="70" Background="#2A2E2E" >
-			<local:SongPlayer HorizontalAlignment="Left"/>
+			<local:SongPlayer HorizontalAlignment="Left" x:Name="v_player"/>
 			<local:Search VerticalAlignment="Center" HorizontalAlignment="Right" 
 						  Margin="15" Width="250" x:Name="v_search"/>
 		</Grid>
@@ -23,9 +23,12 @@
 			<Grid.ColumnDefinitions>
 				<ColumnDefinition Width="20*"/>
 				<ColumnDefinition Width="45*"/>
+				<ColumnDefinition Width="400"/>
 			</Grid.ColumnDefinitions>
 			<local:SongListControl Grid.Column="0" x:Name="v_songListControl"/>
 			<local:AlbumListControl Grid.Column="1" x:Name="v_albumListControl"/>
+			<local:SearchResultsControl Grid.Column="2" HorizontalAlignment="Right" 
+										Width="400"/>
 		</Grid>
 	</Grid>
 

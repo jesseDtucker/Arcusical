@@ -1,12 +1,14 @@
 #include <algorithm>
 #include <string>
 
+#include "Arc_Assert.hpp"
 #include "IPlayer.hpp"
+#include "MusicProvider.hpp"
 #include "Playlist.hpp"
 #include "Song.hpp"
-#include "IMusicProvider.hpp"
 
 using namespace std;
+using namespace Arcusical::MusicProvider;
 
 namespace Arcusical{
 namespace Player {
@@ -16,8 +18,9 @@ namespace Player {
 	static const int MAX_HISTORY_SIZE = 400;
 	static const int RANDOM_SIZE = 25;
 	
-	Playlist::Playlist(IPlayer* player)
+	Playlist::Playlist(IPlayer* player, MusicProvider::MusicProvider* musicProvider)
 		: m_player(player)
+		, m_musicProvider(musicProvider)
 	{
 		m_songEndedSub = player->GetEnded() += [this]()
 		{
@@ -104,9 +107,7 @@ namespace Player {
 
 	void Playlist::SelectMoreSongs()
 	{
-		auto musicProvider = MusicProvider::MusicProviderLocator::ResolveService().lock();
-
-		ARC_ASSERT(musicProvider != nullptr);
+		ARC_ASSERT(m_musicProvider != nullptr);
 
 		auto songFilter = [this](const Model::Song& song)
 		{
@@ -116,7 +117,7 @@ namespace Player {
 			}) == end(m_recentlyPlayed);
 		};
 
-		auto songSelector = musicProvider->GetSongSelector();
+		auto songSelector = m_musicProvider->GetSongSelector();
 
 		if (m_recentlyPlayed.size() == 0)
 		{

@@ -16,11 +16,13 @@ namespace Arcusical
 {
 	namespace ViewModel
 	{
-		SongPlayerVM::SongPlayerVM()
+		SongPlayerVM::SongPlayerVM(IPlayer& player, Playlist& playlist)
 			: m_CurrentSong(nullptr)
 			, m_AmountPlayed(0.0f)
 			, m_AmoutRemaining(0.0f)
 			, m_IsPlaying(false)
+			, m_player(player)
+			, m_playlist(playlist)
 		{
 			if (Windows::ApplicationModel::DesignMode::DesignModeEnabled)
 			{
@@ -29,29 +31,27 @@ namespace Arcusical
 			}
 
 			// listen to the song player and respond to changes in state
-			auto player = PlayerLocator::ResolveService().lock();
-			ARC_ASSERT(player != nullptr);
 
-			m_durationSub = player->GetDurationChanged() += [this, player](double duration)
+			m_durationSub = m_player.GetDurationChanged() += [this](double duration)
 			{
-				DispatchToUI([this, player, duration]()
+				DispatchToUI([this, duration]()
 				{
-					UpdateTime(player->GetCurrentTime(), duration);
+					UpdateTime(m_player.GetCurrentTime(), duration);
 				});
 			};
 
-			m_timeUpdateSub = player->GetTimeUpdate() += [this, player](double currentTime)
+			m_timeUpdateSub = m_player.GetTimeUpdate() += [this](double currentTime)
 			{
 				if (abs(this->m_AmountPlayed - currentTime) > 0.1)
 				{
-					DispatchToUI([this, player, currentTime]()
+					DispatchToUI([this, currentTime]()
 					{
-						UpdateTime(currentTime, player->GetDuration());
+						UpdateTime(currentTime, m_player.GetDuration());
 					});
 				}
 			};
 
-			m_playingSub = player->GetPlaying() += [this](bool isPlaying)
+			m_playingSub = m_player.GetPlaying() += [this](bool isPlaying)
 			{
 				DispatchToUI([this, isPlaying]()
 				{
@@ -59,9 +59,9 @@ namespace Arcusical
 				});
 			};
 
-			m_songChangedSub = player->GetSongChanged() += [this](const Song& newSong)
+			m_songChangedSub = m_player.GetSongChanged() += [this](const Song& newSong)
 			{
-				SongVM^ curSong = ref new SongVM(newSong);
+				SongVM^ curSong = ref new SongVM(newSong, m_playlist, m_player);
 				DispatchToUI([this, curSong]()
 				{
 					CurrentSong = curSong;
@@ -71,43 +71,33 @@ namespace Arcusical
 
 		void SongPlayerVM::Play()
 		{
-			async([]()
+			async([this]()
 			{
-				auto player = PlayerLocator::ResolveService().lock();
-				ARC_ASSERT(player != nullptr);
-				player->Play();
+				m_player.Play();
 			});
 		}
 
 		void SongPlayerVM::Pause()
 		{
-			async([]()
+			async([this]()
 			{
-				auto player = PlayerLocator::ResolveService().lock();
-				ARC_ASSERT(player != nullptr);
-				player->Stop();
+				m_player.Stop();
 			});
 		}
 
 		void SongPlayerVM::Previous()
 		{
-			async([]()
+			async([this]()
 			{
-				auto playlist = PlaylistLocator::ResolveService().lock();
-				ARC_ASSERT(playlist != nullptr);
-
-				playlist->PlayPrevious();
+				m_playlist.PlayPrevious();
 			});
 		}
 
 		void SongPlayerVM::Next()
 		{
-			async([]()
+			async([this]()
 			{
-				auto playlist = PlaylistLocator::ResolveService().lock();
-				ARC_ASSERT(playlist != nullptr);
-
-				playlist->PlayNext();
+				m_playlist.PlayNext();
 			});
 		}
 

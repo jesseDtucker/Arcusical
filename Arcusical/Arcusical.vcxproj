@@ -135,65 +135,65 @@
     <AppxBundle>Never</AppxBundle>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>$(SolutionDir)ServiceModel\include;$(SolutionDir)Util\include;$(SolutionDir)MusicProvider\include;$(SolutionDir)Model\include;$(SolutionDir)..\boost_1_56_0;$(SolutionDir)MPEG4Parser\include;$(ProjectDir);$(SolutionDir)Player\include;$(SolutionDir)WebCrawler\include;$(SolutionDir)LocalMusicStore\include;$(SolutionDir)FileSystem\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)Util\include;$(SolutionDir)MusicProvider\include;$(SolutionDir)Model\include;$(SolutionDir)..\boost_1_56_0;$(SolutionDir)MPEG4Parser\include;$(ProjectDir);$(SolutionDir)Player\include;$(SolutionDir)WebCrawler\include;$(SolutionDir)LocalMusicStore\include;$(SolutionDir)FileSystem\include;$(SolutionDir)ServiceModel\include;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)$(Platform)\$(Configuration)\Model;$(SolutionDir)$(Platform)\$(Configuration)\FileSystem;$(SolutionDir)$(Platform)\$(Configuration)\ServiceModel;$(SolutionDir)$(Platform)\$(Configuration)\Util;$(SolutionDir)$(Platform)\$(Configuration)\MusicProvider;$(SolutionDir)$(Platform)\$(Configuration)\LocalMusicStore;$(SolutionDir)$(Platform)\$(Configuration)\MPEG4Parser;$(SolutionDir)..\protoc\protobuf-2.6.0\vsprojects\$(Platform)\$(Configuration);$(SolutionDir)$(Platform)\$(Configuration)\Player;$(SolutionDir)$(Platform)\$(Configuration)\WebCrawler;$(LibraryPath)</LibraryPath>
     <RunCodeAnalysis>false</RunCodeAnalysis>
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\$(MSBuildProjectName)\</OutDir>
     <IntDir>$(ProjectDir)$(Platform)\$(Configuration)\$(MSBuildProjectName)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DebugWithCodeAnalysis|Win32'">
-    <IncludePath>$(SolutionDir)ServiceModel\include;$(SolutionDir)Util\include;$(SolutionDir)MusicProvider\include;$(SolutionDir)Model\include;$(SolutionDir)..\boost_1_56_0;$(SolutionDir)MPEG4Parser\include;$(ProjectDir);$(SolutionDir)Player\include;$(SolutionDir)WebCrawler\include;$(SolutionDir)LocalMusicStore\include;$(SolutionDir)FileSystem\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)Util\include;$(SolutionDir)MusicProvider\include;$(SolutionDir)Model\include;$(SolutionDir)..\boost_1_56_0;$(SolutionDir)MPEG4Parser\include;$(ProjectDir);$(SolutionDir)Player\include;$(SolutionDir)WebCrawler\include;$(SolutionDir)LocalMusicStore\include;$(SolutionDir)FileSystem\include;$(SolutionDir)ServiceModel\include;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)$(Platform)\$(Configuration)\Model;$(SolutionDir)$(Platform)\$(Configuration)\FileSystem;$(SolutionDir)$(Platform)\$(Configuration)\ServiceModel;$(SolutionDir)$(Platform)\$(Configuration)\Util;$(SolutionDir)$(Platform)\$(Configuration)\MusicProvider;$(SolutionDir)$(Platform)\$(Configuration)\LocalMusicStore;$(SolutionDir)$(Platform)\$(Configuration)\MPEG4Parser;$(SolutionDir)..\protoc\protobuf-2.6.0\vsprojects\$(Platform)\$(Configuration);$(SolutionDir)$(Platform)\$(Configuration)\Player;$(SolutionDir)$(Platform)\$(Configuration)\WebCrawler;$(LibraryPath)</LibraryPath>
     <RunCodeAnalysis>true</RunCodeAnalysis>
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\$(MSBuildProjectName)\</OutDir>
     <IntDir>$(ProjectDir)$(Platform)\$(Configuration)\$(MSBuildProjectName)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
-    <IncludePath>$(SolutionDir)ServiceModel\include;$(SolutionDir)Util\include;$(SolutionDir)MusicProvider\include;$(SolutionDir)Model\include;$(SolutionDir)..\boost_1_56_0;$(SolutionDir)MPEG4Parser\include;$(ProjectDir);$(SolutionDir)Player\include;$(SolutionDir)WebCrawler\include;$(SolutionDir)LocalMusicStore\include;$(SolutionDir)FileSystem\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)Util\include;$(SolutionDir)MusicProvider\include;$(SolutionDir)Model\include;$(SolutionDir)..\boost_1_56_0;$(SolutionDir)MPEG4Parser\include;$(ProjectDir);$(SolutionDir)Player\include;$(SolutionDir)WebCrawler\include;$(SolutionDir)LocalMusicStore\include;$(SolutionDir)FileSystem\include;$(SolutionDir)ServiceModel\include;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)$(Platform)\$(Configuration)\Model;$(SolutionDir)$(Platform)\$(Configuration)\FileSystem;$(SolutionDir)$(Platform)\$(Configuration)\ServiceModel;$(SolutionDir)$(Platform)\$(Configuration)\Util;$(SolutionDir)$(Platform)\$(Configuration)\MusicProvider;$(SolutionDir)$(Platform)\$(Configuration)\LocalMusicStore;$(SolutionDir)$(Platform)\$(Configuration)\MPEG4Parser;$(SolutionDir)..\protoc\protobuf-2.6.0\vsprojects\$(Platform)\$(Configuration);$(SolutionDir)$(Platform)\$(Configuration)\Player;$(SolutionDir)$(Platform)\$(Configuration)\WebCrawler;$(LibraryPath)</LibraryPath>
     <RunCodeAnalysis>false</RunCodeAnalysis>
     <IntDir>$(ProjectDir)$(Platform)\$(Configuration)\$(MSBuildProjectName)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DebugWithCodeAnalysis|ARM'">
-    <IncludePath>$(SolutionDir)ServiceModel\include;$(SolutionDir)Util\include;$(SolutionDir)MusicProvider\include;$(SolutionDir)Model\include;$(SolutionDir)..\boost_1_56_0;$(SolutionDir)MPEG4Parser\include;$(ProjectDir);$(SolutionDir)Player\include;$(SolutionDir)WebCrawler\include;$(SolutionDir)LocalMusicStore\include;$(SolutionDir)FileSystem\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)Util\include;$(SolutionDir)MusicProvider\include;$(SolutionDir)Model\include;$(SolutionDir)..\boost_1_56_0;$(SolutionDir)MPEG4Parser\include;$(ProjectDir);$(SolutionDir)Player\include;$(SolutionDir)WebCrawler\include;$(SolutionDir)LocalMusicStore\include;$(SolutionDir)FileSystem\include;$(SolutionDir)ServiceModel\include;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)$(Platform)\$(Configuration)\Model;$(SolutionDir)$(Platform)\$(Configuration)\FileSystem;$(SolutionDir)$(Platform)\$(Configuration)\ServiceModel;$(SolutionDir)$(Platform)\$(Configuration)\Util;$(SolutionDir)$(Platform)\$(Configuration)\MusicProvider;$(SolutionDir)$(Platform)\$(Configuration)\LocalMusicStore;$(SolutionDir)$(Platform)\$(Configuration)\MPEG4Parser;$(SolutionDir)..\protoc\protobuf-2.6.0\vsprojects\$(Platform)\$(Configuration);$(SolutionDir)$(Platform)\$(Configuration)\Player;$(SolutionDir)$(Platform)\$(Configuration)\WebCrawler;$(LibraryPath)</LibraryPath>
     <RunCodeAnalysis>true</RunCodeAnalysis>
     <IntDir>$(ProjectDir)$(Platform)\$(Configuration)\$(MSBuildProjectName)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
-    <IncludePath>$(SolutionDir)ServiceModel\include;$(SolutionDir)Util\include;$(SolutionDir)MusicProvider\include;$(SolutionDir)Model\include;$(SolutionDir)..\boost_1_56_0;$(SolutionDir)MPEG4Parser\include;$(ProjectDir);$(SolutionDir)Player\include;$(SolutionDir)WebCrawler\include;$(SolutionDir)LocalMusicStore\include;$(SolutionDir)FileSystem\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)Util\include;$(SolutionDir)MusicProvider\include;$(SolutionDir)Model\include;$(SolutionDir)..\boost_1_56_0;$(SolutionDir)MPEG4Parser\include;$(ProjectDir);$(SolutionDir)Player\include;$(SolutionDir)WebCrawler\include;$(SolutionDir)LocalMusicStore\include;$(SolutionDir)FileSystem\include;$(SolutionDir)ServiceModel\include;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)$(Platform)\$(Configuration)\Model;$(SolutionDir)$(Platform)\$(Configuration)\FileSystem;$(SolutionDir)$(Platform)\$(Configuration)\ServiceModel;$(SolutionDir)$(Platform)\$(Configuration)\Util;$(SolutionDir)$(Platform)\$(Configuration)\MusicProvider;$(SolutionDir)$(Platform)\$(Configuration)\LocalMusicStore;$(SolutionDir)$(Platform)\$(Configuration)\MPEG4Parser;$(SolutionDir)..\protoc\protobuf-2.6.0\vsprojects\$(Platform)\$(Configuration);$(SolutionDir)$(Platform)\$(Configuration)\Player;$(SolutionDir)$(Platform)\$(Configuration)\WebCrawler;$(LibraryPath)</LibraryPath>
     <RunCodeAnalysis>false</RunCodeAnalysis>
     <IntDir>$(ProjectDir)$(Platform)\$(Configuration)\$(MSBuildProjectName)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>$(SolutionDir)ServiceModel\include;$(SolutionDir)Util\include;$(SolutionDir)MusicProvider\include;$(SolutionDir)Model\include;$(SolutionDir)..\boost_1_56_0;$(SolutionDir)MPEG4Parser\include;$(ProjectDir);$(SolutionDir)Player\include;$(SolutionDir)WebCrawler\include;$(SolutionDir)LocalMusicStore\include;$(SolutionDir)FileSystem\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)Util\include;$(SolutionDir)MusicProvider\include;$(SolutionDir)Model\include;$(SolutionDir)..\boost_1_56_0;$(SolutionDir)MPEG4Parser\include;$(ProjectDir);$(SolutionDir)Player\include;$(SolutionDir)WebCrawler\include;$(SolutionDir)LocalMusicStore\include;$(SolutionDir)FileSystem\include;$(SolutionDir)ServiceModel\include;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)$(Platform)\$(Configuration)\Model;$(SolutionDir)$(Platform)\$(Configuration)\FileSystem;$(SolutionDir)$(Platform)\$(Configuration)\ServiceModel;$(SolutionDir)$(Platform)\$(Configuration)\Util;$(SolutionDir)$(Platform)\$(Configuration)\MusicProvider;$(SolutionDir)$(Platform)\$(Configuration)\LocalMusicStore;$(SolutionDir)$(Platform)\$(Configuration)\MPEG4Parser;$(SolutionDir)..\protoc\protobuf-2.6.0\vsprojects\$(Platform)\$(Configuration);$(SolutionDir)$(Platform)\$(Configuration)\Player;$(SolutionDir)$(Platform)\$(Configuration)\WebCrawler;$(LibraryPath)</LibraryPath>
     <RunCodeAnalysis>false</RunCodeAnalysis>
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\$(MSBuildProjectName)\</OutDir>
     <IntDir>$(ProjectDir)$(Platform)\$(Configuration)\$(MSBuildProjectName)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(SolutionDir)ServiceModel\include;$(SolutionDir)Util\include;$(SolutionDir)MusicProvider\include;$(SolutionDir)Model\include;$(SolutionDir)..\boost_1_56_0;$(SolutionDir)MPEG4Parser\include;$(ProjectDir);$(SolutionDir)Player\include;$(SolutionDir)WebCrawler\include;$(SolutionDir)LocalMusicStore\include;$(SolutionDir)FileSystem\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)Util\include;$(SolutionDir)MusicProvider\include;$(SolutionDir)Model\include;$(SolutionDir)..\boost_1_56_0;$(SolutionDir)MPEG4Parser\include;$(ProjectDir);$(SolutionDir)Player\include;$(SolutionDir)WebCrawler\include;$(SolutionDir)LocalMusicStore\include;$(SolutionDir)FileSystem\include;$(SolutionDir)ServiceModel\include;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)$(Platform)\$(Configuration)\Model;$(SolutionDir)$(Platform)\$(Configuration)\FileSystem;$(SolutionDir)$(Platform)\$(Configuration)\ServiceModel;$(SolutionDir)$(Platform)\$(Configuration)\Util;$(SolutionDir)$(Platform)\$(Configuration)\MusicProvider;$(SolutionDir)$(Platform)\$(Configuration)\LocalMusicStore;$(SolutionDir)$(Platform)\$(Configuration)\MPEG4Parser;$(SolutionDir)..\protoc\protobuf-2.6.0\vsprojects\$(Platform)\$(Configuration);$(SolutionDir)$(Platform)\$(Configuration)\Player;$(SolutionDir)$(Platform)\$(Configuration)\WebCrawler;$(LibraryPath)</LibraryPath>
     <RunCodeAnalysis>false</RunCodeAnalysis>
     <IntDir>$(ProjectDir)$(Platform)\$(Configuration)\$(MSBuildProjectName)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DebugWithCodeAnalysis|x64'">
-    <IncludePath>$(SolutionDir)ServiceModel\include;$(SolutionDir)Util\include;$(SolutionDir)MusicProvider\include;$(SolutionDir)Model\include;$(SolutionDir)..\boost_1_56_0;$(SolutionDir)MPEG4Parser\include;$(ProjectDir);$(SolutionDir)Player\include;$(SolutionDir)WebCrawler\include;$(SolutionDir)LocalMusicStore\include;$(SolutionDir)FileSystem\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)Util\include;$(SolutionDir)MusicProvider\include;$(SolutionDir)Model\include;$(SolutionDir)..\boost_1_56_0;$(SolutionDir)MPEG4Parser\include;$(ProjectDir);$(SolutionDir)Player\include;$(SolutionDir)WebCrawler\include;$(SolutionDir)LocalMusicStore\include;$(SolutionDir)FileSystem\include;$(SolutionDir)ServiceModel\include;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)$(Platform)\$(Configuration)\Model;$(SolutionDir)$(Platform)\$(Configuration)\FileSystem;$(SolutionDir)$(Platform)\$(Configuration)\ServiceModel;$(SolutionDir)$(Platform)\$(Configuration)\Util;$(SolutionDir)$(Platform)\$(Configuration)\MusicProvider;$(SolutionDir)$(Platform)\$(Configuration)\LocalMusicStore;$(SolutionDir)$(Platform)\$(Configuration)\MPEG4Parser;$(SolutionDir)..\protoc\protobuf-2.6.0\vsprojects\$(Platform)\$(Configuration);$(SolutionDir)$(Platform)\$(Configuration)\Player;$(SolutionDir)$(Platform)\$(Configuration)\WebCrawler;$(LibraryPath)</LibraryPath>
     <RunCodeAnalysis>true</RunCodeAnalysis>
     <IntDir>$(ProjectDir)$(Platform)\$(Configuration)\$(MSBuildProjectName)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(SolutionDir)ServiceModel\include;$(SolutionDir)Util\include;$(SolutionDir)MusicProvider\include;$(SolutionDir)Model\include;$(SolutionDir)..\boost_1_56_0;$(SolutionDir)MPEG4Parser\include;$(ProjectDir);$(SolutionDir)Player\include;$(SolutionDir)WebCrawler\include;$(SolutionDir)LocalMusicStore\include;$(SolutionDir)FileSystem\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)Util\include;$(SolutionDir)MusicProvider\include;$(SolutionDir)Model\include;$(SolutionDir)..\boost_1_56_0;$(SolutionDir)MPEG4Parser\include;$(ProjectDir);$(SolutionDir)Player\include;$(SolutionDir)WebCrawler\include;$(SolutionDir)LocalMusicStore\include;$(SolutionDir)FileSystem\include;$(SolutionDir)ServiceModel\include;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)$(Platform)\$(Configuration)\Model;$(SolutionDir)$(Platform)\$(Configuration)\FileSystem;$(SolutionDir)$(Platform)\$(Configuration)\ServiceModel;$(SolutionDir)$(Platform)\$(Configuration)\Util;$(SolutionDir)$(Platform)\$(Configuration)\MusicProvider;$(SolutionDir)$(Platform)\$(Configuration)\LocalMusicStore;$(SolutionDir)$(Platform)\$(Configuration)\MPEG4Parser;$(SolutionDir)..\protoc\protobuf-2.6.0\vsprojects\$(Platform)\$(Configuration);$(SolutionDir)$(Platform)\$(Configuration)\Player;$(SolutionDir)$(Platform)\$(Configuration)\WebCrawler;$(LibraryPath)</LibraryPath>
     <RunCodeAnalysis>false</RunCodeAnalysis>
     <IntDir>$(ProjectDir)$(Platform)\$(Configuration)\$(MSBuildProjectName)\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
     <ClCompile>
-      <AdditionalOptions>/bigobj -D_SCL_SECURE_NO_WARNINGS</AdditionalOptions>
+      <AdditionalOptions>/bigobj /Zm200 -D_SCL_SECURE_NO_WARNINGS</AdditionalOptions>
       <DisableSpecificWarnings>4453;28204</DisableSpecificWarnings>
       <EnablePREfast>false</EnablePREfast>
       <WarningLevel>Level4</WarningLevel>
@@ -205,7 +205,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DebugWithCodeAnalysis|ARM'">
     <ClCompile>
-      <AdditionalOptions>/bigobj -D_SCL_SECURE_NO_WARNINGS</AdditionalOptions>
+      <AdditionalOptions>/bigobj /Zm200 -D_SCL_SECURE_NO_WARNINGS</AdditionalOptions>
       <DisableSpecificWarnings>4453;28204</DisableSpecificWarnings>
       <EnablePREfast>true</EnablePREfast>
       <WarningLevel>Level4</WarningLevel>
@@ -217,7 +217,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
     <ClCompile>
-      <AdditionalOptions>/bigobj -D_SCL_SECURE_NO_WARNINGS</AdditionalOptions>
+      <AdditionalOptions>/bigobj /Zm200 -D_SCL_SECURE_NO_WARNINGS</AdditionalOptions>
       <DisableSpecificWarnings>4453;28204</DisableSpecificWarnings>
       <EnablePREfast>false</EnablePREfast>
       <WarningLevel>Level4</WarningLevel>
@@ -230,7 +230,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <AdditionalOptions>/bigobj -D_SCL_SECURE_NO_WARNINGS /d2Zi+</AdditionalOptions>
+      <AdditionalOptions>/bigobj /Zm200 -D_SCL_SECURE_NO_WARNINGS</AdditionalOptions>
       <DisableSpecificWarnings>4453;28204</DisableSpecificWarnings>
       <AdditionalIncludeDirectories>$(SolutionDir)FileSystem\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <EnablePREfast>false</EnablePREfast>
@@ -247,7 +247,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DebugWithCodeAnalysis|Win32'">
     <ClCompile>
-      <AdditionalOptions>/bigobj -D_SCL_SECURE_NO_WARNINGS /d2Zi+</AdditionalOptions>
+      <AdditionalOptions>/bigobj /Zm200 -D_SCL_SECURE_NO_WARNINGS</AdditionalOptions>
       <DisableSpecificWarnings>4453;28204</DisableSpecificWarnings>
       <AdditionalIncludeDirectories>$(SolutionDir)FileSystem\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <EnablePREfast>true</EnablePREfast>
@@ -264,7 +264,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <AdditionalOptions>/bigobj -D_SCL_SECURE_NO_WARNINGS /d2Zi+</AdditionalOptions>
+      <AdditionalOptions>/bigobj /Zm200 -D_SCL_SECURE_NO_WARNINGS</AdditionalOptions>
       <DisableSpecificWarnings>4453;28204</DisableSpecificWarnings>
       <EnablePREfast>false</EnablePREfast>
       <WarningLevel>Level4</WarningLevel>
@@ -277,7 +277,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <AdditionalOptions>/bigobj -D_SCL_SECURE_NO_WARNINGS</AdditionalOptions>
+      <AdditionalOptions>/bigobj /Zm200 -D_SCL_SECURE_NO_WARNINGS</AdditionalOptions>
       <DisableSpecificWarnings>4453;28204</DisableSpecificWarnings>
       <EnablePREfast>false</EnablePREfast>
       <WarningLevel>Level4</WarningLevel>
@@ -289,7 +289,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DebugWithCodeAnalysis|x64'">
     <ClCompile>
-      <AdditionalOptions>/bigobj -D_SCL_SECURE_NO_WARNINGS</AdditionalOptions>
+      <AdditionalOptions>/bigobj /Zm200 -D_SCL_SECURE_NO_WARNINGS</AdditionalOptions>
       <DisableSpecificWarnings>4453;28204</DisableSpecificWarnings>
       <EnablePREfast>true</EnablePREfast>
       <WarningLevel>Level4</WarningLevel>
@@ -301,7 +301,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <AdditionalOptions>/bigobj -D_SCL_SECURE_NO_WARNINGS</AdditionalOptions>
+      <AdditionalOptions>/bigobj /Zm200 -D_SCL_SECURE_NO_WARNINGS</AdditionalOptions>
       <DisableSpecificWarnings>4453;28204</DisableSpecificWarnings>
       <EnablePREfast>false</EnablePREfast>
       <WarningLevel>Level4</WarningLevel>
@@ -318,6 +318,9 @@
     </ClInclude>
     <ClInclude Include="Controls\Search.xaml.h">
       <DependentUpon>Controls\Search.xaml</DependentUpon>
+    </ClInclude>
+    <ClInclude Include="Controls\SearchResultsControl.xaml.h">
+      <DependentUpon>Controls\SearchResultsControl.xaml</DependentUpon>
     </ClInclude>
     <ClInclude Include="Controls\SongPlayer.xaml.h">
       <DependentUpon>Controls\SongPlayer.xaml</DependentUpon>
@@ -360,6 +363,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Controls\Search.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\SearchResultsControl.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Controls\SongPlayer.xaml">
@@ -482,6 +488,9 @@
     </ClCompile>
     <ClCompile Include="Controls\Search.xaml.cpp">
       <DependentUpon>Controls\Search.xaml</DependentUpon>
+    </ClCompile>
+    <ClCompile Include="Controls\SearchResultsControl.xaml.cpp">
+      <DependentUpon>Controls\SearchResultsControl.xaml</DependentUpon>
     </ClCompile>
     <ClCompile Include="Controls\SongPlayer.xaml.cpp">
       <DependentUpon>Controls\SongPlayer.xaml</DependentUpon>

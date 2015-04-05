@@ -44,6 +44,12 @@
     <Filter Include="Assets\DefaultAlbumBackgrounds">
       <UniqueIdentifier>{0aa294ca-de10-4d74-85ea-d586f35ee772}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ViewModels\Models">
+      <UniqueIdentifier>{3f428982-a09b-4d67-b064-14968eb05602}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ViewModels\Controls">
+      <UniqueIdentifier>{291031aa-76e9-45fa-8c5c-893098f8c83f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml" />
@@ -57,33 +63,12 @@
     <ClCompile Include="Utility\DispatcherHelper.cpp">
       <Filter>Utility</Filter>
     </ClCompile>
-    <ClCompile Include="ViewModels\AlbumListVM.cpp">
-      <Filter>ViewModels</Filter>
-    </ClCompile>
-    <ClCompile Include="ViewModels\AlbumVM.cpp">
-      <Filter>ViewModels</Filter>
-    </ClCompile>
-    <ClCompile Include="ViewModels\SongListControlVM.cpp">
-      <Filter>ViewModels</Filter>
-    </ClCompile>
-    <ClCompile Include="ViewModels\SongListVM.cpp">
-      <Filter>ViewModels</Filter>
-    </ClCompile>
-    <ClCompile Include="ViewModels\SongVM.cpp">
-      <Filter>ViewModels</Filter>
-    </ClCompile>
     <ClCompile Include="Controls\SongPlayer.xaml.cpp" />
     <ClCompile Include="Events\SongSelectedEvent.cpp">
       <Filter>Events</Filter>
     </ClCompile>
-    <ClCompile Include="ViewModels\AlbumListControlVM.cpp">
-      <Filter>ViewModels</Filter>
-    </ClCompile>
     <ClCompile Include="Events\AlbumSelectedEvent.cpp">
       <Filter>Events</Filter>
-    </ClCompile>
-    <ClCompile Include="ViewModels\SongPlayerVM.cpp">
-      <Filter>ViewModels</Filter>
     </ClCompile>
     <ClCompile Include="Converters\IsPlayingToIconPath.cpp">
       <Filter>Converters</Filter>
@@ -91,14 +76,36 @@
     <ClCompile Include="Converters\SongListSizeToVisiblity.cpp">
       <Filter>Converters</Filter>
     </ClCompile>
-    <ClCompile Include="ViewModels\VolumeSliderVM.cpp">
-      <Filter>ViewModels</Filter>
-    </ClCompile>
     <ClCompile Include="Controls\VolumeSilder.xaml.cpp" />
     <ClCompile Include="Controls\Search.xaml.cpp" />
-    <ClCompile Include="ViewModels\SearchVM.cpp">
-      <Filter>ViewModels</Filter>
+    <ClCompile Include="ViewModels\SongVM.cpp">
+      <Filter>ViewModels\Models</Filter>
     </ClCompile>
+    <ClCompile Include="ViewModels\SongListVM.cpp">
+      <Filter>ViewModels\Models</Filter>
+    </ClCompile>
+    <ClCompile Include="ViewModels\AlbumVM.cpp">
+      <Filter>ViewModels\Models</Filter>
+    </ClCompile>
+    <ClCompile Include="ViewModels\AlbumListVM.cpp">
+      <Filter>ViewModels\Models</Filter>
+    </ClCompile>
+    <ClCompile Include="ViewModels\AlbumListControlVM.cpp">
+      <Filter>ViewModels\Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="ViewModels\SongListControlVM.cpp">
+      <Filter>ViewModels\Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="ViewModels\SearchVM.cpp">
+      <Filter>ViewModels\Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="ViewModels\SongPlayerVM.cpp">
+      <Filter>ViewModels\Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="ViewModels\VolumeSliderVM.cpp">
+      <Filter>ViewModels\Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="Controls\SearchResultsControl.xaml.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -111,24 +118,6 @@
     </ClInclude>
     <ClInclude Include="Utility\XamlMacros.hpp">
       <Filter>Utility</Filter>
-    </ClInclude>
-    <ClInclude Include="ViewModels\AlbumListControlVM.hpp">
-      <Filter>ViewModels</Filter>
-    </ClInclude>
-    <ClInclude Include="ViewModels\AlbumListVM.hpp">
-      <Filter>ViewModels</Filter>
-    </ClInclude>
-    <ClInclude Include="ViewModels\AlbumVM.hpp">
-      <Filter>ViewModels</Filter>
-    </ClInclude>
-    <ClInclude Include="ViewModels\SongListControlVM.hpp">
-      <Filter>ViewModels</Filter>
-    </ClInclude>
-    <ClInclude Include="ViewModels\SongListVM.hpp">
-      <Filter>ViewModels</Filter>
-    </ClInclude>
-    <ClInclude Include="ViewModels\SongVM.hpp">
-      <Filter>ViewModels</Filter>
     </ClInclude>
     <ClInclude Include="Controls\SongPlayer.xaml.h" />
     <ClInclude Include="Converters\IsPlayingToIconPath.hpp">
@@ -143,20 +132,39 @@
     <ClInclude Include="Events\AlbumSelectedEvent.hpp">
       <Filter>Events</Filter>
     </ClInclude>
-    <ClInclude Include="ViewModels\SongPlayerVM.hpp">
-      <Filter>ViewModels</Filter>
-    </ClInclude>
     <ClInclude Include="Converters\SongListSizeToVisiblity.hpp">
       <Filter>Converters</Filter>
     </ClInclude>
-    <ClInclude Include="ViewModels\VolumeSilderVM.hpp">
-      <Filter>ViewModels</Filter>
-    </ClInclude>
     <ClInclude Include="Controls\VolumeSilder.xaml.h" />
     <ClInclude Include="Controls\Search.xaml.h" />
-    <ClInclude Include="ViewModels\SearchVM.hpp">
-      <Filter>ViewModels</Filter>
+    <ClInclude Include="ViewModels\SongVM.hpp">
+      <Filter>ViewModels\Models</Filter>
     </ClInclude>
+    <ClInclude Include="ViewModels\SongListVM.hpp">
+      <Filter>ViewModels\Models</Filter>
+    </ClInclude>
+    <ClInclude Include="ViewModels\AlbumVM.hpp">
+      <Filter>ViewModels\Models</Filter>
+    </ClInclude>
+    <ClInclude Include="ViewModels\AlbumListVM.hpp">
+      <Filter>ViewModels\Models</Filter>
+    </ClInclude>
+    <ClInclude Include="ViewModels\AlbumListControlVM.hpp">
+      <Filter>ViewModels\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="ViewModels\SongListControlVM.hpp">
+      <Filter>ViewModels\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="ViewModels\SearchVM.hpp">
+      <Filter>ViewModels\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="ViewModels\SongPlayerVM.hpp">
+      <Filter>ViewModels\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="ViewModels\VolumeSilderVM.hpp">
+      <Filter>ViewModels\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="Controls\SearchResultsControl.xaml.h" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest" />
@@ -190,6 +198,9 @@
       <Filter>Controls</Filter>
     </Page>
     <Page Include="Controls\Search.xaml">
+      <Filter>Controls</Filter>
+    </Page>
+    <Page Include="Controls\SearchResultsControl.xaml">
       <Filter>Controls</Filter>
     </Page>
   </ItemGroup>

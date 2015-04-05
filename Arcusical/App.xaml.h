@@ -11,7 +11,10 @@
 #include "Subscription.hpp"
 
 #include "LocalMusicCache.hpp"
+#include "IPlayer.hpp"
+#include "MusicProvider.hpp"
 #include "MusicSearcher.hpp"
+#include "Playlist.hpp"
 
 namespace Arcusical
 {
@@ -33,7 +36,10 @@ namespace Arcusical
 		void OnNavigationFailed(Platform::Object ^sender, Windows::UI::Xaml::Navigation::NavigationFailedEventArgs ^e);
 
 		LocalMusicStore::LocalMusicCache m_cache;
+		MusicProvider::MusicProvider m_musicProvider;
 		MusicProvider::MusicSearcher m_searcher;
+		std::unique_ptr<Player::Playlist> m_playlist;
+		std::unique_ptr<Player::IPlayer> m_player;
 		
 	};
 }

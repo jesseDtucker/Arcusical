@@ -6,12 +6,14 @@
 #include <random>
 #include <vector>
 
+#include "Arc_Assert.hpp"
 #include "Album.hpp"
 #include "IFile.hpp"
 #include "LocalMusicCache.hpp"
 #include "MusicFinder.hpp"
 #include "MusicProvider.hpp"
 #include "Song.hpp"
+#include "SongLoader.hpp"
 #include "Storage.hpp"
 
 #undef max
@@ -22,8 +24,6 @@ using namespace Arcusical::LocalMusicStore;
 using namespace Arcusical::Model;
 using namespace Arcusical::MusicProvider;
 using namespace Util;
-
-const string Arcusical::MusicProvider::IMusicProvider::ServiceName("MusicProvider");
 
 static void FixupAlbumName(Song& song, const vector<Song>& newSongs, const SongCollection& existingSongs);
 

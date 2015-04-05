@@ -12,11 +12,9 @@
 #include <unordered_map>
 #include <vector>
 
-#include "IMusicProvider.hpp"
-#include "LocalMusicCache.hpp"
 #include "MusicFinder.hpp"
 #include "MusicTypes.hpp"
-#include "SongLoader.hpp"
+#include "SongSelector.hpp"
 
 namespace FileSystem
 {
@@ -25,6 +23,10 @@ namespace FileSystem
 
 namespace Arcusical
 {
+namespace LocalMusicStore
+{
+	class LocalMusicCache;
+}
 namespace Model
 {
 	class Song;
@@ -35,14 +37,17 @@ namespace Arcusical
 {
 namespace MusicProvider
 {
-	class MusicProvider final : public IMusicProvider
+	typedef Util::Delegate<void(Model::SongCollection&)> SongsChangedCallback;
+	typedef Util::Delegate<void(Model::AlbumCollection&)> AlbumsChangedCallback;
+
+	class MusicProvider final
 	{
 	public:
 		MusicProvider(LocalMusicStore::LocalMusicCache* cache);
-		virtual Util::Subscription SubscribeSongs(SongsChangedCallback callback) override;
-		virtual Util::Subscription SubscribeAlbums(AlbumsChangedCallback callback) override;
-		virtual SongSelector* GetSongSelector() override;
-		virtual Model::Album GetAlbum(const std::wstring& name) override;
+		Util::Subscription SubscribeSongs(SongsChangedCallback callback);
+		Util::Subscription SubscribeAlbums(AlbumsChangedCallback callback);
+		SongSelector* GetSongSelector();
+		Model::Album GetAlbum(const std::wstring& name);
 	private:
 
 		void Unsubscribe(SongsChangedCallback callback);

@@ -367,10 +367,9 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="include\IMusicProvider.hpp" />
     <ClInclude Include="include\MusicSearcher.hpp" />
     <ClInclude Include="include\SongSelector.hpp" />
-    <ClInclude Include="src\MusicProvider.hpp" />
+    <ClInclude Include="include\MusicProvider.hpp" />
     <ClInclude Include="src\SongLoader.hpp" />
     <ClInclude Include="src\targetver.h" />
   </ItemGroup>

@@ -1,9 +1,18 @@
 #pragma once
 #ifndef VOLUME_SLIDER_HPP
+#define VOLUME_SLIDER_HPP
 
 #include "Subscription.hpp"
 #include "PropertyHelper.hpp"
 #include "Utility/XamlMacros.hpp"
+
+namespace Arcusical
+{
+namespace Player
+{
+	class IPlayer;
+}
+}
 
 namespace Arcusical
 {
@@ -14,8 +23,6 @@ namespace Arcusical
 		{
 		public:
 
-			VolumeSliderVM();
-
 			NOTIFY_PROPERTY_CHANGED_IMPL;
 
 			property double Volume
@@ -24,8 +31,11 @@ namespace Arcusical
 				void set(double val);
 			}
 
+		internal:
+			VolumeSliderVM(Player::IPlayer& player);
 			
 		private:
+			Player::IPlayer& m_player;
 		};
 }
 }

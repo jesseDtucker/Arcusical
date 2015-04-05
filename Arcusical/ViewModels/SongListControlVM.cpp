@@ -13,14 +13,17 @@
 #include "SongListVM.hpp"
 
 using namespace std;
-using namespace Arcusical::Model;
 using namespace Windows::UI::Xaml::Data;
+
 using namespace Arcusical::Events;
+using namespace Arcusical::Model;
+using namespace Arcusical::Player;
 
 namespace Arcusical {
 namespace ViewModel{
 
-	SongListControlVM::SongListControlVM()
+	SongListControlVM::SongListControlVM(Playlist& playlist)
+		: m_playlist(playlist)
 	{
 		std::function<void(const Events::AlbumSelectedEvent&)> callback = [this](const Events::AlbumSelectedEvent& event)
 		{
@@ -55,13 +58,10 @@ namespace ViewModel{
 				itr->MoveNext();
 			}
 
-			auto playlist = Player::PlaylistLocator::ResolveService().lock();
-			ARC_ASSERT(playlist != nullptr);
-
 			if (distance(begin(songsToPlay), end(songsToPlay)) > 0)
 			{
-				playlist->Clear();
-				playlist->Enqueue(songsToPlay);
+				m_playlist.Clear();
+				m_playlist.Enqueue(songsToPlay);
 			}
 		});
 	}
@@ -88,11 +88,8 @@ namespace ViewModel{
 				random_device rd;
 				shuffle(begin(songsToPlay), end(songsToPlay), default_random_engine(rd()));
 
-				auto playlist = Player::PlaylistLocator::ResolveService().lock();
-				ARC_ASSERT(playlist != nullptr);
-
-				playlist->Clear();
-				playlist->Enqueue(songsToPlay);
+				m_playlist.Clear();
+				m_playlist.Enqueue(songsToPlay);
 			}
 		});
 		

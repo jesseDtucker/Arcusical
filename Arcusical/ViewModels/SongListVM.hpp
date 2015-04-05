@@ -13,6 +13,11 @@ namespace Model
 {
 	class Song;
 }
+namespace Player
+{
+	class IPlayer;
+	class Playlist;
+}
 namespace ViewModel
 {
 	[Windows::UI::Xaml::Data::Bindable]
@@ -24,7 +29,7 @@ namespace ViewModel
 		PROP_SET_AND_GET_WINRT(Windows::Foundation::Collections::IVector<ViewModel::SongVM^>^, List);
 
 	internal:
-		SongListVM(const std::vector<Model::Song>& songs);
+		SongListVM(const std::vector<Model::Song>& songs, Player::Playlist& playlist, Player::IPlayer& player);
 	private:
 		
 	};

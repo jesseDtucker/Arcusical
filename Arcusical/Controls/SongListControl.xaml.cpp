@@ -8,8 +8,6 @@
 #include "SongListControl.xaml.h"
 #include "ViewModels/SongVM.hpp"
 
-using namespace Arcusical;
-
 using namespace Platform;
 using namespace Windows::Foundation;
 using namespace Windows::Foundation::Collections;
@@ -21,17 +19,20 @@ using namespace Windows::UI::Xaml::Input;
 using namespace Windows::UI::Xaml::Media;
 using namespace Windows::UI::Xaml::Navigation;
 
+using namespace Arcusical;
 using namespace ViewModel;
 
 SongListControl::SongListControl()
-	:m_vm(ref new SongListControlVM())
 {
 	InitializeComponent();
-	DataContext = m_vm;
 }
 
-void Arcusical::SongListControl::SongDoubleTapped(Platform::Object^ sender, Windows::UI::Xaml::Input::DoubleTappedRoutedEventArgs^ e)
+VM_IMPL(SongListControlVM^, SongListControl);
+
+void SongListControl::SongDoubleTapped(Platform::Object^ sender, Windows::UI::Xaml::Input::DoubleTappedRoutedEventArgs^ e)
 {
+	ARC_ASSERT(m_vm != nullptr);
+
 	auto uiElement = dynamic_cast<FrameworkElement^>(sender);
 	ARC_ASSERT(uiElement != nullptr);
 	if (uiElement != nullptr)
@@ -46,7 +47,7 @@ void Arcusical::SongListControl::SongDoubleTapped(Platform::Object^ sender, Wind
 }
 
 
-void Arcusical::SongListControl::Shuffle_Clicked(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
+void SongListControl::Shuffle_Clicked(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
 {
 	m_vm->Shuffle();
 }

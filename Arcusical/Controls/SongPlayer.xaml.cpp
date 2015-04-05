@@ -32,30 +32,33 @@ using namespace Arcusical::ViewModel;
 // The User Control item template is documented at http://go.microsoft.com/fwlink/?LinkId=234236
 
 SongPlayer::SongPlayer()
-: m_playerVM(ref new SongPlayerVM())
 {
 	InitializeComponent();
-	this->DataContext = m_playerVM;
 }
+
+VM_IMPL(SongPlayerVM^, SongPlayer);
 
 void SongPlayer::PlayPauseButton_Clicked(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
 {
-	if (m_playerVM->IsPlaying)
+	ARC_ASSERT(m_vm != nullptr);
+	if (m_vm->IsPlaying)
 	{
-		m_playerVM->Pause();
+		m_vm->Pause();
 	}
 	else
 	{
-		m_playerVM->Play();
+		m_vm->Play();
 	}
 }
 
-void Arcusical::SongPlayer::Previous_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
+void SongPlayer::Previous_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
 {
-	m_playerVM->Previous();
+	ARC_ASSERT(m_vm != nullptr);
+	m_vm->Previous();
 }
 
-void Arcusical::SongPlayer::Next_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
+void SongPlayer::Next_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
 {
-	m_playerVM->Next();
+	ARC_ASSERT(m_vm != nullptr);
+	m_vm->Next();
 }

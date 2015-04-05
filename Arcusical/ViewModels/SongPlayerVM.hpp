@@ -6,6 +6,9 @@
 #include "PropertyHelper.hpp"
 #include "Utility/XamlMacros.hpp"
 #include "ViewModels/SongVM.hpp"
+#include "ViewModels/VolumeSilderVM.hpp"
+
+namespace Arcusical{ namespace Player { class IPlayer; class Playlist; } }
 
 namespace Arcusical
 {
@@ -16,19 +19,22 @@ namespace Arcusical
 		{
 		public:
 
-			SongPlayerVM();
-
 			NOTIFY_PROPERTY_CHANGED_IMPL;
 
 			PROP_SET_AND_GET_WINRT(SongVM^, CurrentSong);
 			PROP_SET_AND_GET_WINRT(double, AmountPlayed); // seconds
 			PROP_SET_AND_GET_WINRT(double, AmoutRemaining); // seconds
 			PROP_SET_AND_GET_WINRT(Platform::Boolean, IsPlaying);
+			PROP_SET_AND_GET_WINRT(ViewModel::VolumeSliderVM^, VolumeVM);
 
 			void Play();
 			void Pause();
 			void Previous();
 			void Next();
+
+		internal:
+			SongPlayerVM(Player::IPlayer& player, Player::Playlist& playlist);
+
 		private:
 			void UpdateTime(double amountPlayed, double duration);
 
@@ -37,6 +43,9 @@ namespace Arcusical
 			Util::Subscription m_playingSub;
 			Util::Subscription m_songChangedSub;
 			double m_songLength; // seconds
+
+			Player::IPlayer& m_player;
+			Player::Playlist& m_playlist;
 		};
 	}
 }

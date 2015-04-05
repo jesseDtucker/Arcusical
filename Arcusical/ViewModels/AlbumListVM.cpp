@@ -7,10 +7,12 @@
 #include "AlbumListVM.hpp"
 #include "AlbumVM.hpp"
 
+using namespace Arcusical::Player;
+
 namespace Arcusical {
 namespace ViewModel{
 
-	AlbumListVM::AlbumListVM(Model::AlbumCollection& albums)
+	AlbumListVM::AlbumListVM(Model::AlbumCollection& albums, Playlist& playlist, IPlayer& player)
 	{
 		// sort songs in alphabetical order
 		std::vector<Model::Album*> sortedAlbums;
@@ -25,13 +27,13 @@ namespace ViewModel{
 			return a->GetTitle() < b->GetTitle();
 		});
 
-		auto future = Arcusical::DispatchToUI([this, &sortedAlbums]()
+		auto future = Arcusical::DispatchToUI([this, &sortedAlbums, &playlist, &player]()
 		{
 			this->Albums = ref new Platform::Collections::Vector<AlbumVM^>();
 
 			for (auto& album : sortedAlbums)
 			{
-				this->Albums->Append(ref new AlbumVM(*album));
+				this->Albums->Append(ref new AlbumVM(*album, playlist, player));
 			}
 		});
 		future.get(); // wait for UI to complete before returning

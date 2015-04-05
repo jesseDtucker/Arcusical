@@ -11,7 +11,6 @@
 #include "Events/AlbumSelectedEvent.hpp"
 #include "Events/EventService.hpp"
 
-using namespace Arcusical;
 
 using namespace Platform;
 using namespace Windows::Foundation;
@@ -24,22 +23,17 @@ using namespace Windows::UI::Xaml::Input;
 using namespace Windows::UI::Xaml::Media;
 using namespace Windows::UI::Xaml::Navigation;
 
+using namespace Arcusical;
 using namespace ViewModel;
 
 AlbumListControl::AlbumListControl()
-	: m_vm(nullptr)
 {
 	InitializeComponent();
-
-	if (!Windows::ApplicationModel::DesignMode::DesignModeEnabled)
-	{
-		auto musicProviderService = MusicProvider::MusicProviderLocator::ResolveService().lock();
-		m_vm = ref new AlbumListControlVM(musicProviderService);
-		DataContext = m_vm;
-	}
 }
 
-void Arcusical::AlbumListControl::AlbumClicked(Platform::Object^ sender, Windows::UI::Xaml::Controls::ItemClickEventArgs^ e)
+VM_IMPL(ViewModel::AlbumListControlVM^, AlbumListControl);
+
+void AlbumListControl::AlbumClicked(Platform::Object^ sender, Windows::UI::Xaml::Controls::ItemClickEventArgs^ e)
 {
 	auto clickedAlbum = dynamic_cast<ViewModel::AlbumVM^>(e->ClickedItem);
 	if (clickedAlbum != nullptr)
@@ -50,7 +44,7 @@ void Arcusical::AlbumListControl::AlbumClicked(Platform::Object^ sender, Windows
 }
 
 
-void Arcusical::AlbumListControl::Album_DoubleTapped(Platform::Object^ sender, Windows::UI::Xaml::Input::DoubleTappedRoutedEventArgs^ e)
+void AlbumListControl::Album_DoubleTapped(Platform::Object^ sender, Windows::UI::Xaml::Input::DoubleTappedRoutedEventArgs^ e)
 {
 	auto uiElement = dynamic_cast<FrameworkElement^>(sender);
 	ARC_ASSERT(uiElement != nullptr);
@@ -64,3 +58,4 @@ void Arcusical::AlbumListControl::Album_DoubleTapped(Platform::Object^ sender, W
 		}
 	}
 }
+

@@ -7,6 +7,7 @@
 
 #include "Controls\Search.g.h"
 #include "ViewModels\SearchVM.hpp"
+#include "Utility\XamlMacros.hpp"
 
 namespace Arcusical
 {
@@ -23,11 +24,8 @@ namespace Arcusical
 	{
 	public:
 		Search();
-	internal:
-		void SetSearchProvider(MusicProvider::MusicSearcher* musicSearcher);
+		VM(ViewModel::SearchVM^);
 	private:
-		MusicProvider::MusicSearcher* m_searcher;
-		ViewModel::SearchVM^ m_vm;
 		void TextBox_KeyDown(Platform::Object^ sender, Windows::UI::Xaml::Input::KeyRoutedEventArgs^ e);
 	};
 }

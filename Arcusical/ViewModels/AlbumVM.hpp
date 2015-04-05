@@ -8,7 +8,10 @@
 #include "Utility/DispatcherHelper.hpp"
 #include "Utility/XamlMacros.hpp"
 
-namespace Arcusical{ namespace Model { class Album; } }
+namespace Arcusical{
+namespace Model { class Album; }
+namespace Player { class Playlist; class IPlayer; }
+}
 
 namespace Arcusical {
 namespace ViewModel{
@@ -27,10 +30,11 @@ namespace ViewModel{
 		void Play();
 		
 	internal:
-		AlbumVM(const Model::Album& album);
+		AlbumVM(const Model::Album& album, Player::Playlist& playlist, Player::IPlayer& player);
 
 	private:
 		Model::Album m_album;
+		Player::Playlist& m_playlist;
 	};
 
 }

@@ -12,6 +12,7 @@ namespace Arcusical {
 namespace Player
 {
 	class IPlayer;
+	class Playlist;
 }
 }
 
@@ -56,11 +57,13 @@ namespace Arcusical{ namespace ViewModel {
 		void Pause();
 
 	internal:
-		SongVM(const Model::Song& song);
+		SongVM(const Model::Song& song, Player::Playlist& playlist, Player::IPlayer& player);
 		Model::Song* GetModel();
 
 	private:
 		Model::Song m_song;
+		Player::Playlist& m_playlist;
+		Player::IPlayer& m_player;
 	};
 
 } /* ViewModel */

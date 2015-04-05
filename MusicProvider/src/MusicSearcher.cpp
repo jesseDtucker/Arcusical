@@ -111,7 +111,7 @@ void FindAlbums(const wstring& searchTerm, SearchResult& result, LocalMusicCache
 	}
 
 	auto foundAlbums = { albumsThatContain, albumsThatStartWith, startsWithAlbumArtist, containsAlbumArtist };
-	auto albumCount = accumulate(begin(foundAlbums), end(foundAlbums), 0, [](size_t acc, decltype(albumsThatContain) albums)
+	auto albumCount = accumulate(begin(foundAlbums), end(foundAlbums), size_t(0), [](size_t acc, decltype(albumsThatContain) albums)
 	{
 		return acc + albums.size();
 	});

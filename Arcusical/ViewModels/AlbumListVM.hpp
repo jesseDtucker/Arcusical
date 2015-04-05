@@ -1,10 +1,16 @@
 #ifndef ALBUM_LIST_VM_HPP
 #define ALBUM_LIST_VM_HPP
 
-#include "IMusicProvider.hpp"
 #include "PropertyHelper.hpp"
 #include "Utility/DispatcherHelper.hpp"
 #include "Utility/XamlMacros.hpp"
+
+namespace Arcusical{
+namespace Player {
+	class Playlist;
+	class IPlayer;
+}
+}
 
 namespace Arcusical{
 namespace ViewModel
@@ -18,7 +24,7 @@ namespace ViewModel
 		PROP_SET_AND_GET_WINRT(Windows::Foundation::Collections::IVector<AlbumVM^>^, Albums);
 	internal:
 		
-		AlbumListVM(Model::AlbumCollection& albums);
+		AlbumListVM(Model::AlbumCollection& albums, Player::Playlist& playlist, Player::IPlayer& player);
 
 	private:
 

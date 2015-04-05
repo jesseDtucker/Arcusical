@@ -13,9 +13,8 @@
 #include <mutex>
 
 
-#include "IMusicProvider.hpp"
 #include "Playlist.hpp"
-#include "../src/MusicProvider.hpp" // This is a hack for the time being. I need something similar to flow engine for resolving dependencies...
+#include "MusicProvider.hpp"
 #include "../src/Win8Player.hpp" // This is a hack for the time being. I need something similar to flow engine for resolving dependencies...
 #include "MusicSearcher.hpp"
 
@@ -45,6 +44,7 @@ using namespace Arcusical::Player;
 /// </summary>
 App::App()
 	: m_cache()
+	, m_musicProvider(&m_cache)
 	, m_searcher(&m_cache)
 {
 	InitializeComponent();
@@ -62,11 +62,8 @@ void App::SetupApplication()
 	// some of the services use COM and so should not be initialized on the UI thread
 	async([&]()
 	{
-		auto player = make_shared<Win8Player>();
-
-		PlayerLocator::RegisterSingleton(player);
-		PlaylistLocator::RegisterSingleton(make_shared<Player::Playlist>(player.get()));
-		MusicProviderLocator::RegisterSingleton(make_shared<MusicProvider::MusicProvider>(&m_cache));
+		m_player = make_unique<Win8Player>();
+		m_playlist = make_unique<Playlist>(m_player.get(), &m_musicProvider);
 
 		unique_lock<mutex> lckGrd(loadingLock);
 		loadingWait.notify_all();
@@ -124,7 +121,7 @@ void App::OnLaunched(Windows::ApplicationModel::Activation::LaunchActivatedEvent
 
 		MainPage^ mainPage = dynamic_cast<MainPage^>(rootFrame->Content);
 		ARC_ASSERT(mainPage != nullptr);
-		mainPage->SetSearchProvider(&m_searcher);
+		mainPage->SetDependencies(&m_searcher, &m_musicProvider, m_player.get(), m_playlist.get());
 
 		// Place the frame in the current Window
 		Window::Current->Content = rootFrame;

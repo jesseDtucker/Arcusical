@@ -11,11 +11,10 @@
 #include "Controls/AlbumListControl.xaml.h"
 #include "Controls/SongListControl.xaml.h"
 #include "Controls/Search.xaml.h"
+#include "Controls/SongPlayer.xaml.h"
 #include "Playlist.hpp"
 #include "Storage.hpp"
 #include "ViewModels/AlbumListControlVM.hpp"
-
-#include "IMusicProvider.hpp"
 
 using namespace concurrency;
 using namespace Platform;
@@ -33,21 +32,29 @@ using namespace Windows::Media;
 using namespace std;
 using namespace Arcusical;
 using namespace Arcusical::Model;
+using namespace Arcusical::ViewModel;
+using namespace Arcusical::MusicProvider;
 using namespace Arcusical::Player;
 using namespace FileSystem;
 
 MainPage::MainPage()
+	// Models
+	: m_playlist(nullptr)
+	, m_player(nullptr)
+	, m_musicProvider(nullptr)
+	, m_searcher(nullptr)
+	// View Models
+	, m_searchVM(nullptr)
+	, m_songListVM(nullptr)
+	, m_volumeSlideVM(nullptr)
+	, m_playerVM(nullptr)
+	, m_albumListVM(nullptr)
 {
-	using namespace ViewModel;
-
 	InitializeComponent();
-
-	SetupTransportControls();
 }
 
-void MainPage::SetupTransportControls()
+void MainPage::SetupTransportControls(IPlayer* player)
 {
-	auto player = PlayerLocator::ResolveService().lock();
 	ARC_ASSERT(player != nullptr);
 
 	try
@@ -86,9 +93,8 @@ void MainPage::SetupTransportControls()
 
 			std::async([this, newSong, displayUpdater]()
 			{
-				auto musicProvider = MusicProvider::MusicProviderLocator::ResolveService().lock();
-				ARC_ASSERT(musicProvider != nullptr);
-				auto album = musicProvider->GetAlbum(newSong.GetAlbumName());
+				ARC_ASSERT(m_musicProvider != nullptr);
+				auto album = m_musicProvider->GetAlbum(newSong.GetAlbumName());
 				auto imagePath = album.GetImageFilePath();
 
 				if (imagePath.size() == 0)
@@ -120,31 +126,67 @@ void MainPage::SetupTransportControls()
 
 void MainPage::OnTransportControlButtonPressed(SystemMediaTransportControls^ sender, SystemMediaTransportControlsButtonPressedEventArgs^ args)
 {
-	auto player = PlayerLocator::ResolveService().lock();
-	auto playlist = PlaylistLocator::ResolveService().lock();
-	ARC_ASSERT(player != nullptr);
-	ARC_ASSERT(playlist != nullptr);
+	ARC_ASSERT(m_player != nullptr);
+	ARC_ASSERT(m_playlist != nullptr);
 
 	switch (args->Button)
 	{
 	case SystemMediaTransportControlsButton::Play:
-		player->Play();
+		m_player->Play();
 		break;
 	case SystemMediaTransportControlsButton::Pause:
-		player->Stop();
+		m_player->Stop();
 		break;
 	case SystemMediaTransportControlsButton::Next:
-		playlist->PlayNext();
+		m_playlist->PlayNext();
 		break;
 	case SystemMediaTransportControlsButton::Previous:
-		playlist->PlayPrevious();
+		m_playlist->PlayPrevious();
 		break;
 	default:
 		ARC_FAIL("Missed a button!");
 	}
 }
 
-void Arcusical::MainPage::SetSearchProvider(MusicProvider::MusicSearcher* musicSearcher)
+void Arcusical::MainPage::SetDependencies(	MusicSearcher* musicSearcher, 
+											MusicProvider::MusicProvider* musicProvider, 
+											IPlayer* player, 
+											Playlist* playlist)
 {
-	this->v_search->SetSearchProvider(musicSearcher);
+	ARC_ASSERT(musicSearcher != nullptr);
+	ARC_ASSERT(musicProvider != nullptr);
+	ARC_ASSERT(player != nullptr);
+	ARC_ASSERT(playlist != nullptr);
+
+	m_musicProvider = musicProvider;
+	m_player = player;
+	m_playlist = playlist;
+	m_searcher = musicSearcher;
+
+	m_searchVM = ref new SearchVM(*musicSearcher);
+	m_songListVM = ref new SongListControlVM(*playlist);
+	m_albumListVM = ref new AlbumListControlVM();
+	m_playerVM = ref new SongPlayerVM(*player, *playlist);
+	m_volumeSlideVM = ref new VolumeSliderVM(*player);
+
+	m_playerVM->VolumeVM = m_volumeSlideVM;
+
+	AlbumsChangedCallback cb = [this](AlbumCollection& albums){ this->OnAlbumsReady(albums); };
+	m_albumSub = m_musicProvider->SubscribeAlbums(cb);
+
+	v_albumListControl->VM = m_albumListVM;
+	v_songListControl->VM = m_songListVM;
+	v_player->VM = m_playerVM;
+	v_search->VM = m_searchVM;
 }
+
+void Arcusical::MainPage::OnAlbumsReady(Model::AlbumCollection& albums)
+{
+	auto future = Arcusical::DispatchToUI([this, &albums]()
+	{
+		m_albumListVM->AlbumList = ref new AlbumListVM(albums, *m_playlist, *m_player);
+	});
+	future.get();
+}
+
+

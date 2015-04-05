@@ -9,6 +9,7 @@
 
 #include "Controls\SongPlayer.g.h"
 #include "ViewModels\SongPlayerVM.hpp"
+#include "Utility\XamlMacros.hpp"
 
 namespace Arcusical
 {
@@ -28,12 +29,11 @@ namespace Arcusical
 	public:
 		SongPlayer();
 
+		VM(ViewModel::SongPlayerVM^);
 	private:
 		// control input callbacks
 		void PlayPauseButton_Clicked(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
 		void Previous_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
 		void Next_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
-
-		ViewModel::SongPlayerVM^ m_playerVM;
 	};
 }

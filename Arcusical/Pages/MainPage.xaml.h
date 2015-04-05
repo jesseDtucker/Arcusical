@@ -7,12 +7,17 @@
 
 #include "Pages/MainPage.g.h"
 
+#include "ViewModels/AlbumListControlVM.hpp"
+#include "ViewModels/SongListControlVM.hpp"
+#include "ViewModels/SearchVM.hpp"
+#include "ViewModels/VolumeSilderVM.hpp"
+#include "ViewModels/SongPlayerVM.hpp"
+#include "Subscription.hpp"
+
 namespace Arcusical
 {
-namespace MusicProvider
-{
-	class MusicSearcher;
-}
+namespace MusicProvider { class MusicSearcher; class MusicProvider; }
+namespace Player { class IPlayer; class Playlist; }
 }
 
 namespace Arcusical
@@ -25,15 +30,33 @@ namespace Arcusical
 	public:
 		MainPage();
 	internal:
-		void SetSearchProvider(MusicProvider::MusicSearcher* musicSearcher);
+		void SetDependencies(	MusicProvider::MusicSearcher* musicSearcher,
+								MusicProvider::MusicProvider* musicProvider,
+								Player::IPlayer* player,
+								Player::Playlist* playlist);
 	private:
-		void SetupTransportControls();
+		void SetupTransportControls(Player::IPlayer* player);
 		void OnTransportControlButtonPressed(Windows::Media::SystemMediaTransportControls^ sender, Windows::Media::SystemMediaTransportControlsButtonPressedEventArgs^ args);
+
+		void OnAlbumsReady(Model::AlbumCollection& albums);
 
 		std::wstring oldImagePath;
 
 		Util::Subscription m_isPlayingSub;
 		Util::Subscription m_songChangedSub;
 		Util::Subscription m_isEndedSub;
+
+		MusicProvider::MusicSearcher* m_searcher;
+		MusicProvider::MusicProvider* m_musicProvider;
+		Player::Playlist* m_playlist;
+		Player::IPlayer* m_player;
+
+		ViewModel::AlbumListControlVM^ m_albumListVM;
+		ViewModel::SongListControlVM^ m_songListVM;
+		ViewModel::SearchVM^ m_searchVM;
+		ViewModel::VolumeSliderVM^ m_volumeSlideVM;
+		ViewModel::SongPlayerVM^ m_playerVM;
+
+		Util::Subscription m_albumSub;
 	};
 }

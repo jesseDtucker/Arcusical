@@ -1,10 +1,12 @@
 ﻿//
-// Search.xaml.cpp
-// Implementation of the Search class
+// SearchResultsControl.xaml.cpp
+// Implementation of the SearchResultsControl class
 //
 
 #include "pch.h"
-#include "Search.xaml.h"
+#include "SearchResultsControl.xaml.h"
+
+using namespace Arcusical;
 
 using namespace Platform;
 using namespace Windows::Foundation;
@@ -17,22 +19,9 @@ using namespace Windows::UI::Xaml::Input;
 using namespace Windows::UI::Xaml::Media;
 using namespace Windows::UI::Xaml::Navigation;
 
-using namespace Arcusical;
-using namespace Arcusical::ViewModel;
-using namespace Arcusical::MusicProvider;
+// The User Control item template is documented at http://go.microsoft.com/fwlink/?LinkId=234236
 
-
-Search::Search()
+SearchResultsControl::SearchResultsControl()
 {
 	InitializeComponent();
-}
-
-VM_IMPL(SearchVM^, Search);
-
-void Search::TextBox_KeyDown(Platform::Object^ sender, Windows::UI::Xaml::Input::KeyRoutedEventArgs^ e)
-{
-	if (e->Key == Windows::System::VirtualKey::Enter)
-	{
-		m_vm->SelectCurrent();
-	}
 }

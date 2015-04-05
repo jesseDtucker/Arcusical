@@ -14,20 +14,21 @@ using namespace::Arcusical::Player;
 namespace Arcusical{
 namespace ViewModel{
 	
-	AlbumVM::AlbumVM(const Model::Album& album)
+	AlbumVM::AlbumVM(const Model::Album& album, Playlist& playlist, IPlayer& player)
 		: m_album(album)
+		, m_playlist(playlist)
 	{
 		this->Artist = ref new Platform::String(album.GetArtist().c_str());
 		this->Title = ref new Platform::String(album.GetTitle().c_str());
 		this->ImagePath = ref new Platform::String(album.GetImageFilePath().c_str());
 
 		// getting the songs could block, but this ctor must return immediately, so get songs will be async
-		std::async([this, album]()
+		std::async([this, album, &playlist, &player]()
 		{
 			auto songs = *album.GetSongs();
-			DispatchToUI([this, songs]()
+			DispatchToUI([this, songs, &player, &playlist]()
 			{
-				this->Songs = ref new SongListVM(songs);
+				this->Songs = ref new SongListVM(songs, playlist, player);
 			});
 		});
 	}
@@ -36,13 +37,8 @@ namespace ViewModel{
 	{
 		std::async([this]()
 		{
-			auto playlist = PlaylistLocator::ResolveService().lock();
-			ARC_ASSERT(playlist != nullptr);
-			if (playlist != nullptr)
-			{
-				playlist->Clear();
-				playlist->Enqueue(*m_album.GetSongs());
-			}
+			m_playlist.Clear();
+			m_playlist.Enqueue(*m_album.GetSongs());
 		});
 	}
 

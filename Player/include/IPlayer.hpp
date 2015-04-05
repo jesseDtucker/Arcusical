@@ -6,7 +6,6 @@
 
 #include "MulticastDelegate.hpp"
 #include "PropertyHelper.hpp"
-#include "ServiceResolver.hpp"
 
 namespace Arcusical
 {
@@ -48,8 +47,6 @@ namespace Player
 		PROP_GET_EX(Util::MulticastDelegate<void(double)>, TimeUpdate, m_timeUpdate, NOT_CONST);
 		PROP_GET_EX(Util::MulticastDelegate<void(const Model::Song&)>, SongChanged, m_songChanged, NOT_CONST);
 	};
-
-	typedef Arcusical::ServiceModel::ServiceResolver<IPlayer> PlayerLocator;
 }
 }
 
