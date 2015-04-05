@@ -1,6 +1,8 @@
 #ifndef ALBUM_LIST_VM_HPP
 #define ALBUM_LIST_VM_HPP
 
+#include <vector>
+
 #include "PropertyHelper.hpp"
 #include "Utility/DispatcherHelper.hpp"
 #include "Utility/XamlMacros.hpp"
@@ -25,9 +27,10 @@ namespace ViewModel
 	internal:
 		
 		AlbumListVM(Model::AlbumCollection& albums, Player::Playlist& playlist, Player::IPlayer& player);
+		AlbumListVM(std::vector<Model::Album>& albums, Player::Playlist& playlist, Player::IPlayer& player);
 
 	private:
-
+		void SortAndCreate(std::vector<Model::Album*>& albums, Player::Playlist& playlist, Player::IPlayer& player);
 	};
 }
 }

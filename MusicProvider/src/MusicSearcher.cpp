@@ -39,6 +39,8 @@ void FindSongs(const wstring& searchTerm, SearchResult& result, LocalMusicCache&
 
 	auto termLength = searchTerm.size();
 
+	ARC_ASSERT_MSG(termLength > 0, "No point searching for an empty string!");
+
 	// search song titles
 	auto songs = cache.GetLocalSongs();
 	for (auto& songPair : *songs)
@@ -52,7 +54,7 @@ void FindSongs(const wstring& searchTerm, SearchResult& result, LocalMusicCache&
 		{
 			songsThatStartWith.push_back(&song);
 		}
-		else if (termLength > MIN_FOR_MIDDLE_SEARCH && boost::icontains(title, searchTerm))
+		else if (termLength >= MIN_FOR_MIDDLE_SEARCH && boost::icontains(title, searchTerm))
 		{
 			songsThatContain.push_back(&song);
 		}
@@ -96,7 +98,7 @@ void FindAlbums(const wstring& searchTerm, SearchResult& result, LocalMusicCache
 		{
 			albumsThatStartWith.push_back(&album);
 		}
-		else if (termLength > MIN_FOR_MIDDLE_SEARCH && boost::icontains(title, searchTerm))
+		else if (termLength >= MIN_FOR_MIDDLE_SEARCH && boost::icontains(title, searchTerm))
 		{
 			albumsThatContain.push_back(&album);
 		}
@@ -104,7 +106,7 @@ void FindAlbums(const wstring& searchTerm, SearchResult& result, LocalMusicCache
 		{
 			startsWithAlbumArtist.push_back(&album);
 		}
-		else if (termLength > MIN_FOR_MIDDLE_SEARCH && boost::icontains(artist, searchTerm))
+		else if (termLength >= MIN_FOR_MIDDLE_SEARCH && boost::icontains(artist, searchTerm))
 		{
 			containsAlbumArtist.push_back(&album);
 		}

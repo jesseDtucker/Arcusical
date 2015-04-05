@@ -5,6 +5,7 @@
 #include <vector>
 
 #include "MusicTypes.hpp"
+#include "PropertyHelper.hpp"
 #include "ViewModels/SongVM.hpp"
 #include "Utility/XamlMacros.hpp"
 

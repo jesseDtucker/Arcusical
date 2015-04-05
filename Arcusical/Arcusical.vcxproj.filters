@@ -106,6 +106,9 @@
       <Filter>ViewModels\Controls</Filter>
     </ClCompile>
     <ClCompile Include="Controls\SearchResultsControl.xaml.cpp" />
+    <ClCompile Include="ViewModels\SearchResultsVM.cpp">
+      <Filter>ViewModels\Controls</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -165,6 +168,9 @@
       <Filter>ViewModels\Controls</Filter>
     </ClInclude>
     <ClInclude Include="Controls\SearchResultsControl.xaml.h" />
+    <ClInclude Include="ViewModels\SearchResultsVM.hpp">
+      <Filter>ViewModels\Controls</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest" />

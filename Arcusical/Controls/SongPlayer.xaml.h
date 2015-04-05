@@ -29,7 +29,7 @@ namespace Arcusical
 	public:
 		SongPlayer();
 
-		VM(ViewModel::SongPlayerVM^);
+		VM_DECLARATION(ViewModel::SongPlayerVM^);
 	private:
 		// control input callbacks
 		void PlayPauseButton_Clicked(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);

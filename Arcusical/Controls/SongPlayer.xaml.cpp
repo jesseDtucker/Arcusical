@@ -12,8 +12,6 @@
 #include "IPlayer.hpp"
 #include "ViewModels/SongVM.hpp"
 
-
-
 using namespace Platform;
 using namespace Windows::Foundation;
 using namespace Windows::Foundation::Collections;
@@ -40,25 +38,25 @@ VM_IMPL(SongPlayerVM^, SongPlayer);
 
 void SongPlayer::PlayPauseButton_Clicked(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
 {
-	ARC_ASSERT(m_vm != nullptr);
-	if (m_vm->IsPlaying)
+	ARC_ASSERT(VM != nullptr);
+	if (VM->IsPlaying)
 	{
-		m_vm->Pause();
+		VM->Pause();
 	}
 	else
 	{
-		m_vm->Play();
+		VM->Play();
 	}
 }
 
 void SongPlayer::Previous_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
 {
-	ARC_ASSERT(m_vm != nullptr);
-	m_vm->Previous();
+	ARC_ASSERT(VM != nullptr);
+	VM->Previous();
 }
 
 void SongPlayer::Next_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
 {
-	ARC_ASSERT(m_vm != nullptr);
-	m_vm->Next();
+	ARC_ASSERT(VM != nullptr);
+	VM->Next();
 }

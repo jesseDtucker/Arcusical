@@ -4,16 +4,16 @@
 
 #include <string>
 
+#include "MulticastDelegate.hpp"
 #include "PropertyHelper.hpp"
 #include "Utility/XamlMacros.hpp"
+#include "ViewModels/AlbumListVM.hpp"
+#include "ViewModels/SongListVM.hpp"
 #include "CancellationToken.hpp"
 
 namespace Arcusical {
-
-namespace MusicProvider
-{
-	class MusicSearcher;
-}
+	namespace Player { class IPlayer; class Playlist; }
+	namespace MusicProvider{ class MusicSearcher; }
 
 namespace ViewModel{
 
@@ -29,13 +29,17 @@ namespace ViewModel{
 		void SelectCurrent();
 
 	internal:
-		SearchVM(MusicProvider::MusicSearcher& searcher);
+		SearchVM(MusicProvider::MusicSearcher& searcher, Player::Playlist& playlist, Player:: IPlayer& player);
+		Util::MulticastDelegate<void(AlbumListVM^, SongListVM^)> SearchResults;
 
 	private:
 
 		void StartSearch(Platform::String^ searchTerm);
 
 		MusicProvider::MusicSearcher& m_searcher;
+		Player::Playlist& m_playlist;
+		Player::IPlayer& m_player;
+
 		Util::CancellationTokenRef m_searchCancelToken = nullptr;
 		Util::Subscription m_onSearchTermChangedSub;
 	};

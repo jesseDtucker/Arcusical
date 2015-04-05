@@ -11,6 +11,7 @@
 #include "Controls/AlbumListControl.xaml.h"
 #include "Controls/SongListControl.xaml.h"
 #include "Controls/Search.xaml.h"
+#include "Controls/SearchResultsControl.xaml.h"
 #include "Controls/SongPlayer.xaml.h"
 #include "Playlist.hpp"
 #include "Storage.hpp"
@@ -163,11 +164,12 @@ void Arcusical::MainPage::SetDependencies(	MusicSearcher* musicSearcher,
 	m_playlist = playlist;
 	m_searcher = musicSearcher;
 
-	m_searchVM = ref new SearchVM(*musicSearcher);
+	m_searchVM = ref new SearchVM(*musicSearcher, *playlist, *player);
 	m_songListVM = ref new SongListControlVM(*playlist);
 	m_albumListVM = ref new AlbumListControlVM();
 	m_playerVM = ref new SongPlayerVM(*player, *playlist);
 	m_volumeSlideVM = ref new VolumeSliderVM(*player);
+	m_searchResultsVM = ref new SearchResultsVM(m_searchVM, *playlist);
 
 	m_playerVM->VolumeVM = m_volumeSlideVM;
 
@@ -178,6 +180,7 @@ void Arcusical::MainPage::SetDependencies(	MusicSearcher* musicSearcher,
 	v_songListControl->VM = m_songListVM;
 	v_player->VM = m_playerVM;
 	v_search->VM = m_searchVM;
+	v_searchResults->VM = m_searchResultsVM;
 }
 
 void Arcusical::MainPage::OnAlbumsReady(Model::AlbumCollection& albums)

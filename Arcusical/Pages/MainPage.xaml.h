@@ -8,8 +8,9 @@
 #include "Pages/MainPage.g.h"
 
 #include "ViewModels/AlbumListControlVM.hpp"
-#include "ViewModels/SongListControlVM.hpp"
 #include "ViewModels/SearchVM.hpp"
+#include "ViewModels/SearchResultsVM.hpp"
+#include "ViewModels/SongListControlVM.hpp"
 #include "ViewModels/VolumeSilderVM.hpp"
 #include "ViewModels/SongPlayerVM.hpp"
 #include "Subscription.hpp"
@@ -56,6 +57,7 @@ namespace Arcusical
 		ViewModel::SearchVM^ m_searchVM;
 		ViewModel::VolumeSliderVM^ m_volumeSlideVM;
 		ViewModel::SongPlayerVM^ m_playerVM;
+		ViewModel::SearchResultsVM^ m_searchResultsVM;
 
 		Util::Subscription m_albumSub;
 	};

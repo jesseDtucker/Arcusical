@@ -347,6 +347,7 @@
     <ClInclude Include="Controls\SongListControl.xaml.h">
       <DependentUpon>Controls\SongListControl.xaml</DependentUpon>
     </ClInclude>
+    <ClInclude Include="ViewModels\SearchResultsVM.hpp" />
     <ClInclude Include="ViewModels\SearchVM.hpp" />
     <ClInclude Include="ViewModels\SongListControlVM.hpp" />
     <ClInclude Include="ViewModels\SongListVM.hpp" />
@@ -526,6 +527,7 @@
     <ClCompile Include="Controls\SongListControl.xaml.cpp">
       <DependentUpon>Controls\SongListControl.xaml</DependentUpon>
     </ClCompile>
+    <ClCompile Include="ViewModels\SearchResultsVM.cpp" />
     <ClCompile Include="ViewModels\SearchVM.cpp" />
     <ClCompile Include="ViewModels\SongListControlVM.cpp" />
     <ClCompile Include="ViewModels\SongListVM.cpp" />

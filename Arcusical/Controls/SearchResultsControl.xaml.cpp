@@ -6,8 +6,6 @@
 #include "pch.h"
 #include "SearchResultsControl.xaml.h"
 
-using namespace Arcusical;
-
 using namespace Platform;
 using namespace Windows::Foundation;
 using namespace Windows::Foundation::Collections;
@@ -19,9 +17,14 @@ using namespace Windows::UI::Xaml::Input;
 using namespace Windows::UI::Xaml::Media;
 using namespace Windows::UI::Xaml::Navigation;
 
+using namespace Arcusical;
+using namespace Arcusical::ViewModel;
+
 // The User Control item template is documented at http://go.microsoft.com/fwlink/?LinkId=234236
 
 SearchResultsControl::SearchResultsControl()
 {
 	InitializeComponent();
 }
+
+VM_IMPL(SearchResultsVM^, SearchResultsControl);

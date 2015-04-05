@@ -19,7 +19,7 @@ namespace Arcusical
 	public:
 		SongListControl();
 
-		VM(ViewModel::SongListControlVM^);
+		VM_DECLARATION(ViewModel::SongListControlVM^);
 	private:
 
 		void SongDoubleTapped(Platform::Object^ sender, Windows::UI::Xaml::Input::DoubleTappedRoutedEventArgs^ e);

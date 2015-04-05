@@ -13,9 +13,9 @@ void OnPropertyChanged(Platform::String^ info)														\
 	this->PropertyChanged(this, ref new Windows::UI::Xaml::Data::PropertyChangedEventArgs(info));	\
 }																									\
 
-#define VM(type)		\
+#define VM_DECLARATION(type) \
 private:				\
-type m_vm;				\
+type m_viewModel;		\
 public:					\
 property type VM		\
 {						\
@@ -26,13 +26,17 @@ property type VM		\
 #define VM_IMPL(type, targetClass)				\
 type targetClass ## ::VM::get()					\
 {												\
-	return m_vm;								\
+	if(m_viewModel == nullptr)					\
+	{											\
+		m_viewModel = dynamic_cast<type>(this->DataContext); \
+	}											\
+	return m_viewModel;							\
 }												\
 void targetClass ## ::VM::set(type vm)			\
 {												\
 	ARC_ASSERT(Arcusical::HasThreadAccess());	\
-	m_vm = vm;									\
-	this->DataContext = m_vm;					\
+	m_viewModel = vm;							\
+	this->DataContext = m_viewModel;			\
 }												\
 
 #endif

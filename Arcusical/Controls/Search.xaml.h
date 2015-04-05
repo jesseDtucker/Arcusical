@@ -24,7 +24,7 @@ namespace Arcusical
 	{
 	public:
 		Search();
-		VM(ViewModel::SearchVM^);
+		VM_DECLARATION(ViewModel::SearchVM^);
 	private:
 		void TextBox_KeyDown(Platform::Object^ sender, Windows::UI::Xaml::Input::KeyRoutedEventArgs^ e);
 	};

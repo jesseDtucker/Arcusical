@@ -6,6 +6,8 @@
 #pragma once
 
 #include "Controls\SearchResultsControl.g.h"
+#include "ViewModels\SearchResultsVM.hpp"
+#include "Utility/XamlMacros.hpp"
 
 namespace Arcusical
 {
@@ -14,5 +16,7 @@ namespace Arcusical
 	{
 	public:
 		SearchResultsControl();
+
+		VM_DECLARATION(ViewModel::SearchResultsVM^);
 	};
 }

@@ -8,8 +8,11 @@
 	mc:Ignorable="d"
 	d:DesignHeight="700"
 	d:DesignWidth="400">
-	
-	<Grid>
-		<local:AlbumListControl x:Name="v_albums"/>
-	</Grid>
+
+	<ScrollViewer HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+		<StackPanel Orientation="Vertical">
+			<local:AlbumListControl DataContext="{Binding Path=Albums}"/>
+			<local:SongListControl DataContext="{Binding Path=Songs}"/>
+		</StackPanel>
+	</ScrollViewer>
 </UserControl>

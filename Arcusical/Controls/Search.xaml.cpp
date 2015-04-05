@@ -33,6 +33,6 @@ void Search::TextBox_KeyDown(Platform::Object^ sender, Windows::UI::Xaml::Input:
 {
 	if (e->Key == Windows::System::VirtualKey::Enter)
 	{
-		m_vm->SelectCurrent();
+		VM->SelectCurrent();
 	}
 }

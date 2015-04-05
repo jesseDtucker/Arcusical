@@ -31,7 +31,7 @@ VM_IMPL(SongListControlVM^, SongListControl);
 
 void SongListControl::SongDoubleTapped(Platform::Object^ sender, Windows::UI::Xaml::Input::DoubleTappedRoutedEventArgs^ e)
 {
-	ARC_ASSERT(m_vm != nullptr);
+	ARC_ASSERT(VM != nullptr);
 
 	auto uiElement = dynamic_cast<FrameworkElement^>(sender);
 	ARC_ASSERT(uiElement != nullptr);
@@ -41,7 +41,7 @@ void SongListControl::SongDoubleTapped(Platform::Object^ sender, Windows::UI::Xa
 		ARC_ASSERT(song != nullptr);
 		if (song != nullptr)
 		{
-			m_vm->PlaySongsAfterAndIncluding(song);
+			VM->PlaySongsAfterAndIncluding(song);
 		}
 	}
 }
@@ -49,5 +49,5 @@ void SongListControl::SongDoubleTapped(Platform::Object^ sender, Windows::UI::Xa
 
 void SongListControl::Shuffle_Clicked(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
 {
-	m_vm->Shuffle();
+	VM->Shuffle();
 }
