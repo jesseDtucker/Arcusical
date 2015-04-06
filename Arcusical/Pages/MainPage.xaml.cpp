@@ -181,6 +181,8 @@ void Arcusical::MainPage::SetDependencies(	MusicSearcher* musicSearcher,
 	v_player->VM = m_playerVM;
 	v_search->VM = m_searchVM;
 	v_searchResults->VM = m_searchResultsVM;
+
+	SetupTransportControls(player);
 }
 
 void Arcusical::MainPage::OnAlbumsReady(Model::AlbumCollection& albums)
