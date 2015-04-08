@@ -1,7 +1,7 @@
-DetermineBestFormat
 #include "pch.h"
 
 #include <algorithm>
+#include "boost/algorithm/string/predicate.hpp"
 #include <limits>
 
 #include "Storage.hpp"
@@ -38,8 +38,9 @@ namespace Model
 	bool Song::IsSameSong(const Song& otherSong) const
 	{
 		// they are considered equal if and only if they have the same title and artist
-		return	this->GetTitle() == otherSong.GetTitle() &&
-			this->GetArtist() == otherSong.GetArtist();
+		
+		return	boost::iequals(this->GetTitle(), otherSong.GetTitle()) &&
+				boost::iequals(this->GetArtist(), otherSong.GetArtist());
 	}
 
 	bool Song::operator<(const Song& other) const

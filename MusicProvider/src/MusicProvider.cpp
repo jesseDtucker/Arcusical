@@ -1,4 +1,6 @@
 #include <algorithm>
+#include "boost/algorithm/string/predicate.hpp"
+#include "boost/functional/hash.hpp"
 #include <cctype>
 #include <codecvt>
 #include <memory>
@@ -354,12 +356,38 @@ void FixupAlbumName(Song& song, const vector<Song>& newSongs, const SongCollecti
 	ARC_ASSERT_MSG(song.GetAlbumName().size() != 0, "Failed to fixup album name for song!");
 }
 
+// used to make album comparison case insensitive while in the lookup map
+struct iequal_to
+{
+	bool operator()(const wstring& a, const wstring& b) const
+	{
+		return boost::algorithm::iequals(a, b, std::locale());
+	}
+};
+
+struct ihash
+{
+	size_t operator()(wstring const& a) const
+	{
+		size_t seed = 0;
+		locale locale;
+
+		for (auto& c : a)
+		{
+			boost::hash_combine(seed, std::toupper(c, locale));
+		}
+
+		return seed;
+	}
+};
+
 bool MusicProvider::MergeAlbumCollections(AlbumCollection& existingAlbums, SongCollection& songs)
 {
 	using namespace boost::uuids;
+	typedef unordered_map<wstring, vector<uuid>, ihash, iequal_to> NameToAlbumIdMap;
 
-	// map a title to a possible list of uuids, we need a list as there could be multiple albums with the same name
-	unordered_map<wstring, vector<uuid>> albumLookup;
+	NameToAlbumIdMap albumLookup;
+
 	AlbumCollection newAlbums;
 	bool newContentAdded = false;
 		
