@@ -13,7 +13,7 @@
    height="1052.3622047"
    id="svg2"
    version="1.1"
-   inkscape:version="0.48.5 r10040"
+   inkscape:version="0.48.4 r9939"
    sodipodi:docname="Play.svg"
    inkscape:export-filename="C:\Users\Jesse\Source\Repos\Arcusical\Arcusical\Assets\Icons\Play.png"
    inkscape:export-xdpi="90"
@@ -59,6 +59,38 @@
          result="composite2"
          id="feComposite4428" />
     </filter>
+    <filter
+       id="filter3925"
+       style="color-interpolation-filters:sRGB;"
+       inkscape:label="Drop Shadow">
+      <feFlood
+         id="feFlood3927"
+         flood-opacity="0.25"
+         flood-color="rgb(0,0,0)"
+         result="flood" />
+      <feComposite
+         id="feComposite3929"
+         in2="SourceGraphic"
+         in="flood"
+         operator="in"
+         result="composite1" />
+      <feGaussianBlur
+         id="feGaussianBlur3931"
+         in="composite"
+         stdDeviation="3"
+         result="blur" />
+      <feOffset
+         id="feOffset3933"
+         dx="24"
+         dy="32"
+         result="offset" />
+      <feComposite
+         id="feComposite3935"
+         in2="offset"
+         in="SourceGraphic"
+         operator="over"
+         result="composite2" />
+    </filter>
   </defs>
   <sodipodi:namedview
      id="base"
@@ -73,8 +105,8 @@
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
-     inkscape:window-width="1440"
-     inkscape:window-height="937"
+     inkscape:window-width="1920"
+     inkscape:window-height="1057"
      inkscape:window-x="-8"
      inkscape:window-y="-8"
      inkscape:window-maximized="1" />
@@ -86,7 +118,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -96,7 +128,7 @@
      id="layer1">
     <path
        sodipodi:type="star"
-       style="fill:#ffffff;fill-opacity:1;stroke:none;filter:url(#filter4418)"
+       style="fill:#ffffff;fill-opacity:1;stroke:none;filter:url(#filter3925)"
        id="path3775"
        sodipodi:sides="3"
        sodipodi:cx="134.28571"
