@@ -50,7 +50,7 @@
 								</VisualState>
 							</VisualStateGroup>
 						</VisualStateManager.VisualStateGroups>
-						<Grid RenderTransformOrigin="0.5, 0.5" x:Name="v_contentContainer" Opacity="0.8">
+						<Grid RenderTransformOrigin="0.5, 0.5" x:Name="v_contentContainer" Opacity="0.9">
 							<ContentPresenter	x:Name="v_contentPresenter" 
 											Content="{TemplateBinding Content}"
 											ContentTransitions="{TemplateBinding ContentTransitions}"
