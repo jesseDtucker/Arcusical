@@ -109,6 +109,9 @@
     <ClCompile Include="ViewModels\SearchResultsVM.cpp">
       <Filter>ViewModels\Controls</Filter>
     </ClCompile>
+    <ClCompile Include="Converters\AlternateConverter.cpp">
+      <Filter>Converters</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -170,6 +173,9 @@
     <ClInclude Include="Controls\SearchResultsControl.xaml.h" />
     <ClInclude Include="ViewModels\SearchResultsVM.hpp">
       <Filter>ViewModels\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="Converters\AlternateConverter.hpp">
+      <Filter>Converters</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -329,6 +335,9 @@
       <Filter>Assets\DefaultAlbumBackgrounds</Filter>
     </Image>
     <Image Include="Assets\Icons\SearchIcon.png">
+      <Filter>Assets\Icons</Filter>
+    </Image>
+    <Image Include="Assets\Icons\Details.png">
       <Filter>Assets\Icons</Filter>
     </Image>
   </ItemGroup>

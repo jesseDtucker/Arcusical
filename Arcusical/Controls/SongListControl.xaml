@@ -10,24 +10,29 @@
 	d:DesignWidth="400">
 	<UserControl.Resources>
 		<ResourceDictionary>
-			<DataTemplate x:Key="SongListItemTemplate" >
-				<Grid DoubleTapped="SongDoubleTapped" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-					<Grid.ColumnDefinitions>
-						<ColumnDefinition Width="15"/>
-						<ColumnDefinition Width="*"/>
-						<ColumnDefinition Width="20"/>
-						<ColumnDefinition Width="20"/>
-					</Grid.ColumnDefinitions>
-					<TextBlock Text="{Binding Title}" VerticalAlignment="Center" Margin="5" FontSize="16"
-							   Foreground="Black" Grid.Column="1"/>
-				</Grid>
-			</DataTemplate>
 			<ResourceDictionary.MergedDictionaries>
+				<ResourceDictionary Source="/Styles/ButtonStyles.xaml"/>
 				<ResourceDictionary Source="/Converters/Converters.xaml"/>
 			</ResourceDictionary.MergedDictionaries>
+			<DataTemplate x:Key="SongListItemTemplate" >
+				<Grid Background="{Binding Path=IsAlternate, Converter={StaticResource AlternateSongConverter}}"
+					  DoubleTapped="SongDoubleTapped">
+					<Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+						  Margin="3, 9, 3, 9">
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="*"/>
+							<ColumnDefinition Width="60"/>
+						</Grid.ColumnDefinitions>
+						<TextBlock Text="{Binding Title}" VerticalAlignment="Center" Margin="5" FontSize="16"
+							   Foreground="Black" Grid.Column="0"/>
+						<TextBlock Text="{Binding LengthStr}" VerticalAlignment="Center" Margin="5, 5, 25, 5" FontSize="16"
+							   Foreground="Black" Grid.Column="1"/>
+					</Grid>
+				</Grid>
+			</DataTemplate>
 		</ResourceDictionary>
 	</UserControl.Resources>
-	<Grid Background="#C7C7C7">
+	<Grid>
 		<ScrollViewer>
 			<StackPanel>
 				<!--
@@ -36,12 +41,23 @@
 					<TextBlock Text="SHUFFLE"/>
 				</Button>
 				-->
-				<ListView Height="Auto" ItemsSource="{Binding SongList.List}"
+				<ListView Height="Auto" ItemsSource="{Binding SongList.List}" Foreground="Blue"
 						  ItemTemplate="{StaticResource SongListItemTemplate}">
 					<ListView.ItemContainerStyle>
 						<Style TargetType="ListViewItem">
 							<Setter Property="HorizontalContentAlignment" Value="Stretch"/>
 							<Setter Property="VerticalContentAlignment" Value="Stretch"/>
+							<Setter Property="Padding" Value="0" />
+							<Setter Property="Margin" Value="0" />
+							<Setter Property="BorderThickness" Value="0" />
+							<Setter Property="VerticalContentAlignment" Value="Top" />
+							<Setter Property="Template">
+								<Setter.Value>
+									<ControlTemplate TargetType="ListViewItem">
+										<ListViewItemPresenter ContentMargin="0" Padding="0"/>
+									</ControlTemplate>
+								</Setter.Value>
+							</Setter>
 						</Style>
 					</ListView.ItemContainerStyle>
 				</ListView>

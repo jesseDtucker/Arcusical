@@ -328,6 +328,7 @@
     <ClInclude Include="Controls\VolumeSilder.xaml.h">
       <DependentUpon>Controls\VolumeSilder.xaml</DependentUpon>
     </ClInclude>
+    <ClInclude Include="Converters\AlternateConverter.hpp" />
     <ClInclude Include="Converters\IsPlayingToIconPath.hpp" />
     <ClInclude Include="Converters\SongListSizeToVisiblity.hpp" />
     <ClInclude Include="Events\AlbumSelectedEvent.hpp" />
@@ -408,6 +409,7 @@
     <Image Include="Assets\DefaultAlbumBackgrounds\default_orange.png" />
     <Image Include="Assets\DefaultAlbumBackgrounds\default_red.png" />
     <Image Include="Assets\DefaultAlbumBackgrounds\default_violet.png" />
+    <Image Include="Assets\Icons\Details.png" />
     <Image Include="Assets\Icons\Forward.png" />
     <Image Include="Assets\Icons\Pause.png" />
     <Image Include="Assets\Icons\Play.png" />
@@ -499,6 +501,7 @@
     <ClCompile Include="Controls\VolumeSilder.xaml.cpp">
       <DependentUpon>Controls\VolumeSilder.xaml</DependentUpon>
     </ClCompile>
+    <ClCompile Include="Converters\AlternateConverter.cpp" />
     <ClCompile Include="Converters\IsPlayingToIconPath.cpp" />
     <ClCompile Include="Converters\SongListSizeToVisiblity.cpp" />
     <ClCompile Include="Events\AlbumSelectedEvent.cpp" />

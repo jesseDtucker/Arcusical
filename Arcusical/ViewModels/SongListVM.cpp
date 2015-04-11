@@ -19,9 +19,14 @@ namespace ViewModel{
 		{
 			List = ref new Platform::Collections::Vector<SongVM^>();
 
+			bool isAlternate = false;
+
 			for (auto& song : songs)
 			{
-				List->Append(ref new SongVM(song, playlist, player));
+				auto songVM = ref new SongVM(song, playlist, player);
+				songVM->IsAlternate = isAlternate;
+				isAlternate = !isAlternate;
+				List->Append(songVM);
 			}
 		});
 

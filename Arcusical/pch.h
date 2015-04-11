@@ -36,3 +36,4 @@
 
 #include "Converters/IsPlayingToIconPath.hpp"
 #include "Converters/SongListSizeToVisiblity.hpp"
+#include "Converters/AlternateConverter.hpp"

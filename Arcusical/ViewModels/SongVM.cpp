@@ -15,6 +15,8 @@ using namespace Windows::UI::Xaml::Data;
 
 using namespace Arcusical::Player;
 
+static const int MAX_SONG_TITLE_LEN = 65;
+
 namespace Arcusical{
 namespace ViewModel {
 
@@ -30,10 +32,32 @@ namespace ViewModel {
 		: m_song(song)
 		, m_playlist(playlist)
 		, m_player(player)
+		, m_IsAlternate(false)
 	{
-		m_Title = ref new Platform::String(m_song.GetTitle().c_str());
+		auto title = m_song.GetTitle();
+		if (title.length() > MAX_SONG_TITLE_LEN)
+		{
+			title.resize(MAX_SONG_TITLE_LEN);
+			title += L"...";
+		}
+
+		m_Title = ref new Platform::String(title.c_str());
 		m_Artist = ref new Platform::String(m_song.GetArtist().c_str());
 		m_Length = m_song.GetLength();
+		m_TrackNumber = m_song.GetTrackNumber().first;
+
+		auto seconds = m_Length % 60;
+		auto minutes = m_Length / 60;
+
+		// it ain't pretty but I'm in a bit of a hurry atm
+		if (seconds >= 10)
+		{
+			m_LengthStr = minutes + ":" + seconds;
+		}
+		else
+		{
+			m_LengthStr = minutes + ":0" + seconds;
+		}
 
 		if (m_song.GetTrackNumber().first != 0)
 		{

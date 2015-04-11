@@ -17,6 +17,14 @@
 				<GradientStop Color="Black" Offset="-0.5"/>
 				<GradientStop Color="#00FFFFFF" Offset="1"/>
 			</LinearGradientBrush>
+			<LinearGradientBrush x:Name="shadowBrushVertical" StartPoint="0,0" EndPoint="1,0">
+				<GradientStop Color="Black" Offset="-0.5"/>
+				<GradientStop Color="#00FFFFFF" Offset="1"/>
+			</LinearGradientBrush>
+			<LinearGradientBrush x:Name="shadowBrushVerticalReverse" StartPoint="0,0" EndPoint="1,0">
+				<GradientStop Color="#00FFFFFF" Offset="0"/>
+				<GradientStop Color="Black" Offset="1.5"/>
+			</LinearGradientBrush>
 		</ResourceDictionary>
 	</Page.Resources>
 
@@ -33,12 +41,16 @@
 		</Grid>
 		<Grid Background="WhiteSmoke" Grid.Row="1">
 			<Grid.ColumnDefinitions>
-				<ColumnDefinition Width="20*"/>
+				<ColumnDefinition Width="30*"/>
 				<ColumnDefinition Width="45*"/>
 				<ColumnDefinition Width="400"/>
 			</Grid.ColumnDefinitions>
 			<local:SongListControl Grid.Column="0" x:Name="v_songListControl"/>
 			<local:AlbumListControl Grid.Column="1" x:Name="v_albumListControl"/>
+			<Grid Width="10" VerticalAlignment="Stretch" Background="{StaticResource shadowBrushVertical}"
+				  Grid.Column="1" HorizontalAlignment="Left"/>
+			<Grid Width="10" VerticalAlignment="Stretch" Background="{StaticResource shadowBrushVerticalReverse}"
+				  Grid.Column="1" HorizontalAlignment="Right"/>
 			<local:SearchResultsControl Grid.Column="2" HorizontalAlignment="Right" 
 										Width="400" x:Name="v_searchResults"/>
 		</Grid>

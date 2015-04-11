@@ -173,10 +173,10 @@ Model::Song DefaultSongLoad(FileSystem::IFile& file, Model::AudioFormat encoding
 
 	auto result = Model::Song();
 	auto musicProperties = create_task(file.GetRawHandle()->Properties->GetMusicPropertiesAsync()).get();
-		
+
 	result.SetArtist(wstring(musicProperties->Artist->Data()));
 	result.SetId(s_idGenerator()); // generate a random id, the odds of collision are slim to none
-	result.SetLength(musicProperties->Duration.Duration / 1000); // Duration is provided is ms, but we need it in seconds
+	result.SetLength(musicProperties->Duration.Duration / 10000000); // Duration is provided is 100 ns units, but we need it in seconds
 	result.SetTitle(wstring(musicProperties->Title->Data()));
 	result.SetAlbumName(wstring(musicProperties->Album->Data()));
 	result.SetTrackNumber({ musicProperties->TrackNumber, musicProperties->TrackNumber }); // TODO::JT need to get the max tracks in album set correctly... fixup album?
