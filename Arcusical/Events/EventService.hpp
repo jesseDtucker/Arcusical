@@ -16,7 +16,7 @@ namespace Events
 	class EventService
 	{
 	public:
-		static Util::SubscriptionPtr RegisterListener(Util::Delegate<void(const Event&)> callback);
+		static Util::Subscription RegisterListener(Util::Delegate<void(const Event&)> callback);
 		static void BroadcastEvent(const Event&);
 
 	private:
@@ -27,14 +27,12 @@ namespace Events
 	std::set<Util::Delegate<void(const Event&)>> EventService<Event>::s_callbackSet;
 
 	template<typename Event>
-	Util::SubscriptionPtr EventService<Event>::RegisterListener(Util::Delegate<void(const Event&)> callback)
+	Util::Subscription EventService<Event>::RegisterListener(Util::Delegate<void(const Event&)> callback)
 	{
-		std::function<void()> unsubscribeCallback = [callback](){ s_callbackSet.erase(callback); };
-		auto subscription = std::make_unique<Util::Subscription>(unsubscribeCallback);
-
 		s_callbackSet.insert(callback);
+		std::function<void()> unsubscribeCallback = [callback](){ s_callbackSet.erase(callback); };
 
-		return subscription;
+		return { unsubscribeCallback };
 	}
 
 	template<typename Event>

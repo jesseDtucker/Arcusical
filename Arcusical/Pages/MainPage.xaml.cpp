@@ -13,6 +13,8 @@
 #include "Controls/Search.xaml.h"
 #include "Controls/SearchResultsControl.xaml.h"
 #include "Controls/SongPlayer.xaml.h"
+#include "Events/AlbumSelectedEvent.hpp"
+#include "Events/EventService.hpp"
 #include "Playlist.hpp"
 #include "Storage.hpp"
 #include "ViewModels/AlbumListControlVM.hpp"
@@ -181,6 +183,12 @@ void Arcusical::MainPage::SetDependencies(	MusicSearcher* musicSearcher,
 	v_player->VM = m_playerVM;
 	v_search->VM = m_searchVM;
 	v_searchResults->VM = m_searchResultsVM;
+
+	function<void(const Events::AlbumSelectedEvent&)> albumSelctedCB = [this](const Events::AlbumSelectedEvent& ev)
+	{
+		m_songListVM->SongList = ev.GetSelectedAlbum()->Songs;
+	};
+	m_albumSelectedSub = Events::EventService<Events::AlbumSelectedEvent>::RegisterListener(albumSelctedCB);
 
 	SetupTransportControls(player);
 }

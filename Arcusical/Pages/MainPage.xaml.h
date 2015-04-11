@@ -60,5 +60,6 @@ namespace Arcusical
 		ViewModel::SearchResultsVM^ m_searchResultsVM;
 
 		Util::Subscription m_albumSub;
+		Util::Subscription m_albumSelectedSub;
 	};
 }

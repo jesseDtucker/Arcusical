@@ -25,17 +25,7 @@ namespace ViewModel{
 	SongListControlVM::SongListControlVM(Playlist& playlist)
 		: m_playlist(playlist)
 	{
-		std::function<void(const Events::AlbumSelectedEvent&)> callback = [this](const Events::AlbumSelectedEvent& event)
-		{
-			this->OnAlbumSelected(event);
-		};
-		m_albumSelectedSubscription = EventService<AlbumSelectedEvent>::RegisterListener(callback);
-	}
-
-	void SongListControlVM::OnAlbumSelected(const Events::AlbumSelectedEvent& event)
-	{
-		auto album = event.GetSelectedAlbum();
-		this->SongList = album->Songs;
+		
 	}
 
 	void SongListControlVM::PlaySongsAfterAndIncluding(SongVM^ song)

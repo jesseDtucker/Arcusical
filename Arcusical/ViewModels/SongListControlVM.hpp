@@ -27,8 +27,6 @@ namespace ViewModel{
 	internal:
 		SongListControlVM(Player::Playlist& playlist);
 	private:
-		void OnAlbumSelected(const Events::AlbumSelectedEvent& event);
-		Util::SubscriptionPtr m_albumSelectedSubscription;
 		Player::Playlist& m_playlist;
 	};
 

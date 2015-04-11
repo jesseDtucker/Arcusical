@@ -15,14 +15,14 @@
 			</LinearGradientBrush>
 			<LinearGradientBrush x:Name="shadowBrush" StartPoint="0,0" EndPoint="0,1">
 				<GradientStop Color="Black" Offset="-0.5"/>
-				<GradientStop Color="#00FFFFFF" Offset="1"/>
+				<GradientStop Color="#00000000" Offset="1"/>
 			</LinearGradientBrush>
 			<LinearGradientBrush x:Name="shadowBrushVertical" StartPoint="0,0" EndPoint="1,0">
 				<GradientStop Color="Black" Offset="-0.5"/>
-				<GradientStop Color="#00FFFFFF" Offset="1"/>
+				<GradientStop Color="#00000000" Offset="1"/>
 			</LinearGradientBrush>
 			<LinearGradientBrush x:Name="shadowBrushVerticalReverse" StartPoint="0,0" EndPoint="1,0">
-				<GradientStop Color="#00FFFFFF" Offset="0"/>
+				<GradientStop Color="#00000000" Offset="0"/>
 				<GradientStop Color="Black" Offset="1.5"/>
 			</LinearGradientBrush>
 		</ResourceDictionary>
