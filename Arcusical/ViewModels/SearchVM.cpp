@@ -44,7 +44,7 @@ void Arcusical::ViewModel::SearchVM::StartSearch(Platform::String^ searchTerm)
 		{
 			AlbumListVM^ albums = ref new AlbumListVM(results.Albums, m_playlist, m_player);
 			SongListVM^ songs = ref new SongListVM(results.Songs, m_playlist, m_player);
-			SearchResults(albums, songs);
+			SearchResults(albums, songs, results.CancellationToken);
 		}
 	});
 }
