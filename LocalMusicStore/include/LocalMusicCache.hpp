@@ -6,10 +6,12 @@
 #include <future>
 #include <memory>
 #include <mutex>
+#include <windows.h>
 #include <unordered_map>
 
 #include "boost\uuid\uuid.hpp"
 #include "IAlbumToSongMapper.hpp"
+#include "LockHelper.hpp"
 #include "MusicTypes.hpp"
 
 namespace Arcusical{
@@ -51,15 +53,6 @@ namespace LocalMusicStore
 		void LoadAlbums();
 		void LoadSongs();
 
-		void FillInCachedAlbumFromModel(CachedAlbum& cachedAlbum, Model::Album& modelAlbum) const;
-		void FillInCachedSongFromModel(CachedSong& cachedSong, const Model::Song& modelSong) const;
-
-		void FillInModelAlbumFromCached(Model::Album& modelAlbum, const CachedAlbum& cachedAlbum) const;
-		void FillInModelSongFromCached(Model::Song& modelSong, const CachedSong& cachedSong) const;
-
-		void SerializeGuid(std::string* rawBytes, const boost::uuids::uuid guid) const;
-		void DeserializeGuid(const std::string* rawBytes, boost::uuids::uuid& guid) const;
-
 		Model::AlbumCollection m_localAlbums;
 		Model::SongCollection m_localSongs;
 
@@ -72,8 +65,8 @@ namespace LocalMusicStore
 		std::mutex m_songsLoadingLock;
 		std::mutex m_albumsLoadingLock;
 
-		std::recursive_mutex m_albumsEditLock;
-		std::recursive_mutex m_songsEditLock;
+		Util::SlimRWLock m_albumsEditLock; // windows read/write locks
+		Util::SlimRWLock m_songsEditLock;
 
 		const static std::wstring ALBUM_CACHE_FILE;
 		const static std::wstring SONG_CACHE_FILE;

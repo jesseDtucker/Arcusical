@@ -185,7 +185,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <CompileAsWinRT>false</CompileAsWinRT>
+      <CompileAsWinRT>true</CompileAsWinRT>
       <SDLCheck>true</SDLCheck>
       <EnablePREfast>false</EnablePREfast>
       <WarningLevel>Level4</WarningLevel>
@@ -209,7 +209,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DebugWithCodeAnalysis|Win32'">
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <CompileAsWinRT>false</CompileAsWinRT>
+      <CompileAsWinRT>true</CompileAsWinRT>
       <SDLCheck>true</SDLCheck>
       <EnablePREfast>true</EnablePREfast>
       <WarningLevel>Level4</WarningLevel>
@@ -233,7 +233,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <CompileAsWinRT>false</CompileAsWinRT>
+      <CompileAsWinRT>true</CompileAsWinRT>
       <SDLCheck>true</SDLCheck>
       <EnablePREfast>false</EnablePREfast>
       <WarningLevel>Level4</WarningLevel>
@@ -253,7 +253,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|arm'">
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <CompileAsWinRT>false</CompileAsWinRT>
+      <CompileAsWinRT>true</CompileAsWinRT>
       <SDLCheck>true</SDLCheck>
       <EnablePREfast>false</EnablePREfast>
       <WarningLevel>Level4</WarningLevel>
@@ -273,7 +273,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DebugWithCodeAnalysis|arm'">
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <CompileAsWinRT>false</CompileAsWinRT>
+      <CompileAsWinRT>true</CompileAsWinRT>
       <SDLCheck>true</SDLCheck>
       <EnablePREfast>true</EnablePREfast>
       <WarningLevel>Level4</WarningLevel>
@@ -293,7 +293,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|arm'">
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <CompileAsWinRT>false</CompileAsWinRT>
+      <CompileAsWinRT>true</CompileAsWinRT>
       <SDLCheck>true</SDLCheck>
       <EnablePREfast>false</EnablePREfast>
       <WarningLevel>Level4</WarningLevel>
@@ -313,7 +313,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <CompileAsWinRT>false</CompileAsWinRT>
+      <CompileAsWinRT>true</CompileAsWinRT>
       <SDLCheck>true</SDLCheck>
       <EnablePREfast>false</EnablePREfast>
       <WarningLevel>Level4</WarningLevel>
@@ -333,7 +333,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DebugWithCodeAnalysis|x64'">
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <CompileAsWinRT>false</CompileAsWinRT>
+      <CompileAsWinRT>true</CompileAsWinRT>
       <SDLCheck>true</SDLCheck>
       <EnablePREfast>true</EnablePREfast>
       <WarningLevel>Level4</WarningLevel>
@@ -353,7 +353,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <CompileAsWinRT>false</CompileAsWinRT>
+      <CompileAsWinRT>true</CompileAsWinRT>
       <SDLCheck>true</SDLCheck>
       <EnablePREfast>false</EnablePREfast>
       <WarningLevel>Level4</WarningLevel>
@@ -379,6 +379,7 @@
     <ClInclude Include="include\InMemoryStream.hpp" />
     <ClInclude Include="include\InterfaceWrapper.hpp" />
     <ClInclude Include="include\LockedPtrHelper.hpp" />
+    <ClInclude Include="include\LockHelper.hpp" />
     <ClInclude Include="include\MulticastDelegate.hpp" />
     <ClInclude Include="include\RawParser.hpp" />
     <ClInclude Include="include\ScopeGuard.hpp" />
@@ -391,6 +392,7 @@
   <ItemGroup>
     <ClCompile Include="src\CancellationToken.cpp" />
     <ClCompile Include="src\InMemoryStream.cpp" />
+    <ClCompile Include="src\LockHelper.cpp" />
     <ClCompile Include="src\Stream.cpp">
       <DisableSpecificWarnings Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">4996</DisableSpecificWarnings>
       <DisableSpecificWarnings Condition="'$(Configuration)|$(Platform)'=='DebugWithCodeAnalysis|Win32'">4996</DisableSpecificWarnings>

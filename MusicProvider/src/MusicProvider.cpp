@@ -54,7 +54,8 @@ Subscription MusicProvider::SubscribeSongs(SongsChangedCallback callback)
 		}
 		else
 		{
-			callback(*m_musicCache->GetLocalSongs());
+			auto songs = m_musicCache->GetLocalSongs();
+			callback(*songs);
 		}
 	}
 
@@ -79,7 +80,8 @@ Subscription MusicProvider::SubscribeAlbums(AlbumsChangedCallback callback)
 		}
 		else
 		{
-			callback(*m_musicCache->GetLocalAlbums());
+			auto albums = m_musicCache->GetLocalAlbums();
+			callback(*albums);
 		}
 	}
 
@@ -117,12 +119,9 @@ void MusicProvider::LoadSongs()
 	// and publish what we have in the cache
 	PublishSongs();
 
-	// intentionally taking a copy of the cache here because we don't want to hold the lock
-	// the merge can take a very long time, and would block any access to the cache until we
-	// are done. Taking a local copy allows the lock to release right away.
-	auto songs = *m_musicCache->GetLocalSongs();
+	auto songs = m_musicCache->GetLocalSongs();
 	auto musicFinderResults = musicFinderFuture.get();
-	if (MergeSongCollections(songs, musicFinderResults) == true)
+	if (MergeSongCollections(*songs, musicFinderResults) == true)
 	{
 		// then some songs were merged, we need to republish!
 		PublishSongs();
@@ -137,8 +136,8 @@ void MusicProvider::LoadAlbums()
 	// now subscribe to the music search service
 	function<void(SongCollection&)> songsCallback = [this](SongCollection& localSongs)
 	{
-		auto albums = *m_musicCache->GetLocalAlbums();
-		if (MergeAlbumCollections(albums, localSongs))
+		auto albums = m_musicCache->GetLocalAlbums();
+		if (MergeAlbumCollections(*albums, localSongs))
 		{
 			PublishAlbums();
 		}
@@ -517,23 +516,23 @@ void MusicProvider::AddNewSongToExisting(const Song& newSong, Song& existingSong
 
 void MusicProvider::PublishSongs()
 {
-	auto songs = *m_musicCache->GetLocalSongs();
+	auto songs = m_musicCache->GetLocalSongs();
 
 	unique_lock<mutex> callbackLock(m_songCallbackLock);
 	for (auto& callback : m_songCallbackSet)
 	{
-		callback(songs);
+		callback(*songs);
 	}
 }
 
 void MusicProvider::PublishAlbums()
 {
-	auto albums = *m_musicCache->GetLocalAlbums();
+	auto albums = m_musicCache->GetLocalAlbums();
 
 	unique_lock<mutex> callbackLock(m_albumCallbackLock);
 	for (auto& callback : m_albumCallbackSet)
 	{
-		callback(albums);
+		callback(*albums);
 	}
 }
 

@@ -9,6 +9,7 @@
 #include "IFolder.hpp"
 #include "IFile.hpp"
 #include "IAlbumToSongMapper.hpp"
+#include "LockHelper.hpp"
 #include "LockedPtrHelper.hpp"
 #include "Storage.hpp"
 #include "Song.hpp"
@@ -20,11 +21,20 @@
 
 using namespace std;
 using namespace FileSystem;
+using namespace Arcusical;
 using namespace Arcusical::LocalMusicStore;
 using namespace Arcusical::Model;
+using namespace Util;
 
 const wstring LocalMusicCache::ALBUM_CACHE_FILE = L"albums.cache";
 const wstring LocalMusicCache::SONG_CACHE_FILE = L"songs.cache";
+
+void FillInCachedAlbumFromModel(CachedAlbum& cachedAlbum, Album& modelAlbum);
+void FillInCachedSongFromModel(CachedSong& cachedSong, const Song& modelSong);
+void SerializeGuid(string* rawBytes, const boost::uuids::uuid guid);
+void DeserializeGuid(const string* rawBytes, boost::uuids::uuid& guid);
+void FillInModelAlbumFromCached(Album& modelAlbum, const CachedAlbum& cachedAlbum);
+void FillInModelSongFromCached(Song& modelSong, const CachedSong& cachedSong);
 
 static const unordered_map<Encoding, AudioFormat> CACHE_ENCODING_TO_MODEL =
 {
@@ -81,7 +91,7 @@ SongCollectionLockedPtr LocalMusicCache::GetLocalSongs()
 		}
 	}
 
-	return CreateLockedPointer(m_songsEditLock, &m_localSongs);
+	return CreateReadLockedPointer(&m_songsEditLock, &m_localSongs);
 }
 
 AlbumCollectionLockedPtr LocalMusicCache::GetLocalAlbums()
@@ -95,21 +105,24 @@ AlbumCollectionLockedPtr LocalMusicCache::GetLocalAlbums()
 		}
 	}
 
-	return CreateLockedPointer(m_albumsEditLock, &m_localAlbums);
+	return CreateReadLockedPointer(&m_albumsEditLock, &m_localAlbums);
 }
 
 void LocalMusicCache::ClearCache()
 {
-	lock_guard<recursive_mutex> songGuard(m_songsEditLock);
-	lock_guard<recursive_mutex> albumGuard(m_albumsEditLock);
-
-	m_localAlbums.clear();
-	m_localSongs.clear();
+	{
+		WriteLock songLock(&m_songsEditLock);
+		m_localSongs.clear();
+	}
+	{
+		WriteLock albumLock(&m_albumsEditLock);
+		m_localAlbums.clear();
+	}
 }
 
 void LocalMusicCache::AddToCache(const vector<Album>& albums)
 {
-	lock_guard<recursive_mutex> albumGuard(m_albumsEditLock);
+	WriteLock albumGuard(&m_albumsEditLock);
 
 	for (auto& album : albums)
 	{
@@ -119,7 +132,7 @@ void LocalMusicCache::AddToCache(const vector<Album>& albums)
 
 void LocalMusicCache::AddToCache(const vector<Song>& songs)
 {
-	lock_guard<recursive_mutex> songGuard(m_songsEditLock);
+	WriteLock songGuard(&m_songsEditLock);
 
 	for (auto& song : songs)
 	{
@@ -130,7 +143,7 @@ void LocalMusicCache::AddToCache(const vector<Song>& songs)
 
 void LocalMusicCache::LoadAlbums()
 {
-	lock_guard<recursive_mutex> albumGuard(m_albumsEditLock);
+	decltype(m_localAlbums) localAlbums;
 
 	if (Storage::ApplicationFolder().ContainsFile(ALBUM_CACHE_FILE))
 	{
@@ -145,9 +158,12 @@ void LocalMusicCache::LoadAlbums()
 		{
 			auto album = Album(this);
 			FillInModelAlbumFromCached(album, cachedAlbums.albums(i));
-			m_localAlbums.insert({ album.GetId(), album });
+			localAlbums.insert({ album.GetId(), album });
 		}
 	}
+
+	WriteLock albumLock(&m_albumsEditLock);
+	m_localAlbums = std::move(localAlbums);
 
 	unique_lock<mutex> lock(m_albumsLoadingLock);
 	m_areAlbumsLoaded = true;
@@ -156,7 +172,7 @@ void LocalMusicCache::LoadAlbums()
 
 void LocalMusicCache::LoadSongs()
 {
-	lock_guard<recursive_mutex> songGuard(m_songsEditLock);
+	decltype(m_localSongs) localSongs;
 
 	if (Storage::ApplicationFolder().ContainsFile(SONG_CACHE_FILE))
 	{
@@ -171,9 +187,12 @@ void LocalMusicCache::LoadSongs()
 		{
 			auto song = Song();
 			FillInModelSongFromCached(song, cachedSongs.songs(i));
-			m_localSongs.insert({ song.GetId(), song });
+			localSongs.insert({ song.GetId(), song });
 		}
 	}
+
+	WriteLock songGuard(&m_songsEditLock);
+	m_localSongs = std::move(localSongs);
 
 	unique_lock<mutex> lock(m_songsLoadingLock);
 	m_areSongsLoaded = true;
@@ -187,7 +206,7 @@ void LocalMusicCache::SaveAlbums()
 	decltype(m_localAlbums) localAlbums;
 
 	{
-		lock_guard<recursive_mutex> albumGuard(m_albumsEditLock);
+		WriteLock albumGuard(&m_albumsEditLock);
 		localAlbums = m_localAlbums;
 	}
 
@@ -216,7 +235,7 @@ void LocalMusicCache::SaveSongs()
 	decltype(m_localSongs) localSongs;
 
 	{
-		lock_guard<recursive_mutex> songsGuard(m_songsEditLock);
+		WriteLock songsGuard(&m_songsEditLock);
 		localSongs = m_localSongs;
 	}
 
@@ -238,7 +257,7 @@ void LocalMusicCache::SaveSongs()
 	}
 }
 
-void LocalMusicCache::FillInCachedAlbumFromModel(CachedAlbum& cachedAlbum, Album& modelAlbum) const
+void FillInCachedAlbumFromModel(CachedAlbum& cachedAlbum, Album& modelAlbum)
 {
 	// set the id
 	auto guid = cachedAlbum.mutable_id();
@@ -262,7 +281,7 @@ void LocalMusicCache::FillInCachedAlbumFromModel(CachedAlbum& cachedAlbum, Album
 	}
 }
 
-void LocalMusicCache::FillInCachedSongFromModel(CachedSong& cachedSong, const Song& modelSong) const
+void FillInCachedSongFromModel(CachedSong& cachedSong, const Song& modelSong)
 {
 	// set the id
 	auto guid = cachedSong.mutable_id();
@@ -316,17 +335,17 @@ void LocalMusicCache::FillInCachedSongFromModel(CachedSong& cachedSong, const So
 	}
 }
 
-void LocalMusicCache::SerializeGuid(string* rawBytes, const boost::uuids::uuid guid) const
+void SerializeGuid(string* rawBytes, const boost::uuids::uuid guid)
 {
 	*rawBytes = boost::uuids::to_string(guid);
 }
 
-void LocalMusicCache::DeserializeGuid(const string* rawBytes, boost::uuids::uuid& guid) const
+void DeserializeGuid(const string* rawBytes, boost::uuids::uuid& guid)
 {
 	guid = boost::uuids::string_generator()(*rawBytes);
 }
 		
-void LocalMusicCache::FillInModelAlbumFromCached(Album& modelAlbum, const CachedAlbum& cachedAlbum) const
+void FillInModelAlbumFromCached(Album& modelAlbum, const CachedAlbum& cachedAlbum)
 {
 	boost::uuids::uuid id;
 	DeserializeGuid(&cachedAlbum.id().rawdata(), id);
@@ -346,7 +365,7 @@ void LocalMusicCache::FillInModelAlbumFromCached(Album& modelAlbum, const Cached
 	}
 }
 
-void LocalMusicCache::FillInModelSongFromCached(Song& modelSong, const CachedSong& cachedSong) const
+void FillInModelSongFromCached(Song& modelSong, const CachedSong& cachedSong)
 {
 	boost::uuids::uuid songId;
 	DeserializeGuid(&cachedSong.id().rawdata(), songId);

@@ -4,18 +4,23 @@
 
 #include <functional>
 #include <memory>
+#include <windows.h>
+
+#include "LockHelper.hpp"
 
 template<typename T>
-std::unique_ptr<T, std::function<void(T*)>> CreateLockedPointer(std::recursive_mutex& mutex, T* ptr)
+std::unique_ptr<T, std::function<void(T*)>> CreateReadLockedPointer(Util::SlimRWLock* lock, T* ptr)
 {
 	auto currentThreadId = std::this_thread::get_id();
-	mutex.lock();
-	std::function<void(T*)> deleter = [&mutex, currentThreadId](T* p)
+	lock->LockShared();
+	std::function<void(T*)> deleter = [lock, currentThreadId](T* p)
 	{
-		ARC_ASSERT(currentThreadId == std::this_thread::get_id())
-			mutex.unlock();
+		ARC_ASSERT(currentThreadId == std::this_thread::get_id());
+		lock->UnlockShared();
 	};
 	return std::unique_ptr<T, decltype(deleter)>(ptr, deleter);
+
+	return nullptr;
 }
 
 #endif

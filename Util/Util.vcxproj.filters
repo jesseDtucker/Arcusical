@@ -57,6 +57,9 @@
     <ClInclude Include="include\CancellationToken.hpp">
       <Filter>include</Filter>
     </ClInclude>
+    <ClInclude Include="include\LockHelper.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Subscription.cpp">
@@ -69,6 +72,9 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\CancellationToken.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\LockHelper.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
