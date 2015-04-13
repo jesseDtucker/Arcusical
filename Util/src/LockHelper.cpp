@@ -11,85 +11,68 @@ Util::SlimRWLock::SlimRWLock()
 
 void Util::SlimRWLock::LockShared()
 {
-	bool shouldLock = true;
-
+#if _DEBUG
 	{
+		// ensure we don't already hold this lock
 		lock_guard<mutex> guard(m_syncLock);
 		auto id = this_thread::get_id();
-		shouldLock = (m_readIds.find(id) == end(m_readIds)) && (m_writeId == nullptr || id != *m_writeId);
-		if (shouldLock)
-		{
-			m_readIds.insert(id);
-		}
+		
+		auto readId = m_readIds.find(id);
+		ARC_ASSERT_MSG(readId == end(m_readIds), "Attempted to recursively hold a read lock! This operation is not supported!");
+		ARC_ASSERT_MSG(!m_writeId || m_writeId != id, "Attempted to recursively hold a read lock while holding a write lock! This is not supported!");
+		
+		m_readIds.insert(id);
 	}
-	
-	if (shouldLock)
-	{
-		AcquireSRWLockShared(&m_lock);
-	}
-}
+#endif
 
-void Util::SlimRWLock::LockExclusive()
-{
-	bool shouldLock = true;
-	bool shouldUnlockRead = false;
-
-	{
-		lock_guard<mutex> guard(m_syncLock);
-		auto id = this_thread::get_id();
-		if (m_writeId != nullptr && *m_writeId == id)
-		{
-			// current thread already has a lock write
-			shouldLock = false;
-		}
-		else if (m_readIds.find(id) != end(m_readIds))
-		{
-			// current thread has a read lock but no write lock
-			// first release the read lock, before trying to acquire the write lock
-			shouldLock = true;
-			shouldUnlockRead = true;
-		}
-
-		if (shouldLock)
-		{
-			m_writeId = make_unique<thread::id>(id);
-		}
-	}
-
-	if (shouldUnlockRead)
-	{
-		this->UnlockShared();
-	}
-	if (shouldLock)
-	{
-		AcquireSRWLockExclusive(&m_lock);
-	}
+	AcquireSRWLockShared(&m_lock);
 }
 
 void Util::SlimRWLock::UnlockShared()
 {
-	bool shouldUnlock = true;
+#if _DEBUG
 	{
 		lock_guard<mutex> guard(m_syncLock);
 		auto id = this_thread::get_id();
-		shouldUnlock = (m_readIds.find(id) != end(m_readIds));
-		m_readIds.erase(id);
-	}
 
-	if (shouldUnlock)
-	{
-		ReleaseSRWLockShared(&m_lock);
+		auto readId = m_readIds.find(id);
+		ARC_ASSERT_MSG(readId != end(m_readIds), "Attempted to release a read lock from a thread that does not hold a read lock!");
+		m_readIds.erase(readId);
 	}
+#endif
+
+	ReleaseSRWLockShared(&m_lock);
 }
+
+void Util::SlimRWLock::LockExclusive()
+{
+#if _DEBUG
+	{
+		lock_guard<mutex> guard(m_syncLock);
+		auto id = this_thread::get_id();
+		
+		auto readId = m_readIds.find(id);
+		ARC_ASSERT_MSG(readId == end(m_readIds), "Attempted to recursively hold a write lock while holding a read lock! This operation is not supported!");
+		ARC_ASSERT_MSG(!m_writeId || m_writeId != id, "Attempted to recursively hold a write lock! This is not supported!");
+
+		m_writeId = id;
+	}
+#endif
+
+	AcquireSRWLockExclusive(&m_lock);
+}
+
+
 
 void Util::SlimRWLock::UnlockExclusive()
 {
 	{
 		lock_guard<mutex> guard(m_syncLock);
 		auto id = this_thread::get_id();
-		ARC_ASSERT(m_writeId != nullptr);
-		ARC_ASSERT_MSG(id == *m_writeId, "Remember to unlock from the same thead that performed the lock!");
-		m_writeId = nullptr; // assuming this is never a valid thread id
+		
+		ARC_ASSERT(m_writeId);
+		ARC_ASSERT_MSG(m_writeId == id, "Attempted to release a write lock from a thread that does not hold a write lock!");
+		m_writeId = boost::none;
 	}
 
 	ReleaseSRWLockExclusive(&m_lock);

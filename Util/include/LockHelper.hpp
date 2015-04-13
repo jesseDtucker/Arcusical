@@ -2,6 +2,7 @@
 #ifndef LOCK_HELPER_HPP
 #define LOCK_HELPER_HPP
 
+#include "boost/optional.hpp"
 #include <functional>
 #include <future>
 #include <windows.h>
@@ -27,9 +28,12 @@ namespace Util
 		void UnlockExclusive();
 	private:
 		SRWLOCK m_lock;
+
+#if _DEBUG // used to check for recursive locking. I do not support recursive locking but would like to be notified when it happens
 		std::mutex m_syncLock;
 		std::unordered_set<std::thread::id> m_readIds;
-		std::unique_ptr<std::thread::id> m_writeId; // TODO::JT make this an optional, not a pointer
+		boost::optional<std::thread::id> m_writeId;
+#endif
 	};
 
 	class WriteLock final : public ScopeGuard < std::function<void()> >
