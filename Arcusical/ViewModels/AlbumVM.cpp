@@ -17,20 +17,12 @@ namespace ViewModel{
 	AlbumVM::AlbumVM(const Model::Album& album, Playlist& playlist, IPlayer& player)
 		: m_album(album)
 		, m_playlist(playlist)
+		, m_songs(nullptr)
+		, m_player(player)
 	{
 		this->Artist = ref new Platform::String(album.GetArtist().c_str());
 		this->Title = ref new Platform::String(album.GetTitle().c_str());
 		this->ImagePath = ref new Platform::String(album.GetImageFilePath().c_str());
-
-		// getting the songs could block, but this ctor must return immediately, so get songs will be async
-		std::async([this, album, &playlist, &player]()
-		{
-			auto songs = *album.GetSongs();
-			DispatchToUI([this, songs, &player, &playlist]()
-			{
-				this->Songs = ref new SongListVM(songs, playlist, player);
-			});
-		});
 	}
 
 	void AlbumVM::Play()
@@ -40,6 +32,23 @@ namespace ViewModel{
 			m_playlist.Clear();
 			m_playlist.Enqueue(*m_album.GetSongs());
 		});
+	}
+
+
+	SongListVM^ AlbumVM::Songs::get()
+	{
+		if (m_songs == nullptr)
+		{
+			auto songs = m_album.GetSongs();
+			m_songs = ref new SongListVM(*songs, m_playlist, m_player);
+
+			DispatchToUI([this]()
+			{
+				OnPropertyChanged("Songs");
+			});
+		}
+
+		return m_songs;
 	}
 
 } /*ViewModel*/

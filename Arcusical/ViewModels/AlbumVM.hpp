@@ -24,8 +24,12 @@ namespace ViewModel{
 
 		PROP_SET_AND_GET_WINRT(Platform::String^, Title);
 		PROP_SET_AND_GET_WINRT(Platform::String^, Artist);
-		PROP_SET_AND_GET_WINRT(SongListVM^, Songs);
 		PROP_SET_AND_GET_WINRT(Platform::String^, ImagePath);
+
+		property SongListVM^ Songs
+		{
+			SongListVM^ get();
+		}
 
 		void Play();
 		
@@ -35,6 +39,8 @@ namespace ViewModel{
 	private:
 		Model::Album m_album;
 		Player::Playlist& m_playlist;
+		Player::IPlayer& m_player;
+		SongListVM^ m_songs;
 	};
 
 }

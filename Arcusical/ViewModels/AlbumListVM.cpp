@@ -12,6 +12,8 @@ using namespace std;
 using namespace Arcusical::Model;
 using namespace Arcusical::Player;
 
+const int BIG_ALBUM_THRESHOLD = 100; // anything with more than 100 songs is considered big
+
 namespace Arcusical {
 namespace ViewModel{
 
@@ -49,14 +51,37 @@ namespace ViewModel{
 			return a->GetTitle() < b->GetTitle();
 		});
 
-		auto future = Arcusical::DispatchToUI([this, &albums, &playlist, &player]()
-		{
-			this->Albums = ref new Platform::Collections::Vector<AlbumVM^>();
+		// most albums will have their songs loaded on demand
+		// However, really big albums take too long for the UI to handle
+		// so we'll pre-load those
+		vector<AlbumVM^> bigAlbums;
+		auto albumListVM = ref new Platform::Collections::Vector<AlbumVM^>();
 
-			for (auto& album : albums)
+		for (auto& album : albums)
+		{
+			auto albumVM = ref new AlbumVM(*album, playlist, player);
+			albumListVM->Append(albumVM);
+			if (album->GetSongIds().size() > BIG_ALBUM_THRESHOLD)
 			{
-				this->Albums->Append(ref new AlbumVM(*album, playlist, player));
+				bigAlbums.push_back(albumVM);
 			}
+		}
+
+		if (bigAlbums.size() > 0)
+		{
+			// go ahead and do the song pre-load for these monstrous albums
+			async([bigAlbums]()
+			{
+				for (auto bigAlbum : bigAlbums)
+				{
+					bigAlbum->Songs;
+				}
+			});
+		}
+
+		auto future = Arcusical::DispatchToUI([this, albumListVM]()
+		{
+			this->Albums = albumListVM;
 		});
 		future.get(); // wait for UI to complete before returning
 	}
