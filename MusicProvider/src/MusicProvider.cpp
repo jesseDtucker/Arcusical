@@ -206,13 +206,12 @@ void MusicProvider::LoadSongs()
 
 void MusicProvider::LoadAlbums()
 {
-	// public what we have in the cache
+	// publish what we have in the cache
 	{
 		auto albums = m_musicCache->GetLocalAlbums();
 		PublishAlbums(m_albumCallbacks, move(albums), m_albumCallbackLock);
 	}
 	
-
 	// now subscribe to the music search service
 	function<void(const SongCollectionChanges&)> songsCallback = [this](const SongCollectionChanges& songs)
 	{
