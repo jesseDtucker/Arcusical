@@ -847,9 +847,9 @@ vector<const Song*> SongsWithoutAlbums(const AlbumCollection& existingAlbums, co
 		back_inserter(songIdsWithoutAlbums));
 
 	vector<const Song*> results;
-	results.reserve(allNewSongIds.size());
+	results.reserve(songIdsWithoutAlbums.size());
 
-	transform(begin(allNewSongIds), end(allNewSongIds), back_inserter(results), [&songs](const uuid& id)
+	transform(begin(songIdsWithoutAlbums), end(songIdsWithoutAlbums), back_inserter(results), [&songs](const uuid& id)
 	{
 		return &songs.at(id);
 	});
@@ -994,15 +994,23 @@ void FixupAlbumImages(vector<Album>& newAlbums)
 AlbumMergeResult MusicProvider::MergeAlbums(const AlbumCollection& existingAlbums, const SongCollection& songs, const Model::IAlbumToSongMapper* mapper)
 {
 	auto newSongs = SongsWithoutAlbums(existingAlbums, songs);
-	auto groups = GroupSongsByAlbumTitle(newSongs);
-	auto albumLookup = CreateAlbumLookup(existingAlbums);
-	auto newAlbums = CreateNewAlbums(albumLookup, groups, mapper);
-	auto modifiedAlbums = CreateModifiedAlbums(albumLookup, groups);
+	if (newSongs.size() > 0)
+	{
+		auto groups = GroupSongsByAlbumTitle(newSongs);
+		auto albumLookup = CreateAlbumLookup(existingAlbums);
+		auto newAlbums = CreateNewAlbums(albumLookup, groups, mapper);
+		auto modifiedAlbums = CreateModifiedAlbums(albumLookup, groups);
 
-	ARC_ASSERT(newAlbums.size() + modifiedAlbums.size() == groups.size());
+		ARC_ASSERT(newAlbums.size() + modifiedAlbums.size() == groups.size());
 
-	// only need to fix-up new ones, modified ones should be fine as is
-	FixupAlbumImages(newAlbums);
+		// only need to fix-up new ones, modified ones should be fine as is
+		FixupAlbumImages(newAlbums);
 
-	return { move(newAlbums), move(modifiedAlbums) };
+		return{ move(newAlbums), move(modifiedAlbums) };
+	}
+	else
+	{
+		// nothing new
+		return{ {}, {} };
+	}
 }
