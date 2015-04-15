@@ -20,9 +20,9 @@ namespace ViewModel{
 		, m_songs(nullptr)
 		, m_player(player)
 	{
-		this->Artist = ref new Platform::String(album.GetArtist().c_str());
-		this->Title = ref new Platform::String(album.GetTitle().c_str());
-		this->ImagePath = ref new Platform::String(album.GetImageFilePath().c_str());
+		this->m_Artist = ref new Platform::String(album.GetArtist().c_str());
+		this->m_Title = ref new Platform::String(album.GetTitle().c_str());
+		this->m_ImagePath = ref new Platform::String(album.GetImageFilePath().c_str());
 	}
 
 	void AlbumVM::Play()

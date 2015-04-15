@@ -200,11 +200,11 @@ void Arcusical::MainPage::SetDependencies(	MusicSearcher* musicSearcher,
 
 void Arcusical::MainPage::OnAlbumsReady(const Model::AlbumCollection& albums)
 {
-	auto future = Arcusical::DispatchToUI([this, &albums]()
+	auto albumListVM = ref new AlbumListVM(albums, *m_playlist, *m_player);
+	Arcusical::DispatchToUI([this, albumListVM]()
 	{
-		m_albumListVM->AlbumList = ref new AlbumListVM(albums, *m_playlist, *m_player);
+		m_albumListVM->AlbumList = albumListVM;
 	});
-	future.get();
 }
 
 
