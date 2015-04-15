@@ -111,7 +111,7 @@ namespace Model
 		if (doesNotHaveFormat)
 		{
 			m_Files[songFile.format] = songFile;
-			m_AvailableFormats.push_back(songFile.format);
+			m_AvailableFormats.insert(songFile.format);
 		}
 	}
 

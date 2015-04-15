@@ -62,10 +62,9 @@ void Util::SlimRWLock::LockExclusive()
 	AcquireSRWLockExclusive(&m_lock);
 }
 
-
-
 void Util::SlimRWLock::UnlockExclusive()
 {
+#if _DEBUG
 	{
 		lock_guard<mutex> guard(m_syncLock);
 		auto id = this_thread::get_id();
@@ -74,6 +73,7 @@ void Util::SlimRWLock::UnlockExclusive()
 		ARC_ASSERT_MSG(m_writeId == id, "Attempted to release a write lock from a thread that does not hold a write lock!");
 		m_writeId = boost::none;
 	}
+#endif
 
 	ReleaseSRWLockExclusive(&m_lock);
 }

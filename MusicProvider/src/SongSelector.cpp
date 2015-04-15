@@ -46,7 +46,7 @@ namespace Arcusical
 		vector<Model::Song> SongSelector::GetFromSameAlbum(const Model::Song& song, function<bool(const Model::Song&)> filter)
 		{
 			vector<Model::Song> result;
-			Model::Album* album = nullptr;
+			const Model::Album* album = nullptr;
 
 			// scope needed because albums is a locked resource, free the lock as soon as possible
 			{

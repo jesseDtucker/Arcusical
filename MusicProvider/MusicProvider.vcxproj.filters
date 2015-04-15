@@ -18,9 +18,6 @@
     <ClInclude Include="src\targetver.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="src\SongLoader.hpp">
-      <Filter>src</Filter>
-    </ClInclude>
     <ClInclude Include="include\SongSelector.hpp">
       <Filter>include</Filter>
     </ClInclude>
@@ -28,6 +25,9 @@
       <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="include\MusicProvider.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\SongLoader.hpp">
       <Filter>include</Filter>
     </ClInclude>
   </ItemGroup>

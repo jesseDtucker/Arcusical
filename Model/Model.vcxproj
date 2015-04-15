@@ -374,6 +374,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Album.cpp" />
+    <ClCompile Include="src\MusicTypes.cpp" />
     <ClCompile Include="src\Song.cpp" />
     <ClCompile Include="src\pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

@@ -26,11 +26,11 @@ namespace ViewModel
 		PROP_SET_AND_GET_WINRT(Windows::Foundation::Collections::IVector<AlbumVM^>^, Albums);
 	internal:
 		
-		AlbumListVM(Model::AlbumCollection& albums, Player::Playlist& playlist, Player::IPlayer& player);
-		AlbumListVM(std::vector<Model::Album>& albums, Player::Playlist& playlist, Player::IPlayer& player);
+		AlbumListVM(const Model::AlbumCollection& albums, Player::Playlist& playlist, Player::IPlayer& player);
+		AlbumListVM(const std::vector<Model::Album>& albums, Player::Playlist& playlist, Player::IPlayer& player);
 
 	private:
-		void SortAndCreate(std::vector<Model::Album*>& albums, Player::Playlist& playlist, Player::IPlayer& player);
+		void SortAndCreate(std::vector<const Model::Album*>& albums, Player::Playlist& playlist, Player::IPlayer& player);
 	};
 }
 }

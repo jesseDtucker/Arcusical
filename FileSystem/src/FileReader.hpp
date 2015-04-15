@@ -26,7 +26,7 @@ namespace FileSystem
 	class FileReader : public IFileReader
 	{
 	public:
-		FileReader(IFilePtr file, unsigned int bufferSize = 65536);
+		FileReader(const IFilePtr file, unsigned int bufferSize = 65536);
 		FileReader(const FileReader&) = delete;
 		FileReader& operator=(const FileReader&) = delete;
 
@@ -52,7 +52,7 @@ namespace FileSystem
 		long long m_bytesReadFromFile;
 		long long m_totalBytes;
 
-		IFilePtr m_file;
+		const IFilePtr m_file;
 	};
 
 	//////////////////////////////////////////////////////////////////////////
@@ -60,7 +60,7 @@ namespace FileSystem
 	//////////////////////////////////////////////////////////////////////////
 
 	template<typename IFilePtr>
-	FileReader<IFilePtr>::FileReader(IFilePtr file, unsigned int bufferSize)
+	FileReader<IFilePtr>::FileReader(const IFilePtr file, unsigned int bufferSize)
 		: IFileReader()
 		, m_file(file)
 		, m_bufferSize(bufferSize)

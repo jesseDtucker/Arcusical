@@ -38,5 +38,8 @@
     <ClCompile Include="src\Album.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\MusicTypes.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

@@ -34,8 +34,8 @@ MusicSearcher::MusicSearcher(LocalMusicCache* musicCache)
 
 void FindSongs(const wstring& searchTerm, SearchResult& result, LocalMusicCache& cache)
 {
-	std::vector<Song*> songsThatStartWith;
-	std::vector<Song*> songsThatContain;
+	std::vector<const Song*> songsThatStartWith;
+	std::vector<const Song*> songsThatContain;
 
 	auto termLength = searchTerm.size();
 
@@ -68,7 +68,7 @@ void FindSongs(const wstring& searchTerm, SearchResult& result, LocalMusicCache&
 	{
 		CHECK_CANCEL;
 
-		next = transform(begin(*songList), end(*songList), next, [](Song* song)
+		next = transform(begin(*songList), end(*songList), next, [](const Song* song)
 		{
 			return *song;
 		});
@@ -78,10 +78,10 @@ void FindSongs(const wstring& searchTerm, SearchResult& result, LocalMusicCache&
 
 void FindAlbums(const wstring& searchTerm, SearchResult& result, LocalMusicCache& cache)
 {
-	std::vector<Album*> albumsThatStartWith;
-	std::vector<Album*> albumsThatContain;
-	std::vector<Album*> startsWithAlbumArtist;
-	std::vector<Album*> containsAlbumArtist;
+	std::vector<const Album*> albumsThatStartWith;
+	std::vector<const Album*> albumsThatContain;
+	std::vector<const Album*> startsWithAlbumArtist;
+	std::vector<const Album*> containsAlbumArtist;
 
 	auto termLength = searchTerm.size();
 
@@ -125,7 +125,7 @@ void FindAlbums(const wstring& searchTerm, SearchResult& result, LocalMusicCache
 	{
 		CHECK_CANCEL;
 
-		next = transform(begin(albumList), end(albumList), next, [](Album* album)
+		next = transform(begin(albumList), end(albumList), next, [](const Album* album)
 		{
 			return *album;
 		});

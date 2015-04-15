@@ -76,14 +76,14 @@ IFolder& Storage::ApplicationFolder()
 	return *s_applicationFolder;
 }
 
-shared_ptr<IFileReader> Storage::GetReader(IFile* file)
+shared_ptr<IFileReader> Storage::GetReader(const IFile* file)
 {
-	return make_shared<FileReader<IFile*>>(file);
+	return make_shared<FileReader<const IFile*>>(file);
 }
 
-shared_ptr<IFileReader> Storage::GetReader(shared_ptr<IFile> file)
+shared_ptr<IFileReader> Storage::GetReader(const shared_ptr<IFile> file)
 {
-	return make_shared<FileReader<shared_ptr<IFile>>>(file);
+	return make_shared<FileReader<const shared_ptr<IFile>>>(file);
 }
 
 shared_ptr<IFile> Storage::LoadFileFromPath(wstring filePath)

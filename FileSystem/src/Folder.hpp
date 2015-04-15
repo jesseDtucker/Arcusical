@@ -18,11 +18,11 @@ namespace FileSystem
 
 		virtual std::wstring GetName() const override;
 		virtual std::wstring GetFullPath() const override;
-		virtual std::shared_ptr<IFolder> GetParent() override;
-		virtual std::vector<std::shared_ptr<IFolder>> GetSubfolders() override;
-		virtual std::vector<std::shared_ptr<IFile>> GetFiles() override;
-		virtual bool ContainsFile(const std::wstring& fileName) override;
-		virtual std::shared_ptr<IFile> GetFile(const std::wstring& fileName) override;
+		virtual std::shared_ptr<IFolder> GetParent() const override;
+		virtual std::vector<std::shared_ptr<IFolder>> GetSubfolders() const override;
+		virtual std::vector<std::shared_ptr<IFile>> GetFiles() const override;
+		virtual bool ContainsFile(const std::wstring& fileName) const override;
+		virtual std::shared_ptr<IFile> GetFile(const std::wstring& fileName) const override;
 
 		virtual std::shared_ptr<IFile> CreateNewFile(const std::wstring& filename) override;
 

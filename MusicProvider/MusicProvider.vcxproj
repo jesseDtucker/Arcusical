@@ -370,7 +370,7 @@
     <ClInclude Include="include\MusicSearcher.hpp" />
     <ClInclude Include="include\SongSelector.hpp" />
     <ClInclude Include="include\MusicProvider.hpp" />
-    <ClInclude Include="src\SongLoader.hpp" />
+    <ClInclude Include="include\SongLoader.hpp" />
     <ClInclude Include="src\targetver.h" />
   </ItemGroup>
   <ItemGroup>

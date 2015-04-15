@@ -14,11 +14,11 @@ namespace FileSystem
 	public:
 		virtual std::wstring GetName() const = 0;
 		virtual std::wstring GetFullPath() const = 0;
-		virtual std::shared_ptr<IFolder> GetParent() = 0;
-		virtual std::vector<std::shared_ptr<IFolder>> GetSubfolders() = 0;
-		virtual std::vector<std::shared_ptr<IFile>> GetFiles() = 0;
-		virtual bool ContainsFile(const std::wstring& fileName) = 0;
-		virtual std::shared_ptr<IFile> GetFile(const std::wstring& fileName) = 0;
+		virtual std::shared_ptr<IFolder> GetParent() const = 0;
+		virtual std::vector<std::shared_ptr<IFolder>> GetSubfolders() const = 0;
+		virtual std::vector<std::shared_ptr<IFile>> GetFiles() const = 0;
+		virtual bool ContainsFile(const std::wstring& fileName) const = 0;
+		virtual std::shared_ptr<IFile> GetFile(const std::wstring& fileName) const = 0;
 
 		virtual std::shared_ptr<IFile> CreateNewFile(const std::wstring& fileName) = 0;
 

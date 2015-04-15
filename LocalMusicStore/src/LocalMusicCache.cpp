@@ -80,7 +80,7 @@ LocalMusicCache::LocalMusicCache()
 	async([this](){this->LoadAlbums(); });
 }
 
-SongCollectionLockedPtr LocalMusicCache::GetLocalSongs()
+SongCollectionLockedPtr LocalMusicCache::GetLocalSongs() const
 {
 	{
 		unique_lock<mutex> lock(m_songsLoadingLock);
@@ -94,7 +94,7 @@ SongCollectionLockedPtr LocalMusicCache::GetLocalSongs()
 	return CreateReadLockedPointer(&m_songsEditLock, &m_localSongs);
 }
 
-AlbumCollectionLockedPtr LocalMusicCache::GetLocalAlbums()
+AlbumCollectionLockedPtr LocalMusicCache::GetLocalAlbums() const
 {
 	{
 		unique_lock<mutex> lock(m_albumsLoadingLock);
@@ -199,7 +199,7 @@ void LocalMusicCache::LoadSongs()
 	m_songLoading.notify_all();
 }
 
-void LocalMusicCache::SaveAlbums()
+void LocalMusicCache::SaveAlbums() const
 {
 	CachedAlbumList cachedAlbums;
 
@@ -228,7 +228,7 @@ void LocalMusicCache::SaveAlbums()
 	}
 }
 
-void LocalMusicCache::SaveSongs()
+void LocalMusicCache::SaveSongs() const
 {
 	CachedSongList cachedSongs;
 
@@ -274,10 +274,10 @@ void FillInCachedAlbumFromModel(CachedAlbum& cachedAlbum, Album& modelAlbum)
 	cachedAlbum.set_imagefile(converter.to_bytes(modelAlbum.GetImageFilePath()));
 
 	// add ids
-	for (const auto& song : *(modelAlbum.GetSongs()))
+	for (const auto& songId : modelAlbum.GetSongIds())
 	{
 		auto songGuid = cachedAlbum.add_songlist();
-		SerializeGuid(songGuid->mutable_rawdata(), song.GetId());
+		SerializeGuid(songGuid->mutable_rawdata(), songId);
 	}
 }
 
@@ -411,7 +411,7 @@ void FillInModelSongFromCached(Song& modelSong, const CachedSong& cachedSong)
 	}
 }
 
-std::unordered_map<boost::uuids::uuid, Song> LocalMusicCache::GetSongsFromIds(const std::set<boost::uuids::uuid>& ids)
+std::unordered_map<boost::uuids::uuid, Song> LocalMusicCache::GetSongsFromIds(const std::set<boost::uuids::uuid>& ids) const
 {
 	std::unordered_map<boost::uuids::uuid, Song> results;
 

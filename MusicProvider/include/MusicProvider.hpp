@@ -4,6 +4,7 @@
 #define MUSIC_PROVIDER_HPP
 
 #include <atomic>
+#include "boost/optional.hpp"
 #include "boost/uuid/uuid.hpp"
 #include <condition_variable>
 #include <memory>
@@ -14,6 +15,7 @@
 
 #include "MusicFinder.hpp"
 #include "MusicTypes.hpp"
+#include "SongLoader.hpp"
 #include "SongSelector.hpp"
 
 namespace FileSystem
@@ -37,8 +39,8 @@ namespace Arcusical
 {
 namespace MusicProvider
 {
-	typedef Util::Delegate<void(Model::SongCollection&)> SongsChangedCallback;
-	typedef Util::Delegate<void(Model::AlbumCollection&)> AlbumsChangedCallback;
+	typedef Util::Delegate<void(const Model::SongCollectionChanges&)> SongsChangedCallback;
+	typedef Util::Delegate<void(const Model::AlbumCollectionChanges&)> AlbumsChangedCallback;
 
 	class MusicProvider final
 	{
@@ -47,26 +49,15 @@ namespace MusicProvider
 		Util::Subscription SubscribeSongs(SongsChangedCallback callback);
 		Util::Subscription SubscribeAlbums(AlbumsChangedCallback callback);
 		SongSelector* GetSongSelector();
-		Model::Album GetAlbum(const std::wstring& name);
+		boost::optional<Model::Album> GetAlbum(const std::wstring& name);
 	private:
 
-		void Unsubscribe(SongsChangedCallback callback);
-		void Unsubscribe(AlbumsChangedCallback callback);
 		void LoadSongs();
 		void LoadAlbums();
-		void PublishSongs();
-		void PublishAlbums();
+		
+		Util::MulticastDelegate<SongsChangedCallback::CB_Type> m_songCallbacks;
+		Util::MulticastDelegate<AlbumsChangedCallback::CB_Type> m_albumCallbacks;
 
-		bool MergeSongCollections(Model::SongCollection& existingSongs, std::vector<std::shared_ptr<FileSystem::IFile>>& locatedFiles);
-		void FixupSongs(std::vector<Model::Song>& newSongs, Model::SongCollection& existingSongs);
-		void AddNewSongToExisting(const Model::Song& newSong, Model::Song& existingSong, std::wstring fullPath);
-		void FixupAlbums(std::vector<Model::Album>& newAlbums);
-		void FixupAlbumImage(Model::Album& album);
-
-		bool MergeAlbumCollections(Model::AlbumCollection& existingAlbums, Model::SongCollection& songs);
-
-		std::set<SongsChangedCallback> m_songCallbackSet;
-		std::set<AlbumsChangedCallback> m_albumCallbackSet;
 		std::mutex m_albumCallbackLock;
 		std::mutex m_songCallbackLock;
 
@@ -74,11 +65,10 @@ namespace MusicProvider
 		LocalMusicStore::MusicFinder m_musicFinder;
 		SongSelector m_songSelector;
 
-		Util::Subscription m_albumSubscription;
+		Util::Subscription m_songSubscription;
 
 		std::vector<std::wstring> m_defaultAlbumImgBag;
 
-		bool m_isLoading = true;
 		bool m_hasSongLoadingBegun = false;
 		bool m_hasAlbumLoadingBegun = false;
 		std::mutex m_isLoadingLock;

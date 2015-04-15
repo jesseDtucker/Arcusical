@@ -36,17 +36,17 @@ namespace LocalMusicStore
 		LocalMusicCache(const LocalMusicCache& rhs);
 		LocalMusicCache& operator=(const LocalMusicCache& rhs);
 
-		Model::SongCollectionLockedPtr GetLocalSongs();
-		Model::AlbumCollectionLockedPtr GetLocalAlbums();
+		Model::SongCollectionLockedPtr GetLocalSongs() const;
+		Model::AlbumCollectionLockedPtr GetLocalAlbums() const;
 
 		void ClearCache();
 		void AddToCache(const std::vector<Model::Album>& albums);
 		void AddToCache(const std::vector<Model::Song>& songs);
 
-		void SaveAlbums();
-		void SaveSongs();
+		void SaveAlbums() const;
+		void SaveSongs() const;
 
-		std::unordered_map<boost::uuids::uuid, Model::Song> GetSongsFromIds(const std::set<boost::uuids::uuid>& ids);
+		virtual std::unordered_map<boost::uuids::uuid, Model::Song> GetSongsFromIds(const std::set<boost::uuids::uuid>& ids) const override;
 
 	private:
 
@@ -59,14 +59,14 @@ namespace LocalMusicStore
 		bool m_areSongsLoaded = false;
 		bool m_areAlbumsLoaded = false;
 
-		std::condition_variable m_songLoading;
-		std::condition_variable m_albumsLoading;
+		mutable std::condition_variable m_songLoading;
+		mutable std::condition_variable m_albumsLoading;
 
-		std::mutex m_songsLoadingLock;
-		std::mutex m_albumsLoadingLock;
+		mutable std::mutex m_songsLoadingLock;
+		mutable std::mutex m_albumsLoadingLock;
 
-		Util::SlimRWLock m_albumsEditLock; // windows read/write locks
-		Util::SlimRWLock m_songsEditLock;
+		mutable Util::SlimRWLock m_albumsEditLock;
+		mutable Util::SlimRWLock m_songsEditLock;
 
 		const static std::wstring ALBUM_CACHE_FILE;
 		const static std::wstring SONG_CACHE_FILE;

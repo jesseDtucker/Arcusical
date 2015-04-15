@@ -30,6 +30,9 @@ namespace Util
 		bool operator>(const Delegate<T>& rhs) const;
 		bool operator>=(const Delegate<T>& rhs)const;
 		bool operator<=(const Delegate<T>& rhs) const;
+
+		typedef T CB_Type;
+
 	private:
 		std::shared_ptr<std::function<T>> m_callback;
 

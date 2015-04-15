@@ -7,8 +7,7 @@
 #include <set>
 #include <string>
 #include <unordered_map>
-#include <vector>
-
+#include <unordered_set>
 #include "boost\uuid\uuid.hpp"
 
 #include "Stream.hpp"
@@ -73,7 +72,7 @@ namespace Model
 		PROP_SET_AND_GET(std::pair<int COMMA int>, TrackNumber);
 		PROP_SET_AND_GET(std::pair<int COMMA int>, DiskNumber);
 
-		PROP_GET(std::vector<AudioFormat>, AvailableFormats);
+		PROP_GET(std::unordered_set<AudioFormat>, AvailableFormats);
 		PROP_GET(std::unordered_map<AudioFormat COMMA SongFile>, Files);
 		void AddFile(const SongFile& songFile);
 

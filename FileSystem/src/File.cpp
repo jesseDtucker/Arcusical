@@ -65,7 +65,7 @@ namespace FileSystem
 		}
 	}
 
-	void File::ReadFromFile(std::vector<unsigned char>& buffer, unsigned int length /* = 0*/, unsigned long long startPosition /* = 0*/)
+	void File::ReadFromFile(std::vector<unsigned char>& buffer, unsigned int length /* = 0*/, unsigned long long startPosition /* = 0*/) const
 	{
 		auto nativeBuffer = NativeBufferWrapper::WrapBuffer(&buffer);
 		auto randomAccessStream = create_task(m_file->OpenReadAsync()).get();
@@ -98,19 +98,19 @@ namespace FileSystem
 		}
 	}
 
-	unsigned long long File::GetFileSize()
+	unsigned long long File::GetFileSize() const
 	{
 		auto propertiesTask = create_task(m_file->GetBasicPropertiesAsync());
 		return propertiesTask.get()->Size;
 	}
 
-	std::shared_ptr<IFolder> File::GetParent()
+	std::shared_ptr<IFolder> File::GetParent() const
 	{
 		auto parent = create_task(m_file->GetParentAsync()).get();
 		return std::make_shared<Folder>(parent);
 	}
 
-	std::vector<unsigned char> File::GetThumbnail(bool allowIcon)
+	std::vector<unsigned char> File::GetThumbnail(bool allowIcon) const
 	{
 		std::vector<unsigned char> buffer;
 

@@ -30,7 +30,7 @@ namespace FileSystem
 		return std::wstring(m_folder->Path->Data());
 	}
 
-	std::vector<std::shared_ptr<IFolder>> Folder::GetSubfolders()
+	std::vector<std::shared_ptr<IFolder>> Folder::GetSubfolders() const
 	{
 		auto subFolders = create_task(m_folder->GetFoldersAsync()).get();
 
@@ -49,7 +49,7 @@ namespace FileSystem
 		return results;
 	}
 
-	std::vector<std::shared_ptr<IFile>> Folder::GetFiles()
+	std::vector<std::shared_ptr<IFile>> Folder::GetFiles() const
 	{
 		auto files = create_task(m_folder->GetFilesAsync()).get();
 
@@ -68,7 +68,7 @@ namespace FileSystem
 		return results;
 	}
 
-	bool Folder::ContainsFile(const std::wstring& fileName)
+	bool Folder::ContainsFile(const std::wstring& fileName) const
 	{
 		// this is ugly... but the existing interface doesn't allow for another option short of getting all files and then checking them individually
 		bool result = false;
@@ -88,7 +88,7 @@ namespace FileSystem
 		return result;
 	}
 
-	std::shared_ptr<IFile> Folder::GetFile(const std::wstring& fileName)
+	std::shared_ptr<IFile> Folder::GetFile(const std::wstring& fileName) const
 	{
 		ARC_ASSERT_MSG(this->ContainsFile(fileName), "Requested a file that doesn't exist! " << fileName.c_str());
 
@@ -96,7 +96,7 @@ namespace FileSystem
 		return std::make_shared<File>(create_task(m_folder->GetFileAsync(winrt_fileName)).get());
 	}
 
-	std::shared_ptr<IFolder> Folder::GetParent()
+	std::shared_ptr<IFolder> Folder::GetParent() const
 	{
 		std::shared_ptr<IFolder> result = nullptr;
 		try

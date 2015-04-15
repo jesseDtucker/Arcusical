@@ -15,12 +15,12 @@ using namespace Arcusical::Player;
 namespace Arcusical {
 namespace ViewModel{
 
-	AlbumListVM::AlbumListVM(AlbumCollection& albums, Playlist& playlist, IPlayer& player)
+	AlbumListVM::AlbumListVM(const AlbumCollection& albums, Playlist& playlist, IPlayer& player)
 	{
-		vector<Album*> albumPtrs;
+		vector<const Album*> albumPtrs;
 		albumPtrs.resize(albums.size());
 
-		transform(begin(albums), end(albums), begin(albumPtrs), [](AlbumCollection::value_type& album)
+		transform(begin(albums), end(albums), begin(albumPtrs), [](const AlbumCollection::value_type& album)
 		{
 			return &album.second;
 		});
@@ -28,12 +28,12 @@ namespace ViewModel{
 		SortAndCreate(albumPtrs, playlist, player);
 	}
 
-	AlbumListVM::AlbumListVM(vector<Album>& albums, Player::Playlist& playlist, Player::IPlayer& player)
+	AlbumListVM::AlbumListVM(const vector<Album>& albums, Player::Playlist& playlist, Player::IPlayer& player)
 	{
-		vector<Album*> albumPtrs;
+		vector<const Album*> albumPtrs;
 		albumPtrs.resize(albums.size());
 
-		transform(begin(albums), end(albums), begin(albumPtrs), [](Album& album)
+		transform(begin(albums), end(albums), begin(albumPtrs), [](const Album& album)
 		{
 			return &album;
 		});
@@ -41,10 +41,10 @@ namespace ViewModel{
 		SortAndCreate(albumPtrs, playlist, player);
 	}
 
-	void AlbumListVM::SortAndCreate(vector<Album*>& albums, Playlist& playlist, IPlayer& player)
+	void AlbumListVM::SortAndCreate(vector<const Album*>& albums, Playlist& playlist, IPlayer& player)
 	{
 		// sort songs in alphabetical order
-		sort(begin(albums), end(albums), [](Album* a, Album* b)
+		sort(begin(albums), end(albums), [](const Album* a, const Album* b)
 		{
 			return a->GetTitle() < b->GetTitle();
 		});

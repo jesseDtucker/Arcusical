@@ -98,9 +98,14 @@ void MainPage::SetupTransportControls(IPlayer* player)
 			{
 				ARC_ASSERT(m_musicProvider != nullptr);
 				auto album = m_musicProvider->GetAlbum(newSong.GetAlbumName());
-				auto imagePath = album.GetImageFilePath();
+				wstring imagePath;
+				if (album)
+				{
+					imagePath = album->GetImageFilePath();
+				}
+				
 
-				if (imagePath.size() == 0)
+				if (!album || imagePath.size() == 0)
 				{
 					auto defaultAlbumImg = ref new Uri("ms-appx:///Assets/DefaultAlbumBackgrounds/default_cyan.png");
 					displayUpdater->Thumbnail = Windows::Storage::Streams::RandomAccessStreamReference::CreateFromUri(defaultAlbumImg);
@@ -175,7 +180,7 @@ void Arcusical::MainPage::SetDependencies(	MusicSearcher* musicSearcher,
 
 	m_playerVM->VolumeVM = m_volumeSlideVM;
 
-	AlbumsChangedCallback cb = [this](AlbumCollection& albums){ this->OnAlbumsReady(albums); };
+	AlbumsChangedCallback cb = [this](const AlbumCollectionChanges& albums){ this->OnAlbumsReady(*albums.AllAlbums); };
 	m_albumSub = m_musicProvider->SubscribeAlbums(cb);
 
 	v_albumListControl->VM = m_albumListVM;
@@ -193,7 +198,7 @@ void Arcusical::MainPage::SetDependencies(	MusicSearcher* musicSearcher,
 	SetupTransportControls(player);
 }
 
-void Arcusical::MainPage::OnAlbumsReady(Model::AlbumCollection& albums)
+void Arcusical::MainPage::OnAlbumsReady(const Model::AlbumCollection& albums)
 {
 	auto future = Arcusical::DispatchToUI([this, &albums]()
 	{
