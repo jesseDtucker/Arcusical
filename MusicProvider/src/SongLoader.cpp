@@ -129,7 +129,7 @@ wstring SelectMostCommonAlbumArtist(const vector<const Song*>& songs)
 
 	auto m = max_element(begin(counter), end(counter), [](const countMap::value_type&a, const countMap::value_type& b)
 	{
-		return max(a.second, b.second);
+		return a.second < b.second;
 	});
 
 	return m->first;
@@ -842,8 +842,8 @@ vector<const Song*> SongsWithoutAlbums(const AlbumCollection& existingAlbums, co
 
 	set_difference(begin(allNewSongIds),
 		end(allNewSongIds),
-		begin(allNewSongIds),
-		end(allNewSongIds),
+		begin(allAlbumSongIds),
+		end(allAlbumSongIds),
 		back_inserter(songIdsWithoutAlbums));
 
 	vector<const Song*> results;
