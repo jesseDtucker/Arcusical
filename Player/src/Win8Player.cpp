@@ -204,11 +204,12 @@ namespace Player
 				case MF_MEDIA_ENGINE_EVENT_DURATIONCHANGE:
 					m_player->GetDurationChanged()(m_player->GetDuration());
 					break;
+				case MF_MEDIA_ENGINE_EVENT_ERROR:
+					HandleError(param1, param2);
+					break;
 				}
 			}
 		});
-		
-		ARC_ASSERT(event != MF_MEDIA_ENGINE_EVENT_ERROR);
 
 		return S_OK;
 	}
@@ -254,5 +255,32 @@ namespace Player
 		}
 		return E_NOINTERFACE;
 	}
+
+	void MediaEngineNotify::HandleError(DWORD_PTR param1, DWORD param2)
+	{
+		switch (param1)
+		{
+		case MF_MEDIA_ENGINE_ERR_DECODE:
+			HandleDecodeError(param2);
+			break;
+		default:
+			ARC_FAIL("Unhandled media error!");
+			break;
+		}
+	}
+
+	void MediaEngineNotify::HandleDecodeError(DWORD param2)
+	{
+		// Note: cannot use switch because HRESULT_FROM_WIN32 is not constant
+		if (param2 == HRESULT_FROM_WIN32(ERROR_OPLOCK_HANDLE_CLOSED))
+		{
+			m_player->ClearSong();
+		}
+		else
+		{
+			ARC_FAIL("Unhandled HResult");
+		}
+	}
+
 }
 }

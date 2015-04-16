@@ -42,6 +42,9 @@ namespace Player
 			);
 
 	private:
+		void HandleError(DWORD_PTR param1, DWORD param2);
+		void HandleDecodeError(DWORD param2);
+
 		std::atomic<ULONG> m_refCount = 1;
 		Win8Player* m_player = nullptr;
 	};
