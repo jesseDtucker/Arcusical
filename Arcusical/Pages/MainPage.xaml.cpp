@@ -86,26 +86,39 @@ void MainPage::SetupTransportControls(IPlayer* player)
 			}
 		};
 
-		m_songChangedSub = player->GetSongChanged() += [this, mediaControl](const Song& newSong)
+		m_songChangedSub = player->GetSongChanged() += [this, mediaControl](const boost::optional<Song>& newSong)
 		{
 			auto displayUpdater = mediaControl->DisplayUpdater;
 
 			displayUpdater->Type = MediaPlaybackType::Music;
-			displayUpdater->MusicProperties->Title = ref new Platform::String(newSong.GetTitle().c_str());
-			displayUpdater->MusicProperties->Artist = ref new Platform::String(newSong.GetArtist().c_str());
+			if (newSong)
+			{
+				displayUpdater->MusicProperties->Title = ref new Platform::String(newSong->GetTitle().c_str());
+				displayUpdater->MusicProperties->Artist = ref new Platform::String(newSong->GetArtist().c_str());
+			}
+			else
+			{
+				displayUpdater->MusicProperties->Title = "";
+				displayUpdater->MusicProperties->Artist = "";
+			}
+			
 
 			std::async([this, newSong, displayUpdater]()
 			{
 				ARC_ASSERT(m_musicProvider != nullptr);
-				auto album = m_musicProvider->GetAlbum(newSong.GetAlbumName());
+
 				wstring imagePath;
-				if (album)
+				if (newSong)
 				{
-					imagePath = album->GetImageFilePath();
+					auto album = m_musicProvider->GetAlbum(newSong->GetAlbumName());
+					if (album)
+					{
+						imagePath = album->GetImageFilePath();
+					}
 				}
 				
 
-				if (!album || imagePath.size() == 0)
+				if (imagePath.size() == 0)
 				{
 					auto defaultAlbumImg = ref new Uri("ms-appx:///Assets/DefaultAlbumBackgrounds/default_cyan.png");
 					displayUpdater->Thumbnail = Windows::Storage::Streams::RandomAccessStreamReference::CreateFromUri(defaultAlbumImg);

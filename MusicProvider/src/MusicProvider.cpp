@@ -51,7 +51,7 @@ SongCollectionChanges CreateSongCollectionDelta(const boost::optional<SongMergeR
 	return move(result);
 }
 
-AlbumCollectionChanges CreateSongCollectionDelta(const boost::optional<AlbumMergeResult>& mergeResults,
+AlbumCollectionChanges CreateAlbumCollectionDelta(const boost::optional<AlbumMergeResult>& mergeResults,
 												 AlbumCollectionLockedPtr&& albums)
 {
 	AlbumCollectionChanges result;
@@ -103,7 +103,7 @@ void PublishAlbums(const CB& cb,
 		return;
 	}
 
-	auto changes = CreateSongCollectionDelta(mergeResults, move(albums));
+	auto changes = CreateAlbumCollectionDelta(mergeResults, move(albums));
 
 	unique_lock<mutex> callbackLock(lock);
 	cb(changes);
@@ -184,7 +184,6 @@ void MusicProvider::LoadSongs()
 		auto songs = m_musicCache->GetLocalSongs();
 		PublishSongs(m_songCallbacks, move(songs), m_songCallbackLock);
 	}
-	
 
 	SongMergeResult mergedSongs;
 	{

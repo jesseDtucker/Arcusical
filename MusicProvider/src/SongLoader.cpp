@@ -831,7 +831,7 @@ vector<const Song*> SongsWithoutAlbums(const AlbumCollection& existingAlbums, co
 	for (auto& album : existingAlbums)
 	{
 		auto& ids = album.second.GetSongIds();
-		allNewSongIds.insert(end(allNewSongIds), begin(ids), end(ids));
+		allAlbumSongIds.insert(end(allAlbumSongIds), begin(ids), end(ids));
 	}
 
 	sort(begin(allNewSongIds), end(allNewSongIds));

@@ -60,6 +60,9 @@
     <ClInclude Include="include\LockHelper.hpp">
       <Filter>include</Filter>
     </ClInclude>
+    <ClInclude Include="include\Exceptions.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Subscription.cpp">

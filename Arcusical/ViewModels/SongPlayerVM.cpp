@@ -59,9 +59,10 @@ namespace Arcusical
 				});
 			};
 
-			m_songChangedSub = m_player.GetSongChanged() += [this](const Song& newSong)
+			m_songChangedSub = m_player.GetSongChanged() += [this](const boost::optional<Song>& newSong)
 			{
-				SongVM^ curSong = ref new SongVM(newSong, m_playlist, m_player);
+				Song song = newSong ? *newSong : Song();
+				SongVM^ curSong = ref new SongVM(song, m_playlist, m_player);
 				DispatchToUI([this, curSong]()
 				{
 					CurrentSong = curSong;

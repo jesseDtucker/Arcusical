@@ -2,6 +2,7 @@
 #ifndef IPLAYER_HPP
 #define IPLAYER_HPP
 
+#include "boost/optional.hpp"
 #include <memory>
 
 #include "MulticastDelegate.hpp"
@@ -33,6 +34,7 @@ namespace Player
 
 		virtual void Play() = 0;
 		virtual void Stop() = 0;
+		virtual void ClearSong() = 0;
 
 		virtual double GetDuration() const = 0; // in seconds
 		virtual double GetCurrentTime() const = 0; // in seconds
@@ -45,7 +47,7 @@ namespace Player
 		PROP_GET_EX(Util::MulticastDelegate<void(bool)>, Playing, m_playing, NOT_CONST);
 		PROP_GET_EX(Util::MulticastDelegate<void()>, Ended, m_ended, NOT_CONST);
 		PROP_GET_EX(Util::MulticastDelegate<void(double)>, TimeUpdate, m_timeUpdate, NOT_CONST);
-		PROP_GET_EX(Util::MulticastDelegate<void(const Model::Song&)>, SongChanged, m_songChanged, NOT_CONST);
+		PROP_GET_EX(Util::MulticastDelegate<void(const boost::optional<Model::Song>&)>, SongChanged, m_songChanged, NOT_CONST);
 	};
 }
 }

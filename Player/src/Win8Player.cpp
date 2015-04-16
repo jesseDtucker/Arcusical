@@ -22,7 +22,7 @@ namespace Player
 {
 
 	Win8Player::Win8Player()
-		: m_currentSong()
+		: m_currentSong(boost::none)
 		, m_mediaEngine(nullptr)
 		, m_factory(nullptr)
 		, m_attributes(nullptr)
@@ -76,9 +76,9 @@ namespace Player
 
 	void Win8Player::Play()
 	{
-		if (m_currentSong.HasStream())
+		if (m_currentSong && m_currentSong->HasStream())
 		{
-			auto stream = m_currentSong.GetStream();
+			auto stream = m_currentSong->GetStream();
 			PlayNativeSong(stream);
 		}
 	}
@@ -117,7 +117,7 @@ namespace Player
 
 	void Win8Player::SetSong(const Model::Song& song)
 	{
-		if (m_currentSong != song)
+		if (!m_currentSong || m_currentSong != song)
 		{
 			m_currentSong = song;
 			m_isCurrentSongSetForPlay = false;
@@ -128,7 +128,7 @@ namespace Player
 
 	Model::Song* Win8Player::GetCurrentSong()
 	{
-		return &m_currentSong;
+		return &*m_currentSong;
 	}
 
 	double Win8Player::GetCurrentTime() const
@@ -160,6 +160,12 @@ namespace Player
 	double Win8Player::GetVolume() const
 	{
 		return m_mediaEngine->GetVolume();
+	}
+
+	void Win8Player::ClearSong()
+	{
+		m_currentSong = boost::none;
+		m_songChanged(m_currentSong);
 	}
 
 	//////////////////////////////////////////////////////////////////////////

@@ -375,6 +375,7 @@
     <ClInclude Include="include\CancellationToken.hpp" />
     <ClInclude Include="include\CheckedCasts.hpp" />
     <ClInclude Include="include\Delegate.hpp" />
+    <ClInclude Include="include\Exceptions.hpp" />
     <ClInclude Include="include\Export.hpp" />
     <ClInclude Include="include\InMemoryStream.hpp" />
     <ClInclude Include="include\InterfaceWrapper.hpp" />

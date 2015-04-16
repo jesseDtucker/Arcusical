@@ -57,6 +57,7 @@ namespace Player
 
 		virtual void Play() override;
 		virtual void Stop() override;
+		virtual void ClearSong() override;
 
 		virtual double GetCurrentTime() const override;
 		virtual double GetDuration() const override;
@@ -68,7 +69,7 @@ namespace Player
 	private:
 		void PlayNativeSong(Model::SongStream& stream);
 
-		Model::Song m_currentSong;
+		boost::optional<Model::Song> m_currentSong;
 		MediaEngineNotify m_mediaEngineNotify;
 		bool m_isCurrentSongSetForPlay;
 

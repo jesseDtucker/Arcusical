@@ -2,6 +2,7 @@
 #include <string>
 
 #include "Arc_Assert.hpp"
+#include "Exceptions.hpp"
 #include "IPlayer.hpp"
 #include "MusicProvider.hpp"
 #include "Playlist.hpp"
@@ -40,13 +41,29 @@ namespace Player {
 			auto nextSong = m_SongQueue.back();
 			m_player->SetSong(nextSong);
 			m_SongQueue.pop_back();
-			m_player->Play();
-			m_recentlyPlayed.push_back(nextSong);
-
-			if (m_recentlyPlayed.size() > MAX_HISTORY_SIZE)
+			try
 			{
-				auto newEnd = copy_n(begin(m_recentlyPlayed), MAX_HISTORY_SIZE / 2, begin(m_recentlyPlayed));
-				m_recentlyPlayed.resize(distance(begin(m_recentlyPlayed), newEnd));
+				m_player->Play();
+				m_recentlyPlayed.push_back(nextSong);
+
+				if (m_recentlyPlayed.size() > MAX_HISTORY_SIZE)
+				{
+					auto newEnd = copy_n(begin(m_recentlyPlayed), MAX_HISTORY_SIZE / 2, begin(m_recentlyPlayed));
+					m_recentlyPlayed.resize(distance(begin(m_recentlyPlayed), newEnd));
+				}
+			}
+			catch (Util::NoSongFileAvailable&)
+			{
+				// in this case we are just going to try again if there is more in our current queue
+				// we won't bother using the default 'find more songs' behavior in the case of an error
+				if (!m_SongQueue.empty())
+				{
+					PlayNext();
+				}
+				else
+				{
+					Clear();
+				}
 			}
 		}
 	}
@@ -103,6 +120,7 @@ namespace Player {
 		m_SongQueue = {};
 		m_Shuffle = false;
 		m_wasRecentlyCleared = true;
+		m_player->ClearSong();
 	}
 
 	void Playlist::SelectMoreSongs()

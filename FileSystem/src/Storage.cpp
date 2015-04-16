@@ -147,7 +147,8 @@ bool Storage::IsFile(wstring filePath)
 	}
 	catch (COMException^ ex)
 	{
-		ARC_FAIL("TODO::JT");
+		// files that do not exist are not files
+		ARC_ASSERT_MSG(ex->HResult == HRESULT_FROM_WIN32(ERROR_FILE_NOT_FOUND), "unexpected HRESULT!");
 	}
 		
 	return result;

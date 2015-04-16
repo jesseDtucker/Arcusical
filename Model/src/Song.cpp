@@ -2,17 +2,20 @@
 
 #include <algorithm>
 #include "boost/algorithm/string/predicate.hpp"
+#include "boost/exception/all.hpp"
 #include <limits>
 
-#include "Storage.hpp"
+#include "Exceptions.hpp"
 #include "IFileReader.hpp"
-#include "Song.hpp"
 #include "IFile.hpp"
+#include "Song.hpp"
+#include "Storage.hpp"
 
 #undef max
 #undef min
 
 using namespace std;
+using namespace Util;
 
 namespace Arcusical{
 namespace Model
@@ -70,10 +73,10 @@ namespace Model
 		if (thisDiskNum != MAX_INT || otherDiskNum != MAX_INT)
 		{
 			// they one has a disk number, if they don't match compare those instead of the track number
-			if (thisDiskNum != otherDiskNum)
-			{
-				return thisDiskNum < otherDiskNum;
-			}
+if (thisDiskNum != otherDiskNum)
+{
+	return thisDiskNum < otherDiskNum;
+}
 		}
 
 		if (thisTrackNum != MAX_INT || otherTrackNum != MAX_INT)
@@ -168,14 +171,15 @@ namespace Model
 			auto itr = find(begin(m_AvailableFormats), end(m_AvailableFormats), audioFormat);
 			if (itr != end(m_AvailableFormats))
 			{
-				return audioFormat;
+				auto& songFile = m_Files[audioFormat];
+				if (FileSystem::Storage::FileExists(songFile.filePath))
+				{
+					return audioFormat;
+				}
 			}
 		}
 
-		ARC_FAIL("Failed to determine an audio format!");
-		ARC_ASSERT(this->GetAvailableFormats().size() > 0);
-		// default to whatever is available
-		return *this->GetAvailableFormats().begin();
+		throw NoSongFileAvailable() << errinfo_msg("There are no files available in any format for this song!");
 	}
 }
 }
