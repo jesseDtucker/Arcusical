@@ -126,6 +126,7 @@ void LocalMusicCache::AddToCache(const vector<Album>& albums)
 
 	for (auto& album : albums)
 	{
+		m_localAlbums.erase(album.GetId()); // insert does nothing if the key exists, but I want it to replace no matter what
 		m_localAlbums.insert({ album.GetId(), album });
 	}
 }
@@ -136,8 +137,7 @@ void LocalMusicCache::AddToCache(const vector<Song>& songs)
 
 	for (auto& song : songs)
 	{
-		// add the new elements to it
-		m_localSongs.insert({ song.GetId(), song });;
+		m_localSongs[song.GetId()] = song;
 	}
 }
 
@@ -430,4 +430,24 @@ std::unordered_map<boost::uuids::uuid, Song> LocalMusicCache::GetSongsFromIds(co
 	}
 
 	return results;
+}
+
+void Arcusical::LocalMusicStore::LocalMusicCache::RemoveFromCache(const std::vector<Model::Album>& albums)
+{
+	WriteLock lock(&m_albumsEditLock);
+
+	for (auto& album : albums)
+	{
+		m_localAlbums.erase(album.GetId());
+	}
+}
+
+void Arcusical::LocalMusicStore::LocalMusicCache::RemoveFromCache(const std::vector<Model::Song>& songs)
+{
+	WriteLock lock(&m_songsEditLock);
+
+	for (auto& song : songs)
+	{
+		m_localSongs.erase(song.GetId());
+	}
 }

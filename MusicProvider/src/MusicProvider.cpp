@@ -81,11 +81,6 @@ void PublishSongs(const CB& cb,
 				  mutex& lock,
 				  const boost::optional<SongMergeResult>& mergeResults = boost::none)
 {
-	if (songs->size() == 0)
-	{
-		return;
-	}
-
 	auto changes = CreateSongCollectionDelta(mergeResults, move(songs));
 
 	unique_lock<mutex> callbackLock(lock);
@@ -98,11 +93,6 @@ void PublishAlbums(const CB& cb,
 				   mutex& lock,
 				   const boost::optional<AlbumMergeResult>& mergeResults = boost::none)
 {
-	if (albums->size() == 0)
-	{
-		return;
-	}
-
 	auto changes = CreateAlbumCollectionDelta(mergeResults, move(albums));
 
 	unique_lock<mutex> callbackLock(lock);
@@ -185,11 +175,13 @@ void MusicProvider::LoadSongs()
 		PublishSongs(m_songCallbacks, move(songs), m_songCallbackLock);
 	}
 
+	auto musicFinderResults = musicFinderFuture.get();
 	SongMergeResult mergedSongs;
+	SongMergeResult deletedSongs;
+
 	{
 		// scope is because GetLocalSongs returns a lockedPtr, must release as soon as we are done with it!
 		auto songs = m_musicCache->GetLocalSongs();
-		auto musicFinderResults = musicFinderFuture.get();
 		mergedSongs = MergeSongs(*songs, musicFinderResults);
 	}
 	if (mergedSongs.newSongs.size() > 0 || mergedSongs.modifiedSongs.size() > 0)
@@ -200,7 +192,20 @@ void MusicProvider::LoadSongs()
 		PublishSongs(m_songCallbacks, move(songs), m_songCallbackLock, mergedSongs);
 		m_musicCache->SaveSongs();
 	}
-	// TODO::JT check for deleted songs
+	{
+		auto songs = m_musicCache->GetLocalSongs();
+		deletedSongs = FindDeletedSongs(*songs, musicFinderResults);
+	}
+	if (deletedSongs.modifiedSongs.size() > 0 || deletedSongs.deletedSongs.size() > 0)
+	{
+		m_musicCache->AddToCache(deletedSongs.modifiedSongs);
+		m_musicCache->RemoveFromCache(deletedSongs.deletedSongs);
+		{
+			auto songs = m_musicCache->GetLocalSongs();
+			PublishSongs(m_songCallbacks, move(songs), m_songCallbackLock, deletedSongs);
+		}
+		m_musicCache->SaveSongs();
+	}
 }
 
 void MusicProvider::LoadAlbums()
@@ -215,6 +220,8 @@ void MusicProvider::LoadAlbums()
 	function<void(const SongCollectionChanges&)> songsCallback = [this](const SongCollectionChanges& songs)
 	{
 		AlbumMergeResult mergedAlbums;
+		AlbumMergeResult deletedAlbums;
+
 		{
 			auto albums = m_musicCache->GetLocalAlbums();
 			mergedAlbums = MergeAlbums(*albums, *songs.AllSongs, m_musicCache);
@@ -223,8 +230,25 @@ void MusicProvider::LoadAlbums()
 		{
 			m_musicCache->AddToCache(mergedAlbums.modifiedAlbums);
 			m_musicCache->AddToCache(mergedAlbums.newAlbums);
+			{
+				auto albums = m_musicCache->GetLocalAlbums();
+				PublishAlbums(m_albumCallbacks, move(albums), m_albumCallbackLock, mergedAlbums);
+			}
+			m_musicCache->SaveAlbums();
+		}
+		{
 			auto albums = m_musicCache->GetLocalAlbums();
-			PublishAlbums(m_albumCallbacks, move(albums), m_albumCallbackLock, mergedAlbums);
+			deletedAlbums = FindDeletedAlbums(*albums, *songs.AllSongs);
+		}
+		if (deletedAlbums.modifiedAlbums.size() > 0 || deletedAlbums.deletedAlbums.size() > 0)
+		{
+			m_musicCache->AddToCache(deletedAlbums.modifiedAlbums);
+			m_musicCache->RemoveFromCache(deletedAlbums.deletedAlbums);
+			{
+				auto albums = m_musicCache->GetLocalAlbums();
+				PublishAlbums(m_albumCallbacks, move(albums), m_albumCallbackLock, deletedAlbums);
+			}
+			
 			m_musicCache->SaveAlbums();
 		}
 	};

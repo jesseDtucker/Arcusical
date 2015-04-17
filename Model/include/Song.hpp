@@ -75,6 +75,7 @@ namespace Model
 		PROP_GET(std::unordered_set<AudioFormat>, AvailableFormats);
 		PROP_GET(std::unordered_map<AudioFormat COMMA SongFile>, Files);
 		void AddFile(const SongFile& songFile);
+		void RemoveFile(const std::wstring& path);
 
 		bool HasStream();
 		SongStream GetStream();

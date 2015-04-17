@@ -10,6 +10,7 @@
 #include "boost/functional/hash.hpp"
 #include <cctype>
 #include <codecvt>
+#include <functional>
 #include <ppltasks.h>
 #include <random>
 #include <string>
@@ -610,29 +611,34 @@ DivideSongsResults DivideSongs(const SongCollection& existingSongs,
 }
 
 // join the songs into one
-Song MergeSongs(vector<const Song*> songs)
+Song CombineSongs(const Song* original, const vector<const Song*>& songs)
 {
 	ARC_ASSERT(songs.size() > 0);
 
-	// merge all other songs into the first one
-	Song result = *songs[0];
+	// merge all other songs into the original
+	Song result = *original;
 	for (auto nextSong : songs)
 	{
-		if (nextSong != songs[0]) // ignore the first one, we already have it
+		for (auto& file : nextSong->GetFiles())
 		{
-			for (auto& file : nextSong->GetFiles())
+			auto& existingFormats = result.GetAvailableFormats();
+			// ignoring extra songs that are in the same format
+			if (existingFormats.find(file.first) == end(existingFormats))
 			{
-				auto& existingFormats = result.GetAvailableFormats();
-				// ignoring extra songs that are in the same format
-				if (existingFormats.find(file.first) == end(existingFormats))
-				{
-					result.AddFile(file.second);
-				}
+				result.AddFile(file.second);
 			}
 		}
 	}
 
 	return result;
+}
+Song CombineSongs(const vector<const Song*>& songs)
+{
+	ARC_ASSERT(songs.size() > 0);
+	vector<const Song*> input;
+	input.reserve(songs.size());
+	copy(begin(songs) + 1, end(songs), back_inserter(input));
+	return CombineSongs(songs[0], input);
 }
 
 vector<Song> FlattenNewSongs(const vector<const Song*>& newSongPtrs)
@@ -673,7 +679,7 @@ vector<Song> FlattenNewSongs(const vector<const Song*>& newSongPtrs)
 
 	auto endItr = transform(begin(groups), end(groups), begin(newSongs), [](const vector<const Song*> group)
 	{
-		return MergeSongs(group);
+		return CombineSongs(group);
 	});
 	ARC_ASSERT(endItr == end(newSongs));
 
@@ -699,13 +705,11 @@ vector<Song> FlattenModifiedSongs(const vector<ExistingSongPair>& modifiedSongs)
 	}
 
 	vector<Song> results;
-	results.resize(songMap.size());
+	results.reserve(songMap.size());
 
-	transform(begin(songMap), end(songMap), begin(results), [](const SongMap::value_type& pair)
+	transform(begin(songMap), end(songMap), back_inserter(results), [](const SongMap::value_type& pair)
 	{
-		auto list = pair.second;
-		list.push_back(pair.first);
-		return MergeSongs(list);
+		return CombineSongs(pair.first, pair.second);
 	});
 
 	return results;
@@ -805,15 +809,17 @@ void FixupSongs(vector<Song>& newSongs, const SongCollection& existingSongs)
 SongMergeResult MusicProvider::MergeSongs(const SongCollection& existingSongs, 
 									const vector<shared_ptr<IFile>>& files)
 {
+	SongMergeResult result;
+
 	auto newFiles = GetNewFiles(existingSongs, files);
 	auto songs = LoadSongs(newFiles);
 	auto dividedSongs = DivideSongs(existingSongs, songs); // sort the new songs into completely new songs and songs that match existing songs
-	auto newSongs = FlattenNewSongs(dividedSongs.newSongs);
-	auto modifiedSongs = FlattenModifiedSongs(dividedSongs.newFormatsOfExisting);
+	result.newSongs = FlattenNewSongs(dividedSongs.newSongs);
+	result.modifiedSongs = FlattenModifiedSongs(dividedSongs.newFormatsOfExisting);
 
-	FixupSongs(newSongs, existingSongs);
+	FixupSongs(result.newSongs, existingSongs);
 
-	return { move(newSongs), move(modifiedSongs) };
+	return result;
 }
 
 vector<const Song*> SongsWithoutAlbums(const AlbumCollection& existingAlbums, const SongCollection& songs)
@@ -993,24 +999,241 @@ void FixupAlbumImages(vector<Album>& newAlbums)
 
 AlbumMergeResult MusicProvider::MergeAlbums(const AlbumCollection& existingAlbums, const SongCollection& songs, const Model::IAlbumToSongMapper* mapper)
 {
+	AlbumMergeResult result;
+
 	auto newSongs = SongsWithoutAlbums(existingAlbums, songs);
-	if (newSongs.size() > 0)
+	auto groups = GroupSongsByAlbumTitle(newSongs);
+	auto albumLookup = CreateAlbumLookup(existingAlbums);
+	result.newAlbums = CreateNewAlbums(albumLookup, groups, mapper);
+	result.modifiedAlbums = CreateModifiedAlbums(albumLookup, groups);
+
+	ARC_ASSERT(result.newAlbums.size() + result.modifiedAlbums.size() == groups.size());
+
+	// only need to fix-up new ones, modified ones should be fine as is
+	FixupAlbumImages(result.newAlbums);
+
+	return result;
+}
+
+vector<pair<wstring, const Song*>> DetermineMissingFiles(const SongCollection& existingSongs, const vector<shared_ptr<IFile>>& files)
+{
+	vector<pair<wstring, const Song*>> expectedPaths;
+	vector<pair<wstring, const Song*>> actualPaths;
+
+	expectedPaths.reserve(existingSongs.size()); // won't be enough, but should be close
+	actualPaths.reserve(files.size()); // will be exactly enough
+
+	for (auto& songPair : existingSongs)
 	{
-		auto groups = GroupSongsByAlbumTitle(newSongs);
-		auto albumLookup = CreateAlbumLookup(existingAlbums);
-		auto newAlbums = CreateNewAlbums(albumLookup, groups, mapper);
-		auto modifiedAlbums = CreateModifiedAlbums(albumLookup, groups);
-
-		ARC_ASSERT(newAlbums.size() + modifiedAlbums.size() == groups.size());
-
-		// only need to fix-up new ones, modified ones should be fine as is
-		FixupAlbumImages(newAlbums);
-
-		return{ move(newAlbums), move(modifiedAlbums) };
+		auto& songFiles = songPair.second.GetFiles();
+		transform(begin(songFiles), end(songFiles), back_inserter(expectedPaths), 
+				  [&songPair](const pair<AudioFormat, SongFile>& songFile) -> pair<wstring, const Song*>
+		{
+			return { songFile.second.filePath, &songPair.second};
+		});
 	}
-	else
+	
+	transform(begin(files), end(files), back_inserter(actualPaths), [](const shared_ptr<IFile>& file) -> pair<wstring, const Song*>
 	{
-		// nothing new
-		return{ {}, {} };
+		return{ file->GetFullPath(), nullptr };
+	});
+
+	auto sortPred = [](const pair<wstring, const Song*> a, const pair<wstring, const Song*>& b)
+	{
+		return a.first < b.first;
+	};
+
+	sort(begin(expectedPaths), end(expectedPaths), sortPred);
+	sort(begin(actualPaths), end(actualPaths), sortPred);
+	
+	vector<pair<wstring, const Song*>> results;
+
+	set_difference(begin(expectedPaths), end(expectedPaths), begin(actualPaths), end(actualPaths), 
+				   back_inserter(results), sortPred);
+
+	return results;
+}
+
+vector<pair<const Song*, vector<wstring>>> GroupDeletedSongs(vector<pair<wstring, const Song*>> missingSongs)
+{
+	unordered_map<const Song*, vector<wstring>> groups;
+	for (auto& song : missingSongs)
+	{
+		groups[song.second].push_back(song.first);
 	}
+
+	vector<pair<const Song*, vector<wstring>>> results;
+	results.reserve(groups.size());
+	copy(begin(groups), end(groups), back_inserter(results));
+
+	return results;
+}
+
+vector<Song> CompletelyDeletedSongs(const vector<pair<const Song*, vector<wstring>>>& groups)
+{
+	vector<pair<const Song*, vector<wstring>>> deleted;
+	copy_if(begin(groups), end(groups), back_inserter(deleted), [](const pair<const Song*, vector<wstring>>& group)
+	{
+		// then every file this song references is gone
+		return group.first->GetFiles().size() == group.second.size();
+	});
+
+	vector<Song> results;
+	results.reserve(deleted.size());
+	transform(begin(deleted), end(deleted), back_inserter(results), [](const pair<const Song*, vector<wstring>>& group)
+	{
+		return *group.first;
+	});
+
+	return results;
+}
+
+vector<Song> PartiallyDeletedSongs(const vector<pair<const Song*, vector<wstring>>>& groups)
+{
+	vector<pair<const Song*, vector<wstring>>> modified;
+	copy_if(begin(groups), end(groups), back_inserter(modified), [](const pair<const Song*, vector<wstring>>& group)
+	{
+		// some but not all files for this song are gone
+		return group.first->GetFiles().size() != group.second.size();
+	});
+
+	vector<Song> results;
+	results.reserve(modified.size());
+	transform(begin(modified), end(modified), back_inserter(results), [](const pair<const Song*, vector<wstring>>& pair)
+	{
+		auto song = *pair.first; // take a copy
+		for (auto& path : pair.second)
+		{
+			song.RemoveFile(path);
+		}
+		return song;
+	});
+
+	return results;
+}
+
+SongMergeResult Arcusical::MusicProvider::FindDeletedSongs(const SongCollection& existingSongs, const vector<shared_ptr<IFile>>& files)
+{
+	SongMergeResult result;
+
+	auto missingFiles = DetermineMissingFiles(existingSongs, files);
+	auto groups = GroupDeletedSongs(missingFiles);
+	result.deletedSongs = CompletelyDeletedSongs(groups);
+	result.modifiedSongs = PartiallyDeletedSongs(groups);
+
+	return result;
+}
+
+vector<pair<uuid, const Album*>> DetermineMissingSongs(const AlbumCollection& existingAlbums, const SongCollection& songs)
+{
+	vector<pair<uuid, const Album*>> allAlbumSongIds;
+	vector<pair<uuid, const Album*>> allSongIds;
+	allAlbumSongIds.reserve(songs.size());
+	allSongIds.reserve(songs.size());
+
+	for (auto& album : existingAlbums)
+	{
+		auto ids = album.second.GetSongIds();
+		transform(begin(ids), end(ids), back_inserter(allAlbumSongIds), [&album](const uuid& id) -> pair<uuid, const Album*>
+		{
+			return { id, &album.second };
+		});
+	}
+
+	transform(begin(songs), end(songs), back_inserter(allSongIds), [](const SongCollection::value_type& song) -> pair<uuid, const Album*>
+	{
+		return { song.first, nullptr };
+	});
+
+	auto sortPred = [](const pair<uuid, const Album*>& a, const pair<uuid, const Album*>& b)
+	{
+		return a.first < b.first;
+	};
+
+	sort(begin(allAlbumSongIds), end(allAlbumSongIds), sortPred);
+	sort(begin(allSongIds), end(allSongIds), sortPred);
+
+	vector<pair<uuid, const Album*>> results;
+	set_difference(begin(allAlbumSongIds), end(allAlbumSongIds), begin(allSongIds), end(allSongIds),
+				   back_inserter(results), sortPred);
+
+	return results;
+}
+
+vector<pair<const Album*, vector<uuid>>> GroupDeletedAlbums(const vector<pair<uuid, const Album*>>& missingSongs)
+{
+	unordered_map<const Album*, vector<uuid>> groups;
+	groups.reserve(missingSongs.size()); // over sized, but better than re allocations
+
+	for (auto& pair : missingSongs)
+	{
+		groups[pair.second].push_back(pair.first);
+	}
+
+	vector<pair<const Album*, vector<uuid>>> results;
+	results.reserve(groups.size());
+	copy(begin(groups), end(groups), back_inserter(results));
+
+	return results;
+}
+
+vector<Album> GetDeletedAlbums(const vector<pair<const Album*, vector<uuid>>>& groups)
+{
+	vector<pair<const Album*, vector<uuid>>> deleted;
+	copy_if(begin(groups), end(groups), back_inserter(deleted), [](const pair<const Album*, vector<uuid>>& pair)
+	{
+		// if all songs have been removed the album has been deleted
+		return pair.first->GetSongIds().size() == pair.second.size();
+	});
+	
+	vector<Album> results;
+	results.reserve(deleted.size());
+
+	transform(begin(deleted), end(deleted), back_inserter(results), [](const pair<const Album*, vector<uuid>>& pair)
+	{
+		auto album = *pair.first;
+		album.GetMutableSongIds().clear();
+		return album;
+	});
+
+	return results;
+}
+
+vector<Album> GetPartiallyDeletedAlbums(const vector<pair<const Album*, vector<uuid>>>& groups)
+{
+	vector<pair<const Album*, vector<uuid>>> modified;
+	copy_if(begin(groups), end(groups), back_inserter(modified), [](const pair<const Album*, vector<uuid>>& pair)
+	{
+		// if all songs have been removed the album has been deleted
+		return pair.first->GetSongIds().size() != pair.second.size();
+	});
+
+	vector<Album> results;
+	results.reserve(modified.size());
+
+	transform(begin(modified), end(modified), back_inserter(results), [](const pair<const Album*, vector<uuid>>& pair)
+	{
+		auto album = *pair.first;
+		for (auto& id : pair.second)
+		{
+			album.GetMutableSongIds().erase(id);
+		}
+		return album;
+	});
+
+	return results;
+}
+
+AlbumMergeResult MusicProvider::FindDeletedAlbums(const AlbumCollection& existingAlbums, const SongCollection& songs)
+{
+	AlbumMergeResult result;
+
+	auto missingSongs = DetermineMissingSongs(existingAlbums, songs);
+	auto groups = GroupDeletedAlbums(missingSongs);
+	result.deletedAlbums = GetDeletedAlbums(groups);
+	result.modifiedAlbums = GetPartiallyDeletedAlbums(groups);
+
+	ARC_ASSERT(result.deletedAlbums.size() + result.modifiedAlbums.size() == groups.size());
+
+	return result;
 }

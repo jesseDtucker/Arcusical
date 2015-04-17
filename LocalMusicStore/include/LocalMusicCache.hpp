@@ -42,6 +42,8 @@ namespace LocalMusicStore
 		void ClearCache();
 		void AddToCache(const std::vector<Model::Album>& albums);
 		void AddToCache(const std::vector<Model::Song>& songs);
+		void RemoveFromCache(const std::vector<Model::Album>& albums);
+		void RemoveFromCache(const std::vector<Model::Song>& songs);
 
 		void SaveAlbums() const;
 		void SaveSongs() const;

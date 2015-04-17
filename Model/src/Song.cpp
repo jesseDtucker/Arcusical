@@ -181,5 +181,23 @@ if (thisDiskNum != otherDiskNum)
 
 		throw NoSongFileAvailable() << errinfo_msg("There are no files available in any format for this song!");
 	}
+
+	void Song::RemoveFile(const wstring& path)
+	{
+		vector<pair<AudioFormat, SongFile>> matching;
+		copy_if(begin(m_Files), end(m_Files), back_inserter(matching), [&path](const pair<AudioFormat, SongFile>& file)
+		{
+			return path == file.second.filePath;
+		});
+
+		ARC_ASSERT_MSG(matching.size() > 0, "Attempted to remove a file that isn't part of this song!");
+
+		for (auto& toRemove : matching)
+		{
+			m_AvailableFormats.erase(toRemove.first);
+			m_Files.erase(toRemove.first);
+		}
+	}
+
 }
 }
