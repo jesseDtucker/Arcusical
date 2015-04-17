@@ -3,6 +3,7 @@
 #ifndef SONG_HPP
 #define SONG_HPP
 
+#include "boost\optional.hpp"
 #include <memory>
 #include <set>
 #include <string>
@@ -73,13 +74,13 @@ namespace Model
 		PROP_SET_AND_GET(std::pair<int COMMA int>, DiskNumber);
 
 		PROP_GET(std::unordered_set<AudioFormat>, AvailableFormats);
-		PROP_GET(std::unordered_map<AudioFormat COMMA SongFile>, Files);
+		PROP_GET(std::unordered_map<AudioFormat COMMA std::vector<SongFile>>, Files);
+		size_t GetNumFiles() const;
 		void AddFile(const SongFile& songFile);
 		void RemoveFile(const std::wstring& path);
 
 		bool HasStream();
-		SongStream GetStream();
-		SongStream GetStream(AudioFormat specificFormat);
+		SongStream GetStream(boost::optional<AudioFormat> specificFormat = boost::none);
 
 		bool operator==(const Song& rhs) const;
 		bool operator!=(const Song& rhs) const;
@@ -90,7 +91,7 @@ namespace Model
 		bool operator>=(const Song& other) const;
 		bool operator<=(const Song& other) const;
 	private:
-		AudioFormat DetermineBestFormat();
+		const SongFile* DetermineBestFormat();
 	};
 }
 }

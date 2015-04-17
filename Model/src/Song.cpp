@@ -4,6 +4,7 @@
 #include "boost/algorithm/string/predicate.hpp"
 #include "boost/exception/all.hpp"
 #include <limits>
+#include <numeric>
 
 #include "Exceptions.hpp"
 #include "IFileReader.hpp"
@@ -108,52 +109,91 @@ if (thisDiskNum != otherDiskNum)
 
 	void Song::AddFile(const SongFile& songFile)
 	{
-		auto doesNotHaveFormat = (m_Files.find(songFile.format) == m_Files.end());
-		ARC_ASSERT_MSG(doesNotHaveFormat, "A song can have only one file per encoding!");
-
-		if (doesNotHaveFormat)
+#if _DEBUG
+		auto& filesOfThisFormat = m_Files[songFile.format];
+		auto endItr = find_if(begin(filesOfThisFormat), end(filesOfThisFormat), [&songFile](const SongFile& file)
 		{
-			m_Files[songFile.format] = songFile;
-			m_AvailableFormats.insert(songFile.format);
+			return file.filePath == songFile.filePath;
+		});
+		ARC_ASSERT_MSG(endItr == end(filesOfThisFormat), "Attempted to include 2 copies of the same song file!");
+#endif
+
+		m_Files[songFile.format].push_back(songFile);
+		m_AvailableFormats.insert(songFile.format);
+	}
+
+	const SongFile* FindAvailable(const vector<SongFile>& files)
+	{
+		const SongFile* result = nullptr;
+		auto findItr = find_if(begin(files), end(files), [](const SongFile& file)
+		{
+			return FileSystem::Storage::FileExists(file.filePath);
+		});
+
+		if (findItr != end(files))
+		{
+			result = &*findItr;
 		}
+
+		return result;
 	}
 
 	bool Song::HasStream()
 	{
-		return this->GetFiles().size() > 0;
-	}
+		bool hasStream = false;
 
-	SongStream Song::GetStream()
-	{
-		ARC_ASSERT_MSG(HasStream(), "Cannot get a stream! There are no files associated with this song!");
-		return GetStream(DetermineBestFormat());
-	}
-
-	SongStream Song::GetStream(AudioFormat specificFormat)
-	{
-		ARC_ASSERT_MSG(HasStream(), "Cannot get a stream! There are no files associated with this song!");
-
-		auto isFormatAvailable = find(begin(m_AvailableFormats), end(m_AvailableFormats), specificFormat) != end(m_AvailableFormats);
-		ARC_ASSERT_MSG(isFormatAvailable, "Attempted to get a format that is not available!");
-		// correct the mistake and pick one for the user
-		if (!isFormatAvailable)
+		for (auto& files : m_Files)
 		{
-			specificFormat = DetermineBestFormat();
+			auto file = FindAvailable(files.second);
+			hasStream = (file != nullptr);
+			if (hasStream)
+			{
+				break;
+			}
 		}
 
-		auto& songFile = m_Files[specificFormat];
-		auto file = FileSystem::Storage::LoadFileFromPath(songFile.filePath);
+		return hasStream;
+	}
+
+	SongStream Song::GetStream(boost::optional<AudioFormat> specificFormat)
+	{
+		const SongFile* songFile = nullptr;
+
+		if (specificFormat)
+		{
+			auto isFormatAvailable = find(begin(m_AvailableFormats), end(m_AvailableFormats), specificFormat) != end(m_AvailableFormats);
+			ARC_ASSERT_MSG(isFormatAvailable, "Attempted to get a format that is not available!");
+			
+			if (isFormatAvailable)
+			{
+				auto& files = m_Files[*specificFormat];
+				songFile = FindAvailable(files);
+			}
+		}
+
+		// if we haven't got a song file yet the format that was specified is likely not available, just pick one for the caller
+		if (songFile == nullptr)
+		{
+			songFile = DetermineBestFormat();
+		}
+
+		if (songFile == nullptr)
+		{
+			throw NoSongFileAvailable() << errinfo_msg("There are no files available in any format for this song!");
+		}
+
+		auto file = FileSystem::Storage::LoadFileFromPath(songFile->filePath);
 		auto fileReader = FileSystem::Storage::GetReader(file);
 
 		SongStream result;
 
-		result.songData = songFile;
+		result.songData = *songFile;
 		result.stream = static_pointer_cast<Util::Stream>(fileReader);
 
 		return result;
 	}
 
-	AudioFormat Song::DetermineBestFormat()
+	const SongFile* Song::DetermineBestFormat()
 	{
 		// try and select what I think the best format is likely to be
 		// assuming lossless is best, followed by AAC followed by mp3
@@ -171,10 +211,12 @@ if (thisDiskNum != otherDiskNum)
 			auto itr = find(begin(m_AvailableFormats), end(m_AvailableFormats), audioFormat);
 			if (itr != end(m_AvailableFormats))
 			{
-				auto& songFile = m_Files[audioFormat];
-				if (FileSystem::Storage::FileExists(songFile.filePath))
+				auto& songFiles = m_Files[audioFormat];
+				auto result = FindAvailable(songFiles);
+
+				if (result != nullptr)
 				{
-					return audioFormat;
+					return result;
 				}
 			}
 		}
@@ -184,19 +226,50 @@ if (thisDiskNum != otherDiskNum)
 
 	void Song::RemoveFile(const wstring& path)
 	{
-		vector<pair<AudioFormat, SongFile>> matching;
-		copy_if(begin(m_Files), end(m_Files), back_inserter(matching), [&path](const pair<AudioFormat, SongFile>& file)
+		// a little involved... the songs are stored by their format then a list of files that match the format
+		for (auto& files : m_Files)
 		{
-			return path == file.second.filePath;
+			// should just be a remove_if...
+			vector<vector<SongFile>::iterator> toDelete;
+			for (auto cur = begin(files.second); cur != end(files.second); ++cur)
+			{
+				if (cur->filePath == path)
+				{
+					toDelete.push_back(cur);
+				}
+			}
+			for (auto& itr : toDelete)
+			{
+				files.second.erase(itr);
+			}
+		}
+
+		// once the files of that path have been cleaned out delete any formats that no longer have
+		// any files backing them
+		vector<AudioFormat> emptyFormats;
+		for (auto format : m_Files)
+		{
+			if (format.second.size() == 0)
+			{
+				emptyFormats.push_back(format.first);
+			}
+		}
+
+		for (auto& format : emptyFormats)
+		{
+			m_AvailableFormats.erase(format);
+			m_Files.erase(format);
+		}
+	}
+
+	size_t Song::GetNumFiles() const
+	{
+		auto songCount = accumulate(begin(m_Files), end(m_Files), size_t(0), [](size_t acc, const pair<AudioFormat, vector<SongFile>>& files)
+		{
+			return acc + files.second.size();
 		});
 
-		ARC_ASSERT_MSG(matching.size() > 0, "Attempted to remove a file that isn't part of this song!");
-
-		for (auto& toRemove : matching)
-		{
-			m_AvailableFormats.erase(toRemove.first);
-			m_Files.erase(toRemove.first);
-		}
+		return songCount;
 	}
 
 }

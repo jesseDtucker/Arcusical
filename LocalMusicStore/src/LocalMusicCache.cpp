@@ -303,35 +303,38 @@ void FillInCachedSongFromModel(CachedSong& cachedSong, const Song& modelSong)
 	cachedSong.set_disknumber(modelSong.GetDiskNumber().first);
 	cachedSong.set_maxdisknumber(modelSong.GetDiskNumber().second);
 
-	for (const auto& file : modelSong.GetFiles())
+	for (const auto& files : modelSong.GetFiles())
 	{
-		auto songFile = cachedSong.add_files();
+		for (auto& file : files.second)
+		{
+			auto songFile = cachedSong.add_files();
 
-		auto cacheEncoding = MODEL_ENCODING_TO_CACHE.find(file.first);
-		ARC_ASSERT_MSG(cacheEncoding != end(MODEL_ENCODING_TO_CACHE), "Attempted to cache a format that doesn't have any cache equivelent!");
-		if (cacheEncoding != end(MODEL_ENCODING_TO_CACHE))
-		{
-			songFile->set_encoding((*cacheEncoding).second);
-		}
-		else
-		{
-			songFile->set_encoding(UNKNOWN_ENCODING);
-		}
+			auto cacheEncoding = MODEL_ENCODING_TO_CACHE.find(files.first);
+			ARC_ASSERT_MSG(cacheEncoding != end(MODEL_ENCODING_TO_CACHE), "Attempted to cache a format that doesn't have any cache equivelent!");
+			if (cacheEncoding != end(MODEL_ENCODING_TO_CACHE))
+			{
+				songFile->set_encoding((*cacheEncoding).second);
+			}
+			else
+			{
+				songFile->set_encoding(UNKNOWN_ENCODING);
+			}
 
-		auto cacheContainer = MODEL_CONTAINER_TO_CACHE.find(file.second.container);
-		if (cacheContainer != end(MODEL_CONTAINER_TO_CACHE))
-		{
-			songFile->set_container((*cacheContainer).second);
+			auto cacheContainer = MODEL_CONTAINER_TO_CACHE.find(file.container);
+			if (cacheContainer != end(MODEL_CONTAINER_TO_CACHE))
+			{
+				songFile->set_container((*cacheContainer).second);
+			}
+			else
+			{
+				songFile->set_container(UNKNOWN_CONTAINER);
+			}
+
+			songFile->set_file(converter.to_bytes(file.filePath));
+			songFile->set_bitrate(file.bitRate);
+			songFile->set_samplesize(file.sampleSize);
+			songFile->set_channelcount(file.channelCount);
 		}
-		else
-		{
-			songFile->set_container(UNKNOWN_CONTAINER);
-		}
-				
-		songFile->set_file(converter.to_bytes(file.second.filePath));
-		songFile->set_bitrate(file.second.bitRate);
-		songFile->set_samplesize(file.second.sampleSize);
-		songFile->set_channelcount(file.second.channelCount);
 	}
 }
 

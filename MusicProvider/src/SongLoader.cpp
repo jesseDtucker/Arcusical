@@ -270,11 +270,11 @@ wstring LoadAlbumImage(const vector<const Song*>& songs, const wstring& albumNam
 	files.reserve(songs.size()); // each song may have multiple files, but this will at least be a reasonable first guess
 	for (auto& song : songs)
 	{
-		auto& songFiles = song->GetFiles();
-		transform(begin(songFiles), end(songFiles), back_inserter(files), [](const pair<AudioFormat, SongFile>& file)
+		auto& songFileFormats = song->GetFiles();
+		for (auto& songFiles : songFileFormats)
 		{
-			return file.second;
-		});
+			copy(begin(songFiles.second), end(songFiles.second), back_inserter(files));
+		}
 	}
 
 	wstring filePath = L"";
@@ -537,7 +537,11 @@ vector<IFile*> GetNewFiles(const SongCollection& existingSongs,
 	{
 		for (const auto& songFile : song.second.GetFiles())
 		{
-			existingSongFiles.insert(songFile.second.filePath);
+			auto& files = songFile.second;
+			transform(begin(files), end(files), inserter(existingSongFiles, begin(existingSongFiles)), [](const SongFile& file)
+			{
+				return file.filePath;
+			});
 		}
 	}
 
@@ -613,19 +617,15 @@ DivideSongsResults DivideSongs(const SongCollection& existingSongs,
 // join the songs into one
 Song CombineSongs(const Song* original, const vector<const Song*>& songs)
 {
-	ARC_ASSERT(songs.size() > 0);
-
 	// merge all other songs into the original
 	Song result = *original;
 	for (auto nextSong : songs)
 	{
-		for (auto& file : nextSong->GetFiles())
+		for (auto& files : nextSong->GetFiles())
 		{
-			auto& existingFormats = result.GetAvailableFormats();
-			// ignoring extra songs that are in the same format
-			if (existingFormats.find(file.first) == end(existingFormats))
+			for (auto& file : files.second)
 			{
-				result.AddFile(file.second);
+				result.AddFile(file);
 			}
 		}
 	}
@@ -749,23 +749,26 @@ void FixupAlbumName(Song& song, const vector<Song>& newSongs, const SongCollecti
 
 		// firstly we'll take each file and determine a common base directory
 		wstring basePath = L"";
-		for (auto& audioFile : song.GetFiles())
+		for (auto& audioFileList : song.GetFiles())
 		{
-			auto path = audioFile.second.filePath;
-			if (basePath.size() == 0)
+			for (auto& audioFile : audioFileList.second)
 			{
-				basePath = path;
-			}
-			else
-			{
-				auto length = min(basePath.size(), path.size());
-				for (unsigned int i = 0; i < length; ++i)
+				auto path = audioFile.filePath;
+				if (basePath.size() == 0)
 				{
-					if (basePath[i] != path[i])
+					basePath = path;
+				}
+				else
+				{
+					auto length = min(basePath.size(), path.size());
+					for (unsigned int i = 0; i < length; ++i)
 					{
-						// cut the string at this point
-						basePath = basePath.substr(0, i);
-						break;
+						if (basePath[i] != path[i])
+						{
+							// cut the string at this point
+							basePath = basePath.substr(0, i);
+							break;
+						}
 					}
 				}
 			}
@@ -1025,12 +1028,16 @@ vector<pair<wstring, const Song*>> DetermineMissingFiles(const SongCollection& e
 
 	for (auto& songPair : existingSongs)
 	{
-		auto& songFiles = songPair.second.GetFiles();
-		transform(begin(songFiles), end(songFiles), back_inserter(expectedPaths), 
-				  [&songPair](const pair<AudioFormat, SongFile>& songFile) -> pair<wstring, const Song*>
+		auto& formats = songPair.second.GetFiles();
+		for (auto& songFiles : formats)
 		{
-			return { songFile.second.filePath, &songPair.second};
-		});
+			transform(begin(songFiles.second), end(songFiles.second), back_inserter(expectedPaths),
+				[&songPair](const SongFile& songFile) -> pair < wstring, const Song* >
+			{
+				return{ songFile.filePath, &songPair.second };
+			});
+		}
+		
 	}
 	
 	transform(begin(files), end(files), back_inserter(actualPaths), [](const shared_ptr<IFile>& file) -> pair<wstring, const Song*>
@@ -1075,7 +1082,7 @@ vector<Song> CompletelyDeletedSongs(const vector<pair<const Song*, vector<wstrin
 	copy_if(begin(groups), end(groups), back_inserter(deleted), [](const pair<const Song*, vector<wstring>>& group)
 	{
 		// then every file this song references is gone
-		return group.first->GetFiles().size() == group.second.size();
+		return group.first->GetNumFiles() == group.second.size();
 	});
 
 	vector<Song> results;
@@ -1093,8 +1100,8 @@ vector<Song> PartiallyDeletedSongs(const vector<pair<const Song*, vector<wstring
 	vector<pair<const Song*, vector<wstring>>> modified;
 	copy_if(begin(groups), end(groups), back_inserter(modified), [](const pair<const Song*, vector<wstring>>& group)
 	{
-		// some but not all files for this song are gone
-		return group.first->GetFiles().size() != group.second.size();
+		// the only some of the files this song referenced are gone
+		return group.first->GetNumFiles() != group.second.size();
 	});
 
 	vector<Song> results;
