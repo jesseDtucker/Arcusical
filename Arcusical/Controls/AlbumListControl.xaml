@@ -98,17 +98,15 @@
 		</Style>
 	</UserControl.Resources>
 	<Grid>
-		<ScrollViewer>
-			<ListView Height="Auto"  ItemsSource="{Binding Path=AlbumList.Albums}" 
+		<ListView Height="Auto"  ItemsSource="{Binding Path=AlbumList.Albums}" 
 						  Style="{StaticResource AlbumListStyle}"
 						  ItemClick="AlbumClicked" IsItemClickEnabled="True">
-				<ListView.ItemContainerStyle>
-					<Style TargetType="ListViewItem">
-						<Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-						<Setter Property="Height" Value="250"/>
-					</Style>
-				</ListView.ItemContainerStyle>
-			</ListView>
-		</ScrollViewer>
+			<ListView.ItemContainerStyle>
+				<Style TargetType="ListViewItem">
+					<Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+					<Setter Property="Height" Value="250"/>
+				</Style>
+			</ListView.ItemContainerStyle>
+		</ListView>
 	</Grid>
 </UserControl>

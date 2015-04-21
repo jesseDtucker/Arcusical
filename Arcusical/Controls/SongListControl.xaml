@@ -33,35 +33,31 @@
 		</ResourceDictionary>
 	</UserControl.Resources>
 	<Grid>
-		<ScrollViewer>
-			<StackPanel>
 				<!--
 				<Button HorizontalAlignment="Stretch" Click="Shuffle_Clicked" 
 							Visibility="{Binding Path=SongList, Converter={StaticResource SongListVisibilityConverter}}">
 					<TextBlock Text="SHUFFLE"/>
 				</Button>
 				-->
-				<ListView Height="Auto" ItemsSource="{Binding SongList.List}" Foreground="Blue"
-						  ItemTemplate="{StaticResource SongListItemTemplate}">
-					<ListView.ItemContainerStyle>
-						<Style TargetType="ListViewItem">
-							<Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-							<Setter Property="VerticalContentAlignment" Value="Stretch"/>
-							<Setter Property="Padding" Value="0" />
-							<Setter Property="Margin" Value="0" />
-							<Setter Property="BorderThickness" Value="0" />
-							<Setter Property="VerticalContentAlignment" Value="Top" />
-							<Setter Property="Template">
-								<Setter.Value>
-									<ControlTemplate TargetType="ListViewItem">
-										<ListViewItemPresenter ContentMargin="0" Padding="0"/>
-									</ControlTemplate>
-								</Setter.Value>
-							</Setter>
-						</Style>
-					</ListView.ItemContainerStyle>
-				</ListView>
-			</StackPanel>
-		</ScrollViewer>
+		<ListView Height="Auto" ItemsSource="{Binding SongList.List}" Foreground="Blue"
+						ItemTemplate="{StaticResource SongListItemTemplate}">
+			<ListView.ItemContainerStyle>
+				<Style TargetType="ListViewItem">
+					<Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+					<Setter Property="VerticalContentAlignment" Value="Stretch"/>
+					<Setter Property="Padding" Value="0" />
+					<Setter Property="Margin" Value="0" />
+					<Setter Property="BorderThickness" Value="0" />
+					<Setter Property="VerticalContentAlignment" Value="Top" />
+					<Setter Property="Template">
+						<Setter.Value>
+							<ControlTemplate TargetType="ListViewItem">
+								<ListViewItemPresenter ContentMargin="0" Padding="0"/>
+							</ControlTemplate>
+						</Setter.Value>
+					</Setter>
+				</Style>
+			</ListView.ItemContainerStyle>
+		</ListView>
 	</Grid>
 </UserControl>
