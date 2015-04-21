@@ -15,8 +15,6 @@ using namespace Windows::UI::Xaml::Data;
 
 using namespace Arcusical::Player;
 
-static const int MAX_SONG_TITLE_LEN = 65;
-
 namespace Arcusical{
 namespace ViewModel {
 
@@ -35,11 +33,6 @@ namespace ViewModel {
 		, m_IsAlternate(false)
 	{
 		auto title = m_song.GetTitle();
-		if (title.length() > MAX_SONG_TITLE_LEN)
-		{
-			title.resize(MAX_SONG_TITLE_LEN);
-			title += L"...";
-		}
 
 		m_Title = ref new Platform::String(title.c_str());
 		m_Artist = ref new Platform::String(m_song.GetArtist().c_str());

@@ -24,7 +24,7 @@
 							<ColumnDefinition Width="60"/>
 						</Grid.ColumnDefinitions>
 						<TextBlock Text="{Binding Title}" VerticalAlignment="Center" Margin="5" FontSize="16"
-							   Foreground="Black" Grid.Column="0"/>
+							   Foreground="Black" Grid.Column="0" TextTrimming="CharacterEllipsis"/>
 						<TextBlock Text="{Binding LengthStr}" VerticalAlignment="Center" Margin="5, 5, 25, 5" FontSize="16"
 							   Foreground="Black" Grid.Column="1"/>
 					</Grid>
