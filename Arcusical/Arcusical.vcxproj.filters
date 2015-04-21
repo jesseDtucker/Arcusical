@@ -50,6 +50,9 @@
     <Filter Include="ViewModels\Controls">
       <UniqueIdentifier>{291031aa-76e9-45fa-8c5c-893098f8c83f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Assets\Misc">
+      <UniqueIdentifier>{94bab9e9-c863-4549-b45a-e57d85767341}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml" />
@@ -339,6 +342,9 @@
     </Image>
     <Image Include="Assets\Icons\Details.png">
       <Filter>Assets\Icons</Filter>
+    </Image>
+    <Image Include="Assets\Misc\CornerGradient.png">
+      <Filter>Assets\Misc</Filter>
     </Image>
   </ItemGroup>
 </Project>

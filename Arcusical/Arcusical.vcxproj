@@ -427,6 +427,7 @@
     <Image Include="Assets\Logo.scale-80.png">
       <DeploymentContent>true</DeploymentContent>
     </Image>
+    <Image Include="Assets\Misc\CornerGradient.png" />
     <Image Include="Assets\SmallLogo.scale-100.png">
       <DeploymentContent>true</DeploymentContent>
     </Image>
