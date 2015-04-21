@@ -17,10 +17,6 @@
 			<GradientStop Color="Black" Offset="-0.7"/>
 			<GradientStop Color="#00000000" Offset="1"/>
 		</LinearGradientBrush>
-		<LinearGradientBrush x:Name="cornerShadow" StartPoint="0,0" EndPoint="1,1">
-			<GradientStop Color="Black" Offset="-0.30"/>
-			<GradientStop Color="#00000000" Offset="0.57"/>
-		</LinearGradientBrush>
 
 		<x:Double x:Key="ItemSize">160</x:Double>
 		<!-- Album Styles-->
@@ -57,7 +53,7 @@
 				</Grid.RowDefinitions>
 				<StackPanel Orientation="Vertical" Grid.Row="0" Grid.Column="0"  Background="White"
 							MaxWidth="{StaticResource ItemSize}">
-					<Image Source="{Binding Path=ImagePath}"/>
+					<Image Source="{Binding Path=ImagePath}" MaxHeight="160"/>
 					<TextBlock HorizontalAlignment="Left"  Text="{Binding Path=Title}" Style="{StaticResource AlbumTitleStyle}"/>
 					<TextBlock HorizontalAlignment="Left"  Text="{Binding Path=Artist}" Style="{StaticResource AlbumArtistStyle}"/>
 				</StackPanel>
