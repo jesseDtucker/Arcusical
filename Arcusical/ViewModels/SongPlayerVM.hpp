@@ -9,6 +9,7 @@
 #include "ViewModels/VolumeSilderVM.hpp"
 
 namespace Arcusical{ namespace Player { class IPlayer; class Playlist; } }
+namespace Arcusical{ namespace MusicProvider { class MusicProvider; } }
 
 namespace Arcusical
 {
@@ -24,8 +25,10 @@ namespace Arcusical
 			PROP_SET_AND_GET_WINRT(SongVM^, CurrentSong);
 			PROP_SET_AND_GET_WINRT(double, AmountPlayed); // seconds
 			PROP_SET_AND_GET_WINRT(double, AmoutRemaining); // seconds
+			PROP_SET_AND_GET_WINRT(double, Length);
 			PROP_SET_AND_GET_WINRT(Platform::Boolean, IsPlaying);
 			PROP_SET_AND_GET_WINRT(ViewModel::VolumeSliderVM^, VolumeVM);
+			PROP_SET_AND_GET_WINRT(Platform::String^, AlbumImagePath);
 
 			void Play();
 			void Pause();
@@ -33,19 +36,20 @@ namespace Arcusical
 			void Next();
 
 		internal:
-			SongPlayerVM(Player::IPlayer& player, Player::Playlist& playlist);
+			SongPlayerVM(Player::IPlayer& player, Player::Playlist& playlist, MusicProvider::MusicProvider& provider);
 
 		private:
 			void UpdateTime(double amountPlayed, double duration);
+			void FetchAlbumArt();
 
 			Util::Subscription m_durationSub;
 			Util::Subscription m_timeUpdateSub;
 			Util::Subscription m_playingSub;
 			Util::Subscription m_songChangedSub;
-			double m_songLength; // seconds
 
 			Player::IPlayer& m_player;
 			Player::Playlist& m_playlist;
+			MusicProvider::MusicProvider& m_provider;
 		};
 	}
 }

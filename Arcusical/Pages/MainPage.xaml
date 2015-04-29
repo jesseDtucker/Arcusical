@@ -25,17 +25,7 @@
 	</Page.Resources>
 
 	<Grid>
-		<Grid.RowDefinitions>
-			<RowDefinition Height="70"/>
-			<RowDefinition Height="*"/>
-		</Grid.RowDefinitions>
-		<Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-			  Grid.Row="0"  Height="70" Background="#0288D1" >
-			<local:SongPlayer HorizontalAlignment="Left" x:Name="v_player"/>
-			<local:Search VerticalAlignment="Center" HorizontalAlignment="Right" 
-						  Margin="15" Width="250" x:Name="v_search"/>
-		</Grid>
-		<Grid Background="#F0F0F0" Grid.Row="1">
+		<Grid Background="#F0F0F0" Margin="0,0,0,70">
 			<Grid.ColumnDefinitions>
 				<ColumnDefinition Width="25*"/>
 				<ColumnDefinition Width="45*"/>
@@ -43,15 +33,10 @@
 			</Grid.ColumnDefinitions>
 			<local:SongListControl Grid.Column="0" x:Name="v_songListControl"/>
 			<local:AlbumListControl Grid.Column="1" x:Name="v_albumListControl" HorizontalAlignment="Center"/>
-			<Grid Width="10" VerticalAlignment="Stretch" Background="{StaticResource shadowBrushVertical}"
-				  Grid.Column="1" HorizontalAlignment="Left"/>
-			<Grid Width="10" VerticalAlignment="Stretch" Background="{StaticResource shadowBrushVerticalReverse}"
-				  Grid.Column="1" HorizontalAlignment="Right"/>
 			<local:SearchResultsControl Grid.Column="2" HorizontalAlignment="Right" 
 										Width="400" x:Name="v_searchResults"/>
 		</Grid>
-		<Grid Grid.Row="1" Height="10" Background="{StaticResource shadowBrush}"
-			  HorizontalAlignment="Stretch" VerticalAlignment="Top"/>
+		<local:BottomBar x:Name="v_bottomBar"  VerticalAlignment="Bottom" HorizontalAlignment="Stretch" MaxHeight="128"/>
 	</Grid>
 
 </Page>

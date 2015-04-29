@@ -322,8 +322,11 @@
     <ClInclude Include="Controls\SearchResultsControl.xaml.h">
       <DependentUpon>Controls\SearchResultsControl.xaml</DependentUpon>
     </ClInclude>
-    <ClInclude Include="Controls\SongPlayer.xaml.h">
-      <DependentUpon>Controls\SongPlayer.xaml</DependentUpon>
+    <ClInclude Include="Controls\PlayerButtons.xaml.h">
+      <DependentUpon>Controls\PlayerButtons.xaml</DependentUpon>
+    </ClInclude>
+    <ClInclude Include="Controls\BottomBar.xaml.h">
+      <DependentUpon>Controls\BottomBar.xaml</DependentUpon>
     </ClInclude>
     <ClInclude Include="Controls\VolumeSilder.xaml.h">
       <DependentUpon>Controls\VolumeSilder.xaml</DependentUpon>
@@ -370,7 +373,10 @@
     <Page Include="Controls\SearchResultsControl.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Controls\SongPlayer.xaml">
+    <Page Include="Controls\PlayerButtons.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\BottomBar.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Controls\VolumeSilder.xaml">
@@ -386,6 +392,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Styles\ButtonStyles.xaml">
+      <DeploymentContent>true</DeploymentContent>
+    </Page>
+    <Page Include="Styles\SongProgressBar.xaml">
       <DeploymentContent>true</DeploymentContent>
     </Page>
     <Page Include="Themes\Generic.xaml" />
@@ -496,8 +505,11 @@
     <ClCompile Include="Controls\SearchResultsControl.xaml.cpp">
       <DependentUpon>Controls\SearchResultsControl.xaml</DependentUpon>
     </ClCompile>
-    <ClCompile Include="Controls\SongPlayer.xaml.cpp">
-      <DependentUpon>Controls\SongPlayer.xaml</DependentUpon>
+    <ClCompile Include="Controls\PlayerButtons.xaml.cpp">
+      <DependentUpon>Controls\PlayerButtons.xaml</DependentUpon>
+    </ClCompile>
+    <ClCompile Include="Controls\BottomBar.xaml.cpp">
+      <DependentUpon>Controls\BottomBar.xaml</DependentUpon>
     </ClCompile>
     <ClCompile Include="Controls\VolumeSilder.xaml.cpp">
       <DependentUpon>Controls\VolumeSilder.xaml</DependentUpon>

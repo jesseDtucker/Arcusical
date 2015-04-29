@@ -1,0 +1,47 @@
+﻿<UserControl
+	x:Class="Arcusical.BottomBar"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:local="using:Arcusical"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	mc:Ignorable="d"
+	d:DesignHeight="128"
+	d:DesignWidth="1920">
+	
+	<UserControl.Resources>
+		<ResourceDictionary>
+			<ResourceDictionary.MergedDictionaries>
+				<ResourceDictionary Source="/Styles/SongProgressBar.xaml"/>
+			</ResourceDictionary.MergedDictionaries>
+		</ResourceDictionary>
+	</UserControl.Resources>
+	<Grid x:Name="v_base">
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="auto" MaxWidth="256"/> <!-- Album Image -->
+			<ColumnDefinition Width="*"/> <!-- Rest of Bar -->
+		</Grid.ColumnDefinitions>
+		<Image Source="{Binding AlbumImagePath}"
+			   Grid.Column="0" HorizontalAlignment="Stretch"/>
+		<Grid Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+			<Grid.RowDefinitions>
+				<RowDefinition Height="50*"/> <!-- Progress Bar -->
+				<RowDefinition Height="50*"/> <!-- Main Body, ie. info, buttons, etc -->
+			</Grid.RowDefinitions>
+			<Slider HorizontalAlignment="Stretch" Grid.Row="0" VerticalAlignment="Bottom"
+					Value="{Binding AmountPlayed}" Maximum="{Binding Length}"
+					Height="10" Style="{StaticResource SongProgressBar}"/>
+			<Grid Grid.Row="1" Background="#1976d2">
+				<StackPanel Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Left"
+							Margin="5" DataContext="{Binding CurrentSong}">
+					<TextBlock Text="{Binding Title}" Foreground="White" FontSize="26"
+							   FontWeight="Bold"/>
+					<TextBlock Text="{Binding AlbumPlusArtist}" Foreground="White"
+							   FontSize="24"/>
+				</StackPanel>
+				<local:PlayerButtons HorizontalAlignment="Center" VerticalAlignment="Stretch"/>
+				<!-- TODO::JT shuffle and volume buttons on the right -->
+			</Grid>
+		</Grid>
+	</Grid>
+</UserControl>

@@ -66,7 +66,6 @@
     <ClCompile Include="Utility\DispatcherHelper.cpp">
       <Filter>Utility</Filter>
     </ClCompile>
-    <ClCompile Include="Controls\SongPlayer.xaml.cpp" />
     <ClCompile Include="Events\SongSelectedEvent.cpp">
       <Filter>Events</Filter>
     </ClCompile>
@@ -115,6 +114,8 @@
     <ClCompile Include="Converters\AlternateConverter.cpp">
       <Filter>Converters</Filter>
     </ClCompile>
+    <ClCompile Include="Controls\PlayerButtons.xaml.cpp" />
+    <ClCompile Include="Controls\BottomBar.xaml.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -128,7 +129,6 @@
     <ClInclude Include="Utility\XamlMacros.hpp">
       <Filter>Utility</Filter>
     </ClInclude>
-    <ClInclude Include="Controls\SongPlayer.xaml.h" />
     <ClInclude Include="Converters\IsPlayingToIconPath.hpp">
       <Filter>Converters</Filter>
     </ClInclude>
@@ -180,6 +180,8 @@
     <ClInclude Include="Converters\AlternateConverter.hpp">
       <Filter>Converters</Filter>
     </ClInclude>
+    <ClInclude Include="Controls\PlayerButtons.xaml.h" />
+    <ClInclude Include="Controls\BottomBar.xaml.h" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest" />
@@ -200,9 +202,6 @@
     <Page Include="Themes\Generic.xaml">
       <Filter>Themes</Filter>
     </Page>
-    <Page Include="Controls\SongPlayer.xaml">
-      <Filter>Controls</Filter>
-    </Page>
     <Page Include="Styles\ButtonStyles.xaml">
       <Filter>Styles</Filter>
     </Page>
@@ -217,6 +216,15 @@
     </Page>
     <Page Include="Controls\SearchResultsControl.xaml">
       <Filter>Controls</Filter>
+    </Page>
+    <Page Include="Controls\PlayerButtons.xaml">
+      <Filter>Controls</Filter>
+    </Page>
+    <Page Include="Controls\BottomBar.xaml">
+      <Filter>Controls</Filter>
+    </Page>
+    <Page Include="Styles\SongProgressBar.xaml">
+      <Filter>Styles</Filter>
     </Page>
   </ItemGroup>
   <ItemGroup>

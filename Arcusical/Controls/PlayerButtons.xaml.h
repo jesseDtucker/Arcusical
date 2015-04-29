@@ -1,13 +1,8 @@
-﻿//
-// SongPlayer.xaml.h
-// Declaration of the SongPlayer class
-//
-
-#pragma once
+﻿#pragma once
 
 #include <memory>
 
-#include "Controls\SongPlayer.g.h"
+#include "Controls\PlayerButtons.g.h"
 #include "ViewModels\SongPlayerVM.hpp"
 #include "Utility\XamlMacros.hpp"
 
@@ -24,10 +19,10 @@ namespace Arcusical
 	}
 
 	[Windows::Foundation::Metadata::WebHostHidden]
-	public ref class SongPlayer sealed
+	public ref class PlayerButtons sealed
 	{
 	public:
-		SongPlayer();
+		PlayerButtons();
 
 		VM_DECLARATION(ViewModel::SongPlayerVM^);
 	private:

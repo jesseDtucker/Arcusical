@@ -12,26 +12,23 @@ using namespace std;
 using namespace Arcusical::Model;
 using namespace Arcusical::Player;
 
+#define UNUSED(x) (void)x;
+
 namespace Arcusical
 {
 	namespace ViewModel
 	{
-		SongPlayerVM::SongPlayerVM(IPlayer& player, Playlist& playlist)
+		SongPlayerVM::SongPlayerVM(IPlayer& player, Playlist& playlist, MusicProvider::MusicProvider& provider)
 			: m_CurrentSong(nullptr)
-			, m_AmountPlayed(0.0f)
-			, m_AmoutRemaining(0.0f)
+			, m_AmountPlayed(0.0)
+			, m_AmoutRemaining(0.0)
+			, m_Length(0.0)
 			, m_IsPlaying(false)
 			, m_player(player)
 			, m_playlist(playlist)
+			, m_provider(provider)
 		{
-			if (Windows::ApplicationModel::DesignMode::DesignModeEnabled)
-			{
-				// early out to not crash the designer
-				return;
-			}
-
 			// listen to the song player and respond to changes in state
-
 			m_durationSub = m_player.GetDurationChanged() += [this](double duration)
 			{
 				DispatchToUI([this, duration]()
@@ -63,9 +60,23 @@ namespace Arcusical
 			{
 				Song song = newSong ? *newSong : Song();
 				SongVM^ curSong = ref new SongVM(song, m_playlist, m_player);
-				DispatchToUI([this, curSong]()
+
+				Platform::String^ imgPath = AlbumImagePath;
+				if (newSong != nullptr)
+				{
+					// TODO::JT Place this constant somewhere else!
+					imgPath = "ms-appx:///Assets/DefaultAlbumBackgrounds/default_cyan.png";
+					auto album = m_provider.GetAlbum(song.GetAlbumName());
+					if (album != nullptr)
+					{
+						imgPath = ref new Platform::String(album->GetImageFilePath().c_str());
+					}
+				}
+
+				DispatchToUI([this, curSong, imgPath]()
 				{
 					CurrentSong = curSong;
+					AlbumImagePath = imgPath;
 				});
 			};
 		}
@@ -104,10 +115,9 @@ namespace Arcusical
 
 		void SongPlayerVM::UpdateTime(double amountPlayed, double duration)
 		{
-			m_songLength = duration;
+			Length = duration;
 			AmountPlayed = amountPlayed;
 			AmoutRemaining = duration - amountPlayed;
 		}
-
 	}
 }

@@ -4,7 +4,7 @@
 //
 
 #include "pch.h"
-#include "SongPlayer.xaml.h"
+#include "PlayerButtons.xaml.h"
 
 #include "Arc_Assert.hpp"
 #include "Events/EventService.hpp"
@@ -29,14 +29,14 @@ using namespace Arcusical::ViewModel;
 
 // The User Control item template is documented at http://go.microsoft.com/fwlink/?LinkId=234236
 
-SongPlayer::SongPlayer()
+PlayerButtons::PlayerButtons()
 {
 	InitializeComponent();
 }
 
-VM_IMPL(SongPlayerVM^, SongPlayer);
+VM_IMPL(SongPlayerVM^, PlayerButtons);
 
-void SongPlayer::PlayPauseButton_Clicked(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
+void PlayerButtons::PlayPauseButton_Clicked(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
 {
 	ARC_ASSERT(VM != nullptr);
 	if (VM->IsPlaying)
@@ -49,13 +49,13 @@ void SongPlayer::PlayPauseButton_Clicked(Platform::Object^ sender, Windows::UI::
 	}
 }
 
-void SongPlayer::Previous_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
+void PlayerButtons::Previous_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
 {
 	ARC_ASSERT(VM != nullptr);
 	VM->Previous();
 }
 
-void SongPlayer::Next_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
+void PlayerButtons::Next_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
 {
 	ARC_ASSERT(VM != nullptr);
 	VM->Next();

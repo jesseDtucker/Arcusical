@@ -48,6 +48,7 @@ namespace Arcusical{ namespace ViewModel {
 
 		PROP_SET_AND_GET_WINRT(Platform::String^, Title);
 		PROP_SET_AND_GET_WINRT(Platform::String^, Artist);
+		PROP_SET_AND_GET_WINRT(Platform::String^, AlbumPlusArtist);
 		PROP_SET_AND_GET_WINRT(int, TrackNumber);
 		PROP_SET_AND_GET_WINRT(Platform::String^, LengthStr);
 		PROP_SET_AND_GET_WINRT(unsigned long long, Length);

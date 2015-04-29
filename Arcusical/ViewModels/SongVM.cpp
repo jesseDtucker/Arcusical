@@ -36,6 +36,7 @@ namespace ViewModel {
 
 		m_Title = ref new Platform::String(title.c_str());
 		m_Artist = ref new Platform::String(m_song.GetArtist().c_str());
+		m_AlbumPlusArtist = m_Artist + " - " + ref new Platform::String(m_song.GetAlbumName().c_str());
 		m_Length = m_song.GetLength();
 		m_TrackNumber = m_song.GetTrackNumber().first;
 

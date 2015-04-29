@@ -9,10 +9,11 @@
 #include "IFile.hpp"
 #include "IPlayer.hpp"
 #include "Controls/AlbumListControl.xaml.h"
+#include "Controls/BottomBar.xaml.h"
 #include "Controls/SongListControl.xaml.h"
 #include "Controls/Search.xaml.h"
 #include "Controls/SearchResultsControl.xaml.h"
-#include "Controls/SongPlayer.xaml.h"
+#include "Controls/PlayerButtons.xaml.h"
 #include "Events/AlbumSelectedEvent.hpp"
 #include "Events/EventService.hpp"
 #include "Playlist.hpp"
@@ -187,7 +188,7 @@ void Arcusical::MainPage::SetDependencies(	MusicSearcher* musicSearcher,
 	m_searchVM = ref new SearchVM(*musicSearcher, *playlist, *player);
 	m_songListVM = ref new SongListControlVM(*playlist);
 	m_albumListVM = ref new AlbumListControlVM();
-	m_playerVM = ref new SongPlayerVM(*player, *playlist);
+	m_playerVM = ref new SongPlayerVM(*player, *playlist, *musicProvider);
 	m_volumeSlideVM = ref new VolumeSliderVM(*player);
 	m_searchResultsVM = ref new SearchResultsVM(m_searchVM, *playlist);
 
@@ -198,8 +199,7 @@ void Arcusical::MainPage::SetDependencies(	MusicSearcher* musicSearcher,
 
 	v_albumListControl->VM = m_albumListVM;
 	v_songListControl->VM = m_songListVM;
-	v_player->VM = m_playerVM;
-	v_search->VM = m_searchVM;
+	v_bottomBar->VM = m_playerVM;
 	v_searchResults->VM = m_searchResultsVM;
 
 	function<void(const Events::AlbumSelectedEvent&)> albumSelctedCB = [this](const Events::AlbumSelectedEvent& ev)
