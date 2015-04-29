@@ -119,5 +119,11 @@ namespace Arcusical
 			AmountPlayed = amountPlayed;
 			AmoutRemaining = duration - amountPlayed;
 		}
+
+		void SongPlayerVM::ChangeTimeTo(double newTime)
+		{
+			m_player.SetCurrentTime(newTime);
+		}
+
 	}
 }

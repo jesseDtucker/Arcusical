@@ -29,8 +29,9 @@
 				<RowDefinition Height="50*"/> <!-- Main Body, ie. info, buttons, etc -->
 			</Grid.RowDefinitions>
 			<Slider HorizontalAlignment="Stretch" Grid.Row="0" VerticalAlignment="Bottom"
-					Value="{Binding AmountPlayed}" Maximum="{Binding Length}"
-					Height="10" Style="{StaticResource SongProgressBar}"/>
+					Value="{Binding Path=AmountPlayed, Mode=TwoWay}" Maximum="{Binding Length}"
+					Height="10" Style="{StaticResource SongProgressBar}"
+					x:Name="v_slider"/>
 			<Grid Grid.Row="1" Background="#1976d2">
 				<StackPanel Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Left"
 							Margin="5" DataContext="{Binding CurrentSong}">

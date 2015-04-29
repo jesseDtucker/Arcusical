@@ -35,6 +35,8 @@ namespace Arcusical
 			void Previous();
 			void Next();
 
+			void ChangeTimeTo(double newTime);
+
 		internal:
 			SongPlayerVM(Player::IPlayer& player, Player::Playlist& playlist, MusicProvider::MusicProvider& provider);
 
