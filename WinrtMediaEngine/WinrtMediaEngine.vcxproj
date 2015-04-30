@@ -133,7 +133,7 @@
     <IgnoreImportLibrary>false</IgnoreImportLibrary>
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\$(MSBuildProjectName)\</OutDir>
     <IntDir>$(ProjectDir)$(Platform)\$(Configuration)\$(MSBuildProjectName)\</IntDir>
-    <IncludePath>$(ProjectDir)include;$(SolutionDir)Util\include;$(SolutionDir)MPEG4Parser\include;$(ProjectDir)..\..\boost_1_56_0;$(SolutionDir)AlacCodec\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)include;$(SolutionDir)Util\include;$(SolutionDir)MPEG4Parser\include;$(SolutionDir)boost\;$(SolutionDir)AlacCodec\include;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)$(Platform)\$(Configuration)\MPEG4Parser\;$(SolutionDir)$(Platform)\$(Configuration)\Util;$(SolutionDir)$(Platform)\$(Configuration)\AlacCodec;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DebugWithCodeAnalysis|Win32'">
@@ -141,7 +141,7 @@
     <IgnoreImportLibrary>false</IgnoreImportLibrary>
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\$(MSBuildProjectName)\</OutDir>
     <IntDir>$(ProjectDir)$(Platform)\$(Configuration)\$(MSBuildProjectName)\</IntDir>
-    <IncludePath>$(ProjectDir)include;$(SolutionDir)Util\include;$(SolutionDir)MPEG4Parser\include;$(ProjectDir)..\..\boost_1_56_0;$(SolutionDir)AlacCodec\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)include;$(SolutionDir)Util\include;$(SolutionDir)MPEG4Parser\include;$(SolutionDir)boost\;$(SolutionDir)AlacCodec\include;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)$(Platform)\$(Configuration)\MPEG4Parser\;$(SolutionDir)$(Platform)\$(Configuration)\Util;$(SolutionDir)$(Platform)\$(Configuration)\AlacCodec;$(LibraryPath)</LibraryPath>
     <RunCodeAnalysis>true</RunCodeAnalysis>
   </PropertyGroup>
@@ -150,21 +150,21 @@
     <IgnoreImportLibrary>false</IgnoreImportLibrary>
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\$(MSBuildProjectName)\</OutDir>
     <IntDir>$(ProjectDir)$(Platform)\$(Configuration)\$(MSBuildProjectName)\</IntDir>
-    <IncludePath>$(ProjectDir)include;$(SolutionDir)Util\include;$(SolutionDir)MPEG4Parser\include;$(ProjectDir)..\..\boost_1_56_0;$(SolutionDir)AlacCodec\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)include;$(SolutionDir)Util\include;$(SolutionDir)MPEG4Parser\include;$(SolutionDir)boost\;$(SolutionDir)AlacCodec\include;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)$(Platform)\$(Configuration)\MPEG4Parser\;$(SolutionDir)$(Platform)\$(Configuration)\Util;$(SolutionDir)$(Platform)\$(Configuration)\AlacCodec;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
     <GenerateManifest>false</GenerateManifest>
     <IgnoreImportLibrary>false</IgnoreImportLibrary>
     <IntDir>$(ProjectDir)$(Platform)\$(Configuration)\$(MSBuildProjectName)\</IntDir>
-    <IncludePath>$(ProjectDir)include;$(SolutionDir)Util\include;$(SolutionDir)MPEG4Parser\include;$(ProjectDir)..\..\boost_1_56_0;$(SolutionDir)AlacCodec\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)include;$(SolutionDir)Util\include;$(SolutionDir)MPEG4Parser\include;$(SolutionDir)boost\;$(SolutionDir)AlacCodec\include;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)$(Platform)\$(Configuration)\MPEG4Parser\;$(SolutionDir)$(Platform)\$(Configuration)\Util;$(SolutionDir)$(Platform)\$(Configuration)\AlacCodec;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DebugWithCodeAnalysis|ARM'">
     <GenerateManifest>false</GenerateManifest>
     <IgnoreImportLibrary>false</IgnoreImportLibrary>
     <IntDir>$(ProjectDir)$(Platform)\$(Configuration)\$(MSBuildProjectName)\</IntDir>
-    <IncludePath>$(ProjectDir)include;$(SolutionDir)Util\include;$(SolutionDir)MPEG4Parser\include;$(ProjectDir)..\..\boost_1_56_0;$(SolutionDir)AlacCodec\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)include;$(SolutionDir)Util\include;$(SolutionDir)MPEG4Parser\include;$(SolutionDir)boost\;$(SolutionDir)AlacCodec\include;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)$(Platform)\$(Configuration)\MPEG4Parser\;$(SolutionDir)$(Platform)\$(Configuration)\Util;$(SolutionDir)$(Platform)\$(Configuration)\AlacCodec;$(LibraryPath)</LibraryPath>
     <RunCodeAnalysis>true</RunCodeAnalysis>
   </PropertyGroup>
@@ -172,21 +172,21 @@
     <GenerateManifest>false</GenerateManifest>
     <IgnoreImportLibrary>false</IgnoreImportLibrary>
     <IntDir>$(ProjectDir)$(Platform)\$(Configuration)\$(MSBuildProjectName)\</IntDir>
-    <IncludePath>$(ProjectDir)include;$(SolutionDir)Util\include;$(SolutionDir)MPEG4Parser\include;$(ProjectDir)..\..\boost_1_56_0;$(SolutionDir)AlacCodec\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)include;$(SolutionDir)Util\include;$(SolutionDir)MPEG4Parser\include;$(SolutionDir)boost\;$(SolutionDir)AlacCodec\include;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)$(Platform)\$(Configuration)\MPEG4Parser\;$(SolutionDir)$(Platform)\$(Configuration)\Util;$(SolutionDir)$(Platform)\$(Configuration)\AlacCodec;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <GenerateManifest>false</GenerateManifest>
     <IgnoreImportLibrary>false</IgnoreImportLibrary>
     <IntDir>$(ProjectDir)$(Platform)\$(Configuration)\$(MSBuildProjectName)\</IntDir>
-    <IncludePath>$(ProjectDir)include;$(SolutionDir)Util\include;$(SolutionDir)MPEG4Parser\include;$(ProjectDir)..\..\boost_1_56_0;$(SolutionDir)AlacCodec\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)include;$(SolutionDir)Util\include;$(SolutionDir)MPEG4Parser\include;$(SolutionDir)boost\;$(SolutionDir)AlacCodec\include;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)$(Platform)\$(Configuration)\MPEG4Parser\;$(SolutionDir)$(Platform)\$(Configuration)\Util;$(SolutionDir)$(Platform)\$(Configuration)\AlacCodec;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DebugWithCodeAnalysis|x64'">
     <GenerateManifest>false</GenerateManifest>
     <IgnoreImportLibrary>false</IgnoreImportLibrary>
     <IntDir>$(ProjectDir)$(Platform)\$(Configuration)\$(MSBuildProjectName)\</IntDir>
-    <IncludePath>$(ProjectDir)include;$(SolutionDir)Util\include;$(SolutionDir)MPEG4Parser\include;$(ProjectDir)..\..\boost_1_56_0;$(SolutionDir)AlacCodec\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)include;$(SolutionDir)Util\include;$(SolutionDir)MPEG4Parser\include;$(SolutionDir)boost\;$(SolutionDir)AlacCodec\include;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)$(Platform)\$(Configuration)\MPEG4Parser\;$(SolutionDir)$(Platform)\$(Configuration)\Util;$(SolutionDir)$(Platform)\$(Configuration)\AlacCodec;$(LibraryPath)</LibraryPath>
     <RunCodeAnalysis>true</RunCodeAnalysis>
   </PropertyGroup>
@@ -194,7 +194,7 @@
     <GenerateManifest>false</GenerateManifest>
     <IgnoreImportLibrary>false</IgnoreImportLibrary>
     <IntDir>$(ProjectDir)$(Platform)\$(Configuration)\$(MSBuildProjectName)\</IntDir>
-    <IncludePath>$(ProjectDir)include;$(SolutionDir)Util\include;$(SolutionDir)MPEG4Parser\include;$(ProjectDir)..\..\boost_1_56_0;$(SolutionDir)AlacCodec\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)include;$(SolutionDir)Util\include;$(SolutionDir)MPEG4Parser\include;$(SolutionDir)boost\;$(SolutionDir)AlacCodec\include;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)$(Platform)\$(Configuration)\MPEG4Parser\;$(SolutionDir)$(Platform)\$(Configuration)\Util;$(SolutionDir)$(Platform)\$(Configuration)\AlacCodec;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">

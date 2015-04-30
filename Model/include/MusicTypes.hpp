@@ -2,6 +2,7 @@
 #ifndef MUSIC_TYPES_HPP
 #define MUSIC_TYPES_HPP
 
+#include "boost\functional\hash.hpp"
 #include "boost\uuid\uuid.hpp"
 #include <memory>
 #include <unordered_map>
@@ -12,14 +13,14 @@
 namespace Arcusical{
 namespace Model
 {
-	typedef std::unordered_map<boost::uuids::uuid, Arcusical::Model::Song> SongCollection;
-	typedef std::unordered_map<boost::uuids::uuid, Arcusical::Model::Album> AlbumCollection;
+	typedef std::unordered_map<boost::uuids::uuid, Arcusical::Model::Song, boost::hash<boost::uuids::uuid>> SongCollection;
+	typedef std::unordered_map<boost::uuids::uuid, Arcusical::Model::Album, boost::hash<boost::uuids::uuid>> AlbumCollection;
 
 	typedef std::unique_ptr<const SongCollection, std::function<void(const SongCollection*)>> SongCollectionLockedPtr;
 	typedef std::unique_ptr<const AlbumCollection, std::function<void(const AlbumCollection*)>> AlbumCollectionLockedPtr;
 
-	typedef std::unordered_map<boost::uuids::uuid, const Arcusical::Model::Song*> SongPtrCollection;
-	typedef std::unordered_map<boost::uuids::uuid, const Arcusical::Model::Album*> AlbumPtrCollection;
+	typedef std::unordered_map<boost::uuids::uuid, const Arcusical::Model::Song*, boost::hash<boost::uuids::uuid>> SongPtrCollection;
+	typedef std::unordered_map<boost::uuids::uuid, const Arcusical::Model::Album*, boost::hash<boost::uuids::uuid>> AlbumPtrCollection;
 
 	struct SongCollectionChanges
 	{

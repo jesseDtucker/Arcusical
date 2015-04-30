@@ -48,7 +48,7 @@ namespace LocalMusicStore
 		void SaveAlbums() const;
 		void SaveSongs() const;
 
-		virtual std::unordered_map<boost::uuids::uuid, Model::Song> GetSongsFromIds(const std::set<boost::uuids::uuid>& ids) const override;
+		virtual Model::SongCollection GetSongsFromIds(const std::set<boost::uuids::uuid>& ids) const override;
 
 	private:
 

@@ -414,9 +414,9 @@ void FillInModelSongFromCached(Song& modelSong, const CachedSong& cachedSong)
 	}
 }
 
-std::unordered_map<boost::uuids::uuid, Song> LocalMusicCache::GetSongsFromIds(const std::set<boost::uuids::uuid>& ids) const
+SongCollection LocalMusicCache::GetSongsFromIds(const std::set<boost::uuids::uuid>& ids) const
 {
-	std::unordered_map<boost::uuids::uuid, Song> results;
+	SongCollection results;
 
 	auto localSongs = GetLocalSongs();
 	ARC_ASSERT_MSG(localSongs != nullptr, "Local songs returned a null ptr! This should never happen!");

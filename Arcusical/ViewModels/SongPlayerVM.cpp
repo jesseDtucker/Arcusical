@@ -62,12 +62,12 @@ namespace Arcusical
 				SongVM^ curSong = ref new SongVM(song, m_playlist, m_player);
 
 				Platform::String^ imgPath = AlbumImagePath;
-				if (newSong != nullptr)
+				if (newSong)
 				{
 					// TODO::JT Place this constant somewhere else!
 					imgPath = "ms-appx:///Assets/DefaultAlbumBackgrounds/default_cyan.png";
 					auto album = m_provider.GetAlbum(song.GetAlbumName());
-					if (album != nullptr)
+					if (album)
 					{
 						imgPath = ref new Platform::String(album->GetImageFilePath().c_str());
 					}

@@ -1,11 +1,12 @@
 #pragma once
 #ifndef IALBUM_TO_SONG_MAPPER
 
+#include "boost\uuid\uuid.hpp"
 #include <memory>
 #include <set>
 #include <unordered_map>
 
-#include "boost\uuid\uuid.hpp"
+#include "MusicTypes.hpp"
 
 namespace Arcusical{
 namespace Model
@@ -18,7 +19,7 @@ namespace Model
 	class IAlbumToSongMapper
 	{
 	public:
-		virtual std::unordered_map<boost::uuids::uuid, Song> GetSongsFromIds(const std::set<boost::uuids::uuid>& ids) const = 0;
+		virtual SongCollection GetSongsFromIds(const std::set<boost::uuids::uuid>& ids) const = 0;
 	};
 	}
 }

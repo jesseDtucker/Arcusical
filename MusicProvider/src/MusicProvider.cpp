@@ -46,9 +46,9 @@ SongCollectionChanges CreateSongCollectionDelta(const boost::optional<SongMergeR
 		});
 	}
 
-	result.AllSongs = move(songs);
+	result.AllSongs = std::move(songs);
 
-	return move(result);
+	return std::move(result);
 }
 
 AlbumCollectionChanges CreateAlbumCollectionDelta(const boost::optional<AlbumMergeResult>& mergeResults,
@@ -70,9 +70,9 @@ AlbumCollectionChanges CreateAlbumCollectionDelta(const boost::optional<AlbumMer
 		});
 	}
 
-	result.AllAlbums = move(albums);
+	result.AllAlbums = std::move(albums);
 
-	return move(result);
+	return std::move(result);
 }
 
 template<typename CB>
@@ -81,7 +81,7 @@ void PublishSongs(const CB& cb,
 				  mutex& lock,
 				  const boost::optional<SongMergeResult>& mergeResults = boost::none)
 {
-	auto changes = CreateSongCollectionDelta(mergeResults, move(songs));
+	auto changes = CreateSongCollectionDelta(mergeResults, std::move(songs));
 
 	unique_lock<mutex> callbackLock(lock);
 	cb(changes);
@@ -93,7 +93,7 @@ void PublishAlbums(const CB& cb,
 				   mutex& lock,
 				   const boost::optional<AlbumMergeResult>& mergeResults = boost::none)
 {
-	auto changes = CreateAlbumCollectionDelta(mergeResults, move(albums));
+	auto changes = CreateAlbumCollectionDelta(mergeResults, std::move(albums));
 
 	unique_lock<mutex> callbackLock(lock);
 	cb(changes);
@@ -126,7 +126,7 @@ Subscription MusicProvider::SubscribeSongs(SongsChangedCallback callback)
 		else
 		{
 			auto songs = m_musicCache->GetLocalSongs();
-			PublishSongs(callback, move(songs), m_songCallbackLock);
+			PublishSongs(callback, std::move(songs), m_songCallbackLock);
 		}
 	}
 
@@ -152,7 +152,7 @@ Subscription MusicProvider::SubscribeAlbums(AlbumsChangedCallback callback)
 		else
 		{
 			auto albums = m_musicCache->GetLocalAlbums();
-			PublishAlbums(callback, move(albums), m_albumCallbackLock);
+			PublishAlbums(callback, std::move(albums), m_albumCallbackLock);
 		}
 	}
 
@@ -172,7 +172,7 @@ void MusicProvider::LoadSongs()
 	// and publish what we have in the cache
 	{
 		auto songs = m_musicCache->GetLocalSongs();
-		PublishSongs(m_songCallbacks, move(songs), m_songCallbackLock);
+		PublishSongs(m_songCallbacks, std::move(songs), m_songCallbackLock);
 	}
 
 	auto musicFinderResults = musicFinderFuture.get();
@@ -189,7 +189,7 @@ void MusicProvider::LoadSongs()
 		m_musicCache->AddToCache(mergedSongs.newSongs);
 		m_musicCache->AddToCache(mergedSongs.modifiedSongs);
 		auto songs = m_musicCache->GetLocalSongs();
-		PublishSongs(m_songCallbacks, move(songs), m_songCallbackLock, mergedSongs);
+		PublishSongs(m_songCallbacks, std::move(songs), m_songCallbackLock, mergedSongs);
 		m_musicCache->SaveSongs();
 	}
 	{
@@ -202,7 +202,7 @@ void MusicProvider::LoadSongs()
 		m_musicCache->RemoveFromCache(deletedSongs.deletedSongs);
 		{
 			auto songs = m_musicCache->GetLocalSongs();
-			PublishSongs(m_songCallbacks, move(songs), m_songCallbackLock, deletedSongs);
+			PublishSongs(m_songCallbacks, std::move(songs), m_songCallbackLock, deletedSongs);
 		}
 		m_musicCache->SaveSongs();
 	}
@@ -213,7 +213,7 @@ void MusicProvider::LoadAlbums()
 	// publish what we have in the cache
 	{
 		auto albums = m_musicCache->GetLocalAlbums();
-		PublishAlbums(m_albumCallbacks, move(albums), m_albumCallbackLock);
+		PublishAlbums(m_albumCallbacks, std::move(albums), m_albumCallbackLock);
 	}
 	
 	// now subscribe to the music search service
@@ -232,7 +232,7 @@ void MusicProvider::LoadAlbums()
 			m_musicCache->AddToCache(mergedAlbums.newAlbums);
 			{
 				auto albums = m_musicCache->GetLocalAlbums();
-				PublishAlbums(m_albumCallbacks, move(albums), m_albumCallbackLock, mergedAlbums);
+				PublishAlbums(m_albumCallbacks, std::move(albums), m_albumCallbackLock, mergedAlbums);
 			}
 			m_musicCache->SaveAlbums();
 		}
@@ -246,7 +246,7 @@ void MusicProvider::LoadAlbums()
 			m_musicCache->RemoveFromCache(deletedAlbums.deletedAlbums);
 			{
 				auto albums = m_musicCache->GetLocalAlbums();
-				PublishAlbums(m_albumCallbacks, move(albums), m_albumCallbackLock, deletedAlbums);
+				PublishAlbums(m_albumCallbacks, std::move(albums), m_albumCallbackLock, deletedAlbums);
 			}
 			
 			m_musicCache->SaveAlbums();

@@ -16,9 +16,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\targetver.h">
-      <Filter>src</Filter>
-    </ClInclude>
     <ClInclude Include="protoc\impl\GUID.pb.h">
       <Filter>protoc</Filter>
     </ClInclude>

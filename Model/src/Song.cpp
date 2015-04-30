@@ -1,11 +1,10 @@
-#include "pch.h"
-
 #include <algorithm>
 #include "boost/algorithm/string/predicate.hpp"
 #include "boost/exception/all.hpp"
 #include <limits>
 #include <numeric>
 
+#include "Arc_Assert.hpp"
 #include "Exceptions.hpp"
 #include "IFileReader.hpp"
 #include "IFile.hpp"

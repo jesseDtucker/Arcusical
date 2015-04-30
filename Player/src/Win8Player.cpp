@@ -1,10 +1,9 @@
-#include "pch.h"
-
 #include <AudioSessionTypes.h>
 #include <cmath>
 #include <future>
 #include <ppltasks.h>
 
+#include "Arc_Assert.hpp"
 #include "Song.hpp"
 #include "Win8Player.hpp"
 

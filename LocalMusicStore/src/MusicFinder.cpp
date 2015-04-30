@@ -1,6 +1,4 @@
-﻿#include "pch.h"
-
-#include <algorithm>
+﻿#include <algorithm>
 #include <future>
 
 #include "MusicFinder.hpp"
