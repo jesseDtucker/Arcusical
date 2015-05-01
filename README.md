@@ -17,6 +17,7 @@ git clone --recursive https://github.com/jesseDtucker/Arcusical.git
 cd boost
 bootstrap.bat
 b2 headers
+cd ..
 Arcusical.sln
 ```
 
