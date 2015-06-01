@@ -12,6 +12,7 @@
 #include <codecvt>
 #include <functional>
 #include <ppltasks.h>
+#include <ppl.h>
 #include <random>
 #include <string>
 #include <unordered_map>
@@ -567,11 +568,12 @@ vector<Song> LoadSongs(vector<IFile*> files)
 {
 	vector<Song> results;
 	results.resize(files.size());
-	auto endItr = transform(begin(files), end(files), begin(results), [](const IFile* file)
+
+	concurrency::parallel_transform(begin(files), end(files), begin(results), [](const IFile* file)
 	{
 		return LoadSong(*file);
 	});
-	ARC_ASSERT(endItr == end(results));
+
 	return results;
 }
 
