@@ -6,6 +6,7 @@
 
 #include "IFile.hpp"
 #include "Export.hpp"
+#include "WorkBuffer.hpp"
 
 namespace FileSystem
 {
@@ -21,6 +22,7 @@ namespace FileSystem
 		virtual std::shared_ptr<IFile> GetFile(const std::wstring& fileName) const = 0;
 
 		virtual std::shared_ptr<IFile> CreateNewFile(const std::wstring& fileName) = 0;
+		virtual std::shared_ptr<Util::WorkBuffer<std::shared_ptr<IFile>>> FindFilesWithExtensions(std::vector<std::wstring> extensions) = 0;
 
 		virtual bool operator==(const IFolder& rhs) const = 0;
 		virtual bool operator!=(const IFolder& rhs) const = 0;

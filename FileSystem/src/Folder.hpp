@@ -25,6 +25,7 @@ namespace FileSystem
 		virtual std::shared_ptr<IFile> GetFile(const std::wstring& fileName) const override;
 
 		virtual std::shared_ptr<IFile> CreateNewFile(const std::wstring& filename) override;
+		virtual std::shared_ptr<Util::WorkBuffer<std::shared_ptr<IFile>>> FindFilesWithExtensions(std::vector<std::wstring> extensions) override;
 
 		virtual bool operator==(const IFolder& rhs) const override;
 		virtual bool operator!=(const IFolder& rhs) const override;

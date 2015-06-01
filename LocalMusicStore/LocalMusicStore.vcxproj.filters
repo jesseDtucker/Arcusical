@@ -31,9 +31,6 @@
     <ClInclude Include="protoc\impl\CachedAlbumList.pb.h">
       <Filter>protoc</Filter>
     </ClInclude>
-    <ClInclude Include="include\MusicFinder.hpp">
-      <Filter>include</Filter>
-    </ClInclude>
     <ClInclude Include="include\LocalMusicCache.hpp">
       <Filter>include</Filter>
     </ClInclude>
@@ -56,9 +53,6 @@
     </ClCompile>
     <ClCompile Include="protoc\impl\CachedAlbumList.pb.cc">
       <Filter>protoc</Filter>
-    </ClCompile>
-    <ClCompile Include="src\MusicFinder.cpp">
-      <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

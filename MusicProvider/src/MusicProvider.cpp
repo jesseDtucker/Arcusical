@@ -10,8 +10,8 @@
 #include "Arc_Assert.hpp"
 #include "Album.hpp"
 #include "IFile.hpp"
+#include "IFolder.hpp"
 #include "LocalMusicCache.hpp"
-#include "MusicFinder.hpp"
 #include "MusicProvider.hpp"
 #include "Song.hpp"
 #include "SongLoader.hpp"
@@ -103,7 +103,6 @@ void PublishAlbums(const CB& cb,
 MusicProvider::MusicProvider(LocalMusicCache* cache)
 	: m_songCallbacks()
 	, m_musicCache(cache)
-	, m_musicFinder()
 	, m_songSelector(m_musicCache)
 { }
 
@@ -166,8 +165,7 @@ SongSelector* MusicProvider::GetSongSelector()
 
 void MusicProvider::LoadSongs()
 {
-	// kick off a concurrent search for files from disk
-	auto musicFinderFuture = m_musicFinder.FindSongs();
+	auto songFiles = FileSystem::Storage::MusicFolder().FindFilesWithExtensions({ L".m4a", L".wav", L".mp3" });
 
 	// and publish what we have in the cache
 	{
@@ -175,9 +173,9 @@ void MusicProvider::LoadSongs()
 		PublishSongs(m_songCallbacks, std::move(songs), m_songCallbackLock);
 	}
 
-	auto musicFinderResults = musicFinderFuture.get();
 	SongMergeResult mergedSongs;
 	SongMergeResult deletedSongs;
+	auto musicFinderResults = songFiles->GetAll();
 
 	{
 		// scope is because GetLocalSongs returns a lockedPtr, must release as soon as we are done with it!

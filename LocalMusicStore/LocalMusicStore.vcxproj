@@ -403,7 +403,6 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="include\MusicFinder.hpp" />
     <ClInclude Include="protoc\impl\CachedAlbum.pb.h" />
     <ClInclude Include="protoc\impl\CachedAlbumList.pb.h" />
     <ClInclude Include="protoc\impl\CachedSong.pb.h" />
@@ -412,7 +411,6 @@
     <ClInclude Include="include\LocalMusicCache.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\MusicFinder.cpp" />
     <ClCompile Include="protoc\impl\CachedAlbum.pb.cc" />
     <ClCompile Include="protoc\impl\CachedAlbumList.pb.cc" />
     <ClCompile Include="protoc\impl\CachedSong.pb.cc" />

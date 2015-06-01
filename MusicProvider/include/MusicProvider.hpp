@@ -13,7 +13,6 @@
 #include <unordered_map>
 #include <vector>
 
-#include "MusicFinder.hpp"
 #include "MusicTypes.hpp"
 #include "SongLoader.hpp"
 #include "SongSelector.hpp"
@@ -62,7 +61,6 @@ namespace MusicProvider
 		std::mutex m_songCallbackLock;
 
 		LocalMusicStore::LocalMusicCache* m_musicCache;
-		LocalMusicStore::MusicFinder m_musicFinder;
 		SongSelector m_songSelector;
 
 		Util::Subscription m_songSubscription;
