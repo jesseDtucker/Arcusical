@@ -1,3 +1,5 @@
+#define NOMINMAX
+
 #include <algorithm>
 #include "boost/algorithm/string/predicate.hpp"
 #include "boost/functional/hash.hpp"
@@ -17,15 +19,15 @@
 #include "SongLoader.hpp"
 #include "Storage.hpp"
 
-#undef max
-#undef min
-
 using namespace Arcusical::LocalMusicStore;
 using namespace Arcusical::Model;
 using namespace Arcusical::MusicProvider;
 using namespace boost::uuids;
 using namespace std;
 using namespace Util;
+
+static const std::chrono::milliseconds TIME_TO_SEARCH{ 1500 };
+static const size_t MAX_SONGS_TO_LOAD_AT_ONCE = 50;
 
 SongCollectionChanges CreateSongCollectionDelta(const boost::optional<SongMergeResult>& mergeResults,
 												SongCollectionLockedPtr&& songs)
@@ -165,7 +167,7 @@ SongSelector* MusicProvider::GetSongSelector()
 
 void MusicProvider::LoadSongs()
 {
-	auto songFiles = FileSystem::Storage::MusicFolder().FindFilesWithExtensions({ L".m4a", L".wav", L".mp3" });
+	auto songFilesWB = FileSystem::Storage::MusicFolder().FindFilesWithExtensions({ L".m4a", L".wav", L".mp3" });
 
 	// and publish what we have in the cache
 	{
@@ -175,24 +177,31 @@ void MusicProvider::LoadSongs()
 
 	SongMergeResult mergedSongs;
 	SongMergeResult deletedSongs;
-	auto musicFinderResults = songFiles->GetAll();
+	decltype(songFilesWB->GetAll()) songFiles;
 
+	while (songFilesWB->ResultsPending())
 	{
-		// scope is because GetLocalSongs returns a lockedPtr, must release as soon as we are done with it!
-		auto songs = m_musicCache->GetLocalSongs();
-		mergedSongs = MergeSongs(*songs, musicFinderResults);
+		auto nextBatch = songFilesWB->WaitAndGet(TIME_TO_SEARCH, MAX_SONGS_TO_LOAD_AT_ONCE);
+
+		{
+			// scope is because GetLocalSongs returns a lockedPtr, must release as soon as we are done with it!
+			auto songs = m_musicCache->GetLocalSongs();
+			mergedSongs = MergeSongs(*songs, nextBatch);
+		}
+		if (mergedSongs.newSongs.size() > 0 || mergedSongs.modifiedSongs.size() > 0)
+		{
+			m_musicCache->AddToCache(mergedSongs.newSongs);
+			m_musicCache->AddToCache(mergedSongs.modifiedSongs);
+			auto songs = m_musicCache->GetLocalSongs();
+			PublishSongs(m_songCallbacks, std::move(songs), m_songCallbackLock, mergedSongs);
+			m_musicCache->SaveSongs();
+		}
+		songFiles.reserve(songFiles.size() + nextBatch.size());
+		std::move(begin(nextBatch), end(nextBatch), back_inserter(songFiles));
 	}
-	if (mergedSongs.newSongs.size() > 0 || mergedSongs.modifiedSongs.size() > 0)
-	{
-		m_musicCache->AddToCache(mergedSongs.newSongs);
-		m_musicCache->AddToCache(mergedSongs.modifiedSongs);
-		auto songs = m_musicCache->GetLocalSongs();
-		PublishSongs(m_songCallbacks, std::move(songs), m_songCallbackLock, mergedSongs);
-		m_musicCache->SaveSongs();
-	}
 	{
 		auto songs = m_musicCache->GetLocalSongs();
-		deletedSongs = FindDeletedSongs(*songs, musicFinderResults);
+		deletedSongs = FindDeletedSongs(*songs, songFiles);
 	}
 	if (deletedSongs.modifiedSongs.size() > 0 || deletedSongs.deletedSongs.size() > 0)
 	{

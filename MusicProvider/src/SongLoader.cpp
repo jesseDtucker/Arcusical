@@ -12,7 +12,6 @@
 #include <codecvt>
 #include <functional>
 #include <ppltasks.h>
-#include <ppl.h>
 #include <random>
 #include <string>
 #include <unordered_map>
@@ -377,7 +376,6 @@ wstring SaveImageFile(vector<unsigned char>& imgData, const wstring& albumName, 
 	replace(begin(fileName), end(fileName), '/', '_');
 	fileName = L"albumImgs\\" + fileName;
 
-	ARC_ASSERT_MSG(!Storage::ApplicationFolder().ContainsFile(fileName), "an album image with this name already exists!");
 	auto imgFile = Storage::ApplicationFolder().CreateNewFile(fileName);
 
 	if (nullptr != imgFile)
@@ -569,7 +567,7 @@ vector<Song> LoadSongs(vector<IFile*> files)
 	vector<Song> results;
 	results.resize(files.size());
 
-	concurrency::parallel_transform(begin(files), end(files), begin(results), [](const IFile* file)
+	transform(begin(files), end(files), begin(results), [](const IFile* file)
 	{
 		return LoadSong(*file);
 	});

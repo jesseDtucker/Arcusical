@@ -25,7 +25,6 @@
 // VM definitions. XAML compiler chokes if they are not included in either pch or a xaml
 // implementation.
 #include "ViewModels/AlbumVM.hpp"
-#include "ViewModels/AlbumListVM.hpp"
 #include "ViewModels/AlbumListControlVM.hpp"
 #include "ViewModels/SearchVM.hpp"
 #include "ViewModels/SearchResultsVM.hpp"

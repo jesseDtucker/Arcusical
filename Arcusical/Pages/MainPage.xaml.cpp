@@ -194,7 +194,7 @@ void Arcusical::MainPage::SetDependencies(	MusicSearcher* musicSearcher,
 
 	m_playerVM->VolumeVM = m_volumeSlideVM;
 
-	AlbumsChangedCallback cb = [this](const AlbumCollectionChanges& albums){ this->OnAlbumsReady(*albums.AllAlbums); };
+	AlbumsChangedCallback cb = [this](const AlbumCollectionChanges& albums){ this->OnAlbumsReady(albums); };
 	m_albumSub = m_musicProvider->SubscribeAlbums(cb);
 
 	v_albumListControl->VM = m_albumListVM;
@@ -211,13 +211,81 @@ void Arcusical::MainPage::SetDependencies(	MusicSearcher* musicSearcher,
 	SetupTransportControls(player);
 }
 
-void Arcusical::MainPage::OnAlbumsReady(const Model::AlbumCollection& albums)
+int FindIndexOf(AlbumList^ albums, boost::uuids::uuid id)
 {
-	auto albumListVM = ref new AlbumListVM(albums, *m_playlist, *m_player);
-	Arcusical::DispatchToUI([this, albumListVM]()
+	int result = -1;
+
+	for (auto i = 0u; i < albums->Size; ++i)
 	{
-		m_albumListVM->AlbumList = albumListVM;
-	});
+		auto album = albums->GetAt(i);
+		if (album->GetModel()->GetId() == id)
+		{
+			result = i;
+			break;
+		}
+	}
+
+	ARC_ASSERT(result != -1);
+
+	return result;
+}
+
+void Arcusical::MainPage::OnAlbumsReady(const Model::AlbumCollectionChanges& albumChanges)
+{
+	// compare the albums we have with how many are to be added and removed against the total number.
+	// if the numbers match do a partial update, if they do not do a full refresh
+	if (albumChanges.NewAlbums.size() + m_albumListVM->Albums->Size - albumChanges.DeletedAlbums.size() != albumChanges.AllAlbums->size())
+	{
+		// then the sizes do not add up. In this case just refresh the list and carry on
+		auto allAblums = AlbumListControlVM::CreateAlbumList(*albumChanges.AllAlbums, *m_playlist, *m_player);
+		Arcusical::DispatchToUI([this, allAblums]()
+		{
+			m_albumListVM->Albums = allAblums;
+		});
+	}
+	else
+	{
+		// numbers match up, just do a partial update
+		auto newAlbums = AlbumListControlVM::CreateAlbumList(albumChanges.NewAlbums, *m_playlist, *m_player);
+		auto modifiedAlbums = AlbumListControlVM::CreateAlbumList(albumChanges.ModifiedAlbums, *m_playlist, *m_player);
+		vector<boost::uuids::uuid> deletedAlbums;
+		deletedAlbums.reserve(albumChanges.DeletedAlbums.size());
+
+		transform(begin(albumChanges.DeletedAlbums), end(albumChanges.DeletedAlbums), back_inserter(deletedAlbums),
+			[](AlbumPtrCollection::value_type album)
+		{
+			return album.first;
+		});
+
+		Arcusical::DispatchToUI([this, newAlbums, modifiedAlbums, deletedAlbums]()
+		{
+			// add new albums to the list
+			// change the modified albums
+			// and remove the deleted albums
+			for (const auto&& newAlbum : newAlbums)
+			{
+				m_albumListVM->Albums->Append(newAlbum);
+			}
+
+			for (const auto&& modified : modifiedAlbums)
+			{
+				auto index = FindIndexOf(m_albumListVM->Albums, modified->GetModel()->GetId());
+				if (index > 0)
+				{
+					m_albumListVM->Albums->SetAt(index, modified);
+				}
+			}
+
+			for (const auto& deletedId : deletedAlbums)
+			{
+				auto index = FindIndexOf(m_albumListVM->Albums, deletedId);
+				if (index > 0)
+				{
+					m_albumListVM->Albums->RemoveAt(index);
+				}
+			}
+		});
+	}
 }
 
 

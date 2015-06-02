@@ -1,6 +1,9 @@
 #pragma once
 #ifndef WORK_BUFFER_HPP
 
+#define NOMINMAX
+
+#include <chrono>
 #include <future>
 #include <vector>
 
@@ -20,6 +23,8 @@ namespace Util
 		WorkBuffer(const WorkBuffer&&) = delete;
 		~WorkBuffer();
 		
+		bool ResultsPending() const;
+
 		// producer functions
 		void Append(T&& value);
 		void Append(std::vector<T>&& values);
@@ -28,10 +33,10 @@ namespace Util
 		// consumer functions
 		std::vector<T> GetAll();
 		std::vector<T> GetN(int count);
-		std::vector<T> WaitAndGet(std::chrono::milliseconds waitTime);
+		std::vector<T> WaitAndGet(std::chrono::milliseconds waitTime, size_t numToGet = 0);
 	private:
-		std::condition_variable m_consumerCP;
-		std::mutex m_lock;
+		mutable std::condition_variable m_consumerCP;
+		mutable std::mutex m_lock;
 		std::vector<T> m_buffer;
 		bool m_isDone = false;
 	};
@@ -47,6 +52,13 @@ namespace Util
 		{
 			Complete();
 		}
+	}
+
+	template<typename T>
+	bool WorkBuffer<T>::ResultsPending() const
+	{
+		std::unique_lock<std::mutex> lock(m_lock);
+		return !m_isDone || m_buffer.size() > 0;
 	}
 
 	template<typename T>
@@ -123,19 +135,29 @@ namespace Util
 	}
 
 	template<typename T>
-	std::vector<T> WorkBuffer<T>::WaitAndGet(std::chrono::milliseconds waitTime)
+	std::vector<T> WorkBuffer<T>::WaitAndGet(std::chrono::milliseconds waitTime, size_t numToGet/* = 0 */)
 	{
-		{
-			std::unique_lock<std::mutex> lock(m_lock);
-			ARC_ASSERT(!m_isDone);
-		}
-
-		std::this_thread::sleep_for(waitTime);
+		using namespace std::chrono;
 
 		std::unique_lock<std::mutex> lock(m_lock);
-		auto result = std::move(m_buffer);
-		m_buffer = {};
-		return std::move(result);
+		auto start = system_clock::now();
+		// what this means is we wait until either the timeout, all work is done or we have enough results to fill the request
+		while (start + waitTime >= system_clock::now() && !m_isDone && (m_buffer.size() < numToGet || numToGet == 0))
+		{
+			m_consumerCP.wait(lock);
+		}
+
+		// zero means they want everything, after all getting zero doesn't make much sense
+		numToGet = (numToGet == 0) ? m_buffer.size() : numToGet;
+		numToGet = std::min(numToGet, m_buffer.size());
+		std::vector<T> results;
+		results.reserve(numToGet);
+
+		auto last = std::next(begin(m_buffer), numToGet);
+		std::move(begin(m_buffer), last, back_inserter(results));
+		m_buffer.erase(begin(m_buffer), last);
+
+		return results;
 	}
 }
 

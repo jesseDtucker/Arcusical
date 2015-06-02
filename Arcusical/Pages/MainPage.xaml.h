@@ -39,7 +39,7 @@ namespace Arcusical
 		void SetupTransportControls(Player::IPlayer* player);
 		void OnTransportControlButtonPressed(Windows::Media::SystemMediaTransportControls^ sender, Windows::Media::SystemMediaTransportControlsButtonPressedEventArgs^ args);
 
-		void OnAlbumsReady(const Model::AlbumCollection& albums);
+		void OnAlbumsReady(const Model::AlbumCollectionChanges& albums);
 
 		std::wstring oldImagePath;
 

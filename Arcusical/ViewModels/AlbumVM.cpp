@@ -34,10 +34,15 @@ namespace ViewModel{
 		});
 	}
 
+	const Model::Album* AlbumVM::GetModel() const
+	{
+		return &m_album;
+	}
+
 
 	SongListVM^ AlbumVM::Songs::get()
 	{
-		if (m_songs == nullptr)
+		if (m_songs == nullptr || m_album.GetSongIds().size() != m_songs->List->Size)
 		{
 			auto songs = m_album.GetSongs();
 			m_songs = ref new SongListVM(*songs, m_playlist, m_player);

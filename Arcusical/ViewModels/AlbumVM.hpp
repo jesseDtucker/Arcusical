@@ -36,6 +36,7 @@ namespace ViewModel{
 	internal:
 		AlbumVM(const Model::Album& album, Player::Playlist& playlist, Player::IPlayer& player);
 
+		const Model::Album* GetModel() const;
 	private:
 		Model::Album m_album;
 		Player::Playlist& m_playlist;

@@ -94,13 +94,14 @@
 		</Style>
 	</UserControl.Resources>
 	<Grid>
-		<ListView Height="Auto"  ItemsSource="{Binding Path=AlbumList.Albums}" 
+		<ListView Height="Auto"  ItemsSource="{Binding Path=Albums}" 
 						  Style="{StaticResource AlbumListStyle}"
 						  ItemClick="AlbumClicked" IsItemClickEnabled="True">
 			<ListView.ItemContainerStyle>
 				<Style TargetType="ListViewItem">
 					<Setter Property="HorizontalContentAlignment" Value="Stretch"/>
 					<Setter Property="Height" Value="250"/>
+					<Setter Property="MinWidth" Value="160"/>
 				</Style>
 			</ListView.ItemContainerStyle>
 		</ListView>

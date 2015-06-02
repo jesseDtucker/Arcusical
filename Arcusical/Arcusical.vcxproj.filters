@@ -89,9 +89,6 @@
     <ClCompile Include="ViewModels\AlbumVM.cpp">
       <Filter>ViewModels\Models</Filter>
     </ClCompile>
-    <ClCompile Include="ViewModels\AlbumListVM.cpp">
-      <Filter>ViewModels\Models</Filter>
-    </ClCompile>
     <ClCompile Include="ViewModels\AlbumListControlVM.cpp">
       <Filter>ViewModels\Controls</Filter>
     </ClCompile>
@@ -153,9 +150,6 @@
       <Filter>ViewModels\Models</Filter>
     </ClInclude>
     <ClInclude Include="ViewModels\AlbumVM.hpp">
-      <Filter>ViewModels\Models</Filter>
-    </ClInclude>
-    <ClInclude Include="ViewModels\AlbumListVM.hpp">
       <Filter>ViewModels\Models</Filter>
     </ClInclude>
     <ClInclude Include="ViewModels\AlbumListControlVM.hpp">

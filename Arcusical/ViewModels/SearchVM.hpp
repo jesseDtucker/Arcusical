@@ -7,8 +7,8 @@
 #include "MulticastDelegate.hpp"
 #include "PropertyHelper.hpp"
 #include "Utility/XamlMacros.hpp"
-#include "ViewModels/AlbumListVM.hpp"
 #include "ViewModels/SongListVM.hpp"
+#include "ViewModels/AlbumListControlVM.hpp"
 #include "CancellationToken.hpp"
 
 namespace Arcusical {
@@ -30,7 +30,7 @@ namespace ViewModel{
 
 	internal:
 		SearchVM(MusicProvider::MusicSearcher& searcher, Player::Playlist& playlist, Player:: IPlayer& player);
-		Util::MulticastDelegate<void(AlbumListVM^, SongListVM^, Util::CancellationTokenRef)> SearchResults;
+		Util::MulticastDelegate<void(AlbumList^, SongListVM^, Util::CancellationTokenRef)> SearchResults;
 
 	private:
 

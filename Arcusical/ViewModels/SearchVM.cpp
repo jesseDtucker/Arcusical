@@ -1,5 +1,6 @@
 #include "pch.h"
 
+#include "ViewModels/AlbumListControlVM.hpp"
 #include "MusicSearcher.hpp"
 #include "SearchVM.hpp"
 
@@ -42,7 +43,7 @@ void Arcusical::ViewModel::SearchVM::StartSearch(Platform::String^ searchTerm)
 		auto results = m_searcher.Find(term, m_searchCancelToken);
 		if (!results.CancellationToken->IsCanceled())
 		{
-			AlbumListVM^ albums = ref new AlbumListVM(results.Albums, m_playlist, m_player);
+			AlbumList^ albums = ViewModel::AlbumListControlVM::CreateAlbumList(results.Albums, m_playlist, m_player);
 			SongListVM^ songs = ref new SongListVM(results.Songs, m_playlist, m_player);
 			SearchResults(albums, songs, results.CancellationToken);
 		}
