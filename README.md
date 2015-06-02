@@ -23,7 +23,7 @@ Arcusical.sln
 
 Now just pick your target and build. Will work for both x86 and x64 builds. Just be aware that the git clone will take a while because one of the submodules is [Boost](http://www.boost.org/). Also make sure you have a recent version of git. There is a bug in some of the older git versions that causes the submodules to not get pulled correctly.
 
-After it has launched it will take a while before it has the library is loaded. At present it is loading everything in one go. Unfortunately this takes about 10 minutes for any reasonably large library of music. Although I plan to improve this in the future to load and update the UI continuously I have not yet done this work. After the initial load the application will boot fast without any issues as all metadata is cached.
+After it has launched it will start automatically searching for music in your music folder. It does take a moment to get going so give it a bit of time. I'm working on improving the time-to-first-album but there is a fair bit of work required to do that. After the library is loaded startup will be fast as all metadata is cached.
 
 Enjoy!
 
