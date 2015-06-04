@@ -16,6 +16,7 @@
 #include "MusicTypes.hpp"
 #include "SongLoader.hpp"
 #include "SongSelector.hpp"
+#include "WorkBuffer.hpp"
 
 namespace FileSystem
 {
@@ -53,6 +54,9 @@ namespace MusicProvider
 
 		void LoadSongs();
 		void LoadAlbums();
+
+		typedef std::shared_ptr<FileSystem::IFile> FilePtr;
+		std::vector<FilePtr> ProcessSongFiles(Util::WorkBuffer<FilePtr>& songFilesWB);
 		
 		Util::MulticastDelegate<SongsChangedCallback::CB_Type> m_songCallbacks;
 		Util::MulticastDelegate<AlbumsChangedCallback::CB_Type> m_albumCallbacks;

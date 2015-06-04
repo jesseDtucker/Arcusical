@@ -59,6 +59,7 @@ static pair<bool, wstring> AttemptToFindAlbumArt(const IFolder& folder, const ws
 static wstring SaveImageFile(vector<unsigned char>& imgData, const wstring& albumName, MPEG4::ImageType imageType);
 
 static boost::uuids::random_generator s_idGenerator;
+static const unsigned long long MIN_LENGTH = 5; // minimum length of a song for it to be considered a song
 
 static const unordered_map<MPEG4::Encoding, AudioFormat> MPEG4_TO_MODEL_MAPPING =
 {
@@ -809,13 +810,29 @@ void FixupSongs(vector<Song>& newSongs, const SongCollection& existingSongs)
 	}
 }
 
+// only keep songs that meet the critera of what we wish to present
+// currently this rejects songs less that 5 seconds in length
+vector<Song> FilterSongs(const vector<Song>& songs)
+{
+	vector<Song> result;
+	result.reserve(songs.size());
+
+	copy_if(begin(songs), end(songs), back_inserter(result), [](const Song& song)
+	{
+		return song.GetLength() > MIN_LENGTH;
+	});
+
+	return result;
+}
+
 SongMergeResult MusicProvider::MergeSongs(const SongCollection& existingSongs, 
 									const vector<shared_ptr<IFile>>& files)
 {
 	SongMergeResult result;
 
 	auto newFiles = GetNewFiles(existingSongs, files);
-	auto songs = LoadSongs(newFiles);
+	auto loadedSongs = LoadSongs(newFiles);
+	auto songs = FilterSongs(loadedSongs);
 	auto dividedSongs = DivideSongs(existingSongs, songs); // sort the new songs into completely new songs and songs that match existing songs
 	result.newSongs = FlattenNewSongs(dividedSongs.newSongs);
 	result.modifiedSongs = FlattenModifiedSongs(dividedSongs.newFormatsOfExisting);

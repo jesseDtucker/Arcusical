@@ -3,6 +3,7 @@
 #include <algorithm>
 #include "boost/algorithm/string/predicate.hpp"
 #include "boost/functional/hash.hpp"
+#include "boost/optional.hpp"
 #include <cctype>
 #include <codecvt>
 #include <memory>
@@ -11,6 +12,7 @@
 
 #include "Arc_Assert.hpp"
 #include "Album.hpp"
+#include "CheckedCasts.hpp"
 #include "IFile.hpp"
 #include "IFolder.hpp"
 #include "LocalMusicCache.hpp"
@@ -27,7 +29,10 @@ using namespace std;
 using namespace Util;
 
 static const std::chrono::milliseconds TIME_TO_SEARCH{ 1500 };
-static const size_t MAX_SONGS_TO_LOAD_AT_ONCE = 50;
+static const size_t MIN_SONGS_TO_LOAD_AT_ONCE = 20;
+static const size_t BASE_SONGS_TO_LOAD_AT_ONCE = 50;
+static const size_t MAX_SONGS_TO_LOAD_AT_ONCE = 500;
+static const std::chrono::milliseconds SONG_LOAD_TARGET_TIME{ 4000 };
 
 SongCollectionChanges CreateSongCollectionDelta(const boost::optional<SongMergeResult>& mergeResults,
 												SongCollectionLockedPtr&& songs)
@@ -175,30 +180,9 @@ void MusicProvider::LoadSongs()
 		PublishSongs(m_songCallbacks, std::move(songs), m_songCallbackLock);
 	}
 
-	SongMergeResult mergedSongs;
+	auto songFiles = ProcessSongFiles(*songFilesWB);
 	SongMergeResult deletedSongs;
-	decltype(songFilesWB->GetAll()) songFiles;
 
-	while (songFilesWB->ResultsPending())
-	{
-		auto nextBatch = songFilesWB->WaitAndGet(TIME_TO_SEARCH, MAX_SONGS_TO_LOAD_AT_ONCE);
-
-		{
-			// scope is because GetLocalSongs returns a lockedPtr, must release as soon as we are done with it!
-			auto songs = m_musicCache->GetLocalSongs();
-			mergedSongs = MergeSongs(*songs, nextBatch);
-		}
-		if (mergedSongs.newSongs.size() > 0 || mergedSongs.modifiedSongs.size() > 0)
-		{
-			m_musicCache->AddToCache(mergedSongs.newSongs);
-			m_musicCache->AddToCache(mergedSongs.modifiedSongs);
-			auto songs = m_musicCache->GetLocalSongs();
-			PublishSongs(m_songCallbacks, std::move(songs), m_songCallbackLock, mergedSongs);
-			m_musicCache->SaveSongs();
-		}
-		songFiles.reserve(songFiles.size() + nextBatch.size());
-		std::move(begin(nextBatch), end(nextBatch), back_inserter(songFiles));
-	}
 	{
 		auto songs = m_musicCache->GetLocalSongs();
 		deletedSongs = FindDeletedSongs(*songs, songFiles);
@@ -213,6 +197,84 @@ void MusicProvider::LoadSongs()
 		}
 		m_musicCache->SaveSongs();
 	}
+}
+
+vector<MusicProvider::FilePtr> MusicProvider::ProcessSongFiles(Util::WorkBuffer<FilePtr>& songFilesWB)
+{
+	auto numSongsToLoad = BASE_SONGS_TO_LOAD_AT_ONCE;
+	chrono::milliseconds timeSpentLoading;
+	size_t numSongsLoaded = 0;
+	boost::optional<future<void>> publishFuture = boost::none;
+	vector<shared_ptr<FileSystem::IFile>> songFiles;
+
+	while (songFilesWB.ResultsPending())
+	{
+		// note: this has to be a shared_ptr despite being a unique_ptr in practice. This is because VS 2013 does
+		// not support generalized lambda capture (C++14). After upgrade to VS 2015 this can be implemented with
+		// either move ctors or unique_ptr.
+		shared_ptr<SongMergeResult> mergedSongs;
+		auto nextBatch = songFilesWB.WaitAndGet(TIME_TO_SEARCH, numSongsToLoad);
+		auto loadStartTime = chrono::system_clock::now();
+
+		{
+			// scope is because GetLocalSongs returns a lockedPtr, must release as soon as we are done with it!
+			auto songs = m_musicCache->GetLocalSongs();
+			mergedSongs = make_shared<SongMergeResult>(MergeSongs(*songs, nextBatch));
+		}
+
+		auto loadEndTime = chrono::system_clock::now();
+		auto elapsed = chrono::duration_cast<chrono::milliseconds>(loadEndTime - loadStartTime);
+		timeSpentLoading += elapsed;
+		numSongsLoaded += nextBatch.size();
+
+		// load adjustment will try to keep the load time to approx the time indicated in SONG_LOAD_TARGET_TIME
+		// this will help adapt the publish time to be on a steady interval instead of variable. This method is
+		// not perfect as we are attempting to estimate future load times based on the prior load time. 
+
+		if (numSongsLoaded > 0 && timeSpentLoading.count() > 0)
+		{
+			auto loadTimePerSong = timeSpentLoading.count() / numSongsLoaded;
+			auto newCount = Util::SafeIntCast<decltype(numSongsToLoad)>(SONG_LOAD_TARGET_TIME.count() / loadTimePerSong);
+			numSongsToLoad = (newCount + numSongsToLoad) / 2; // avg them out so sudden jumps are evened out a bit
+			numSongsToLoad = max(MIN_SONGS_TO_LOAD_AT_ONCE, numSongsToLoad);
+			numSongsToLoad = min(MAX_SONGS_TO_LOAD_AT_ONCE, numSongsToLoad);
+		}
+
+		if (mergedSongs->newSongs.size() > 0 || mergedSongs->modifiedSongs.size() > 0)
+		{
+			// we want to ensure publishes are sequential regardless of thread scheduling, after all it would be difficult
+			// if results were received for a modified song before it had been received as a new song.
+			if (publishFuture)
+			{
+				publishFuture->wait();
+			}
+
+			// note: cache should be modified after we are certain the publish has finished, this is so
+			// thread scheduling does not result in the cache containing more songs than the publish is informing
+			// about. Ie. publish is scheduled, then next batch of songs are loaded and saved to cache and then
+			// previous schedule is published. If that happened the publish would not be accurate with respect to
+			// the available data.
+			m_musicCache->AddToCache(mergedSongs->newSongs);
+			m_musicCache->AddToCache(mergedSongs->modifiedSongs);
+			m_musicCache->SaveSongs();
+
+			// doing this async so that song loading can continue while other code reads the song info found thus far.
+			publishFuture = async([this, mergedSongs]()
+			{
+				auto songs = m_musicCache->GetLocalSongs();
+				PublishSongs(m_songCallbacks, std::move(songs), m_songCallbackLock, *mergedSongs);
+			});
+		}
+		songFiles.reserve(songFiles.size() + nextBatch.size());
+		std::move(begin(nextBatch), end(nextBatch), back_inserter(songFiles));
+	}
+
+	if (publishFuture)
+	{
+		publishFuture->wait();
+	}
+
+	return std::move(songFiles);
 }
 
 void MusicProvider::LoadAlbums()
