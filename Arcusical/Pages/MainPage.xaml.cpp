@@ -8,6 +8,7 @@
 
 #include "IFile.hpp"
 #include "IPlayer.hpp"
+#include "CheckedCasts.hpp"
 #include "Controls/AlbumListControl.xaml.h"
 #include "Controls/BottomBar.xaml.h"
 #include "Controls/SongListControl.xaml.h"
@@ -238,6 +239,10 @@ void Arcusical::MainPage::OnAlbumsReady(const Model::AlbumCollectionChanges& alb
 	{
 		// then the sizes do not add up. In this case just refresh the list and carry on
 		auto allAblums = AlbumListControlVM::CreateAlbumList(*albumChanges.AllAlbums, *m_playlist, *m_player);
+		sort(begin(allAblums), end(allAblums), [](AlbumVM^ a, AlbumVM^ b)
+		{
+			return a->Title < b->Title;
+		});
 		Arcusical::DispatchToUI([this, allAblums]()
 		{
 			m_albumListVM->Albums = allAblums;
@@ -264,7 +269,12 @@ void Arcusical::MainPage::OnAlbumsReady(const Model::AlbumCollectionChanges& alb
 			// and remove the deleted albums
 			for (const auto&& newAlbum : newAlbums)
 			{
-				m_albumListVM->Albums->Append(newAlbum);
+				auto idx = count_if(begin(m_albumListVM->Albums), end(m_albumListVM->Albums), [newAlbum](AlbumVM^ a)
+				{
+					return a->Title < newAlbum->Title;
+				});
+				ARC_ASSERT(idx >= 0 && idx <= decltype(idx)(m_albumListVM->Albums->Size));
+				m_albumListVM->Albums->InsertAt((unsigned int)(idx), newAlbum);
 			}
 
 			for (const auto&& modified : modifiedAlbums)
