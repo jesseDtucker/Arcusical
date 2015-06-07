@@ -5,6 +5,7 @@
 #include <vector>
 
 #include "Util.hpp"
+#include "WorkBuffer.hpp"
 #include "IFolder.hpp"
 
 namespace FileSystem

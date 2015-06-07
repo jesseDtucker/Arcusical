@@ -39,6 +39,9 @@ namespace LocalMusicStore
 		Model::SongCollectionLockedPtr GetLocalSongs() const;
 		Model::AlbumCollectionLockedPtr GetLocalAlbums() const;
 
+		void GetLocalSongsMutable(std::function<void(Model::SongCollection* songCollection)> callback);
+		void GetLocalAlbumsMutable(std::function<void(Model::AlbumCollection* songCollection)> callback);
+
 		void ClearCache();
 		void AddToCache(const std::vector<Model::Album>& albums);
 		void AddToCache(const std::vector<Model::Song>& songs);

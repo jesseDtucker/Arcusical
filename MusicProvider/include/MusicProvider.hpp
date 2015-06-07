@@ -13,15 +13,12 @@
 #include <unordered_map>
 #include <vector>
 
+#include "AlbumArtLoader.hpp"
 #include "MusicTypes.hpp"
 #include "SongLoader.hpp"
 #include "SongSelector.hpp"
+#include "Storage.hpp"
 #include "WorkBuffer.hpp"
-
-namespace FileSystem
-{
-	class IFile;
-}
 
 namespace Arcusical
 {
@@ -42,6 +39,8 @@ namespace MusicProvider
 	typedef Util::Delegate<void(const Model::SongCollectionChanges&)> SongsChangedCallback;
 	typedef Util::Delegate<void(const Model::AlbumCollectionChanges&)> AlbumsChangedCallback;
 
+	struct AlbumMergeResult;
+
 	class MusicProvider final
 	{
 	public:
@@ -55,8 +54,9 @@ namespace MusicProvider
 		void LoadSongs();
 		void LoadAlbums();
 
-		typedef std::shared_ptr<FileSystem::IFile> FilePtr;
-		std::vector<FilePtr> ProcessSongFiles(Util::WorkBuffer<FilePtr>& songFilesWB);
+		std::vector<FileSystem::FilePtr> ProcessSongFiles(Util::WorkBuffer<FileSystem::FilePtr>& songFilesWB);
+		void LoadAlbumArt(const AlbumMergeResult& albumChanges);
+		void OnArtLoaded(const std::vector<boost::uuids::uuid> albumIdsLoaded);
 		
 		Util::MulticastDelegate<SongsChangedCallback::CB_Type> m_songCallbacks;
 		Util::MulticastDelegate<AlbumsChangedCallback::CB_Type> m_albumCallbacks;
@@ -68,11 +68,13 @@ namespace MusicProvider
 		SongSelector m_songSelector;
 
 		Util::Subscription m_songSubscription;
-
-		std::vector<std::wstring> m_defaultAlbumImgBag;
+		Util::Subscription m_artLoadSubscription;
+		AlbumArtLoader m_artLoader;
 
 		bool m_hasSongLoadingBegun = false;
 		bool m_hasAlbumLoadingBegun = false;
+		Model::LoadProgress m_songLoadProgress;
+		Model::LoadProgress m_albumLoadProgress;
 		std::mutex m_isLoadingLock;
 	};
 }

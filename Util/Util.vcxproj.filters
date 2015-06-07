@@ -66,6 +66,9 @@
     <ClInclude Include="include\WorkBuffer.hpp">
       <Filter>include</Filter>
     </ClInclude>
+    <ClInclude Include="include\AsyncProcessor.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Subscription.cpp">

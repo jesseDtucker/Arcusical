@@ -376,6 +376,8 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="include\AlbumArtLoader.hpp" />
+    <ClInclude Include="include\AlbumLoader.hpp" />
     <ClInclude Include="include\MusicSearcher.hpp" />
     <ClInclude Include="include\SongSelector.hpp" />
     <ClInclude Include="include\MusicProvider.hpp" />
@@ -383,6 +385,8 @@
     <ClInclude Include="src\targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\AlbumArtLoader.cpp" />
+    <ClCompile Include="src\AlbumLoader.cpp" />
     <ClCompile Include="src\MusicProvider.cpp" />
     <ClCompile Include="src\MusicSearcher.cpp" />
     <ClCompile Include="src\SongLoader.cpp" />

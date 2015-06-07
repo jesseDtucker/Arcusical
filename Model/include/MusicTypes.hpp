@@ -22,6 +22,14 @@ namespace Model
 	typedef std::unordered_map<boost::uuids::uuid, const Arcusical::Model::Song*, boost::hash<boost::uuids::uuid>> SongPtrCollection;
 	typedef std::unordered_map<boost::uuids::uuid, const Arcusical::Model::Album*, boost::hash<boost::uuids::uuid>> AlbumPtrCollection;
 
+	enum class LoadProgress
+	{
+		CACHE_LOAD_PENDING,
+		CACHE_LOAD_COMPLETE,
+		DISK_LOAD_IN_PROGRESS,
+		DISK_LOAD_COMPLETE
+	};
+
 	struct SongCollectionChanges
 	{
 		SongCollectionChanges() = default;
@@ -32,6 +40,8 @@ namespace Model
 		SongPtrCollection NewSongs;
 		SongPtrCollection ModifiedSongs;
 		SongPtrCollection DeletedSongs;
+
+		LoadProgress Progress;
 	};
 
 	struct AlbumCollectionChanges
@@ -44,6 +54,8 @@ namespace Model
 		AlbumPtrCollection NewAlbums;
 		AlbumPtrCollection ModifiedAlbums;
 		AlbumPtrCollection DeletedAlbums;
+
+		LoadProgress Progress;
 	};
 
 } /* MusicProvider */

@@ -10,6 +10,7 @@
 #include <future>
 #include <vector>
 
+#include "AlbumLoader.hpp"
 #include "Arc_Assert.hpp"
 #include "Album.hpp"
 #include "CheckedCasts.hpp"
@@ -84,11 +85,13 @@ AlbumCollectionChanges CreateAlbumCollectionDelta(const boost::optional<AlbumMer
 
 template<typename CB>
 void PublishSongs(const CB& cb, 
-				  SongCollectionLockedPtr&& songs,
-				  mutex& lock,
-				  const boost::optional<SongMergeResult>& mergeResults = boost::none)
+	              SongCollectionLockedPtr&& songs,
+	              LoadProgress progress,
+	              mutex& lock,
+	              const boost::optional<SongMergeResult>& mergeResults = boost::none)
 {
 	auto changes = CreateSongCollectionDelta(mergeResults, std::move(songs));
+	changes.Progress = progress;
 
 	unique_lock<mutex> callbackLock(lock);
 	cb(changes);
@@ -96,11 +99,42 @@ void PublishSongs(const CB& cb,
 
 template<typename CB>
 void PublishAlbums(const CB& cb,
-				   AlbumCollectionLockedPtr&& albums,
-				   mutex& lock,
-				   const boost::optional<AlbumMergeResult>& mergeResults = boost::none)
+		           AlbumCollectionLockedPtr&& albums,
+		           LoadProgress progress,
+		           mutex& lock,
+		           const boost::optional<AlbumMergeResult>& mergeResults = boost::none)
 {
 	auto changes = CreateAlbumCollectionDelta(mergeResults, std::move(albums));
+	changes.Progress = progress;
+
+	unique_lock<mutex> callbackLock(lock);
+	cb(changes);
+}
+
+template<typename CB>
+void PublishAlbums(const CB& cb,
+	AlbumCollectionLockedPtr&& albums,
+	LoadProgress progress,
+	mutex& lock,
+	const vector<boost::uuids::uuid>& modifiedAlbumIds)
+{
+	AlbumCollectionChanges changes;
+	changes.ModifiedAlbums.reserve(modifiedAlbumIds.size());
+
+	for(auto& id : modifiedAlbumIds)
+	{
+		const Album* albumPtr = nullptr;
+		auto albumItr = albums->find(id);
+		ARC_ASSERT(albumItr != end(*albums));
+		if (albumItr != end(*albums))
+		{
+			albumPtr = &albumItr->second;
+		}
+		changes.ModifiedAlbums[id] = albumPtr;
+	};
+
+	changes.AllAlbums = std::move(albums);
+	changes.Progress = progress;
 
 	unique_lock<mutex> callbackLock(lock);
 	cb(changes);
@@ -111,7 +145,16 @@ MusicProvider::MusicProvider(LocalMusicCache* cache)
 	: m_songCallbacks()
 	, m_musicCache(cache)
 	, m_songSelector(m_musicCache)
-{ }
+	, m_songLoadProgress(LoadProgress::CACHE_LOAD_PENDING)
+	, m_albumLoadProgress(LoadProgress::CACHE_LOAD_PENDING)
+	, m_artLoader(cache)
+{
+	ARC_ASSERT(cache != nullptr);
+	m_artLoadSubscription = m_artLoader.OnArtLoaded += [this](const std::vector<boost::uuids::uuid>& ids)
+	{
+		OnArtLoaded(ids);
+	};
+}
 
 Subscription MusicProvider::SubscribeSongs(SongsChangedCallback callback)
 {
@@ -132,7 +175,7 @@ Subscription MusicProvider::SubscribeSongs(SongsChangedCallback callback)
 		else
 		{
 			auto songs = m_musicCache->GetLocalSongs();
-			PublishSongs(callback, std::move(songs), m_songCallbackLock);
+			PublishSongs(callback, std::move(songs), m_songLoadProgress, m_songCallbackLock);
 		}
 	}
 
@@ -158,7 +201,7 @@ Subscription MusicProvider::SubscribeAlbums(AlbumsChangedCallback callback)
 		else
 		{
 			auto albums = m_musicCache->GetLocalAlbums();
-			PublishAlbums(callback, std::move(albums), m_albumCallbackLock);
+			PublishAlbums(callback, std::move(albums), m_albumLoadProgress, m_albumCallbackLock);
 		}
 	}
 
@@ -177,9 +220,11 @@ void MusicProvider::LoadSongs()
 	// and publish what we have in the cache
 	{
 		auto songs = m_musicCache->GetLocalSongs();
-		PublishSongs(m_songCallbacks, std::move(songs), m_songCallbackLock);
+		m_songLoadProgress = LoadProgress::CACHE_LOAD_COMPLETE;
+		PublishSongs(m_songCallbacks, std::move(songs), m_songLoadProgress, m_songCallbackLock);
 	}
 
+	m_songLoadProgress = LoadProgress::DISK_LOAD_IN_PROGRESS;
 	auto songFiles = ProcessSongFiles(*songFilesWB);
 	SongMergeResult deletedSongs;
 
@@ -193,13 +238,14 @@ void MusicProvider::LoadSongs()
 		m_musicCache->RemoveFromCache(deletedSongs.deletedSongs);
 		{
 			auto songs = m_musicCache->GetLocalSongs();
-			PublishSongs(m_songCallbacks, std::move(songs), m_songCallbackLock, deletedSongs);
+			m_songLoadProgress = LoadProgress::DISK_LOAD_COMPLETE;
+			PublishSongs(m_songCallbacks, std::move(songs), m_songLoadProgress, m_songCallbackLock, deletedSongs);
 		}
 		m_musicCache->SaveSongs();
 	}
 }
 
-vector<MusicProvider::FilePtr> MusicProvider::ProcessSongFiles(Util::WorkBuffer<FilePtr>& songFilesWB)
+vector<FileSystem::FilePtr> MusicProvider::ProcessSongFiles(Util::WorkBuffer<FileSystem::FilePtr>& songFilesWB)
 {
 	auto numSongsToLoad = BASE_SONGS_TO_LOAD_AT_ONCE;
 	chrono::milliseconds timeSpentLoading;
@@ -213,7 +259,7 @@ vector<MusicProvider::FilePtr> MusicProvider::ProcessSongFiles(Util::WorkBuffer<
 		// not support generalized lambda capture (C++14). After upgrade to VS 2015 this can be implemented with
 		// either move ctors or unique_ptr.
 		shared_ptr<SongMergeResult> mergedSongs;
-		auto nextBatch = songFilesWB.WaitAndGet(TIME_TO_SEARCH, numSongsToLoad);
+		auto nextBatch = songFilesWB.GetAtMost(numSongsToLoad, TIME_TO_SEARCH);
 		auto loadStartTime = chrono::system_clock::now();
 
 		{
@@ -234,10 +280,13 @@ vector<MusicProvider::FilePtr> MusicProvider::ProcessSongFiles(Util::WorkBuffer<
 		if (numSongsLoaded > 0 && timeSpentLoading.count() > 0)
 		{
 			auto loadTimePerSong = timeSpentLoading.count() / numSongsLoaded;
-			auto newCount = Util::SafeIntCast<decltype(numSongsToLoad)>(SONG_LOAD_TARGET_TIME.count() / loadTimePerSong);
-			numSongsToLoad = (newCount + numSongsToLoad) / 2; // avg them out so sudden jumps are evened out a bit
-			numSongsToLoad = max(MIN_SONGS_TO_LOAD_AT_ONCE, numSongsToLoad);
-			numSongsToLoad = min(MAX_SONGS_TO_LOAD_AT_ONCE, numSongsToLoad);
+			if (loadTimePerSong > 0)
+			{
+				auto newCount = Util::SafeIntCast<decltype(numSongsToLoad)>(SONG_LOAD_TARGET_TIME.count() / loadTimePerSong);
+				numSongsToLoad = (newCount + numSongsToLoad) / 2; // avg them out so sudden jumps are evened out a bit
+				numSongsToLoad = max(MIN_SONGS_TO_LOAD_AT_ONCE, numSongsToLoad);
+				numSongsToLoad = min(MAX_SONGS_TO_LOAD_AT_ONCE, numSongsToLoad);
+			}
 		}
 
 		if (mergedSongs->newSongs.size() > 0 || mergedSongs->modifiedSongs.size() > 0)
@@ -262,7 +311,7 @@ vector<MusicProvider::FilePtr> MusicProvider::ProcessSongFiles(Util::WorkBuffer<
 			publishFuture = async([this, mergedSongs]()
 			{
 				auto songs = m_musicCache->GetLocalSongs();
-				PublishSongs(m_songCallbacks, std::move(songs), m_songCallbackLock, *mergedSongs);
+				PublishSongs(m_songCallbacks, std::move(songs), m_songLoadProgress, m_songCallbackLock, *mergedSongs);
 			});
 		}
 		songFiles.reserve(songFiles.size() + nextBatch.size());
@@ -282,7 +331,19 @@ void MusicProvider::LoadAlbums()
 	// publish what we have in the cache
 	{
 		auto albums = m_musicCache->GetLocalAlbums();
-		PublishAlbums(m_albumCallbacks, std::move(albums), m_albumCallbackLock);
+		m_albumLoadProgress = LoadProgress::CACHE_LOAD_COMPLETE;
+		PublishAlbums(m_albumCallbacks, std::move(albums), m_albumLoadProgress, m_albumCallbackLock);
+	}
+	// now kick off the album art verification
+	{
+		auto albums = m_musicCache->GetLocalAlbums();
+		vector<boost::uuids::uuid> allAlbumIds;
+		allAlbumIds.reserve(albums->size());
+		transform(begin(*albums), end(*albums), back_inserter(allAlbumIds), [](const AlbumCollection::value_type& pair)
+		{
+			return pair.first;
+		});
+		m_artLoader.AlbumsToVerify()->Append(std::move(allAlbumIds));
 	}
 	
 	// now subscribe to the music search service
@@ -291,6 +352,9 @@ void MusicProvider::LoadAlbums()
 		AlbumMergeResult mergedAlbums;
 		AlbumMergeResult deletedAlbums;
 
+		m_albumLoadProgress = LoadProgress::DISK_LOAD_IN_PROGRESS;
+
+		// first determine new albums and modified albums
 		{
 			auto albums = m_musicCache->GetLocalAlbums();
 			mergedAlbums = MergeAlbums(*albums, *songs.AllSongs, m_musicCache);
@@ -301,10 +365,12 @@ void MusicProvider::LoadAlbums()
 			m_musicCache->AddToCache(mergedAlbums.newAlbums);
 			{
 				auto albums = m_musicCache->GetLocalAlbums();
-				PublishAlbums(m_albumCallbacks, std::move(albums), m_albumCallbackLock, mergedAlbums);
+				PublishAlbums(m_albumCallbacks, std::move(albums), m_albumLoadProgress, m_albumCallbackLock, mergedAlbums);
 			}
 			m_musicCache->SaveAlbums();
 		}
+
+		// second, delete albums that no longer exist
 		{
 			auto albums = m_musicCache->GetLocalAlbums();
 			deletedAlbums = FindDeletedAlbums(*albums, *songs.AllSongs);
@@ -315,15 +381,50 @@ void MusicProvider::LoadAlbums()
 			m_musicCache->RemoveFromCache(deletedAlbums.deletedAlbums);
 			{
 				auto albums = m_musicCache->GetLocalAlbums();
-				PublishAlbums(m_albumCallbacks, std::move(albums), m_albumCallbackLock, deletedAlbums);
+				PublishAlbums(m_albumCallbacks, std::move(albums), m_albumLoadProgress, m_albumCallbackLock, deletedAlbums);
 			}
 			
 			m_musicCache->SaveAlbums();
+		}
+
+		// third, kick off a load of the album art
+		LoadAlbumArt(mergedAlbums);
+		// and notify the art loader that all albums and songs should be loaded now
+		// so it can start its delayed load processing.
+		if (songs.Progress == LoadProgress::DISK_LOAD_COMPLETE)
+		{
+			m_artLoader.NotifyLoadingComplete();
 		}
 	};
 
 	m_songSubscription = this->SubscribeSongs(songsCallback);
 }
+
+void Arcusical::MusicProvider::MusicProvider::LoadAlbumArt(const AlbumMergeResult& albumChanges)
+{
+	vector<boost::uuids::uuid> newAlbumIds;
+	vector<boost::uuids::uuid> modifiedAlbumIds;
+	newAlbumIds.reserve(albumChanges.newAlbums.size());
+	modifiedAlbumIds.reserve(albumChanges.modifiedAlbums.size());
+
+	auto idExtractor = [](const Album& album)
+	{
+		return album.GetId();
+	};
+
+	transform(begin(albumChanges.newAlbums), end(albumChanges.newAlbums), back_inserter(newAlbumIds), idExtractor);
+	transform(begin(albumChanges.modifiedAlbums), end(albumChanges.modifiedAlbums), back_inserter(modifiedAlbumIds), idExtractor);
+
+	m_artLoader.AlbumsNeedingArt()->Append(std::move(newAlbumIds));
+	m_artLoader.AlbumsToVerify()->Append(std::move(modifiedAlbumIds));
+}
+
+void Arcusical::MusicProvider::MusicProvider::OnArtLoaded(const std::vector<boost::uuids::uuid> albumIdsLoaded)
+{
+	auto albums = m_musicCache->GetLocalAlbums();
+	PublishAlbums(m_albumCallbacks, std::move(albums), m_albumLoadProgress, m_albumCallbackLock, albumIdsLoaded);
+}
+
 
 boost::optional<Album> MusicProvider::GetAlbum(const wstring& name)
 {

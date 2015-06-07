@@ -2,6 +2,7 @@
 // 
 
 #include <algorithm>
+#include "boost/algorithm/string/predicate.hpp"
 #include <future>
 #include <ppltasks.h>
 #include <string>
@@ -140,15 +141,28 @@ void Storage::RemoveIllegalCharacters(wstring& filePath, wchar_t replacementChar
 bool Storage::IsFile(wstring filePath)
 {
 	auto result = false;
-	try
+	if (filePath.size() > 0)
 	{
-		auto res = create_task(StorageFile::GetFileFromPathAsync(ref new String(filePath.c_str()))).get();
-		result = true;
-	}
-	catch (COMException^ ex)
-	{
-		// files that do not exist are not files
-		ARC_ASSERT_MSG(ex->HResult == HRESULT_FROM_WIN32(ERROR_FILE_NOT_FOUND), "unexpected HRESULT!");
+		try
+		{
+			if (boost::istarts_with(filePath, L"ms-appx:///"))
+			{
+				auto path = ref new String(filePath.c_str());
+				auto uri = ref new Uri(path);
+				auto res = create_task(StorageFile::GetFileFromApplicationUriAsync(uri)).get();
+				result = true;
+			}
+			else
+			{
+				auto res = create_task(StorageFile::GetFileFromPathAsync(ref new String(filePath.c_str()))).get();
+				result = true;
+			}
+		}
+		catch (COMException^ ex)
+		{
+			// files that do not exist are not files
+			ARC_ASSERT_MSG(ex->HResult == HRESULT_FROM_WIN32(ERROR_FILE_NOT_FOUND), "unexpected HRESULT!");
+		}
 	}
 		
 	return result;

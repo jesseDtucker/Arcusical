@@ -11,6 +11,8 @@ namespace FileSystem
 	class IFileReader;
 	class IFile;
 
+	typedef std::shared_ptr<IFile> FilePtr;
+
 	class EXPORT Storage final
 	{
 	public:

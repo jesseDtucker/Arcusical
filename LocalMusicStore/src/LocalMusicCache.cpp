@@ -108,6 +108,36 @@ AlbumCollectionLockedPtr LocalMusicCache::GetLocalAlbums() const
 	return CreateReadLockedPointer(&m_albumsEditLock, &m_localAlbums);
 }
 
+void Arcusical::LocalMusicStore::LocalMusicCache::GetLocalSongsMutable(std::function<void(Model::SongCollection* songCollection)> callback)
+{
+	{
+		unique_lock<mutex> lock(m_songsLoadingLock);
+		if (!m_areSongsLoaded)
+		{
+			// if we haven't loaded, then wait until we have
+			m_songLoading.wait(lock);
+		}
+	}
+
+	WriteLock songLock(&m_songsEditLock);
+	callback(&m_localSongs);
+}
+
+void Arcusical::LocalMusicStore::LocalMusicCache::GetLocalAlbumsMutable(std::function<void(Model::AlbumCollection* songCollection)> callback)
+{
+	{
+		unique_lock<mutex> lock(m_albumsLoadingLock);
+		if (!m_areAlbumsLoaded)
+		{
+			// if we haven't loaded, then wait until we have
+			m_albumsLoading.wait(lock);
+		}
+	}
+
+	WriteLock albumLock(&m_albumsEditLock);
+	callback(&m_localAlbums);
+}
+
 void LocalMusicCache::ClearCache()
 {
 	{

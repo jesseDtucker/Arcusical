@@ -280,7 +280,7 @@ void Arcusical::MainPage::OnAlbumsReady(const Model::AlbumCollectionChanges& alb
 			for (const auto&& modified : modifiedAlbums)
 			{
 				auto index = FindIndexOf(m_albumListVM->Albums, modified->GetModel()->GetId());
-				if (index > 0)
+				if (index >= 0)
 				{
 					m_albumListVM->Albums->SetAt(index, modified);
 				}
@@ -289,7 +289,7 @@ void Arcusical::MainPage::OnAlbumsReady(const Model::AlbumCollectionChanges& alb
 			for (const auto& deletedId : deletedAlbums)
 			{
 				auto index = FindIndexOf(m_albumListVM->Albums, deletedId);
-				if (index > 0)
+				if (index >= 0)
 				{
 					m_albumListVM->Albums->RemoveAt(index);
 				}

@@ -13,6 +13,12 @@
     <ClCompile Include="src\MusicSearcher.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\AlbumLoader.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\AlbumArtLoader.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\targetver.h">
@@ -28,6 +34,12 @@
       <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="include\SongLoader.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\AlbumLoader.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\AlbumArtLoader.hpp">
       <Filter>include</Filter>
     </ClInclude>
   </ItemGroup>

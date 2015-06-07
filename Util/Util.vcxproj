@@ -372,6 +372,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="include\Arc_Assert.hpp" />
+    <ClInclude Include="include\AsyncProcessor.hpp" />
     <ClInclude Include="include\CancellationToken.hpp" />
     <ClInclude Include="include\CheckedCasts.hpp" />
     <ClInclude Include="include\Delegate.hpp" />
