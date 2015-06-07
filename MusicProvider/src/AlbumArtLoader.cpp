@@ -3,6 +3,7 @@
 #include <utility>
 
 #include "AlbumArtLoader.hpp"
+#include "DefaultAlbumArt.hpp"
 #include "IFile.hpp"
 #include "IFileReader.hpp"
 #include "IFolder.hpp"
@@ -14,7 +15,6 @@
 
 using std::begin;
 using std::end;
-using std::random_device;
 using std::tuple;
 using std::unordered_map;
 using std::vector;
@@ -30,21 +30,6 @@ static const int MIN_VERIFY_BATCH_SIZE = 20;
 static const int MIN_EMBEDED_LOAD_BATCH_SIZE = 5;
 static const int MAX_EMBEDED_LOAD_BATCH_SIZE = 20;
 static const std::chrono::milliseconds EMBEDED_LOAD_INTERVAL{ 500 }; // do not wait more than this amount of time before loading more
-static const vector<wstring> DEFAULT_IMAGES =
-{
-	L"ms-appx:///Assets/DefaultAlbumBackgrounds/default_black.png",
-	L"ms-appx:///Assets/DefaultAlbumBackgrounds/default_cyan.png",
-	L"ms-appx:///Assets/DefaultAlbumBackgrounds/default_dark_blue.png",
-	L"ms-appx:///Assets/DefaultAlbumBackgrounds/default_dark_red.png",
-	L"ms-appx:///Assets/DefaultAlbumBackgrounds/default_fuchsia.png",
-	L"ms-appx:///Assets/DefaultAlbumBackgrounds/default_green.png",
-	L"ms-appx:///Assets/DefaultAlbumBackgrounds/default_light_cyan.png",
-	L"ms-appx:///Assets/DefaultAlbumBackgrounds/default_light_green.png",
-	L"ms-appx:///Assets/DefaultAlbumBackgrounds/default_lime.png",
-	L"ms-appx:///Assets/DefaultAlbumBackgrounds/default_orange.png",
-	L"ms-appx:///Assets/DefaultAlbumBackgrounds/default_red.png",
-	L"ms-appx:///Assets/DefaultAlbumBackgrounds/default_violet.png"
-};
 
 typedef boost::uuids::uuid SongId;
 
@@ -65,7 +50,6 @@ Arcusical::MusicProvider::AlbumArtLoader::AlbumArtLoader(LocalMusicStore::LocalM
 							{ return this->EmbededAlbumLoad(albumIds); },
 					  true, MIN_EMBEDED_LOAD_BATCH_SIZE, MAX_EMBEDED_LOAD_BATCH_SIZE, EMBEDED_LOAD_INTERVAL)
 	, m_cache(cache)
-	, m_rand(random_device()())
 {
 	std::async([this]()
 	{
@@ -84,11 +68,6 @@ void Arcusical::MusicProvider::AlbumArtLoader::RecordAlbumArt()
 	{
 		auto loadResults = m_embededLoader.OutputBuffer()->GetAtLeast(1);
 		
-		for (auto& res : loadResults)
-		{
-			FixupAlbumArt(res);
-		};
-
 		m_cache->GetLocalAlbumsMutable([&loadResults](Model::AlbumCollection* albums)
 		{
 			for (auto& result : loadResults)
@@ -98,7 +77,7 @@ void Arcusical::MusicProvider::AlbumArtLoader::RecordAlbumArt()
 				auto albumItr = albums->find(id);
 
 				ARC_ASSERT(albumItr != end(*albums));
-				if (albumItr != end(*albums))
+				if (albumItr != end(*albums) && path.size() > 0)
 				{
 					albumItr->second.SetImageFilePath(path);
 				}
@@ -115,28 +94,6 @@ void Arcusical::MusicProvider::AlbumArtLoader::RecordAlbumArt()
 		});
 
 		OnArtLoaded(albumIdsLoaded);
-	}
-}
-
-void Arcusical::MusicProvider::AlbumArtLoader::FixupAlbumArt(AlbumLoadResult& result)
-{
-	auto& path = std::get<1>(result);
-	if (path.size() == 0)
-	{
-		// then we pull one out of the bag
-		// images are selected using a Tetris algorithm
-		// the images are selected until none are available then
-		// the bag is refilled and selection continues. This
-		// guarantees a mostly uniform selection regardless of 
-		// probability and the ensuing chaos of occasionally unlikely odds
-		if (m_defaultArtBag.size() == 0) // make sure to refill the bag when it gets empty
-		{
-			m_defaultArtBag = DEFAULT_IMAGES;
-			shuffle(begin(m_defaultArtBag), end(m_defaultArtBag), m_rand);
-		}
-
-		path = m_defaultArtBag.back();
-		m_defaultArtBag.pop_back();
 	}
 }
 
@@ -178,9 +135,13 @@ void AlbumArtLoader::VerifyAlbums()
 		std::vector<AlbumArtLoader::AlbumId> missingIds;
 		for (auto& idPathPair : filePaths)
 		{
-			if (!FileSystem::Storage::FileExists(std::get<1>(idPathPair)))
+			auto path = std::get<1>(idPathPair);
+			if (isDefaultAlbumArt(path) ||
+				!FileSystem::Storage::FileExists(path))
 			{
 				// verification failed, we'll try to load this again
+				// failure is considered if the path is no good or if
+				// the album is relying upon default art
 				missingIds.push_back(std::get<0>(idPathPair));
 			}
 		}

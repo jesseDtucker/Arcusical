@@ -5,7 +5,6 @@
 #include <atomic>
 #include "boost/functional/hash.hpp"
 #include "boost/uuid/uuid.hpp"
-#include <random>
 #include <string>
 #include <tuple>
 
@@ -39,14 +38,11 @@ namespace MusicProvider
 		void VerifyAlbums();
 		std::vector<AlbumLoadResult> EmbededAlbumLoad(const std::vector<AlbumId>& albums);
 		void RecordAlbumArt();
-		void FixupAlbumArt(AlbumLoadResult& result);
 
 		Util::AsyncProcessor<AlbumId, AlbumLoadResult> m_embededLoader;
 		Util::WorkBuffer<AlbumId> m_albumsToVerify;
 
 		LocalMusicStore::LocalMusicCache* m_cache;
-		std::vector<std::wstring> m_defaultArtBag;
-		std::default_random_engine m_rand;
 	};
 }
 }

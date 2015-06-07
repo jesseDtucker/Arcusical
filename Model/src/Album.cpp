@@ -4,6 +4,7 @@
 
 #include "Album.hpp"
 #include "Arc_Assert.hpp"
+#include "DefaultAlbumArt.hpp"
 #include "IAlbumToSongMapper.hpp"
 
 using namespace std;
@@ -13,6 +14,7 @@ namespace Model
 {
 	Album::Album(const IAlbumToSongMapper* songMapper)
 		: m_songMapper(songMapper)
+		, m_ImageFilePath(GetDefaultArt())
 	{
 
 	}

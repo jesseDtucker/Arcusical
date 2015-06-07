@@ -375,6 +375,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="include\Album.hpp" />
+    <ClInclude Include="include\DefaultAlbumArt.hpp" />
     <ClInclude Include="include\IAlbumToSongMapper.hpp" />
     <ClInclude Include="include\MusicTypes.hpp" />
     <ClInclude Include="include\Song.hpp" />
@@ -382,6 +383,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Album.cpp" />
+    <ClCompile Include="src\DefaultAlbumArt.cpp" />
     <ClCompile Include="src\MusicTypes.cpp" />
     <ClCompile Include="src\Song.cpp" />
   </ItemGroup>
