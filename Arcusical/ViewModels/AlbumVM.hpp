@@ -35,6 +35,7 @@ namespace ViewModel{
 		
 	internal:
 		AlbumVM(const Model::Album& album, Player::Playlist& playlist, Player::IPlayer& player);
+		void SetFrom(const Model::Album& album); // intended for use with live/progressive updates
 
 		const Model::Album* GetModel() const;
 	private:

@@ -251,8 +251,19 @@ void Arcusical::MainPage::OnAlbumsReady(const Model::AlbumCollectionChanges& alb
 	else
 	{
 		// numbers match up, just do a partial update
+		// create a list of new view models
 		auto newAlbums = AlbumListControlVM::CreateAlbumList(albumChanges.NewAlbums, *m_playlist, *m_player);
-		auto modifiedAlbums = AlbumListControlVM::CreateAlbumList(albumChanges.ModifiedAlbums, *m_playlist, *m_player);
+
+		// modified albums need to be copied out because they will but used by another thread
+		vector<Album> modifiedAlbums;
+		modifiedAlbums.reserve(albumChanges.ModifiedAlbums.size());
+		transform(begin(albumChanges.ModifiedAlbums), end(albumChanges.ModifiedAlbums), back_inserter(modifiedAlbums),
+			[](AlbumPtrCollection::value_type albumPtr)
+		{
+			return *albumPtr.second;
+		});
+
+		// for the deleted albums just make a copy of their ids, the other details are no important
 		vector<boost::uuids::uuid> deletedAlbums;
 		deletedAlbums.reserve(albumChanges.DeletedAlbums.size());
 
@@ -277,12 +288,12 @@ void Arcusical::MainPage::OnAlbumsReady(const Model::AlbumCollectionChanges& alb
 				m_albumListVM->Albums->InsertAt((unsigned int)(idx), newAlbum);
 			}
 
-			for (const auto&& modified : modifiedAlbums)
+			for (const auto& modified : modifiedAlbums)
 			{
-				auto index = FindIndexOf(m_albumListVM->Albums, modified->GetModel()->GetId());
+				auto index = FindIndexOf(m_albumListVM->Albums, modified.GetId());
 				if (index >= 0)
 				{
-					m_albumListVM->Albums->SetAt(index, modified);
+					m_albumListVM->Albums->GetAt(index)->SetFrom(modified);
 				}
 			}
 

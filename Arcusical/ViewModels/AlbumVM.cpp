@@ -39,6 +39,22 @@ namespace ViewModel{
 		return &m_album;
 	}
 
+	void AlbumVM::SetFrom(const Model::Album& album)
+	{
+		m_album = album;
+		Artist = ref new Platform::String(album.GetArtist().c_str());
+		Title = ref new Platform::String(album.GetTitle().c_str());
+		ImagePath = ref new Platform::String(album.GetImageFilePath().c_str());
+
+		// invalidate the songs if the album has a different amount. They will get
+		// reloaded on demand
+		if (m_songs != nullptr && m_songs->List->Size != album.GetSongIds().size())
+		{
+			m_songs = nullptr;
+			OnPropertyChanged("Songs");
+		}
+	}
+
 
 	SongListVM^ AlbumVM::Songs::get()
 	{
