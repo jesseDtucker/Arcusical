@@ -5,11 +5,13 @@
 #include <atomic>
 #include "boost/functional/hash.hpp"
 #include "boost/uuid/uuid.hpp"
+#include <future>
 #include <string>
-#include <tuple>
+#include <utility>
 
 #include "AsyncProcessor.hpp"
 #include "PropertyHelper.hpp"
+#include "Storage.hpp"
 #include "WorkBuffer.hpp"
 
 namespace Arcusical
@@ -24,9 +26,10 @@ namespace MusicProvider
 	{
 	public:
 		AlbumArtLoader(LocalMusicStore::LocalMusicCache* cache);
+		~AlbumArtLoader();
 
 		typedef boost::uuids::uuid AlbumId;
-		typedef std::tuple<AlbumId, std::wstring> AlbumLoadResult;
+		typedef std::pair<AlbumId, std::wstring> IdPathPair;
 		Util::InputBuffer<AlbumId>* AlbumsNeedingArt();
 		Util::InputBuffer<AlbumId>* AlbumsToVerify();
 
@@ -36,13 +39,22 @@ namespace MusicProvider
 	private:
 
 		void VerifyAlbums();
-		std::vector<AlbumLoadResult> EmbededAlbumLoad(const std::vector<AlbumId>& albums);
+		std::vector<IdPathPair> EmbededAlbumLoad(const std::vector<AlbumId>& albums);
 		void RecordAlbumArt();
+		void SaveAlbums(const std::vector<IdPathPair>& loadResults);
+		void DelayedArtLoad();
 
-		Util::AsyncProcessor<AlbumId, AlbumLoadResult> m_embededLoader;
+		Util::AsyncProcessor<AlbumId, IdPathPair> m_embededLoader;
 		Util::WorkBuffer<AlbumId> m_albumsToVerify;
+		Util::WorkBuffer<AlbumId> m_delayedAlbumsToLoad; // ie. ones that failed the load before all songs were available
+
+		// async operations
+		std::future<void> m_verifyFuture;
+		std::future<void> m_recordFuture;
+		std::future<void> m_delayedLoadFuture;
 
 		LocalMusicStore::LocalMusicCache* m_cache;
+		std::shared_ptr<Util::WorkBuffer<FileSystem::FilePtr>> m_imageFilesWB;
 	};
 }
 }

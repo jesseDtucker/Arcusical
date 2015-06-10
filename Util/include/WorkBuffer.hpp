@@ -3,13 +3,20 @@
 
 #include "boost/optional.hpp"
 #include <chrono>
+#include <functional>
 #include <future>
 #include <vector>
 
 #include "Arc_Assert.hpp"
+#include "ScopeGuard.hpp"
 
 #undef max
 #undef min
+
+#define WORK_BUFFER_LOCK \
+	m_pending++; \
+	std::unique_lock<std::mutex> lock(m_lock); \
+	Util::ScopeGuard<std::function<void()>> counter([this](){ m_pending--; });
 
 namespace Util
 {
@@ -28,6 +35,7 @@ namespace Util
 	{
 	public:
 		virtual bool ResultsPending() const = 0;
+		virtual void WaitForCompletion() const = 0;
 		virtual std::vector<T> GetAll() = 0;
 		virtual std::vector<T> GetMultiple(size_t minimum, size_t maximum, boost::optional<std::chrono::milliseconds> = boost::none) = 0;
 		virtual std::vector<T> GetN(size_t count, boost::optional<std::chrono::milliseconds> = boost::none) = 0;
@@ -43,9 +51,9 @@ namespace Util
 	class WorkBuffer final : public InputBuffer<T>, public OutputBuffer<T>
 	{
 	public:
-		WorkBuffer() = default;
-		WorkBuffer(const WorkBuffer&) = delete;
-		WorkBuffer(const WorkBuffer&&) = delete;
+		WorkBuffer();
+		WorkBuffer(const WorkBuffer& rhs) = delete;
+		WorkBuffer(const WorkBuffer&& rhs) = delete;
 		~WorkBuffer();
 		
 		// producer functions
@@ -58,6 +66,7 @@ namespace Util
 		// Note: can return less than asked for if there isn't enough available and no more
 		// work is expected
 		virtual bool ResultsPending() const override;
+		virtual void WaitForCompletion() const override;
 		virtual std::vector<T> GetAll() override;
 		virtual std::vector<T> GetMultiple(size_t minimum, size_t maximum, boost::optional<std::chrono::milliseconds> = boost::none) override;
 		virtual std::vector<T> GetN(size_t count, boost::optional<std::chrono::milliseconds> = boost::none) override;
@@ -69,6 +78,7 @@ namespace Util
 		mutable std::mutex m_lock;
 		std::vector<T> m_buffer;
 		bool m_isDone = false;
+		mutable std::atomic<int> m_pending;
 	};
 
 	/************************************************************************/
@@ -76,52 +86,90 @@ namespace Util
 	/************************************************************************/
 
 	template<typename T>
+	WorkBuffer<T>::WorkBuffer()
+	{
+		m_pending = 0;
+	}
+
+	template<typename T>
 	WorkBuffer<T>::~WorkBuffer()
 	{
-		if (!m_isDone)
+		bool isWorkDone = false;
+		{
+			std::unique_lock<std::mutex> lock(m_lock);
+			isWorkDone = m_isDone;
+		}
+		ARC_ASSERT_MSG(isWorkDone, "Attempted to destroy a work buffer that has pending work!");
+		// the following code will try to correct against a premature deletion. However, this really shouldn't be allowed to happen
+		if (!isWorkDone)
 		{
 			Complete();
 		}
+
+		ARC_ASSERT_MSG(m_pending == 0, "Warning, there is very likely a lifetime error as a WorkBuffer is being destroyed while something is using it!");
+
+		while (m_pending != 0)
+		{
+			// just spin, this should never happen but nonetheless we must be safe and detect the error, report it (loudly) and then handle it gracefully
+			// However, this will only protect against code that is currently using this object, not code that attempts access after it has been destroyed
+			// frankly there is little I can do to protect against a dangling pointer from in here...
+		}
+
+		ARC_ASSERT(m_pending == 0);
 	}
 
 	template<typename T>
 	bool WorkBuffer<T>::ResultsPending() const
 	{
-		std::unique_lock<std::mutex> lock(m_lock);
+		WORK_BUFFER_LOCK;
 		return !m_isDone || m_buffer.size() > 0;
+	}
+
+	template<typename T>
+	void Util::WorkBuffer<T>::WaitForCompletion() const
+	{
+		WORK_BUFFER_LOCK;
+
+		if (!m_isDone)
+		{
+			m_consumerCP.wait(lock, [this]()
+			{
+				return m_isDone;
+			});
+		}
 	}
 
 	template<typename T>
 	void WorkBuffer<T>::Append(const T& value)
 	{
-		std::unique_lock<std::mutex> lock(m_lock);
+		WORK_BUFFER_LOCK;
 		ARC_ASSERT(!m_isDone);
 		m_buffer.push_back(value);
-		m_consumerCP.notify_one();
+		m_consumerCP.notify_all();
 	}
 
 	template<typename T>
 	void WorkBuffer<T>::Append(T&& value)
 	{
-		std::unique_lock<std::mutex> lock(m_lock);
+		WORK_BUFFER_LOCK;
 		ARC_ASSERT(!m_isDone);
 		m_buffer.push_back(std::move(value));
-		m_consumerCP.notify_one();
+		m_consumerCP.notify_all();
 	}
 
 	template<typename T>
 	void WorkBuffer<T>::Append(std::vector<T>&& values)
 	{
-		std::unique_lock<std::mutex> lock(m_lock);
+		WORK_BUFFER_LOCK;
 		ARC_ASSERT(!m_isDone);
 		std::move(begin(values), end(values), back_inserter(m_buffer));
-		m_consumerCP.notify_one();
+		m_consumerCP.notify_all();
 	}
 
 	template<typename T>
 	void WorkBuffer<T>::Complete()
 	{
-		std::unique_lock<std::mutex> lock(m_lock);
+		WORK_BUFFER_LOCK;
 		ARC_ASSERT(!m_isDone);
 
 		m_isDone = true;
@@ -131,16 +179,9 @@ namespace Util
 	template<typename T>
 	std::vector<T> WorkBuffer<T>::GetAll()
 	{
-		std::unique_lock<std::mutex> lock(m_lock);
+		WaitForCompletion();
 
-		if (!m_isDone)
-		{
-			m_consumerCP.wait(lock, [this]()
-			{
-				return m_isDone;
-			});
-		}
-
+		WORK_BUFFER_LOCK;
 		auto results = std::move(m_buffer);
 		m_buffer = {};
 		return results;
@@ -155,7 +196,7 @@ namespace Util
 		ARC_ASSERT(minimum <= maximum);
 
 		auto start = system_clock::now();
-		std::unique_lock<std::mutex> lock(m_lock);
+		WORK_BUFFER_LOCK;
 
 		if (m_buffer.size() < minimum && !m_isDone)
 		{
@@ -177,14 +218,21 @@ namespace Util
 
 		auto numToGet = m_buffer.size();
 		numToGet = std::min(numToGet, maximum);
-		std::vector<T> results;
-		results.reserve(numToGet);
+		if (numToGet > 0)
+		{
+			std::vector<T> results;
+			results.reserve(numToGet);
 
-		auto last = std::next(begin(m_buffer), numToGet);
-		std::move(begin(m_buffer), last, back_inserter(results));
-		m_buffer.erase(begin(m_buffer), last);
+			auto last = std::next(begin(m_buffer), numToGet);
+			std::move(begin(m_buffer), last, back_inserter(results));
+			m_buffer.erase(begin(m_buffer), last);
 
-		return results;
+			return results;
+		}
+		else
+		{
+			return{};
+		}
 	}
 
 	template<typename T>
@@ -216,7 +264,7 @@ namespace Util
 
 		boost::optional<T> result = boost::none;
 		auto start = system_clock::now();
-		std::unique_lock<std::mutex> lock(m_lock);
+		WORK_BUFFER_LOCK;
 
 		if (m_buffer.size() < 1 || !m_isDone)
 		{

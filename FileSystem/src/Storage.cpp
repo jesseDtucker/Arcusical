@@ -89,6 +89,7 @@ shared_ptr<IFileReader> Storage::GetReader(const shared_ptr<IFile> file)
 
 shared_ptr<IFile> Storage::LoadFileFromPath(wstring filePath)
 {
+	ARC_ASSERT(filePath.size() > 0);
 	ARC_ASSERT_MSG(CheckForIllegalCharacters(filePath), "Path to load contained illegal characters!");
 	shared_ptr<IFile> file = nullptr;
 		

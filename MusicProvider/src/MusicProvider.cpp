@@ -34,6 +34,7 @@ static const size_t MIN_SONGS_TO_LOAD_AT_ONCE = 20;
 static const size_t BASE_SONGS_TO_LOAD_AT_ONCE = 50;
 static const size_t MAX_SONGS_TO_LOAD_AT_ONCE = 500;
 static const std::chrono::milliseconds SONG_LOAD_TARGET_TIME{ 4000 };
+static const float MAX_RATE_OF_CHANGE_TO_SONG_LOAD_RATE = 0.2f; // the max percentage that the song load rate can change per iteration
 
 SongCollectionChanges CreateSongCollectionDelta(const boost::optional<SongMergeResult>& mergeResults,
 												SongCollectionLockedPtr&& songs)
@@ -236,13 +237,14 @@ void MusicProvider::LoadSongs()
 	{
 		m_musicCache->AddToCache(deletedSongs.modifiedSongs);
 		m_musicCache->RemoveFromCache(deletedSongs.deletedSongs);
-		{
-			auto songs = m_musicCache->GetLocalSongs();
-			m_songLoadProgress = LoadProgress::DISK_LOAD_COMPLETE;
-			PublishSongs(m_songCallbacks, std::move(songs), m_songLoadProgress, m_songCallbackLock, deletedSongs);
-		}
 		m_musicCache->SaveSongs();
 	}
+	{
+		auto songs = m_musicCache->GetLocalSongs();
+		m_songLoadProgress = LoadProgress::DISK_LOAD_COMPLETE;
+		PublishSongs(m_songCallbacks, std::move(songs), m_songLoadProgress, m_songCallbackLock, deletedSongs);
+	}
+	
 }
 
 vector<FileSystem::FilePtr> MusicProvider::ProcessSongFiles(Util::WorkBuffer<FileSystem::FilePtr>& songFilesWB)
@@ -282,8 +284,12 @@ vector<FileSystem::FilePtr> MusicProvider::ProcessSongFiles(Util::WorkBuffer<Fil
 			auto loadTimePerSong = timeSpentLoading.count() / numSongsLoaded;
 			if (loadTimePerSong > 0)
 			{
+				auto lowerRateLimit = (size_t)(numSongsToLoad * (1.0 - MAX_RATE_OF_CHANGE_TO_SONG_LOAD_RATE));
+				auto upperRateLimit = (size_t)(numSongsToLoad * (1.0 + MAX_RATE_OF_CHANGE_TO_SONG_LOAD_RATE));
 				auto newCount = Util::SafeIntCast<decltype(numSongsToLoad)>(SONG_LOAD_TARGET_TIME.count() / loadTimePerSong);
 				numSongsToLoad = (newCount + numSongsToLoad) / 2; // avg them out so sudden jumps are evened out a bit
+				numSongsToLoad = max(lowerRateLimit, numSongsToLoad);
+				numSongsToLoad = min(upperRateLimit, numSongsToLoad);
 				numSongsToLoad = max(MIN_SONGS_TO_LOAD_AT_ONCE, numSongsToLoad);
 				numSongsToLoad = min(MAX_SONGS_TO_LOAD_AT_ONCE, numSongsToLoad);
 			}
@@ -424,7 +430,6 @@ void Arcusical::MusicProvider::MusicProvider::OnArtLoaded(const std::vector<boos
 	auto albums = m_musicCache->GetLocalAlbums();
 	PublishAlbums(m_albumCallbacks, std::move(albums), m_albumLoadProgress, m_albumCallbackLock, albumIdsLoaded);
 }
-
 
 boost::optional<Album> MusicProvider::GetAlbum(const wstring& name)
 {
