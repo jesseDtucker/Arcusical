@@ -27,14 +27,11 @@
 	<Grid>
 		<Grid Background="#F0F0F0" Margin="0,0,0,70">
 			<Grid.ColumnDefinitions>
-				<ColumnDefinition Width="25*"/>
+				<ColumnDefinition Width="15*"/>
 				<ColumnDefinition Width="45*"/>
-				<ColumnDefinition Width="400"/>
 			</Grid.ColumnDefinitions>
 			<local:SongListControl Grid.Column="0" x:Name="v_songListControl"/>
 			<local:AlbumListControl Grid.Column="1" x:Name="v_albumListControl" HorizontalAlignment="Center"/>
-			<local:SearchResultsControl Grid.Column="2" HorizontalAlignment="Right" 
-										Width="400" x:Name="v_searchResults"/>
 		</Grid>
 		<local:BottomBar x:Name="v_bottomBar"  VerticalAlignment="Bottom" HorizontalAlignment="Stretch" MaxHeight="128"/>
 	</Grid>

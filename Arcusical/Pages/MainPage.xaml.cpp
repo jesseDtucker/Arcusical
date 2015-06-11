@@ -201,7 +201,6 @@ void Arcusical::MainPage::SetDependencies(	MusicSearcher* musicSearcher,
 	v_albumListControl->VM = m_albumListVM;
 	v_songListControl->VM = m_songListVM;
 	v_bottomBar->VM = m_playerVM;
-	v_searchResults->VM = m_searchResultsVM;
 
 	function<void(const Events::AlbumSelectedEvent&)> albumSelctedCB = [this](const Events::AlbumSelectedEvent& ev)
 	{
