@@ -242,7 +242,8 @@ wstring GetOnlyPathToFile(const wstring& fullPath)
 	auto pathEnd = FindLastPathSeperator(fullPath);
 	if (pathEnd != 0)
 	{
-		return wstring(begin(fullPath), next(begin(fullPath), pathEnd));
+		// we want to try and keep the separator on the end, hence the +1
+		return wstring(begin(fullPath), next(begin(fullPath), pathEnd + 1));
 	}
 	else
 	{
@@ -357,27 +358,32 @@ wstring VoteOnResult(const vector<pair<wstring, wstring>>& selections, const uno
 	}
 }
 
-size_t LengthOfCommon(const wstring& a, const wstring& b)
+size_t NumberOfCommonAncestors(const wstring& a, const wstring& b)
 {
 	// requiring that a is the shorter string
 	if(a.size() > b.size())
 	{
-		return LengthOfCommon(b, a);
+		return NumberOfCommonAncestors(b, a);
 	}
 
 	auto aItr = begin(a);
 	auto bItr = begin(b);
 
-	size_t length = 0;
+	size_t commonCount = 0;
 	while (aItr != end(a) && *aItr == *bItr)
 	{
 		ARC_ASSERT(bItr != end(b)); // a should be shorter, so we can't run over b. assert just in case
-		++length;
 		++aItr;
 		++bItr;
+
+		// basically we only care about the depth matching, not the 
+		if (*aItr == '\\' || *aItr == '/')
+		{
+			++commonCount;
+		}
 	}
 
-	return length;
+	return commonCount;
 }
 
 wstring SelectCandidate(const wstring& albumName, const vector<wstring>& fullImagePaths)
@@ -402,9 +408,9 @@ wstring SelectCandidate(const wstring& albumName, const vector<wstring>& fullIma
 	vector<vector<wstring>> namesToCheck =
 	{
 		{ albumName },
+		{ L"front" },
 		{ L"cover", L"albumart" },
 		{ L"album", L"art" },
-		{ L"front" },
 		{ L"inlay" },
 		{ L"back", L"rear" }
 	};
@@ -430,15 +436,17 @@ wstring SelectCandidate(const wstring& albumName, const vector<wstring>& fullIma
 	static random_device rd;
 	static default_random_engine rand(rd());
 
+	auto r = rand();
+
 	if (possiblePaths.size() == 0)
 	{
 		// no possible paths, just pick any path at random
-		auto offset = rand() % imagePaths.size();
+		auto offset = r % imagePaths.size();
 		selection = imagePaths[offset].second;
 	}
 	else
 	{
-		auto offset = rand() % possiblePaths.size();
+		auto offset = r % possiblePaths.size();
 		selection = possiblePaths[offset].second;
 	}
 
@@ -459,7 +467,7 @@ wstring FindArt(const vector<wstring>& imagePaths, const wstring& songPath, cons
 	imagePathsWithLengths.reserve(imagePaths.size());
 	transform(begin(imagePaths), end(imagePaths), back_inserter(imagePathsWithLengths), [&songPath](const wstring& path)
 	{
-		auto length = LengthOfCommon(path, songPath);
+		auto length = NumberOfCommonAncestors(path, songPath);
 		return make_pair(path, length);
 	});
 
@@ -798,12 +806,16 @@ wstring SaveImageFile(const std::wstring& existingArtPath)
 	}
 
 	// For some reason we can't load the image in its default location, move to local folder first
+	auto hash = std::hash<wstring>()(existingArtPath);
 	auto albumArtFile = FileSystem::Storage::LoadFileFromPath(existingArtPath);
 	vector<unsigned char> buffer;
 	albumArtFile->ReadFromFile(buffer);
 	auto ext = albumArtFile->GetExtension();
 
-	auto path = SaveImageFile(buffer, albumArtFile->GetName(), ext);
+	// including the hash of the path incase there is a collision with file names
+	// for instance 2 separate images both names cover.png
+	auto newFileName = albumArtFile->GetName() + L"_" + std::to_wstring(hash);
+	auto path = SaveImageFile(buffer, newFileName, ext);
 	ARC_ASSERT(path);
 	ARC_ASSERT(path->size() > 0);
 
