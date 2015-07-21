@@ -16,8 +16,46 @@ using namespace Microsoft::WRL;
 
 // 261E9D83-9529-4B8F-A111-8B9C950A81A9
 GUID ALAC_COOKIE = { 0x261E9D83, 0x9529, 0x4B8F, 0xA1, 0x11, 0x8B, 0x9C, 0x95, 0x0A, 0x81, 0xA9 };
+const unsigned int INPUT_BUFFER_SIZE_LIMIT = 5 << 20; // About 5 Megabytes
+const int TARGET_TIME_TO_BUFFER = 20; // seconds
+const int NUM_DECODE_WORKERS = 1;
 
 ActivatableClass(ALACMFTDecoder);
+
+#define CHECK_NULL(val)      \
+	if((val) == nullptr)     \
+				{                        \
+		return E_INVALIDARG; \
+				}
+
+#define CHECK_SHUTDOWN                   \
+	if(m_isShuttingDown || m_isShutdown) \
+				{                                \
+		return MF_E_SHUTDOWN;            \
+				}
+
+//std::lock_guard<decltype(m_locker)> locker(m_locker);
+#define SYNC_LOCK std::lock_guard<decltype(m_syncLock)> lock(m_syncLock);
+	
+#define CHECK_LOCK SYNC_LOCK // ARC_ASSERT(m_locker.owns_lock())
+
+// Note: this refers to the aspect of async MFT's being unlocked for use
+// Not to the concept of a lock for synchronization purposes.
+// See: https://msdn.microsoft.com/en-us/library/windows/desktop/dd317909(v=vs.85).aspx
+#define CHECK_UNLOCKED                                                                      \
+	if(m_attributes == nullptr)                                                             \
+		{                                                                                   \
+		OutputDebugStringA("AXA : LOCKED"); \
+		return MF_E_TRANSFORM_ASYNC_LOCKED;                                                 \
+	}                                                                                       \
+	UINT32 isUnlocked = 0;                                                                  \
+	HRESULT unlockedHR = m_attributes->GetUINT32(MF_TRANSFORM_ASYNC_UNLOCK, &isUnlocked);   \
+	if (FAILED(unlockedHR) || isUnlocked != TRUE)                                           \
+	{                                                                                       \
+		OutputDebugStringA("AXA : LOCKED"); \
+		return MF_E_TRANSFORM_ASYNC_LOCKED;                                                 \
+	} \
+	OutputDebugStringA("AXB : UNLOCKED");
 
 ALACMFTDecoder::ALACMFTDecoder()
 	: m_avgBytesPerSec(0)
@@ -28,18 +66,25 @@ ALACMFTDecoder::ALACMFTDecoder()
 	, m_bitsPerSample(0)
 	, m_outputType(nullptr)
 	, m_inputType(nullptr)
-	, m_outBuffer()
 	, m_isOutFrameReady(false)
 	, m_samplesAvailable(0)
 	, m_hasEnoughInput(false)
+	, m_syncLock()
+	, m_attributes(nullptr)
+	, m_inputByteCount(0)
+	, m_processor(nullptr)
+	, m_canRequestInput(false)
 {
-	
+	ResetProcessor();
+	StartEventLoop();
 }
 
 ALACMFTDecoder::~ALACMFTDecoder()
 {
-	// TODO::JT something wrong with this..
-	//delete(m_cookieBlob);
+	if (m_shutdownTask.valid())
+	{
+		m_shutdownTask.wait();
+	}
 	m_cookieBlob = nullptr;
 }
 
@@ -68,6 +113,8 @@ HRESULT ALACMFTDecoder::GetStreamLimits(
 	DWORD   *pdwOutputMaximum
 	)
 {
+	CHECK_UNLOCKED;
+	CHECK_SHUTDOWN;
 
 	if ((pdwInputMinimum == nullptr) ||
 		(pdwInputMaximum == nullptr) ||
@@ -98,6 +145,8 @@ HRESULT ALACMFTDecoder::GetStreamCount(
 	DWORD   *pcInputStreams,
 	DWORD   *pcOutputStreams)
 {
+	CHECK_SHUTDOWN;
+
 	if ((pcInputStreams == nullptr) || (pcOutputStreams == nullptr))
 	{
 		return E_POINTER;
@@ -120,9 +169,22 @@ HRESULT ALACMFTDecoder::GetStreamIDs(
 	DWORD   *pdwOutputIDs
 	)
 {
-	// Do not need to implement, because this MFT has a fixed number of
-	// streams and the stream IDs match the stream indexes.
+	if (dwInputIDArraySize < 1 || dwOutputIDArraySize < 1)
+	{
+		return MF_E_BUFFERTOOSMALL;
+	}
+	// apparently this causes the IMFMediaEngine to fail despite the documentation stating otherwise
+	//CHECK_UNLOCKED;
+	CHECK_SHUTDOWN;
+
 	return E_NOTIMPL;
+	
+	// there is only 1 input stream and 1 output stream, therefore all streams have an id of 0
+	// basically I don't have to worry about identifying them
+	pdwInputIDs[0] = 0;
+	pdwOutputIDs[0] = 0;
+
+	return S_OK;
 }
 
 //-------------------------------------------------------------------
@@ -134,6 +196,9 @@ HRESULT ALACMFTDecoder::GetInputStreamInfo(
 	MFT_INPUT_STREAM_INFO *   pStreamInfo
 	)
 {
+	CHECK_UNLOCKED;
+	CHECK_SHUTDOWN;
+
 	ARC_FAIL("TODO::JT");
 	if (pStreamInfo == nullptr)
 	{
@@ -152,12 +217,15 @@ HRESULT ALACMFTDecoder::GetOutputStreamInfo(
 	MFT_OUTPUT_STREAM_INFO *  pStreamInfo
 	)
 {
+	CHECK_UNLOCKED;
+	CHECK_SHUTDOWN;
+
 	if (pStreamInfo == nullptr)
 	{
 		return E_POINTER;
 	}
 
-	pStreamInfo->dwFlags = MFT_OUTPUT_STREAM_WHOLE_SAMPLES | MFT_OUTPUT_STREAM_FIXED_SAMPLE_SIZE;
+	pStreamInfo->dwFlags = MFT_OUTPUT_STREAM_WHOLE_SAMPLES | MFT_OUTPUT_STREAM_FIXED_SAMPLE_SIZE | MFT_OUTPUT_STREAM_PROVIDES_SAMPLES;
 	pStreamInfo->cbSize = GetOutBufferSize();
 	pStreamInfo->cbAlignment = 0;
 
@@ -166,7 +234,24 @@ HRESULT ALACMFTDecoder::GetOutputStreamInfo(
 
 HRESULT ALACMFTDecoder::GetAttributes(IMFAttributes** pAttributes)
 {
-	return E_NOTIMPL;
+	HRESULT hr = S_OK;
+
+	OutputDebugStringA("----- Creating attributes...\n");
+	if (m_attributes == nullptr)
+	{
+		hr = MFCreateAttributes(&m_attributes, 3);
+		ARC_ThrowIfFailed(hr);
+	}
+
+	hr = m_attributes->SetUINT32(MF_TRANSFORM_ASYNC, TRUE);
+	ARC_ThrowIfFailed(hr);
+
+	hr = m_attributes->SetUINT32(MFT_SUPPORT_DYNAMIC_FORMAT_CHANGE, TRUE);
+	ARC_ThrowIfFailed(hr);
+
+	*pAttributes = m_attributes.Get();
+
+	return hr;
 }
 
 //-------------------------------------------------------------------
@@ -178,6 +263,11 @@ HRESULT ALACMFTDecoder::GetInputStreamAttributes(
 	DWORD           dwInputStreamID,
 	IMFAttributes** ppAttributes)
 {
+	//CHECK_UNLOCKED;
+	CHECK_SHUTDOWN;
+
+	OutputDebugStringA("--------GetInputStreamAttributes...");
+
 	// This MFT does not support any attributes, so the method is not implemented.
 	return E_NOTIMPL;
 }
@@ -191,6 +281,11 @@ HRESULT ALACMFTDecoder::GetOutputStreamAttributes(
 	IMFAttributes** ppAttributes
 	)
 {
+	CHECK_UNLOCKED;
+	CHECK_SHUTDOWN;
+
+	OutputDebugStringA("--------GetOutputStreamAttributes...");
+
 	return E_NOTIMPL;
 }
 
@@ -201,6 +296,9 @@ HRESULT ALACMFTDecoder::GetOutputStreamAttributes(
 //-------------------------------------------------------------------
 HRESULT ALACMFTDecoder::DeleteInputStream(DWORD dwStreamID)
 {
+	CHECK_UNLOCKED;
+	CHECK_SHUTDOWN;
+
 	ARC_FAIL("TODO::JT");
 	// This MFT has a fixed number of input streams, so the method is not implemented.
 	return E_NOTIMPL;
@@ -213,6 +311,9 @@ HRESULT ALACMFTDecoder::AddInputStreams(
 	DWORD   cStreams,
 	DWORD*  adwStreamIDs)
 {
+	CHECK_UNLOCKED;
+	CHECK_SHUTDOWN;
+
 	ARC_FAIL("TODO::JT");
 	// This MFT has a fixed number of output streams, so the method is not implemented.
 	return E_NOTIMPL;
@@ -227,6 +328,10 @@ HRESULT ALACMFTDecoder::GetInputAvailableType(
 	DWORD           dwTypeIndex,
 	IMFMediaType**  ppType)
 {
+	// IMFMediaEngine fails if we check for unlock here, However the docs say we should not proceed without the check...
+	// CHECK_UNLOCKED;
+	CHECK_SHUTDOWN;
+
 	ARC_FAIL("TODO::JT");
 	return MF_E_NO_MORE_TYPES;
 }
@@ -240,6 +345,9 @@ HRESULT ALACMFTDecoder::GetOutputAvailableType(
 	DWORD           dwTypeIndex, // 0-based
 	IMFMediaType    **ppType)
 {
+	CHECK_UNLOCKED;
+	CHECK_SHUTDOWN;
+
 	// we only have one type!
 	if (dwTypeIndex > 0)
 	{
@@ -262,6 +370,9 @@ HRESULT ALACMFTDecoder::SetInputType(
 	DWORD           dwFlags
 	)
 {
+	//CHECK_UNLOCKED;
+	CHECK_SHUTDOWN;
+
 	HRESULT hr = S_OK;
 
 	try
@@ -324,17 +435,26 @@ void ALACMFTDecoder::ParseALACBox()
 			ARC_ASSERT(m_alacBox != nullptr);
 			
 			m_bitsPerSample = m_alacBox->GetSampleSize();
-
-			m_outBuffer.resize(GetOutBufferSize());
+			m_samplesPerFrame = m_alacBox->GetSamplePerFrame();
 		}
 	}
-
-	m_decoder.Init(m_cookieBlob + 52, m_cookieBlobSize - 52);
 }
 
 unsigned int ALACMFTDecoder::GetOutBufferSize()
 {
 	return m_alacBox->GetSamplePerFrame() * m_channelCount * m_bitsPerSample / 8;
+}
+
+int ALACMFTDecoder::GetNumInputFramesToBuffer()
+{
+	auto bytesNeeded = m_avgBytesPerSec * TARGET_TIME_TO_BUFFER;
+	auto bytesAllowed = std::min(bytesNeeded, INPUT_BUFFER_SIZE_LIMIT);
+	auto bytesPerSample = m_bitsPerSample / 8;
+	auto bytesPerFrame = bytesPerSample * m_samplesPerFrame;
+
+	auto framesAllowed = bytesNeeded / bytesPerFrame;
+
+	return framesAllowed;
 }
 
 //-------------------------------------------------------------------
@@ -345,6 +465,9 @@ HRESULT ALACMFTDecoder::SetOutputType(
 	IMFMediaType    *pType, // Can be nullptr to clear the output type.
 	DWORD           dwFlags)
 {
+	CHECK_UNLOCKED;
+	CHECK_SHUTDOWN;
+
 	HRESULT hr = S_OK;
 	m_outputType = pType;
 	return hr;
@@ -358,6 +481,9 @@ HRESULT ALACMFTDecoder::GetInputCurrentType(
 	DWORD           dwInputStreamID,
 	IMFMediaType    **ppType)
 {
+	CHECK_UNLOCKED;
+	CHECK_SHUTDOWN;
+
 	if (ppType == nullptr)
 	{
 		return E_POINTER;
@@ -380,6 +506,9 @@ HRESULT ALACMFTDecoder::GetOutputCurrentType(
 	DWORD           dwOutputStreamID,
 	IMFMediaType    **ppType)
 {
+	CHECK_UNLOCKED;
+	CHECK_SHUTDOWN;
+
 	if (ppType == nullptr)
 	{
 		return E_POINTER;
@@ -400,6 +529,9 @@ HRESULT ALACMFTDecoder::GetInputStatus(
 	DWORD           dwInputStreamID,
 	DWORD           *pdwFlags)
 {
+	CHECK_UNLOCKED;
+	CHECK_SHUTDOWN;
+
 	if (pdwFlags == nullptr)
 	{
 		return E_POINTER;
@@ -415,6 +547,9 @@ HRESULT ALACMFTDecoder::GetInputStatus(
 //-------------------------------------------------------------------
 HRESULT ALACMFTDecoder::GetOutputStatus(DWORD *pdwFlags)
 {
+	CHECK_UNLOCKED;
+	CHECK_SHUTDOWN;
+
 	if (pdwFlags == nullptr)
 	{
 		return E_POINTER;
@@ -432,6 +567,9 @@ HRESULT ALACMFTDecoder::SetOutputBounds(
 	LONGLONG        /*hnsLowerBound*/,
 	LONGLONG        /*hnsUpperBound*/)
 {
+	CHECK_UNLOCKED;
+	CHECK_SHUTDOWN;
+
 	ARC_FAIL("TODO::JT");
 	// Implementation of this method is optional.
 	return E_NOTIMPL;
@@ -445,6 +583,9 @@ HRESULT ALACMFTDecoder::ProcessEvent(
 	DWORD              /*dwInputStreamID*/,
 	IMFMediaEvent      * /*pEvent */)
 {
+	CHECK_UNLOCKED;
+	CHECK_SHUTDOWN;
+
 	// This MFT does not handle any stream events, so the method can
 	// return E_NOTIMPL. This tells the pipeline that it can stop
 	// sending any more events to this MFT.
@@ -459,7 +600,42 @@ HRESULT ALACMFTDecoder::ProcessMessage(
 	MFT_MESSAGE_TYPE    eMessage,
 	ULONG_PTR           ulParam)
 {
-	return S_OK;
+	SYNC_LOCK;
+	CHECK_UNLOCKED;
+	CHECK_SHUTDOWN;
+
+	HRESULT hr = S_OK;
+
+	switch (eMessage)
+	{
+	case MFT_MESSAGE_NOTIFY_START_OF_STREAM:
+		m_canRequestInput = true;
+		m_isDraining = false;
+		ResetProcessor();
+		RequestInput();
+		break;
+	case MFT_MESSAGE_NOTIFY_BEGIN_STREAMING:
+		// Do nothing, this is just a heads up for us
+		break;
+	case MFT_MESSAGE_COMMAND_DRAIN:
+		m_canRequestInput = false;
+		m_isDraining = true;
+		break;
+	case MFT_MESSAGE_COMMAND_FLUSH:
+		m_canRequestInput = false;
+		FlushBuffers();
+		break;
+	case MFT_MESSAGE_NOTIFY_END_STREAMING:
+		// Don't do anything in this case
+		break;
+	case MFT_MESSAGE_NOTIFY_END_OF_STREAM:
+		m_canRequestInput = false;
+		break;
+	default:
+		ARC_FAIL("Unhanded message");
+	}
+
+	return hr;
 }
 
 //-------------------------------------------------------------------
@@ -471,72 +647,31 @@ HRESULT ALACMFTDecoder::ProcessInput(
 	IMFSample           *pSample,
 	DWORD               dwFlags)
 {
-	DWORD bufferCount = 0;
-	auto hr = pSample->GetBufferCount(&bufferCount);
+	SYNC_LOCK;
+	CHECK_UNLOCKED;
+	CHECK_SHUTDOWN;
+	CHECK_NULL(pSample);
+
+	if (m_numExpectedInputRequests == 0)
+	{
+		ARC_FAIL("I don't think this should actually occur");
+		return E_UNEXPECTED;
+	}
+
+	--m_numExpectedInputRequests;
+	++m_framesReceived;
+
+	DWORD bufferLength = 0;
+	auto hr = pSample->GetTotalLength(&bufferLength);
 	ARC_ThrowIfFailed(hr);
 
-	// buffer count is almost always one, that is why
-	// I'm optimizing this particular case and not bothering to copy the buffers
-	if (bufferCount == 1)
-	{
-		ComPtr<IMFMediaBuffer> inputMediaBuffer = nullptr;
-		hr = pSample->GetBufferByIndex(0, &inputMediaBuffer);
-		ARC_ThrowIfFailed(hr);
+	m_inputByteCount += bufferLength;
 
-		BYTE* inBuffer = nullptr;
-		DWORD bufferLength = 0;
-		hr = inputMediaBuffer->Lock(&inBuffer, NULL, &bufferLength);
-		ARC_ThrowIfFailed(hr);
-		Util::ScopeGuard<std::function<void()>> inputBufferUnlocker([&inputMediaBuffer]()
-		{
-			auto hr = inputMediaBuffer->Unlock();
-			ARC_ASSERT(SUCCEEDED(hr));
-		});
+	m_processor->AddItem(std::move(pSample));
 
-		BitBuffer bitsWrapper;
-		BitBufferInit(&bitsWrapper, inBuffer, bufferLength);
-
-		auto decodeResult = m_decoder.Decode(&bitsWrapper, (uint8_t*) (m_outBuffer.data()), m_alacBox->GetSamplePerFrame(), m_channelCount, &m_samplesAvailable);
-		m_hasEnoughInput = decodeResult != kALAC_ParamError;
-		m_isOutFrameReady = (decodeResult == 0);
-	}
-	else
-	{
-		// there are multiple buffers, however the decoder can only accept a single continuous buffer
-		// so we'll have to merge them together into a single buffer
-		std::vector<unsigned char> inputFrameBuffer;
-		for (unsigned int i = 0; i < bufferCount; ++i)
-		{
-			ComPtr<IMFMediaBuffer> inputMediaBuffer = nullptr;
-			hr = pSample->GetBufferByIndex(i, &inputMediaBuffer);
-			ARC_ThrowIfFailed(hr);
-
-			BYTE* inBuffer = nullptr;
-			DWORD bufferLength = 0;
-			hr = inputMediaBuffer->Lock(&inBuffer, NULL, &bufferLength);
-			ARC_ThrowIfFailed(hr);
-			Util::ScopeGuard<std::function<void()>> inputBufferUnlocker([&inputMediaBuffer]()
-			{
-				auto hr = inputMediaBuffer->Unlock();
-				ARC_ASSERT(SUCCEEDED(hr));
-			});
-
-			auto nextPos = inputFrameBuffer.size();
-			inputFrameBuffer.resize(inputFrameBuffer.size() + bufferLength);
-			std::copy(	inBuffer,
-						inBuffer + bufferLength,
-						inputFrameBuffer.data() + nextPos);
-		}
-
-		BitBuffer bitsWrapper;
-		BitBufferInit(&bitsWrapper, (uint8_t*) (inputFrameBuffer.data()), (uint32_t)(inputFrameBuffer.size()));
-
-		auto decodeResult = m_decoder.Decode(&bitsWrapper, (uint8_t*) (m_outBuffer.data()), m_alacBox->GetSamplePerFrame(), m_channelCount, &m_samplesAvailable);
-		m_hasEnoughInput = decodeResult != kALAC_ParamError;
-		m_isOutFrameReady = decodeResult == 0;
-	}
-
-	return S_OK;
+	RequestInput();
+	
+	return hr;
 }
 
 //-------------------------------------------------------------------
@@ -549,43 +684,30 @@ HRESULT ALACMFTDecoder::ProcessOutput(
 	MFT_OUTPUT_DATA_BUFFER  *pOutputSamples, // one per stream
 	DWORD                   *pdwStatus)
 {
-	if (m_isOutFrameReady)
+	CHECK_UNLOCKED;
+	CHECK_SHUTDOWN;
+	ARC_ASSERT(cOutputBufferCount > 0);
+	CHECK_NULL(pOutputSamples);
+	ARC_ASSERT_MSG(pOutputSamples->pSample == nullptr, "We are allocating the samples, there should not be any provided samples!");
+
+	if (m_numExpectedOutputRequests == 0)
 	{
-		ComPtr<IMFMediaBuffer> outBuffer = nullptr;
-		auto hr = pOutputSamples->pSample->GetBufferByIndex(cOutputBufferCount - 1, &outBuffer);
-		ARC_ThrowIfFailed(hr);
-
-		DWORD bufferLength = 0;
-		DWORD currentLength = 0;
-
-		BYTE* pBuffer = nullptr;
-		hr = outBuffer->Lock(&pBuffer, &bufferLength, &currentLength);
-		ARC_ThrowIfFailed(hr);
-
-		Util::ScopeGuard<std::function<void()>> inputBufferUnlocker([&outBuffer]()
-		{
-			auto hr = outBuffer->Unlock();
-			ARC_ASSERT(SUCCEEDED(hr));
-		});
-
-		ARC_ASSERT(bufferLength >= m_outBuffer.size());
-		auto bytesToCopy =  m_samplesAvailable * m_channelCount * m_bitsPerSample / 8;
-		ARC_ASSERT(bytesToCopy <= m_outBuffer.size());
-
-		std::copy(	m_outBuffer.data(), 
-					m_outBuffer.data() + bytesToCopy,
-					pBuffer);
-
-		outBuffer->SetCurrentLength(bytesToCopy);
-		m_isOutFrameReady = false;
-		m_samplesAvailable = 0;
-
-		return S_OK;
+		ARC_FAIL("I don't think this should actually occur");
+		return E_UNEXPECTED;
 	}
-	else
+
+	--m_numExpectedOutputRequests;
+	++m_framesSent;
+	RequestInput();
+	if (m_isDraining && FramesPending() == 0)
 	{
-		return MF_E_TRANSFORM_NEED_MORE_INPUT;
+		NotifyDrainComplete();
 	}
+
+	ARC_ASSERT_MSG(m_processor->HasResult(), "Received a request for output when none was available!");
+	auto result = m_processor->GetNextResult();
+	pOutputSamples->pSample = result.Detach();
+	return S_OK;
 }
 
 HRESULT ALACMFTDecoder::CreateOutputType(Microsoft::WRL::ComPtr<IMFMediaType>& spOutputType)
@@ -631,4 +753,343 @@ HRESULT ALACMFTDecoder::CreateOutputType(Microsoft::WRL::ComPtr<IMFMediaType>& s
 	}
 
 	return hr;
+}
+
+STDMETHODIMP ALACMFTDecoder::BeginGetEvent(IMFAsyncCallback *pCallback, IUnknown *punkState)
+{
+	SYNC_LOCK;
+	CHECK_SHUTDOWN;
+	CHECK_NULL(pCallback);
+
+	HRESULT hr = S_OK;
+	if (m_eventListenerQueue.ResultsAvailable())
+	{
+		// we have a pending listener and the interface does not allow multiple.
+		// we need to figure out what type it is and return the appropriate error
+		// Also, we need to remember to put the callback into the queue when we are done
+		// with it.
+		auto eventListener = m_eventListenerQueue.GetNextNoWait();
+		if (eventListener)
+		{
+			if (eventListener->first == pCallback)
+			{
+				// MF_E means same callback different data, MF_S means same callback same data
+				hr = (punkState == eventListener->second) ? MF_E_MULTIPLE_BEGIN : MF_S_MULTIPLE_BEGIN;
+			}
+			else
+			{
+				hr = MF_E_MULTIPLE_SUBSCRIBERS;
+			}
+
+			m_eventListenerQueue.Append(*eventListener);
+		}
+	}
+
+	// Done handling possibly bad call states... now on to the real work
+	ARC_ASSERT(SUCCEEDED(hr));
+	if (SUCCEEDED(hr))
+	{
+		m_eventListenerQueue.Append(std::make_pair(pCallback, punkState));
+	}
+	
+	return hr;
+}
+
+STDMETHODIMP ALACMFTDecoder::EndGetEvent(IMFAsyncResult *pResult, IMFMediaEvent **ppEvent)
+{
+	CHECK_SHUTDOWN;
+	CHECK_NULL(ppEvent);
+	CHECK_LOCK;
+
+	ComPtr<IUnknown> IUnknownEvent;
+	auto hr = pResult->GetObject(&IUnknownEvent);
+	ARC_ThrowIfFailed(hr);
+
+	ComPtr<IMFMediaEvent> event;
+	hr = IUnknownEvent.As(&event);
+	ARC_ThrowIfFailed(hr);
+
+	*ppEvent = event.Detach();
+
+	OutputDebugStringA("End get event!\n");
+
+	return S_OK;
+}
+
+STDMETHODIMP ALACMFTDecoder::GetEvent(DWORD dwFlags, IMFMediaEvent **ppEvent)
+{
+	SYNC_LOCK;
+	CHECK_SHUTDOWN;
+	ARC_ASSERT(ppEvent != nullptr);
+	CHECK_NULL(ppEvent); // Assert is dev sanity check, the other check is to handle the runtime issue gracefully.
+
+	if (m_eventListenerQueue.ResultsPending())
+	{
+		return MF_E_MULTIPLE_SUBSCRIBERS;
+	}
+
+	HRESULT hr = S_OK;
+	boost::optional<ComPtr<IMFMediaEvent>> event;
+
+	if (dwFlags & MF_EVENT_FLAG_NO_WAIT)
+	{
+		event = m_eventQueue.GetNextNoWait();
+	}
+	else
+	{
+		event = m_eventQueue.GetNext();
+	}
+
+	if (event)
+	{
+		*ppEvent = event->Get();
+		hr = S_OK;
+	}
+	else
+	{
+		if (dwFlags & MF_EVENT_FLAG_NO_WAIT)
+		{
+			hr = MF_E_NO_EVENTS_AVAILABLE;
+		}
+		else
+		{
+			// we blocked and waited... but we still didn't get anything.
+			// most likely we shut down, if we didn't shut down we are now in an odd state
+			// check shutdown will return if we are shutdown.
+			CHECK_SHUTDOWN;
+			ARC_FAIL("This state shouldn't be possible!");
+		}
+	}
+
+	return hr;
+}
+
+STDMETHODIMP ALACMFTDecoder::QueueEvent(MediaEventType met, REFGUID guidExtendedType, HRESULT hrStatus, const PROPVARIANT *pvValue)
+{
+	SYNC_LOCK;
+	CHECK_SHUTDOWN;
+
+	ComPtr<IMFMediaEvent> event;
+	auto hr = MFCreateMediaEvent(met, guidExtendedType, hrStatus, pvValue, &event);
+	ARC_ThrowIfFailed(hr);
+
+	m_eventQueue.Append(event);
+
+	return hr;
+}
+
+STDMETHODIMP ALACMFTDecoder::GetShutdownStatus(MFSHUTDOWN_STATUS *pStatus)
+{
+	SYNC_LOCK;
+	CHECK_NULL(pStatus);
+
+	HRESULT hr = S_OK;
+
+	if (m_isShutdown)
+	{
+		*pStatus = MFSHUTDOWN_COMPLETED;
+	}
+	else if (m_isShuttingDown)
+	{
+		*pStatus = MFSHUTDOWN_INITIATED;
+	}
+	else
+	{
+		hr = MF_E_INVALIDREQUEST;
+	}
+
+	return hr;
+}
+
+STDMETHODIMP ALACMFTDecoder::Shutdown()
+{
+	SYNC_LOCK;
+	ARC_ASSERT(!m_isShutdown);
+
+	m_isShuttingDown = true;
+	m_shutdownTask = std::async([this]()
+	{
+		m_onWorkReadySub.Unsubscribe();
+		m_eventListenerQueue.Complete();
+		m_eventQueue.Complete();
+		m_eventQueueTask.wait();
+		m_processor->StopWork();
+		m_isShutdown = true;
+	});
+
+	return S_OK;
+}
+
+void ALACMFTDecoder::RequestInput()
+{
+	CHECK_LOCK;
+
+	if (!ShouldRequestMoreInput())
+	{
+		return;
+	}
+
+	ComPtr<IMFMediaEvent> inputEvent = nullptr;
+	auto hr = MFCreateMediaEvent(METransformNeedInput, GUID_NULL, S_OK, NULL, &inputEvent);
+	ARC_ThrowIfFailed(hr);
+
+	//hr = inputEvent->SetUINT32(MF_EVENT_MFT_INPUT_STREAM_ID, 0);
+	ARC_ThrowIfFailed(hr);
+
+	++m_numExpectedInputRequests;
+	m_eventQueue.Append(inputEvent);
+}
+
+void ALACMFTDecoder::NotifyOutput()
+{
+	ComPtr<IMFMediaEvent> outputEvent = nullptr;
+	auto hr = MFCreateMediaEvent(METransformHaveOutput, GUID_NULL, S_OK, NULL, &outputEvent);
+	ARC_ThrowIfFailed(hr);
+
+	++m_numExpectedOutputRequests;
+	m_eventQueue.Append(outputEvent);
+}
+
+void ALACMFTDecoder::NotifyDrainComplete()
+{
+	ComPtr<IMFMediaEvent> drainEvent = nullptr;
+	auto hr = MFCreateMediaEvent(METransformDrainComplete, GUID_NULL, S_OK, NULL, &drainEvent);
+	ARC_ThrowIfFailed(hr);
+
+	m_eventQueue.Append(drainEvent);
+}
+
+void ALACMFTDecoder::StartEventLoop()
+{
+	m_eventQueueTask = std::async([this]()
+	{
+		boost::optional<ComPtr<IMFMediaEvent>> event = boost::none;
+		boost::optional<std::pair<IMFAsyncCallback*, IUnknown*>> callback = boost::none;
+		while (!m_isShuttingDown)
+		{
+			if (!event)
+			{
+				// blocks and waits for the next event
+				event = m_eventQueue.GetNext();
+			}
+			if (!callback)
+			{
+				// blocks and waits for a callback
+				callback = m_eventListenerQueue.GetNext();
+			}
+			if (event && callback)
+			{
+				ComPtr<IMFAsyncResult> asyncResult = nullptr;
+				HRESULT hr = MFCreateAsyncResult(event->Get(), callback->first, callback->second, &asyncResult);
+				ARC_ThrowIfFailed(hr);
+
+				hr = callback->first->Invoke(asyncResult.Get());
+				ARC_ThrowIfFailed(hr);
+
+				event = boost::none;
+				callback = boost::none;
+			}
+		}
+	});
+}
+
+ComPtr<IMFSample> ALACMFTDecoder::DecodeBuffer(const ComPtr<IMFSample>& pSample)
+{
+	ComPtr<IMFMediaBuffer> inputMediaBuffer = nullptr;
+	auto hr = pSample->ConvertToContiguousBuffer(&inputMediaBuffer);
+	ARC_ThrowIfFailed(hr);
+
+	// TODO::JT how expensive is setting up the decoder? Is it feasible to do for each and every frame?
+	ALACDecoder decoder;
+	decoder.Init(m_cookieBlob + 52, m_cookieBlobSize - 52);
+
+	BYTE* inBuffer = nullptr;
+	DWORD inputBufferLength = 0;
+	BYTE* outBuffer = nullptr;
+	DWORD outputBufferLength = 0;
+
+	auto outBufferSize = GetOutBufferSize();
+	ComPtr<IMFMediaBuffer> outputMediaBuffer = nullptr;
+	hr = MFCreateMemoryBuffer(outBufferSize, &outputMediaBuffer);
+	ARC_ThrowIfFailed(hr);
+	hr = outputMediaBuffer->SetCurrentLength(outBufferSize);
+	ARC_ThrowIfFailed(hr);
+
+	// scope is to unlock the media buffers as soon as we are done with them
+	{
+		hr = inputMediaBuffer->Lock(&inBuffer, NULL, &inputBufferLength);
+		ARC_ThrowIfFailed(hr);
+		Util::ScopeGuard<std::function<void()>> inputBufferUnlocker([&inputMediaBuffer]()
+		{
+			auto hr = inputMediaBuffer->Unlock();
+			ARC_ASSERT(SUCCEEDED(hr));
+		});
+
+		BitBuffer bitsWrapper;
+		BitBufferInit(&bitsWrapper, inBuffer, inputBufferLength);
+
+		hr = outputMediaBuffer->Lock(&outBuffer, NULL, &outputBufferLength);
+		ARC_ThrowIfFailed(hr);
+		Util::ScopeGuard<std::function<void()>> outputBufferUnlocker([&outputMediaBuffer]()
+		{
+			auto hr = outputMediaBuffer->Unlock();
+			ARC_ASSERT(SUCCEEDED(hr));
+		});
+		ARC_ASSERT(outputBufferLength == outputBufferLength); // one is what we told it to be, the other is what it said it is
+
+		auto decodeResult = decoder.Decode(&bitsWrapper, outBuffer, m_alacBox->GetSamplePerFrame(), m_channelCount, &m_samplesAvailable);
+		ARC_ASSERT(decodeResult == ALAC_noErr);
+	}
+	
+	// we are going to reuse the provided IMFSample. However, to do so requires that we strip out the buffers and replace
+	// them with our own.
+	hr = pSample->RemoveAllBuffers();
+	ARC_ThrowIfFailed(hr);
+
+	hr = pSample->AddBuffer(outputMediaBuffer.Get());
+	ARC_ThrowIfFailed(hr);
+
+	return pSample;
+}
+
+int ALACMFTDecoder::FramesPending()
+{
+	return m_framesReceived - m_framesSent;
+}
+
+bool ALACMFTDecoder::ShouldRequestMoreInput()
+{
+	return m_canRequestInput && FramesPending() < GetNumInputFramesToBuffer();
+}
+
+void ALACMFTDecoder::FlushBuffers()
+{
+	m_processor->StopWork();
+	m_inputByteCount = 0;
+	m_numExpectedInputRequests = 0;
+	m_numExpectedOutputRequests = 0;
+	m_framesReceived = 0;
+	m_framesSent = 0;
+}
+
+void ALACMFTDecoder::ResetProcessor()
+{
+	m_onWorkReadySub.Unsubscribe();
+	if (m_processor != nullptr)
+	{
+		m_processor->StopWork();
+	}
+	
+	m_processor = nullptr;
+	m_processor = std::make_unique<Util::ParallelOrderedProcessor<Microsoft::WRL::ComPtr<IMFSample>,
+		                                                          Microsoft::WRL::ComPtr<IMFSample>>>(NUM_DECODE_WORKERS);
+	m_onWorkReadySub = m_processor->OnResultReady += [this]()
+	{
+		NotifyOutput();
+		RequestInput();
+	};
+	m_processor->SetWorkFunc([this](const Microsoft::WRL::ComPtr<IMFSample>& buffer)
+	{
+		return this->DecodeBuffer(buffer);
+	});
 }

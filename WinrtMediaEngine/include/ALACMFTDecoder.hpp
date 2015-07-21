@@ -2,21 +2,25 @@
 #ifndef ALAC_DECODER_HPP
 #define ALAC_DECODER_HPP
 
+#include <Mfidl.h>
+#include <mftransform.h>
 #include <windows.media.h>
 #include <wrl\client.h>
 #include <wrl\implements.h>
-#include <mftransform.h>
 
 #include "Alac.hpp"
 #include "ALACDecoder.h"
 #include "Export.hpp"
+#include "ParallelOrderedProcessor.hpp"
 #include "Stsd.hpp"
 
 class EXPORT ALACMFTDecoder WrlSealed
 	: public Microsoft::WRL::RuntimeClass <
 	Microsoft::WRL::RuntimeClassFlags< Microsoft::WRL::RuntimeClassType::WinRtClassicComMix >,
 	ABI::Windows::Media::IMediaExtension,
-	IMFTransform >
+	IMFTransform,
+	IMFMediaEventGenerator,
+	IMFShutdown>
 {
 	InspectableClass(L"ALACDecoder.ALACDecoder", BaseTrust)
 
@@ -146,11 +150,54 @@ public:
 		DWORD                   *pdwStatus
 		);
 
+	// IMFMediaEventGenerator
+	STDMETHODIMP BeginGetEvent(
+		IMFAsyncCallback *pCallback,
+		IUnknown         *punkState
+		);
+
+	STDMETHODIMP EndGetEvent(
+		IMFAsyncResult *pResult,
+		IMFMediaEvent  **ppEvent
+		);
+
+	STDMETHODIMP GetEvent(
+		DWORD         dwFlags,
+		IMFMediaEvent **ppEvent
+		);
+
+	STDMETHODIMP QueueEvent(
+		MediaEventType    met,
+		REFGUID           guidExtendedType,
+		HRESULT           hrStatus,
+		const PROPVARIANT *pvValue
+		);
+
+	// IMFShutdown
+	STDMETHODIMP GetShutdownStatus(
+		MFSHUTDOWN_STATUS *pStatus
+		);
+
+	STDMETHODIMP Shutdown();
+
 private:
 
 	HRESULT CreateOutputType(Microsoft::WRL::ComPtr<IMFMediaType>& outType);
 	void ParseALACBox();
 	unsigned int GetOutBufferSize();
+	int GetNumInputFramesToBuffer();
+
+	Microsoft::WRL::ComPtr<IMFSample> DecodeBuffer(const Microsoft::WRL::ComPtr<IMFSample>& buffer);
+	void FlushBuffers();
+	bool ShouldRequestMoreInput();
+	int FramesPending();
+
+	void RequestInput();
+	void NotifyOutput();
+	void NotifyDrainComplete();
+
+	void StartEventLoop();
+	void ResetProcessor();
 
 	UINT32 m_avgBytesPerSec;
 	UINT32 m_bitRate;
@@ -159,18 +206,42 @@ private:
 	UINT32 m_cookieBlobSize;
 	UINT32 m_channelCount;
 	UINT32 m_samplesPerSecond;
+	UINT32 m_samplesPerFrame;
 	UINT32 m_bitsPerSample;
-
-	ALACDecoder m_decoder;
 
 	Microsoft::WRL::ComPtr<IMFMediaType> m_inputType;
 	Microsoft::WRL::ComPtr<IMFMediaType> m_outputType;
 
 	unsigned int m_samplesAvailable;
-	std::vector<unsigned char> m_outBuffer;
-	std::vector<unsigned char> m_inBuffer; // TODO::JT you were hooking this up!
 	bool m_isOutFrameReady;
 	bool m_hasEnoughInput;
+
+
+
+
+
+	int m_inputByteCount = 0;
+	bool m_canRequestInput = false;
+	bool m_isDraining = false;
+
+	int m_numExpectedInputRequests = 0;
+	int m_numExpectedOutputRequests = 0;
+	int m_framesReceived = 0;
+	int m_framesSent = 0;
+	Util::Subscription m_onWorkReadySub;
+
+	std::recursive_mutex m_syncLock;
+
+	bool m_isShutdown = false;
+	bool m_isShuttingDown = false;
+	std::future<void> m_shutdownTask;
+
+	Microsoft::WRL::ComPtr<IMFAttributes> m_attributes;
+
+	std::unique_ptr<Util::ParallelOrderedProcessor<Microsoft::WRL::ComPtr<IMFSample>, Microsoft::WRL::ComPtr<IMFSample>>> m_processor;
+	Util::WorkBuffer<Microsoft::WRL::ComPtr<IMFMediaEvent>> m_eventQueue;
+	Util::WorkBuffer<std::pair<IMFAsyncCallback*, IUnknown*>> m_eventListenerQueue; // really this queue ought to have only 1 element at a time, but this makes the logic much easier
+	std::future<void> m_eventQueueTask;
 };
 
 #endif

@@ -3,11 +3,12 @@
 
 #include "boost/optional.hpp"
 #include <chrono>
+#include <deque>
 #include <functional>
 #include <future>
-#include <vector>
 
 #include "Arc_Assert.hpp"
+#include "MulticastDelegate.hpp"
 #include "ScopeGuard.hpp"
 
 #undef max
@@ -35,6 +36,7 @@ namespace Util
 	{
 	public:
 		virtual bool ResultsPending() const = 0;
+		virtual bool ResultsAvailable() const = 0;
 		virtual void WaitForCompletion() const = 0;
 		virtual std::vector<T> GetAll() = 0;
 		virtual std::vector<T> GetMultiple(size_t minimum, size_t maximum, boost::optional<std::chrono::milliseconds> = boost::none) = 0;
@@ -42,6 +44,9 @@ namespace Util
 		virtual std::vector<T> GetAtLeast(size_t count, boost::optional<std::chrono::milliseconds> = boost::none) = 0;
 		virtual std::vector<T> GetAtMost(size_t count, boost::optional<std::chrono::milliseconds> = boost::none) = 0;
 		virtual boost::optional<T> GetNext(boost::optional<std::chrono::milliseconds> = boost::none) = 0;
+		virtual boost::optional<T> GetNextNoWait() = 0;
+
+		Util::MulticastDelegate<void()> ItemAvailable;
 	};
 
 	/************************************************************************/
@@ -53,8 +58,12 @@ namespace Util
 	public:
 		WorkBuffer();
 		WorkBuffer(const WorkBuffer& rhs) = delete;
-		WorkBuffer(const WorkBuffer&& rhs) = delete;
+		WorkBuffer(WorkBuffer&& rhs);
+		WorkBuffer& operator=(const WorkBuffer&) = delete;
+		WorkBuffer& operator=(WorkBuffer&&);
 		~WorkBuffer();
+
+		void DropAll();
 		
 		// producer functions
 		virtual void Append(const T& value) override;
@@ -66,6 +75,7 @@ namespace Util
 		// Note: can return less than asked for if there isn't enough available and no more
 		// work is expected
 		virtual bool ResultsPending() const override;
+		virtual bool ResultsAvailable() const override;
 		virtual void WaitForCompletion() const override;
 		virtual std::vector<T> GetAll() override;
 		virtual std::vector<T> GetMultiple(size_t minimum, size_t maximum, boost::optional<std::chrono::milliseconds> = boost::none) override;
@@ -73,10 +83,11 @@ namespace Util
 		virtual std::vector<T> GetAtLeast(size_t count, boost::optional<std::chrono::milliseconds> = boost::none) override;
 		virtual std::vector<T> GetAtMost(size_t count, boost::optional<std::chrono::milliseconds> = boost::none) override;
 		virtual boost::optional<T> GetNext(boost::optional<std::chrono::milliseconds> timeout = boost::none) override;
+		virtual boost::optional<T> GetNextNoWait() override;
 	private:
 		mutable std::condition_variable m_consumerCP;
 		mutable std::mutex m_lock;
-		std::vector<T> m_buffer;
+		std::deque<T> m_buffer;
 		bool m_isDone = false;
 		mutable std::atomic<int> m_pending;
 	};
@@ -92,12 +103,55 @@ namespace Util
 	}
 
 	template<typename T>
+	WorkBuffer<T>::WorkBuffer(WorkBuffer&& rhs)
+	{
+		// make sure to lock the other one first
+		std::lock_guard<std::mutex> lock(rhs.m_lock);
+
+		m_buffer = std::move(rhs.m_buffer);
+		rhs.m_buffer = {};
+		m_isDone = rhs.m_isDone;
+		
+
+		// we have no pending in the new buffer as nothing could have called it yet
+		m_pending = 0;
+
+		// mutex, and condition variable are not moved
+
+		// we need to notify the other work buffer to make sure nothing gets stuck waiting for non-existent results
+		rhs.m_consumerCP.notify_all();
+	}
+
+	template<typename T>
+	WorkBuffer<T>& WorkBuffer<T>::operator=(WorkBuffer&& rhs)
+	{
+		// make sure to lock both buffers!
+		std::lock_guard<std::mutex> lock(m_lock);
+		std::lock_guard<std::mutex> otherLock(rhs.m_lock);
+
+		m_buffer = std::move(rhs.m_buffer);
+		m_isDone = rhs.m_isDone;
+		rhs.m_isDone = true; // rhs is now garbage. It cannot be used
+
+		// we have no pending in the new buffer as nothing could have called it yet
+		m_pending = 0;
+
+		// mutex, and condition variable are not moved
+
+		// we need to notify both work buffers to make sure nothing gets stuck waiting for non-existent results
+		rhs.m_consumerCP.notify_all();
+		m_consumerCP.notify_all();
+
+		return *this;
+	}
+
+	template<typename T>
 	WorkBuffer<T>::~WorkBuffer()
 	{
 		bool isWorkDone = false;
 		{
 			std::unique_lock<std::mutex> lock(m_lock);
-			isWorkDone = m_isDone;
+			isWorkDone = m_isDone || m_buffer.size() == 0;
 		}
 		ARC_ASSERT_MSG(isWorkDone, "Attempted to destroy a work buffer that has pending work!");
 		// the following code will try to correct against a premature deletion. However, this really shouldn't be allowed to happen
@@ -119,10 +173,25 @@ namespace Util
 	}
 
 	template<typename T>
+	void WorkBuffer<T>::DropAll()
+	{
+		WORK_BUFFER_LOCK;
+		m_buffer.clear();
+		m_consumerCP.notify_all();
+	}
+
+	template<typename T>
 	bool WorkBuffer<T>::ResultsPending() const
 	{
 		WORK_BUFFER_LOCK;
 		return !m_isDone || m_buffer.size() > 0;
+	}
+
+	template<typename T>
+	bool WorkBuffer<T>::ResultsAvailable() const
+	{
+		WORK_BUFFER_LOCK;
+		return m_buffer.size() > 0;
 	}
 
 	template<typename T>
@@ -142,18 +211,26 @@ namespace Util
 	template<typename T>
 	void WorkBuffer<T>::Append(const T& value)
 	{
-		WORK_BUFFER_LOCK;
-		ARC_ASSERT(!m_isDone);
-		m_buffer.push_back(value);
+		{
+			WORK_BUFFER_LOCK;
+			ARC_ASSERT(!m_isDone);
+			m_buffer.push_back(value);
+		}
+		
+		ItemAvailable();
 		m_consumerCP.notify_all();
 	}
 
 	template<typename T>
 	void WorkBuffer<T>::Append(T&& value)
 	{
-		WORK_BUFFER_LOCK;
-		ARC_ASSERT(!m_isDone);
-		m_buffer.push_back(std::move(value));
+		{
+			WORK_BUFFER_LOCK;
+			ARC_ASSERT(!m_isDone);
+			m_buffer.push_back(std::move(value));
+		}
+		
+		ItemAvailable();
 		m_consumerCP.notify_all();
 	}
 
@@ -170,7 +247,6 @@ namespace Util
 	void WorkBuffer<T>::Complete()
 	{
 		WORK_BUFFER_LOCK;
-		ARC_ASSERT(!m_isDone);
 
 		m_isDone = true;
 		m_consumerCP.notify_all();
@@ -182,7 +258,9 @@ namespace Util
 		WaitForCompletion();
 
 		WORK_BUFFER_LOCK;
-		auto results = std::move(m_buffer);
+		std::vector<T> results;
+		results.reserve(m_buffer.size());
+		std::move(begin(m_buffer), end(m_buffer), back_inserter(results));
 		m_buffer = {};
 		return results;
 	}
@@ -192,7 +270,7 @@ namespace Util
 	{
 		using namespace std::chrono;
 
-		ARC_ASSERT(minimum > 0 && maximum > 0);
+		ARC_ASSERT(minimum >= 0 && maximum > 0);
 		ARC_ASSERT(minimum <= maximum);
 
 		auto start = system_clock::now();
@@ -245,7 +323,7 @@ namespace Util
 	template<typename T>
 	std::vector<T> WorkBuffer<T>::GetAtLeast(size_t count, boost::optional<std::chrono::milliseconds> timeout)
 	{
-		ARC_ASSERT(count > 0);
+		ARC_ASSERT(count >= 0);
 		return GetMultiple(count, std::numeric_limits<size_t>::max(), timeout);
 	}
 
@@ -286,8 +364,23 @@ namespace Util
 
 		if (m_buffer.size() > 0)
 		{
-			result = m_buffer.back();
-			m_buffer.pop_back();
+			result = m_buffer.front();
+			m_buffer.pop_front();
+		}
+
+		return result;
+	}
+
+	template<typename T>
+	boost::optional<T> WorkBuffer<T>::GetNextNoWait()
+	{
+		boost::optional<T> result = boost::none;
+		WORK_BUFFER_LOCK;
+
+		if (m_buffer.size() > 0)
+		{
+			result = m_buffer.front();
+			m_buffer.pop_front();
 		}
 
 		return result;

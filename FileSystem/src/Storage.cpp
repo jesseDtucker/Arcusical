@@ -47,7 +47,7 @@ IFolder& Storage::MusicFolder()
 	auto folders = folder.GetSubfolders();
 	for (auto& f : folders)
 	{
-		if (f->GetName() == L"Test")
+		if (f->GetName() == L"Test" || f->GetName() == L"test")
 		{
 			debugFolder = f;
 			break;

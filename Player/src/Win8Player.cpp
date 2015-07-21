@@ -13,7 +13,7 @@ using namespace Microsoft::WRL;
 using namespace concurrency;
 
 const std::string Arcusical::Player::IPlayer::ServiceName("Win8Player");
-const double DEFAULT_VOLUME = 0.5;
+const double DEFAULT_VOLUME = 0.2;
 
 namespace Arcusical
 {

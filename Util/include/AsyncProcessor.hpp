@@ -24,14 +24,18 @@ namespace Util
 			           boost::optional<std::chrono::milliseconds> batchTimeout = boost::none);
 
 		AsyncProcessor(const AsyncProcessor&) = delete;
-		AsyncProcessor(const AsyncProcessor&&) = delete;
+		AsyncProcessor(AsyncProcessor&&);
+		AsyncProcessor& operator=(const AsyncProcessor&) = delete;
+		AsyncProcessor& operator=(AsyncProcessor&&) = delete;
 
 		~AsyncProcessor();
 		
 		void Start();
+		void DropAllWork();
 		void SetProcessor(ProcessSingle func);
 		void SetBatchProcessor(ProcessBatch func);
 
+		bool IsRunning();
 		InputBuffer<Input>* InputBuffer();
 		OutputBuffer<Output>* OutputBuffer();
 	private:
@@ -60,9 +64,26 @@ namespace Util
 	}
 
 	template<typename Input, typename Output>
+	Util::AsyncProcessor<Input, Output>::AsyncProcessor(AsyncProcessor<Input, Output>&& rhs)
+	{
+		ARC_ASSERT_MSG(!rhs.m_isRunning, "Moving is untested with active processors!");
+
+		m_inputBuffer = std::move(rhs.m_inputBuffer);
+		m_outputBuffer = std::move(rhs.m_outputBuffer);
+
+		// just copy this, it's cheap enough
+		m_processorFunction = rhs.m_processorFunction;
+		m_isRunning = false;
+
+		m_minBatchSize = rhs.m_minBatchSize;
+		m_maxBatchSize = rhs.m_maxBatchSize;
+		m_timeout = rhs.m_timeout;
+	}
+
+	template<typename Input, typename Output>
 	Util::AsyncProcessor<Input, Output>::~AsyncProcessor()
 	{
-		ARC_ASSERT_MSG(!m_outputBuffer.ResultsPending(), "The Processor should not be deleted while it still has outstanding work!");
+		ARC_ASSERT_MSG(!m_outputBuffer.ResultsAvailable(), "The Processor should not be deleted while it still has outstanding work!");
 
 		// nonetheless we will wait as this is the safest choice to make at this point. However this may cause some deadlock...
 		m_inputBuffer.Complete(); // force the input buffer to close
@@ -82,7 +103,6 @@ namespace Util
 			}
 		}
 	}
-
 
 	template<typename Input, typename Output>
 	void Util::AsyncProcessor<Input, Output>::SetProcessor(ProcessSingle func)
@@ -132,6 +152,26 @@ namespace Util
 		ARC_ASSERT(!m_isRunning);
 		m_isRunning = true;
 		m_workFuture = std::async(m_processorFunction);
+	}
+
+	template<typename Input, typename Output>
+	void AsyncProcessor<Input, Output>::DropAllWork()
+	{
+		m_inputBuffer.Complete();
+		m_inputBuffer.DropAll();
+		m_outputBuffer.DropAll();
+		if (m_workFuture.valid())
+		{
+			m_workFuture.wait();
+		}
+		m_outputBuffer.Complete();
+		m_isRunning = false;
+	}
+
+	template<typename Input, typename Output>
+	bool Util::AsyncProcessor<Input, Output>::IsRunning()
+	{
+		return m_isRunning.load();
 	}
 
 	template<typename Input, typename Output>
