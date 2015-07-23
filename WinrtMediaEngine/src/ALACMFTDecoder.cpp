@@ -1035,6 +1035,8 @@ ComPtr<IMFSample> ALACMFTDecoder::DecodeBuffer(const ComPtr<IMFSample>& pSample)
 			auto hr = outputMediaBuffer->Unlock();
 			ARC_ASSERT(SUCCEEDED(hr));
 		});
+		// zero out the buffer to make sure there are no 'blips' in the buffer
+		std::fill_n(outBuffer, outputBufferLength, 0);
 		ARC_ASSERT(outputBufferLength == outputBufferLength); // one is what we told it to be, the other is what it said it is
 
 		auto decodeResult = decoder.Decode(&bitsWrapper, outBuffer, m_alacBox->GetSamplePerFrame(), m_channelCount, &m_samplesAvailable);
