@@ -29,6 +29,7 @@ namespace Util
 		virtual void Append(T&& value) = 0;
 		virtual void Append(std::vector<T>&& values) = 0;
 		virtual void Complete() = 0;
+		virtual void Reset() = 0;
 	};
 
 	template<typename T>
@@ -64,26 +65,28 @@ namespace Util
 		~WorkBuffer();
 
 		void DropAll();
+		void RemoveIf(std::function<bool(const T&)>);
 		
 		// producer functions
-		virtual void Append(const T& value) override;
-		virtual void Append(T&& value) override;
-		virtual void Append(std::vector<T>&& values) override;
-		virtual void Complete() override;
+		void Append(const T& value) override;
+		void Append(T&& value) override;
+		void Append(std::vector<T>&& values) override;
+		void Complete() override;
+		void Reset() override;
 
 		// consumer functions
 		// Note: can return less than asked for if there isn't enough available and no more
 		// work is expected
-		virtual bool ResultsPending() const override;
-		virtual bool ResultsAvailable() const override;
-		virtual void WaitForCompletion() const override;
-		virtual std::vector<T> GetAll() override;
-		virtual std::vector<T> GetMultiple(size_t minimum, size_t maximum, boost::optional<std::chrono::milliseconds> = boost::none) override;
-		virtual std::vector<T> GetN(size_t count, boost::optional<std::chrono::milliseconds> = boost::none) override;
-		virtual std::vector<T> GetAtLeast(size_t count, boost::optional<std::chrono::milliseconds> = boost::none) override;
-		virtual std::vector<T> GetAtMost(size_t count, boost::optional<std::chrono::milliseconds> = boost::none) override;
-		virtual boost::optional<T> GetNext(boost::optional<std::chrono::milliseconds> timeout = boost::none) override;
-		virtual boost::optional<T> GetNextNoWait() override;
+		bool ResultsPending() const override;
+		bool ResultsAvailable() const override;
+		void WaitForCompletion() const override;
+		std::vector<T> GetAll() override;
+		std::vector<T> GetMultiple(size_t minimum, size_t maximum, boost::optional<std::chrono::milliseconds> = boost::none) override;
+		std::vector<T> GetN(size_t count, boost::optional<std::chrono::milliseconds> = boost::none) override;
+		std::vector<T> GetAtLeast(size_t count, boost::optional<std::chrono::milliseconds> = boost::none) override;
+		std::vector<T> GetAtMost(size_t count, boost::optional<std::chrono::milliseconds> = boost::none) override;
+		boost::optional<T> GetNext(boost::optional<std::chrono::milliseconds> timeout = boost::none) override;
+		boost::optional<T> GetNextNoWait() override;
 	private:
 		mutable std::condition_variable m_consumerCP;
 		mutable std::mutex m_lock;
@@ -181,6 +184,14 @@ namespace Util
 	}
 
 	template<typename T>
+	void Util::WorkBuffer<T>::RemoveIf(std::function<bool(const T&)> pred)
+	{
+		WORK_BUFFER_LOCK;
+		auto newEnd = std::remove_if(std::begin(m_buffer), std::end(m_buffer), pred);
+		m_buffer.erase(newEnd, std::end(m_buffer));
+	}
+
+	template<typename T>
 	bool WorkBuffer<T>::ResultsPending() const
 	{
 		WORK_BUFFER_LOCK;
@@ -251,6 +262,15 @@ namespace Util
 		m_isDone = true;
 		m_consumerCP.notify_all();
 	}
+
+
+	template<typename T>
+	void Util::WorkBuffer<T>::Reset()
+	{
+		WORK_BUFFER_LOCK;
+		m_isDone = false;
+	}
+
 
 	template<typename T>
 	std::vector<T> WorkBuffer<T>::GetAll()

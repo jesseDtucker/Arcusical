@@ -378,6 +378,7 @@
     <ClInclude Include="include\Delegate.hpp" />
     <ClInclude Include="include\Exceptions.hpp" />
     <ClInclude Include="include\Export.hpp" />
+    <ClInclude Include="include\FilterProcessor.hpp" />
     <ClInclude Include="include\InMemoryStream.hpp" />
     <ClInclude Include="include\InterfaceWrapper.hpp" />
     <ClInclude Include="include\LockedPtrHelper.hpp" />
@@ -390,6 +391,7 @@
     <ClInclude Include="include\Subscription.hpp" />
     <ClInclude Include="include\targetver.h" />
     <ClInclude Include="include\PropertyHelper.hpp" />
+    <ClInclude Include="include\TransformProcessor.hpp" />
     <ClInclude Include="include\Util.hpp" />
     <ClInclude Include="include\WorkBuffer.hpp" />
   </ItemGroup>

@@ -11,7 +11,7 @@
 namespace Util
 {
 	template<typename Input, typename Output>
-	class AsyncProcessor final
+	class AsyncProcessor final : public InputBuffer<Input>
 	{
 	public:
 
@@ -19,32 +19,41 @@ namespace Util
 		typedef std::function<std::vector<Output>(const std::vector<Input>&)> ProcessBatch;
 
 		// processes input in batches
-		AsyncProcessor(int minBatchSize = 20,
-			           int maxBatchSize = 100,
-			           boost::optional<std::chrono::milliseconds> batchTimeout = boost::none);
+		AsyncProcessor(
+			int minBatchSize = 20,
+			int maxBatchSize = 100,
+			boost::optional<std::chrono::milliseconds> batchTimeout = boost::none);
 
 		AsyncProcessor(const AsyncProcessor&) = delete;
 		AsyncProcessor(AsyncProcessor&&);
 		AsyncProcessor& operator=(const AsyncProcessor&) = delete;
 		AsyncProcessor& operator=(AsyncProcessor&&) = delete;
-
 		~AsyncProcessor();
-		
+
 		void Start();
+		void Stop();
 		void DropAllWork();
+		void AwaitCompletion();
+
+		void Connect(Util::InputBuffer<Output>* outputBuffer);
 		void SetProcessor(ProcessSingle func);
 		void SetBatchProcessor(ProcessBatch func);
 
 		bool IsRunning();
-		InputBuffer<Input>* InputBuffer();
-		OutputBuffer<Output>* OutputBuffer();
+
+		void Append(const Input& value) override;
+		void Append(Input&& value) override;
+		void Append(std::vector<Input>&& values) override;
+		void Complete() override;
+		void Reset() override;
 	private:
 		Util::WorkBuffer<Input> m_inputBuffer;
-		Util::WorkBuffer<Output> m_outputBuffer;
+		Util::InputBuffer<Output>* m_outputBuffer;
 		std::function<void()> m_processorFunction;
 		std::future<void> m_workFuture;
 
 		std::atomic<bool> m_isRunning;
+		std::atomic<bool> m_isStopping;
 		int m_minBatchSize = 0;
 		int m_maxBatchSize = 0;
 		boost::optional<std::chrono::milliseconds> m_timeout = boost::none;
@@ -52,12 +61,13 @@ namespace Util
 
 	template<typename Input, typename Output>
 	AsyncProcessor<Input, Output>::AsyncProcessor(int minBatchSize /*= 20*/,
-		                                          int maxBatchSize /*= 100*/,
-		                                          boost::optional<std::chrono::milliseconds> batchTimeout /*= boost::none*/)
+		int maxBatchSize /*= 100*/,
+		boost::optional<std::chrono::milliseconds> batchTimeout /*= boost::none*/)
 		: m_minBatchSize(minBatchSize)
 		, m_maxBatchSize(maxBatchSize)
 		, m_timeout(batchTimeout)
 		, m_isRunning(false)
+		, m_outputBuffer(nullptr)
 	{
 		ARC_ASSERT(minBatchSize <= maxBatchSize);
 		ARC_ASSERT(minBatchSize > 0 && maxBatchSize > 0);
@@ -83,24 +93,14 @@ namespace Util
 	template<typename Input, typename Output>
 	Util::AsyncProcessor<Input, Output>::~AsyncProcessor()
 	{
-		ARC_ASSERT_MSG(!m_outputBuffer.ResultsAvailable(), "The Processor should not be deleted while it still has outstanding work!");
-
-		// nonetheless we will wait as this is the safest choice to make at this point. However this may cause some deadlock...
-		m_inputBuffer.Complete(); // force the input buffer to close
-		// Note: there is a small race condition with m_workFuture. If the object is destroyed and the processing
-		// is started at the same time this will break. Not fixing because the object should never be allowed into
-		// this state so I'm relying upon the assert identify and help to correct errors like this.
-		if (m_workFuture.valid())
+		try
 		{
-			try
-			{
-				m_workFuture.wait();
-			}
-			catch (Concurrency::invalid_operation& ex)
-			{
-				OutputDebugStringA(ex.what());
-				ARC_FAIL("Likely attempted to destroy an async processor on the UI thread, behaviour beyond this point is unpredictable");
-			}
+			Stop();
+		}
+		catch (Concurrency::invalid_operation& ex)
+		{
+			OutputDebugStringA(ex.what());
+			ARC_FAIL("Likely attempted to destroy an async processor on the UI thread, behaviour beyond this point is unpredictable");
 		}
 	}
 
@@ -111,17 +111,20 @@ namespace Util
 
 		m_processorFunction = [this, func]()
 		{
-			while (m_inputBuffer.ResultsPending())
+			while (m_inputBuffer.ResultsPending() && !m_isStopping)
 			{
 				auto input = m_inputBuffer.GetNext(m_timeout);
 				if (input)
 				{
 					auto output = func(*input);
-					m_outputBuffer.Append(output);
+					m_outputBuffer->Append(output);
 				}
 			}
 
-			m_outputBuffer.Complete();
+			if (!m_inputBuffer.ResultsPending())
+			{
+				m_outputBuffer->Complete();
+			}
 		};
 	}
 
@@ -132,40 +135,66 @@ namespace Util
 
 		m_processorFunction = [this, func]()
 		{
-			while (m_inputBuffer.ResultsPending())
+			while (m_inputBuffer.ResultsPending() && !m_isStopping)
 			{
 				auto input = m_inputBuffer.GetMultiple(m_minBatchSize, m_maxBatchSize, m_timeout);
 				if (input.size() > 0)
 				{
 					auto output = func(input);
-					m_outputBuffer.Append(std::move(output));
+					m_outputBuffer->Append(std::move(output));
 				}
 			}
 
-			m_outputBuffer.Complete();
+			if (!m_inputBuffer.ResultsPending())
+			{
+				m_outputBuffer->Complete();
+			}
 		};
+	}
+
+	template<typename Input, typename Output>
+	void Util::AsyncProcessor<Input, Output>::Connect(Util::InputBuffer<Output>* outputBuffer)
+	{
+		ARC_ASSERT(outputBuffer != nullptr);
+		m_outputBuffer = outputBuffer;
 	}
 
 	template<typename Input, typename Output>
 	void AsyncProcessor<Input, Output>::Start()
 	{
 		ARC_ASSERT(!m_isRunning);
+		ARC_ASSERT(m_processorFunction != nullptr);
+		m_inputBuffer.Reset();
+		m_outputBuffer->Reset();
 		m_isRunning = true;
 		m_workFuture = std::async(m_processorFunction);
 	}
 
 	template<typename Input, typename Output>
-	void AsyncProcessor<Input, Output>::DropAllWork()
+	void Util::AsyncProcessor<Input, Output>::Stop()
 	{
+		m_isStopping = true;
 		m_inputBuffer.Complete();
-		m_inputBuffer.DropAll();
-		m_outputBuffer.DropAll();
 		if (m_workFuture.valid())
 		{
 			m_workFuture.wait();
 		}
-		m_outputBuffer.Complete();
+		m_isStopping = false;
 		m_isRunning = false;
+	}
+
+	template<typename Input, typename Output>
+	void AsyncProcessor<Input, Output>::DropAllWork()
+	{
+		Stop();
+		m_inputBuffer.DropAll();
+		Start();
+	}
+
+	template<typename Input, typename Output>
+	void AsyncProcessor<Input, Output>::AwaitCompletion()
+	{
+		m_inputBuffer.WaitForCompletion();
 	}
 
 	template<typename Input, typename Output>
@@ -175,15 +204,33 @@ namespace Util
 	}
 
 	template<typename Input, typename Output>
-	InputBuffer<Input>* AsyncProcessor<Input, Output>::InputBuffer()
+	void Util::AsyncProcessor<Input, Output>::Complete()
 	{
-		return &m_inputBuffer;
+		m_inputBuffer.Complete();
 	}
 
 	template<typename Input, typename Output>
-	OutputBuffer<Output>* AsyncProcessor<Input, Output>::OutputBuffer()
+	void Util::AsyncProcessor<Input, Output>::Reset()
+	{ 
+		m_inputBuffer.Reset();
+	}
+
+	template<typename Input, typename Output>
+	void Util::AsyncProcessor<Input, Output>::Append(std::vector<Input>&& values)
 	{
-		return &m_outputBuffer;
+		m_inputBuffer.Append(std::forward<std::vector<Input>>(values));
+	}
+
+	template<typename Input, typename Output>
+	void Util::AsyncProcessor<Input, Output>::Append(Input&& value)
+	{
+		m_inputBuffer.Append(std::forward<Input>(value));
+	}
+
+	template<typename Input, typename Output>
+	void Util::AsyncProcessor<Input, Output>::Append(const Input& value)
+	{
+		m_inputBuffer.Append(value);
 	}
 }
 

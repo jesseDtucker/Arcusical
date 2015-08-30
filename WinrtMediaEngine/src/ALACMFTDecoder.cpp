@@ -18,21 +18,20 @@ using namespace Microsoft::WRL;
 GUID ALAC_COOKIE = { 0x261E9D83, 0x9529, 0x4B8F, 0xA1, 0x11, 0x8B, 0x9C, 0x95, 0x0A, 0x81, 0xA9 };
 const unsigned int INPUT_BUFFER_SIZE_LIMIT = 5 << 20; // About 5 Megabytes
 const int TARGET_TIME_TO_BUFFER = 20; // seconds
-const int NUM_DECODE_WORKERS = 1;
 
 ActivatableClass(ALACMFTDecoder);
 
 #define CHECK_NULL(val)      \
 	if((val) == nullptr)     \
-				{                        \
+	{                        \
 		return E_INVALIDARG; \
-				}
+	}
 
 #define CHECK_SHUTDOWN                   \
 	if(m_isShuttingDown || m_isShutdown) \
-				{                                \
+	{                                    \
 		return MF_E_SHUTDOWN;            \
-				}
+	}
 
 //std::lock_guard<decltype(m_locker)> locker(m_locker);
 #define SYNC_LOCK std::lock_guard<decltype(m_syncLock)> lock(m_syncLock);
@@ -44,39 +43,34 @@ ActivatableClass(ALACMFTDecoder);
 // See: https://msdn.microsoft.com/en-us/library/windows/desktop/dd317909(v=vs.85).aspx
 #define CHECK_UNLOCKED                                                                      \
 	if(m_attributes == nullptr)                                                             \
-		{                                                                                   \
-		OutputDebugStringA("AXA : LOCKED"); \
+	{                                                                                   \
 		return MF_E_TRANSFORM_ASYNC_LOCKED;                                                 \
 	}                                                                                       \
 	UINT32 isUnlocked = 0;                                                                  \
 	HRESULT unlockedHR = m_attributes->GetUINT32(MF_TRANSFORM_ASYNC_UNLOCK, &isUnlocked);   \
 	if (FAILED(unlockedHR) || isUnlocked != TRUE)                                           \
 	{                                                                                       \
-		OutputDebugStringA("AXA : LOCKED"); \
 		return MF_E_TRANSFORM_ASYNC_LOCKED;                                                 \
-	} \
-	OutputDebugStringA("AXB : UNLOCKED");
+	}
 
 ALACMFTDecoder::ALACMFTDecoder()
-	: m_avgBytesPerSec(0)
-	, m_bitRate(0)
-	, m_cookieBlob(nullptr)
-	, m_channelCount(0)
-	, m_samplesPerSecond(0)
-	, m_bitsPerSample(0)
-	, m_outputType(nullptr)
+	: m_outputType(nullptr)
 	, m_inputType(nullptr)
-	, m_isOutFrameReady(false)
-	, m_samplesAvailable(0)
-	, m_hasEnoughInput(false)
 	, m_syncLock()
 	, m_attributes(nullptr)
 	, m_inputByteCount(0)
-	, m_processor(nullptr)
 	, m_canRequestInput(false)
 {
-	ResetProcessor();
 	StartEventLoop();
+	m_processor.Connect(&m_outputBuffer);
+	m_onResultsReadySub = m_outputBuffer.ItemAvailable += [this]()
+	{
+		this->NotifyOutput();
+	};
+	m_processor.SetProcessor([this](const Microsoft::WRL::ComPtr<IMFSample>& buffer)
+	{
+		return this->DecodeBuffer(buffer);
+	});
 }
 
 ALACMFTDecoder::~ALACMFTDecoder()
@@ -85,7 +79,7 @@ ALACMFTDecoder::~ALACMFTDecoder()
 	{
 		m_shutdownTask.wait();
 	}
-	m_cookieBlob = nullptr;
+	mediaInfo.cookieBlob = nullptr;
 }
 
 // IMediaExtension methods
@@ -379,27 +373,28 @@ HRESULT ALACMFTDecoder::SetInputType(
 	{
 		// essential values will throw an exception while secondary values will
 		// just assert
-		hr = pType->GetUINT32(MF_MT_AUDIO_AVG_BYTES_PER_SECOND, &m_avgBytesPerSec);
+		hr = pType->GetUINT32(MF_MT_AUDIO_AVG_BYTES_PER_SECOND, &mediaInfo.avgBytesPerSec);
 		ARC_ASSERT(hr == S_OK);
 
-		hr = pType->GetUINT32(MF_MT_AVG_BITRATE, &m_bitRate);
+		hr = pType->GetUINT32(MF_MT_AVG_BITRATE, &mediaInfo.bitRate);
 		ARC_ASSERT(hr == S_OK);
 
-		hr = pType->GetUINT32(MF_MT_AUDIO_SAMPLES_PER_SECOND, &m_samplesPerSecond);
+		hr = pType->GetUINT32(MF_MT_AUDIO_SAMPLES_PER_SECOND, &mediaInfo.samplesPerSecond);
 		ARC_ASSERT(hr == S_OK);
 
-		hr = pType->GetAllocatedBlob(ALAC_COOKIE, &m_cookieBlob, &m_cookieBlobSize);
+		hr = pType->GetAllocatedBlob(ALAC_COOKIE, &mediaInfo.cookieBlob, &mediaInfo.cookieBlobSize);
 		ARC_ThrowIfFailed(hr);
 
-		hr = pType->GetUINT32(MF_MT_AUDIO_NUM_CHANNELS, &m_channelCount);
+		hr = pType->GetUINT32(MF_MT_AUDIO_NUM_CHANNELS, &mediaInfo.channelCount);
 		ARC_ThrowIfFailed(hr);
 		
-		hr = pType->GetUINT32(MF_MT_AUDIO_BITS_PER_SAMPLE, &this->m_bitsPerSample);
+		hr = pType->GetUINT32(MF_MT_AUDIO_BITS_PER_SAMPLE, &mediaInfo.bitsPerSample);
 		ARC_ThrowIfFailed(hr);
 
 		m_inputType = pType;
 
 		ParseALACBox();
+		m_decoder.Init(mediaInfo.cookieBlob + 52, mediaInfo.cookieBlobSize - 52);
 	}
 	catch (Platform::Exception^ ex)
 	{
@@ -414,7 +409,7 @@ void ALACMFTDecoder::ParseALACBox()
 {
 	using namespace Arcusical::MPEG4;
 
-	Util::InMemoryStream stream(m_cookieBlob, m_cookieBlobSize);
+	Util::InMemoryStream stream(mediaInfo.cookieBlob, mediaInfo.cookieBlobSize);
 	MPEG4_Parser parser;
 	
 	auto mpegSong = parser.ReadAndParseFromStream(stream);
@@ -431,26 +426,26 @@ void ALACMFTDecoder::ParseALACBox()
 		ARC_ASSERT_MSG(children.size() == 1, "Expected only 1 box!");
 		if (children.size() > 0)
 		{
-			m_alacBox = std::dynamic_pointer_cast<Alac>(children[0]);
-			ARC_ASSERT(m_alacBox != nullptr);
+			mediaInfo.alacBox = std::dynamic_pointer_cast<Alac>(children[0]);
+			ARC_ASSERT(mediaInfo.alacBox != nullptr);
 			
-			m_bitsPerSample = m_alacBox->GetSampleSize();
-			m_samplesPerFrame = m_alacBox->GetSamplePerFrame();
+			mediaInfo.bitsPerSample = mediaInfo.alacBox->GetSampleSize();
+			mediaInfo.samplesPerFrame = mediaInfo.alacBox->GetSamplePerFrame();
 		}
 	}
 }
 
 unsigned int ALACMFTDecoder::GetOutBufferSize()
 {
-	return m_alacBox->GetSamplePerFrame() * m_channelCount * m_bitsPerSample / 8;
+	return mediaInfo.alacBox->GetSamplePerFrame() * mediaInfo.channelCount * mediaInfo.bitsPerSample / 8;
 }
 
 int ALACMFTDecoder::GetNumInputFramesToBuffer()
 {
-	auto bytesNeeded = m_avgBytesPerSec * TARGET_TIME_TO_BUFFER;
+	auto bytesNeeded = mediaInfo.avgBytesPerSec * TARGET_TIME_TO_BUFFER;
 	auto bytesAllowed = std::min(bytesNeeded, INPUT_BUFFER_SIZE_LIMIT);
-	auto bytesPerSample = m_bitsPerSample / 8;
-	auto bytesPerFrame = bytesPerSample * m_samplesPerFrame;
+	auto bytesPerSample = mediaInfo.bitsPerSample / 8;
+	auto bytesPerFrame = bytesPerSample * mediaInfo.samplesPerFrame;
 
 	auto framesAllowed = bytesNeeded / bytesPerFrame;
 
@@ -611,7 +606,6 @@ HRESULT ALACMFTDecoder::ProcessMessage(
 	case MFT_MESSAGE_NOTIFY_START_OF_STREAM:
 		m_canRequestInput = true;
 		m_isDraining = false;
-		ResetProcessor();
 		RequestInput();
 		break;
 	case MFT_MESSAGE_NOTIFY_BEGIN_STREAMING:
@@ -667,7 +661,12 @@ HRESULT ALACMFTDecoder::ProcessInput(
 
 	m_inputByteCount += bufferLength;
 
-	m_processor->AddItem(std::move(pSample));
+	if (!m_processor.IsRunning())
+	{
+		m_processor.Start();
+	}
+
+	m_processor.Append(std::move(pSample));
 
 	RequestInput();
 	
@@ -704,9 +703,9 @@ HRESULT ALACMFTDecoder::ProcessOutput(
 		NotifyDrainComplete();
 	}
 
-	ARC_ASSERT_MSG(m_processor->HasResult(), "Received a request for output when none was available!");
-	auto result = m_processor->GetNextResult();
-	pOutputSamples->pSample = result.Detach();
+	auto result = m_outputBuffer.GetNext();
+	ARC_ASSERT(result);
+	pOutputSamples->pSample = result->Detach();
 	return S_OK;
 }
 
@@ -725,19 +724,19 @@ HRESULT ALACMFTDecoder::CreateOutputType(Microsoft::WRL::ComPtr<IMFMediaType>& s
 		hr = spOutputType->SetGUID(MF_MT_SUBTYPE, MFAudioFormat_PCM);
 		ARC_ThrowIfFailed(hr);
 
-		hr = spOutputType->SetUINT32(MF_MT_AUDIO_NUM_CHANNELS, m_channelCount);
+		hr = spOutputType->SetUINT32(MF_MT_AUDIO_NUM_CHANNELS, mediaInfo.channelCount);
 		ARC_ThrowIfFailed(hr);
 
-		hr = spOutputType->SetUINT32(MF_MT_AUDIO_SAMPLES_PER_SECOND, m_samplesPerSecond);
+		hr = spOutputType->SetUINT32(MF_MT_AUDIO_SAMPLES_PER_SECOND, mediaInfo.samplesPerSecond);
 		ARC_ThrowIfFailed(hr);
 		
-		hr = spOutputType->SetUINT32(MF_MT_AUDIO_BLOCK_ALIGNMENT, m_channelCount * m_bitsPerSample / 8);
+		hr = spOutputType->SetUINT32(MF_MT_AUDIO_BLOCK_ALIGNMENT, mediaInfo.channelCount * mediaInfo.bitsPerSample / 8);
 		ARC_ThrowIfFailed(hr);
 
-		hr = spOutputType->SetUINT32(MF_MT_AUDIO_AVG_BYTES_PER_SECOND, m_samplesPerSecond * m_bitsPerSample * m_channelCount / 8);
+		hr = spOutputType->SetUINT32(MF_MT_AUDIO_AVG_BYTES_PER_SECOND, mediaInfo.samplesPerSecond * mediaInfo.bitsPerSample * mediaInfo.channelCount / 8);
 		ARC_ThrowIfFailed(hr);
 
-		hr = spOutputType->SetUINT32(MF_MT_AUDIO_BITS_PER_SAMPLE, m_bitsPerSample);
+		hr = spOutputType->SetUINT32(MF_MT_AUDIO_BITS_PER_SAMPLE, mediaInfo.bitsPerSample);
 		ARC_ThrowIfFailed(hr);
 
 		hr = spOutputType->SetUINT32(MF_MT_ALL_SAMPLES_INDEPENDENT, TRUE);
@@ -909,11 +908,12 @@ STDMETHODIMP ALACMFTDecoder::Shutdown()
 	m_isShuttingDown = true;
 	m_shutdownTask = std::async([this]()
 	{
-		m_onWorkReadySub.Unsubscribe();
+		m_onResultsReadySub.Unsubscribe();
 		m_eventListenerQueue.Complete();
 		m_eventQueue.Complete();
 		m_eventQueueTask.wait();
-		m_processor->StopWork();
+		m_processor.DropAllWork();
+		m_processor.Stop();
 		m_isShutdown = true;
 	});
 
@@ -999,10 +999,6 @@ ComPtr<IMFSample> ALACMFTDecoder::DecodeBuffer(const ComPtr<IMFSample>& pSample)
 	auto hr = pSample->ConvertToContiguousBuffer(&inputMediaBuffer);
 	ARC_ThrowIfFailed(hr);
 
-	// TODO::JT how expensive is setting up the decoder? Is it feasible to do for each and every frame?
-	ALACDecoder decoder;
-	decoder.Init(m_cookieBlob + 52, m_cookieBlobSize - 52);
-
 	BYTE* inBuffer = nullptr;
 	DWORD inputBufferLength = 0;
 	BYTE* outBuffer = nullptr;
@@ -1039,8 +1035,10 @@ ComPtr<IMFSample> ALACMFTDecoder::DecodeBuffer(const ComPtr<IMFSample>& pSample)
 		std::fill_n(outBuffer, outputBufferLength, 0);
 		ARC_ASSERT(outputBufferLength == outputBufferLength); // one is what we told it to be, the other is what it said it is
 
-		auto decodeResult = decoder.Decode(&bitsWrapper, outBuffer, m_alacBox->GetSamplePerFrame(), m_channelCount, &m_samplesAvailable);
+		uint32_t numSamplesOut = 0;
+		auto decodeResult = m_decoder.Decode(&bitsWrapper, outBuffer, mediaInfo.alacBox->GetSamplePerFrame(), mediaInfo.channelCount, &numSamplesOut);
 		ARC_ASSERT(decodeResult == ALAC_noErr);
+		ARC_ASSERT(numSamplesOut > 0);
 	}
 	
 	// we are going to reuse the provided IMFSample. However, to do so requires that we strip out the buffers and replace
@@ -1066,32 +1064,17 @@ bool ALACMFTDecoder::ShouldRequestMoreInput()
 
 void ALACMFTDecoder::FlushBuffers()
 {
-	m_processor->StopWork();
+	m_processor.Stop();
+	m_eventQueue.RemoveIf([](const Microsoft::WRL::ComPtr<IMFMediaEvent>& event)
+	{
+		MediaEventType type;
+		auto hr = event->GetType(&type);
+		ARC_ThrowIfFailed(hr);
+		return type == METransformNeedInput || type == METransformHaveOutput;
+	});
 	m_inputByteCount = 0;
 	m_numExpectedInputRequests = 0;
 	m_numExpectedOutputRequests = 0;
 	m_framesReceived = 0;
 	m_framesSent = 0;
-}
-
-void ALACMFTDecoder::ResetProcessor()
-{
-	m_onWorkReadySub.Unsubscribe();
-	if (m_processor != nullptr)
-	{
-		m_processor->StopWork();
-	}
-	
-	m_processor = nullptr;
-	m_processor = std::make_unique<Util::ParallelOrderedProcessor<Microsoft::WRL::ComPtr<IMFSample>,
-		                                                          Microsoft::WRL::ComPtr<IMFSample>>>(NUM_DECODE_WORKERS);
-	m_onWorkReadySub = m_processor->OnResultReady += [this]()
-	{
-		NotifyOutput();
-		RequestInput();
-	};
-	m_processor->SetWorkFunc([this](const Microsoft::WRL::ComPtr<IMFSample>& buffer)
-	{
-		return this->DecodeBuffer(buffer);
-	});
 }

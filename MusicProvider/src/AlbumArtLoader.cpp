@@ -1,4 +1,5 @@
 #include "boost/algorithm/string/predicate.hpp"
+#include <functional>
 #include <numeric>
 #include <random>
 #include <string>
@@ -7,6 +8,7 @@
 
 #include "AlbumArtLoader.hpp"
 #include "DefaultAlbumArt.hpp"
+#include "FilterProcessor.hpp"
 #include "IFile.hpp"
 #include "IFileReader.hpp"
 #include "IFolder.hpp"
@@ -36,9 +38,9 @@ using namespace Arcusical::MusicProvider;
 using namespace Arcusical::Model;
 using namespace Arcusical::MPEG4;
 using namespace FileSystem;
+using namespace std::placeholders;
 using namespace Util;
 
-static const int MIN_VERIFY_BATCH_SIZE = 20;
 static const int MIN_EMBEDED_LOAD_BATCH_SIZE = 5;
 static const int MAX_EMBEDED_LOAD_BATCH_SIZE = 20;
 static const int MIN_DELAYED_LOAD_BATCH_SIZE = 5;
@@ -62,7 +64,6 @@ static boost::optional<wstring> SaveImageFile(vector<unsigned char>& imgData, co
 static boost::optional<wstring> SaveImageFile(vector<unsigned char>& imgData, const wstring& albumName, const wstring& imageExtension);
 
 static vector<wstring> GetImagePaths(vector<FilePtr> files);
-static vector<AlbumArtLoader::AlbumId> GetIdsTheFailedToLoad(const vector<AlbumArtLoader::IdPathPair> loadResults);
 static wstring FindArt(const wstring& albumName, const vector<tuple<wstring, ContainerType>>& albumSongInfo, const vector<wstring>& imagePaths);
 static wstring FindArt(const vector<wstring>& imagePaths, const wstring& songPath, const wstring& albumName);
 static wstring VoteOnResult(const vector<pair<wstring, wstring>>& selections, const unordered_map<wstring, size_t>& pathWeights);
@@ -70,70 +71,153 @@ static wstring VoteOnResult(const vector<pair<wstring, wstring>>& selections, co
 static size_t FindLastPathSeperator(const wstring& path);
 static unordered_map<wstring, size_t> BuildCounts(const vector<wstring>& strings);
 
+static bool CheckAlbum(const AlbumArtLoader::IdBoolPair&);
+struct CheckAlbumPath
+{
+	typedef const AlbumArtLoader::IdPathPair& argument_type;
+
+	bool operator()(argument_type pair) const
+	{
+		return pair.second.size() > 0;
+	}
+};
+static AlbumArtLoader::AlbumId StripId(const AlbumArtLoader::IdBoolPair&);
+static AlbumArtLoader::AlbumId StripIdFromPath(const AlbumArtLoader::IdPathPair&);
+
 Arcusical::MusicProvider::AlbumArtLoader::AlbumArtLoader(LocalMusicStore::LocalMusicCache* cache)
-	: m_embededLoader(MIN_EMBEDED_LOAD_BATCH_SIZE, MAX_EMBEDED_LOAD_BATCH_SIZE, EMBEDED_LOAD_INTERVAL)
+	: m_verifier()
+	, m_verifyFilter(&CheckAlbum)
+	, m_verifyIdStripper(&StripId)
+	, m_embededLoader(MIN_EMBEDED_LOAD_BATCH_SIZE, MAX_EMBEDED_LOAD_BATCH_SIZE, EMBEDED_LOAD_INTERVAL)
+	, m_loadedFilter(CheckAlbumPath())
+	, m_loadedIdStripper(&StripIdFromPath)
+	, m_delayedLoader(MIN_DELAYED_LOAD_BATCH_SIZE, MAX_DELAYED_LOAD_BATCH_SIZE, EMBEDED_LOAD_INTERVAL)
+	, m_delayedLoadedFilter(CheckAlbumPath())
+	, m_recorder()
 	, m_cache(cache)
 {
-	m_embededLoader.SetBatchProcessor([this](const vector<AlbumArtLoader::AlbumId>& albumIds)
-	{
-		return this->EmbededAlbumLoad(albumIds);
-	});
+	m_recorder.SetBatchProcessor(std::bind(&AlbumArtLoader::RecordAlbumArt, this, _1));
+	m_verifier.SetBatchProcessor(std::bind(&AlbumArtLoader::VerifyAlbums, this, _1));
+	m_embededLoader.SetBatchProcessor(std::bind(&AlbumArtLoader::EmbededAlbumLoad, this, _1));
+	m_delayedLoader.SetBatchProcessor(std::bind(&AlbumArtLoader::DelayedAlbumLoad, this, _1));
+
+	m_verifier.Connect(&m_verifyFilter);
+	m_verifyFilter.ConnectRejectBuffer(&m_verifyIdStripper);
+	m_verifyIdStripper.ConnectBuffer(&m_embededLoader);
+	m_embededLoader.Connect(&m_loadedFilter);
+	m_loadedFilter.ConnectMatchingBuffer(&m_recorder);
+	m_loadedFilter.ConnectRejectBuffer(&m_loadedIdStripper);
+	m_loadedIdStripper.ConnectBuffer(&m_delayedLoader);
+	m_delayedLoader.Connect(&m_delayedLoadedFilter);
+	m_delayedLoadedFilter.ConnectMatchingBuffer(&m_recorder);
+
+	m_verifier.Start();
 	m_embededLoader.Start();
 
-	m_recordFuture = std::async([this]()
+	m_imagePathFuture = std::async([this]()
 	{
-		RecordAlbumArt();
-	});
-	m_verifyFuture = std::async([this]()
-	{
-		VerifyAlbums();
-	});
-
-	m_delayedLoadFuture = std::async([this]()
-	{
-		// note: image file load can't be kicked off directly in the ctor due to a threading issue
-		// this object is instantiated on the UI thread and the dtor of WorkBuffers can cause it to stall
-		// Winrt enforces not stalling the UI thread by throwing an exception. This fixes the issue nicely
-		m_imageFilesWB = FileSystem::Storage::MusicFolder().FindFilesWithExtensions({ L".bmp", L".jpg", L".jpeg", L".png", L".tiff" });
-		DelayedArtLoad();
+		return FileSystem::Storage::MusicFolder().FindFilesWithExtensions({ L".bmp", L".jpg", L".jpeg", L".png", L".tiff" });
 	});
 }
 
 Arcusical::MusicProvider::AlbumArtLoader::~AlbumArtLoader()
 {
-	m_embededLoader.OutputBuffer()->WaitForCompletion();
-	m_recordFuture.wait();
-	m_verifyFuture.wait();
-	m_delayedLoadFuture.wait();
+	m_verifier.AwaitCompletion();
+	m_embededLoader.AwaitCompletion();
+	m_delayedLoader.AwaitCompletion();
+	m_imagePathFuture.wait();
 }
 
-void Arcusical::MusicProvider::AlbumArtLoader::RecordAlbumArt()
+//
+// Verification
+//
+
+std::vector<AlbumArtLoader::IdBoolPair> AlbumArtLoader::VerifyAlbums(const std::vector<AlbumArtLoader::AlbumId>& albumIds)
 {
-	while (m_embededLoader.OutputBuffer()->ResultsPending())
+	std::vector<AlbumArtLoader::IdBoolPair> results;
+	results.reserve(albumIds.size());
+	vector<tuple<AlbumArtLoader::AlbumId, wstring>> imageFilePaths;
+
 	{
-		auto loadResults = m_embededLoader.OutputBuffer()->GetAtLeast(1);
-		if (loadResults.size() > 0)
+		auto albums = m_cache->GetLocalAlbums();
+		for (auto& id : albumIds)
 		{
-			SaveAlbums(loadResults);
-			auto missingIds = GetIdsTheFailedToLoad(loadResults);
-			m_delayedAlbumsToLoad.Append(std::move(missingIds));
+			auto album = albums->find(id);
+			if (album != end(*albums))
+			{
+				auto filePath = album->second.GetImageFilePath();
+				imageFilePaths.push_back(std::make_tuple(id, filePath));
+			}
 		}
 	}
 
-	m_delayedAlbumsToLoad.Complete();
+	for (auto& idPathPair : imageFilePaths)
+	{
+		const auto& id = std::get<0>(idPathPair);
+		const auto& path = std::get<1>(idPathPair);
+		bool isVerified = !isDefaultAlbumArt(path) || FileSystem::Storage::FileExists(path);
+		results.push_back(std::make_pair(id, isVerified));
+	}
+
+	return results;
 }
 
-void Arcusical::MusicProvider::AlbumArtLoader::SaveAlbums(const std::vector<IdPathPair>& loadResults)
+//
+// Loading
+//
+
+vector<AlbumArtLoader::IdPathPair> AlbumArtLoader::EmbededAlbumLoad(const vector<AlbumArtLoader::AlbumId>& albumIds)
 {
-	m_cache->GetLocalAlbumsMutable([&loadResults](Model::AlbumCollection* albums)
+	vector<tuple<AlbumArtLoader::AlbumId, vector<SongId>>> songIdsForAlbums;
+	vector<tuple<AlbumArtLoader::AlbumId, vector<tuple<wstring, ContainerType>>>> songPathsForAlbums;
+	vector<AlbumArtLoader::IdPathPair> albumsWithArt;
+	unordered_map<AlbumArtLoader::AlbumId, wstring, boost::hash<AlbumArtLoader::AlbumId>> albumNameLookup;
+
+	albumsWithArt.reserve(albumIds.size());
+
 	{
-		for (auto& result : loadResults)
+		auto albums = m_cache->GetLocalAlbums();
+		songIdsForAlbums = GetSongIdsForAlbums(albumIds, *albums);
+		albumNameLookup = BuildAlbumNameLookup(albumIds, *albums);
+	}
+	{
+		auto songs = m_cache->GetLocalSongs();
+		songPathsForAlbums = GetPathsForSongIds(songIdsForAlbums, *songs);
+	}
+
+	transform(begin(songPathsForAlbums), end(songPathsForAlbums), back_inserter(albumsWithArt), [&albumNameLookup]
+		(const tuple<AlbumArtLoader::AlbumId, vector<tuple<wstring, ContainerType>>>& songPaths)
+	{
+		auto id = std::get<0>(songPaths);
+		auto nameItr = albumNameLookup.find(id);
+		if (nameItr != end(albumNameLookup))
+		{
+			auto path = LoadAlbumImage(std::get<1>(songPaths), nameItr->second);
+			return make_pair(id, path);
+		}
+		else
+		{
+			return make_pair(id, wstring());
+		}
+	});
+
+	return albumsWithArt;
+}
+
+//
+// Recording
+//
+
+std::vector<int> AlbumArtLoader::RecordAlbumArt(const std::vector<AlbumArtLoader::IdPathPair>& albumArt)
+{
+	m_cache->GetLocalAlbumsMutable([&albumArt](Model::AlbumCollection* albums)
+	{
+		for (auto& result : albumArt)
 		{
 			auto& id = std::get<0>(result);
 			auto& path = std::get<1>(result);
 			auto albumItr = albums->find(id);
 
-			ARC_ASSERT(albumItr != end(*albums));
 			if (albumItr != end(*albums) && path.size() > 0)
 			{
 				albumItr->second.SetImageFilePath(path);
@@ -143,70 +227,173 @@ void Arcusical::MusicProvider::AlbumArtLoader::SaveAlbums(const std::vector<IdPa
 
 	m_cache->SaveAlbums();
 
+	// Notify any listeners that album art has been loaded and is ready.
 	vector<AlbumArtLoader::AlbumId> albumIdsLoaded;
-	albumIdsLoaded.reserve(loadResults.size());
-	transform(begin(loadResults), end(loadResults), back_inserter(albumIdsLoaded), [](IdPathPair res)
+	albumIdsLoaded.reserve(albumArt.size());
+	transform(begin(albumArt), end(albumArt), back_inserter(albumIdsLoaded), [](IdPathPair res)
 	{
 		return std::get<0>(res);
 	});
 
 	OnArtLoaded(albumIdsLoaded);
+	return std::vector<int>(albumArt.size());
 }
 
-void Arcusical::MusicProvider::AlbumArtLoader::DelayedArtLoad()
+//
+// Delayed Loading
+//
+
+std::vector<AlbumArtLoader::IdPathPair> AlbumArtLoader::DelayedAlbumLoad(const std::vector<AlbumArtLoader::AlbumId>& batch)
 {
-	// gonna stall a bit while we wait for embedded loading to finish as well 
-	// wait while we collect the image paths from disk
-	ARC_ASSERT(m_imageFilesWB != nullptr);
-	auto paths = GetImagePaths(m_imageFilesWB->GetAll());
-	m_embededLoader.OutputBuffer()->WaitForCompletion();
+	// first try to load from the songs again. The load may have failed before because not all the songs
+	// in an album had art and the ones that were processed initially did not contain art. I've sometimes noticed
+	// only the first few songs in an album have art, but I do not define an order for loading so these may not be
+	// loaded initially.
+	auto embededLoadResults = EmbededAlbumLoad(batch);
+	decltype(embededLoadResults) missingResults;
+	decltype(embededLoadResults) foundArt;
+	missingResults.reserve(embededLoadResults.size());
+	foundArt.reserve(embededLoadResults.size());
 
-	while (m_delayedAlbumsToLoad.ResultsPending())
+	copy_if(begin(embededLoadResults), end(embededLoadResults), back_inserter(foundArt), CheckAlbumPath());
+	copy_if(begin(embededLoadResults), end(embededLoadResults), back_inserter(missingResults), std::not1(CheckAlbumPath()));
+	std::vector<AlbumArtLoader::AlbumId> idsToSearchFor;
+	idsToSearchFor.reserve(missingResults.size());
+	transform(begin(missingResults), end(missingResults), back_inserter(idsToSearchFor), &StripIdFromPath);
+
+	vector<tuple<AlbumArtLoader::AlbumId, vector<SongId>>> songIdsForAlbums;
+	vector<tuple<AlbumArtLoader::AlbumId, vector<tuple<wstring, ContainerType>>>> songPathsForAlbums;
+	unordered_map<AlbumArtLoader::AlbumId, wstring, boost::hash<AlbumArtLoader::AlbumId>> albumNameLookup;
+
 	{
-		auto batch = m_delayedAlbumsToLoad.GetMultiple(MIN_DELAYED_LOAD_BATCH_SIZE, MAX_DELAYED_LOAD_BATCH_SIZE);
-
-		// making sure to complete the processing but ignore work if we can't actually do any
-		if (paths.size() == 0)
-		{
-			continue;
-		}
-
-		// first try to load from the songs again. The load may have failed before because not all the songs
-		// in an album had art and the ones that were processed initially did not contain art. I've sometimes noticed
-		// only the first few songs in an album have art, but I do not define an order for loading so these may not be
-		// loaded initially.
-		auto embededLoadResults = EmbededAlbumLoad(batch);
-		SaveAlbums(embededLoadResults); // this will only save the successful loads
-
-		auto idsToSearchFor = GetIdsTheFailedToLoad(embededLoadResults);
-		vector<tuple<AlbumArtLoader::AlbumId, vector<SongId>>> songIdsForAlbums;
-		vector<tuple<AlbumArtLoader::AlbumId, vector<tuple<wstring, ContainerType>>>> songPathsForAlbums;
-		unordered_map<AlbumArtLoader::AlbumId, wstring, boost::hash<AlbumArtLoader::AlbumId>> albumNameLookup;
-
-		{
-			auto albums = m_cache->GetLocalAlbums();
-			songIdsForAlbums = GetSongIdsForAlbums(idsToSearchFor, *albums);
-			albumNameLookup = BuildAlbumNameLookup(idsToSearchFor, *albums);
-		}
-		{
-			auto songs = m_cache->GetLocalSongs();
-			songPathsForAlbums = GetPathsForSongIds(songIdsForAlbums, *songs);
-		}
-
-		vector<pair<AlbumArtLoader::AlbumId, wstring>> artPaths;
-		artPaths.reserve(songPathsForAlbums.size());
-		transform(begin(songPathsForAlbums), end(songPathsForAlbums), back_inserter(artPaths), [&paths, &albumNameLookup]
-			(const tuple<AlbumArtLoader::AlbumId, vector<tuple<wstring, ContainerType>>>& songPathsForAlbum)
-		{
-			auto id = std::get<0>(songPathsForAlbum);
-			auto albumSongInfo = std::get<1>(songPathsForAlbum);
-			auto albumName = albumNameLookup.at(id);
-			auto imagePath = FindArt(albumName, albumSongInfo, paths);
-			return make_pair(id, imagePath);
-		});
-
-		SaveAlbums(artPaths);
+		auto albums = m_cache->GetLocalAlbums();
+		songIdsForAlbums = GetSongIdsForAlbums(idsToSearchFor, *albums);
+		albumNameLookup = BuildAlbumNameLookup(idsToSearchFor, *albums);
 	}
+	{
+		auto songs = m_cache->GetLocalSongs();
+		songPathsForAlbums = GetPathsForSongIds(songIdsForAlbums, *songs);
+	}
+
+	vector<AlbumArtLoader::IdPathPair> artPaths;
+	artPaths.reserve(songPathsForAlbums.size());
+	transform(begin(songPathsForAlbums), end(songPathsForAlbums), back_inserter(artPaths), [this, &albumNameLookup]
+		(const tuple<AlbumArtLoader::AlbumId, vector<tuple<wstring, ContainerType>>>& songPathsForAlbum)
+	{
+		auto id = std::get<0>(songPathsForAlbum);
+		auto albumSongInfo = std::get<1>(songPathsForAlbum);
+		auto albumName = albumNameLookup.at(id);
+		auto imagePath = FindArt(albumName, albumSongInfo, m_imagePaths);
+		return make_pair(id, imagePath);
+	});
+
+	// now make sure to add in the ones that were loaded from embedded
+	artPaths.reserve(artPaths.size() + foundArt.size());
+	std::move(begin(foundArt), end(foundArt), back_inserter(artPaths));
+
+	return artPaths;
+}
+
+//
+// Helpers
+//
+
+vector<tuple<AlbumArtLoader::AlbumId, vector<SongId>>> GetSongIdsForAlbums(const vector<AlbumArtLoader::AlbumId>& ids, const AlbumCollection& albums)
+{
+	vector<tuple<AlbumArtLoader::AlbumId, vector<SongId>>> songIdsForAlbums;
+	songIdsForAlbums.reserve(albums.size());
+
+	for (auto& id : ids)
+	{
+		auto albumItr = albums.find(id);
+		if (albumItr != end(albums))
+		{
+			auto songIds = albumItr->second.GetSongIds();
+			songIdsForAlbums.push_back(std::make_tuple(id, vector < SongId > { begin(songIds), end(songIds) }));
+		}
+	}
+
+	return songIdsForAlbums;
+}
+
+unordered_map<AlbumArtLoader::AlbumId, wstring, boost::hash<AlbumArtLoader::AlbumId>> BuildAlbumNameLookup(const vector<AlbumArtLoader::AlbumId>& ids, const AlbumCollection& albums)
+{
+	unordered_map<AlbumArtLoader::AlbumId, wstring, boost::hash<AlbumArtLoader::AlbumId>> lookup;
+
+	for (auto& id : ids)
+	{
+		auto albumItr = albums.find(id);
+		if (albumItr != end(albums))
+		{
+			lookup[id] = albumItr->second.GetTitle();
+		}
+	}
+
+	return lookup;
+}
+
+vector<tuple<AlbumArtLoader::AlbumId, vector<tuple<wstring, ContainerType>>>> GetPathsForSongIds(const vector<tuple<AlbumArtLoader::AlbumId, vector<SongId>>>& albumInfo, const SongCollection& songs)
+{
+	vector<tuple<AlbumArtLoader::AlbumId, vector<tuple<wstring, ContainerType>>>> songPathsForAlbums;
+	songPathsForAlbums.reserve(albumInfo.size());
+	transform(begin(albumInfo), end(albumInfo), back_inserter(songPathsForAlbums), [&songs](const tuple<AlbumArtLoader::AlbumId, vector<SongId>>& info)
+	{
+		auto& ids = std::get<1>(info);
+		vector<tuple<wstring, ContainerType>> paths;
+		paths.reserve(ids.size());
+		for (auto& id : ids)
+		{
+			std::wstring songPath = L"";
+			const auto& songItr = songs.find(id);
+			// we have to check if the song still exists. It's possible it was deleted while we were doing
+			// other work.
+			if (songItr != end(songs))
+			{
+				auto songPaths = GetFilePaths(songItr->second);
+				std::move(begin(songPaths), end(songPaths), back_inserter(paths));
+			}
+		}
+
+		return make_tuple(std::get<0>(info), paths);
+	});
+
+	return songPathsForAlbums;
+}
+
+wstring LoadAlbumImage(const vector<tuple<wstring, ContainerType>>& songPaths, const wstring& albumName)
+{
+	wstring path;
+	for (auto& songPath : songPaths)
+	{
+		auto imagePath = LoadAlbumImage(songPath, albumName);
+		if (imagePath != boost::none)
+		{
+			path = *imagePath;
+			break;
+		}
+	}
+
+	return path;
+}
+
+boost::optional<wstring> LoadAlbumImage(const tuple<wstring, ContainerType>& songPath, const std::wstring& albumName)
+{
+	boost::optional<wstring> imagePath = boost::none;
+
+	auto& path = std::get<0>(songPath);
+	auto& container = std::get<1>(songPath);
+	auto songFile = FileSystem::Storage::LoadFileFromPath(path);
+	ARC_ASSERT(songFile != nullptr);
+	if (songFile != nullptr)
+	{
+		auto thumbnail = GetThumbnail(*songFile, container);
+		if (thumbnail != boost::none)
+		{
+			imagePath = SaveImageFile(std::get<0>(*thumbnail), albumName, std::get<1>(*thumbnail));
+		}
+	}
+
+	return imagePath;
 }
 
 vector<wstring> GetImagePaths(vector<FilePtr> imageFiles)
@@ -219,22 +406,6 @@ vector<wstring> GetImagePaths(vector<FilePtr> imageFiles)
 	});
 
 	return imagePaths;
-}
-
-vector<AlbumArtLoader::AlbumId> GetIdsTheFailedToLoad(const vector<AlbumArtLoader::IdPathPair> loadResults)
-{
-	vector<AlbumArtLoader::AlbumId> ids;
-	ids.reserve(loadResults.size()); // most likely this will only slightly over provision the vector
-
-	for (auto& res : loadResults)
-	{
-		if (res.second.size() == 0)
-		{
-			ids.push_back(res.first);
-		}
-	}
-
-	return ids;
 }
 
 wstring GetOnlyPathToFile(const wstring& fullPath)
@@ -373,14 +544,15 @@ size_t NumberOfCommonAncestors(const wstring& a, const wstring& b)
 	while (aItr != end(a) && *aItr == *bItr)
 	{
 		ARC_ASSERT(bItr != end(b)); // a should be shorter, so we can't run over b. assert just in case
-		++aItr;
-		++bItr;
 
-		// basically we only care about the depth matching, not the 
+		// basically we only care about the depth matching, not the actual length of the path that is common
 		if (*aItr == '\\' || *aItr == '/')
 		{
 			++commonCount;
 		}
+		
+		++aItr;
+		++bItr;
 	}
 
 	return commonCount;
@@ -514,159 +686,21 @@ wstring FindArt(const vector<wstring>& imagePaths, const wstring& songPath, cons
 
 InputBuffer<AlbumArtLoader::AlbumId>* AlbumArtLoader::AlbumsNeedingArt()
 {
-	return m_embededLoader.InputBuffer();
+	return &m_embededLoader;
 }
 
 InputBuffer<AlbumArtLoader::AlbumId>* AlbumArtLoader::AlbumsToVerify()
 {
-	return &m_albumsToVerify;
+	return &m_verifier;
 }
 
 void AlbumArtLoader::NotifyLoadingComplete()
 {
-	m_albumsToVerify.Complete();
-}
-
-void AlbumArtLoader::VerifyAlbums()
-{
-	while (m_albumsToVerify.ResultsPending())
-	{
-		auto albumIds = m_albumsToVerify.GetAtLeast(MIN_VERIFY_BATCH_SIZE);
-		vector<tuple<AlbumArtLoader::AlbumId, wstring>> filePaths;
-
-		{
-			auto albums = m_cache->GetLocalAlbums();
-			for (auto& id : albumIds)
-			{
-				auto album = albums->find(id);
-				if (album != end(*albums))
-				{
-					auto filePath = album->second.GetImageFilePath();
-					filePaths.push_back(std::make_tuple(id, filePath));
-				}
-			}
-		}
-
-		std::vector<AlbumArtLoader::AlbumId> missingIds;
-		for (auto& idPathPair : filePaths)
-		{
-			auto path = std::get<1>(idPathPair);
-			if (isDefaultAlbumArt(path) ||
-				!FileSystem::Storage::FileExists(path))
-			{
-				// verification failed, we'll try to load this again
-				// failure is considered if the path is no good or if
-				// the album is relying upon default art
-				missingIds.push_back(std::get<0>(idPathPair));
-			}
-		}
-
-		m_embededLoader.InputBuffer()->Append(std::move(missingIds));
-	}
-	// done verifying albums
-	m_embededLoader.InputBuffer()->Complete();
-}
-
-vector<AlbumArtLoader::IdPathPair> AlbumArtLoader::EmbededAlbumLoad(const vector<AlbumArtLoader::AlbumId>& albumIds)
-{
-	vector<tuple<AlbumArtLoader::AlbumId, vector<SongId>>> songIdsForAlbums;
-	vector<tuple<AlbumArtLoader::AlbumId, vector<tuple<wstring, ContainerType>>>> songPathsForAlbums;
-	vector<AlbumArtLoader::IdPathPair> albumsWithArt;
-	unordered_map<AlbumArtLoader::AlbumId, wstring, boost::hash<AlbumArtLoader::AlbumId>> albumNameLookup;
-
-	albumsWithArt.reserve(albumIds.size());
-
-	{
-		auto albums = m_cache->GetLocalAlbums();
-		songIdsForAlbums = GetSongIdsForAlbums(albumIds, *albums);
-		albumNameLookup = BuildAlbumNameLookup(albumIds, *albums);
-	}
-	{
-		auto songs = m_cache->GetLocalSongs();
-		songPathsForAlbums = GetPathsForSongIds(songIdsForAlbums, *songs);
-	}
-
-	transform(begin(songPathsForAlbums), end(songPathsForAlbums), back_inserter(albumsWithArt), [&albumNameLookup]
-		(const tuple<AlbumArtLoader::AlbumId, vector<tuple<wstring, ContainerType>>>& songPaths)
-	{
-		auto id = std::get<0>(songPaths);
-		auto nameItr = albumNameLookup.find(id);
-		ARC_ASSERT(nameItr != end(albumNameLookup) && nameItr->second.size() > 0);
-		if (nameItr != end(albumNameLookup))
-		{
-			auto path = LoadAlbumImage(std::get<1>(songPaths), nameItr->second);
-			return make_pair(id, path);
-		}
-		else
-		{
-			return make_pair(id, wstring());
-		}
-	});
-
-	return albumsWithArt;
-}
-
-vector<tuple<AlbumArtLoader::AlbumId, vector<SongId>>> GetSongIdsForAlbums(const vector<AlbumArtLoader::AlbumId>& ids, const AlbumCollection& albums)
-{
-	vector<tuple<AlbumArtLoader::AlbumId, vector<SongId>>> songIdsForAlbums;
-	songIdsForAlbums.reserve(albums.size());
-
-	for (auto& id : ids)
-	{
-		auto albumItr = albums.find(id);
-		ARC_ASSERT(albumItr != end(albums)); // we should never be loading a non existent album
-		if (albumItr != end(albums))
-		{
-			auto songIds = albumItr->second.GetSongIds();
-			songIdsForAlbums.push_back(std::make_tuple(id, vector < SongId > { begin(songIds), end(songIds) }));
-		}
-	}
-
-	return songIdsForAlbums;
-}
-
-unordered_map<AlbumArtLoader::AlbumId, wstring, boost::hash<AlbumArtLoader::AlbumId>> BuildAlbumNameLookup(const vector<AlbumArtLoader::AlbumId>& ids, const AlbumCollection& albums)
-{
-	unordered_map<AlbumArtLoader::AlbumId, wstring, boost::hash<AlbumArtLoader::AlbumId>> lookup;
-
-	for (auto& id : ids)
-	{
-		auto albumItr = albums.find(id);
-		ARC_ASSERT(albumItr != end(albums))
-		if (albumItr != end(albums))
-		{
-			lookup[id] = albumItr->second.GetTitle();
-		}
-	}
-
-	return lookup;
-}
-
-vector<tuple<AlbumArtLoader::AlbumId, vector<tuple<wstring, ContainerType>>>> GetPathsForSongIds(const vector<tuple<AlbumArtLoader::AlbumId, vector<SongId>>>& albumInfo, const SongCollection& songs)
-{
-	vector<tuple<AlbumArtLoader::AlbumId, vector<tuple<wstring, ContainerType>>>> songPathsForAlbums;
-	songPathsForAlbums.reserve(albumInfo.size());
-	transform(begin(albumInfo), end(albumInfo), back_inserter(songPathsForAlbums), [&songs](const tuple<AlbumArtLoader::AlbumId, vector<SongId>>& info)
-	{
-		auto& ids = std::get<1>(info);
-		vector<tuple<wstring, ContainerType>> paths;
-		paths.reserve(ids.size());
-		for (auto& id : ids)
-		{
-			std::wstring songPath = L"";
-			const auto& songItr = songs.find(id);
-			ARC_ASSERT(songItr != end(songs));
-			if (songItr != end(songs))
-			{
-				auto songPaths = GetFilePaths(songItr->second);
-				std::move(begin(songPaths), end(songPaths), back_inserter(paths));
-			}
-		}
-
-		return make_tuple(std::get<0>(info), paths);
-	});
-
-	return songPathsForAlbums;
+	auto imageFiles = m_imagePathFuture.get();
+	m_imagePaths = GetImagePaths(imageFiles->GetAll());
+	m_delayedLoader.Start();
+	m_verifier.Complete();
+	m_embededLoader.Complete();
 }
 
 vector<tuple<wstring, ContainerType>> GetFilePaths(const Song& song)
@@ -683,42 +717,6 @@ vector<tuple<wstring, ContainerType>> GetFilePaths(const Song& song)
 	}
 
 	return paths;
-}
-
-wstring LoadAlbumImage(const vector<tuple<wstring, ContainerType>>& songPaths, const wstring& albumName)
-{
-	wstring path;
-	for (auto& songPath : songPaths)
-	{
-		auto imagePath = LoadAlbumImage(songPath, albumName);
-		if (imagePath != boost::none)
-		{
-			path = *imagePath;
-			break;
-		}
-	}
-
-	return path;
-}
-
-boost::optional<wstring> LoadAlbumImage(const tuple<wstring, ContainerType>& songPath, const std::wstring& albumName)
-{
-	boost::optional<wstring> imagePath = boost::none;
-
-	auto& path = std::get<0>(songPath);
-	auto& container = std::get<1>(songPath);
-	auto songFile = FileSystem::Storage::LoadFileFromPath(path);
-	ARC_ASSERT(songFile != nullptr);
-	if (songFile != nullptr)
-	{
-		auto thumbnail = GetThumbnail(*songFile, container);
-		if (thumbnail != boost::none)
-		{
-			imagePath = SaveImageFile(std::get<0>(*thumbnail), albumName, std::get<1>(*thumbnail));
-		}
-	}
-
-	return imagePath;
 }
 
 boost::optional<tuple<vector<unsigned char>, ImageType>> GetThumbnail(const IFile& file, const ContainerType& container)
@@ -854,4 +852,22 @@ unordered_map<wstring, size_t> BuildCounts(const vector<wstring>& strings)
 	}
 
 	return counts;
+}
+
+// New Stuff
+
+// functional
+bool CheckAlbum(const AlbumArtLoader::IdBoolPair& pair)
+{
+	return pair.second;
+}
+
+AlbumArtLoader::AlbumId StripId(const AlbumArtLoader::IdBoolPair& pair)
+{
+	return pair.first;
+}
+
+AlbumArtLoader::AlbumId StripIdFromPath(const AlbumArtLoader::IdPathPair& pair)
+{
+	return pair.first;
 }

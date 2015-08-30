@@ -10,9 +10,22 @@
 
 #include "Alac.hpp"
 #include "ALACDecoder.h"
+#include "AsyncProcessor.hpp"
 #include "Export.hpp"
-#include "ParallelOrderedProcessor.hpp"
 #include "Stsd.hpp"
+
+struct MediaInfo
+{
+	UINT32 avgBytesPerSec = 0;
+	UINT32 bitRate = 0;
+	UINT32 cookieBlobSize = 0;
+	UINT32 channelCount = 0;
+	UINT32 samplesPerSecond = 0;
+	UINT32 samplesPerFrame = 0;
+	UINT32 bitsPerSample = 0;
+	UINT8* cookieBlob = nullptr;
+	std::shared_ptr<Arcusical::MPEG4::Alac> alacBox;
+};
 
 class EXPORT ALACMFTDecoder WrlSealed
 	: public Microsoft::WRL::RuntimeClass <
@@ -197,28 +210,10 @@ private:
 	void NotifyDrainComplete();
 
 	void StartEventLoop();
-	void ResetProcessor();
 
-	UINT32 m_avgBytesPerSec;
-	UINT32 m_bitRate;
-	UINT8* m_cookieBlob;
-	std::shared_ptr<Arcusical::MPEG4::Alac> m_alacBox;
-	UINT32 m_cookieBlobSize;
-	UINT32 m_channelCount;
-	UINT32 m_samplesPerSecond;
-	UINT32 m_samplesPerFrame;
-	UINT32 m_bitsPerSample;
-
+	MediaInfo mediaInfo;
 	Microsoft::WRL::ComPtr<IMFMediaType> m_inputType;
 	Microsoft::WRL::ComPtr<IMFMediaType> m_outputType;
-
-	unsigned int m_samplesAvailable;
-	bool m_isOutFrameReady;
-	bool m_hasEnoughInput;
-
-
-
-
 
 	int m_inputByteCount = 0;
 	bool m_canRequestInput = false;
@@ -228,7 +223,7 @@ private:
 	int m_numExpectedOutputRequests = 0;
 	int m_framesReceived = 0;
 	int m_framesSent = 0;
-	Util::Subscription m_onWorkReadySub;
+	Util::Subscription m_onResultsReadySub;
 
 	std::recursive_mutex m_syncLock;
 
@@ -238,7 +233,9 @@ private:
 
 	Microsoft::WRL::ComPtr<IMFAttributes> m_attributes;
 
-	std::unique_ptr<Util::ParallelOrderedProcessor<Microsoft::WRL::ComPtr<IMFSample>, Microsoft::WRL::ComPtr<IMFSample>>> m_processor;
+	Util::AsyncProcessor<Microsoft::WRL::ComPtr<IMFSample>, Microsoft::WRL::ComPtr<IMFSample>> m_processor;
+	ALACDecoder m_decoder;
+	Util::WorkBuffer<Microsoft::WRL::ComPtr<IMFSample>> m_outputBuffer;
 	Util::WorkBuffer<Microsoft::WRL::ComPtr<IMFMediaEvent>> m_eventQueue;
 	Util::WorkBuffer<std::pair<IMFAsyncCallback*, IUnknown*>> m_eventListenerQueue; // really this queue ought to have only 1 element at a time, but this makes the logic much easier
 	std::future<void> m_eventQueueTask;

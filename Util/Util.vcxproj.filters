@@ -72,6 +72,12 @@
     <ClInclude Include="include\ParallelOrderedProcessor.hpp">
       <Filter>include</Filter>
     </ClInclude>
+    <ClInclude Include="include\FilterProcessor.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\TransformProcessor.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Subscription.cpp">

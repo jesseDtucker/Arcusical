@@ -50,16 +50,22 @@ void Util::SlimRWLock::LockExclusive()
 	{
 		lock_guard<mutex> guard(m_syncLock);
 		auto id = this_thread::get_id();
-		
+
 		auto readId = m_readIds.find(id);
 		ARC_ASSERT_MSG(readId == end(m_readIds), "Attempted to recursively hold a write lock while holding a read lock! This operation is not supported!");
 		ARC_ASSERT_MSG(!m_writeId || m_writeId != id, "Attempted to recursively hold a write lock! This is not supported!");
+	}
+#endif
+	AcquireSRWLockExclusive(&m_lock);
+#if _DEBUG
+	{	
+		lock_guard<mutex> guard(m_syncLock);
+		auto id = this_thread::get_id();
+		ARC_ASSERT_MSG(!m_writeId, "Cannot acquire a lock while someone else has it.");
 
 		m_writeId = id;
 	}
 #endif
-
-	AcquireSRWLockExclusive(&m_lock);
 }
 
 void Util::SlimRWLock::UnlockExclusive()
