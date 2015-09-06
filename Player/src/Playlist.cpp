@@ -31,6 +31,7 @@ namespace Player {
 
 	void Playlist::PlayNext()
 	{
+		std::lock_guard<std::recursive_mutex> lock(m_syncLock);
 		if (m_SongQueue.empty())
 		{
 			SelectMoreSongs();
@@ -70,6 +71,7 @@ namespace Player {
 
 	void Playlist::PlayPrevious(double goToStartThreshold /* = 5.0 */)
 	{
+		std::lock_guard<std::recursive_mutex> lock(m_syncLock);
 		if (m_player->GetCurrentTime() > goToStartThreshold || m_recentlyPlayed.size() <= 1)
 		{
 			// then just go to the start of the song
@@ -107,6 +109,7 @@ namespace Player {
 
 	void Playlist::Enqueue(const Model::Song& song, bool startPlayback)
 	{
+		std::lock_guard<std::recursive_mutex> lock(m_syncLock);
 		m_SongQueue.push_back(song);
 		if (startPlayback)
 		{
@@ -117,6 +120,7 @@ namespace Player {
 
 	void Playlist::Clear()
 	{
+		std::lock_guard<std::recursive_mutex> lock(m_syncLock);
 		m_SongQueue = {};
 		m_Shuffle = false;
 		m_wasRecentlyCleared = true;

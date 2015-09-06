@@ -121,9 +121,9 @@ if (thisDiskNum != otherDiskNum)
 		m_AvailableFormats.insert(songFile.format);
 	}
 
-	const SongFile* FindAvailable(const vector<SongFile>& files)
+	SongFile FindAvailable(const vector<SongFile>& files)
 	{
-		const SongFile* result = nullptr;
+		SongFile result;
 		auto findItr = find_if(begin(files), end(files), [](const SongFile& file)
 		{
 			return FileSystem::Storage::FileExists(file.filePath);
@@ -131,7 +131,7 @@ if (thisDiskNum != otherDiskNum)
 
 		if (findItr != end(files))
 		{
-			result = &*findItr;
+			result = *findItr;
 		}
 
 		return result;
@@ -144,7 +144,7 @@ if (thisDiskNum != otherDiskNum)
 		for (auto& files : m_Files)
 		{
 			auto file = FindAvailable(files.second);
-			hasStream = (file != nullptr);
+			hasStream = (file.filePath.length() > 0);
 			if (hasStream)
 			{
 				break;
@@ -156,7 +156,7 @@ if (thisDiskNum != otherDiskNum)
 
 	SongStream Song::GetStream(boost::optional<AudioFormat> specificFormat)
 	{
-		const SongFile* songFile = nullptr;
+		SongFile songFile;
 
 		if (specificFormat)
 		{
@@ -171,28 +171,28 @@ if (thisDiskNum != otherDiskNum)
 		}
 
 		// if we haven't got a song file yet the format that was specified is likely not available, just pick one for the caller
-		if (songFile == nullptr)
+		if (songFile.filePath.size() == 0)
 		{
 			songFile = DetermineBestFormat();
 		}
 
-		if (songFile == nullptr)
+		if (songFile.filePath.size() == 0)
 		{
 			throw NoSongFileAvailable() << errinfo_msg("There are no files available in any format for this song!");
 		}
 
-		auto file = FileSystem::Storage::LoadFileFromPath(songFile->filePath);
+		auto file = FileSystem::Storage::LoadFileFromPath(songFile.filePath);
 		auto fileReader = FileSystem::Storage::GetReader(file);
 
 		SongStream result;
 
-		result.songData = *songFile;
+		result.songData = songFile;
 		result.stream = static_pointer_cast<Util::Stream>(fileReader);
 
 		return result;
 	}
 
-	const SongFile* Song::DetermineBestFormat()
+	SongFile Song::DetermineBestFormat()
 	{
 		// try and select what I think the best format is likely to be
 		// assuming lossless is best, followed by AAC followed by mp3
@@ -210,10 +210,10 @@ if (thisDiskNum != otherDiskNum)
 			auto itr = find(begin(m_AvailableFormats), end(m_AvailableFormats), audioFormat);
 			if (itr != end(m_AvailableFormats))
 			{
-				auto& songFiles = m_Files[audioFormat];
+				auto songFiles = m_Files[audioFormat];
 				auto result = FindAvailable(songFiles);
 
-				if (result != nullptr)
+				if (result.filePath.length() != 0)
 				{
 					return result;
 				}

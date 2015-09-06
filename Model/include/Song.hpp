@@ -91,7 +91,7 @@ namespace Model
 		bool operator>=(const Song& other) const;
 		bool operator<=(const Song& other) const;
 	private:
-		const SongFile* DetermineBestFormat();
+		SongFile DetermineBestFormat();
 	};
 }
 }

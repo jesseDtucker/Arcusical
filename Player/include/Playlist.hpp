@@ -2,6 +2,7 @@
 #ifndef PLAYLIST_HPP
 #define PLAYLIST_HPP
 
+#include <future>
 #include <memory>
 #include <queue>
 
@@ -53,11 +54,13 @@ namespace Arcusical{
 			MusicProvider::MusicProvider* m_musicProvider = nullptr;
 			bool m_wasRecentlyCleared = false;
 			Util::Subscription m_songEndedSub = nullptr;
+			std::recursive_mutex m_syncLock;
 		};
 
 		template<typename T>
 		void Playlist::Enqueue(const T& collection, bool startPlayback)
 		{
+			std::lock_guard<std::recursive_mutex> lock(m_syncLock);
 			for (auto itr = crbegin(collection); itr != crend(collection); ++itr)
 			{
 				m_SongQueue.push_back(*itr);

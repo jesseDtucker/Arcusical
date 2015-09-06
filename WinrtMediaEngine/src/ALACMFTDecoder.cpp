@@ -326,7 +326,6 @@ HRESULT ALACMFTDecoder::GetInputAvailableType(
 	// CHECK_UNLOCKED;
 	CHECK_SHUTDOWN;
 
-	ARC_FAIL("TODO::JT");
 	return MF_E_NO_MORE_TYPES;
 }
 
