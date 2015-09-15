@@ -186,9 +186,16 @@ namespace Util
 	template<typename Input, typename Output>
 	void AsyncProcessor<Input, Output>::DropAllWork()
 	{
-		Stop();
+		auto wasRunning = m_isRunning.load();
+		if (wasRunning)
+		{
+			Stop();
+		}
 		m_inputBuffer.DropAll();
-		Start();
+		if (wasRunning)
+		{
+			Start();
+		}
 	}
 
 	template<typename Input, typename Output>

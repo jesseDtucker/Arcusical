@@ -43,7 +43,7 @@ ActivatableClass(ALACMFTDecoder);
 // See: https://msdn.microsoft.com/en-us/library/windows/desktop/dd317909(v=vs.85).aspx
 #define CHECK_UNLOCKED                                                                      \
 	if(m_attributes == nullptr)                                                             \
-	{                                                                                   \
+	{                                                                                       \
 		return MF_E_TRANSFORM_ASYNC_LOCKED;                                                 \
 	}                                                                                       \
 	UINT32 isUnlocked = 0;                                                                  \
@@ -61,6 +61,7 @@ ALACMFTDecoder::ALACMFTDecoder()
 	, m_inputByteCount(0)
 	, m_canRequestInput(false)
 {
+	OutputDebugStringA("New Song !!! axa\n");
 	StartEventLoop();
 	m_processor.Connect(&m_outputBuffer);
 	m_onResultsReadySub = m_outputBuffer.ItemAvailable += [this]()
@@ -75,6 +76,7 @@ ALACMFTDecoder::ALACMFTDecoder()
 
 ALACMFTDecoder::~ALACMFTDecoder()
 {
+	OutputDebugStringA("Deleting Decoder\n");
 	if (m_shutdownTask.valid())
 	{
 		m_shutdownTask.wait();
@@ -230,9 +232,9 @@ HRESULT ALACMFTDecoder::GetAttributes(IMFAttributes** pAttributes)
 {
 	HRESULT hr = S_OK;
 
-	OutputDebugStringA("----- Creating attributes...\n");
 	if (m_attributes == nullptr)
 	{
+		OutputDebugStringA("----- Creating attributes...\n");
 		hr = MFCreateAttributes(&m_attributes, 3);
 		ARC_ThrowIfFailed(hr);
 	}
@@ -260,7 +262,7 @@ HRESULT ALACMFTDecoder::GetInputStreamAttributes(
 	//CHECK_UNLOCKED;
 	CHECK_SHUTDOWN;
 
-	OutputDebugStringA("--------GetInputStreamAttributes...");
+	OutputDebugStringA("--------GetInputStreamAttributes...\n");
 
 	// This MFT does not support any attributes, so the method is not implemented.
 	return E_NOTIMPL;
@@ -278,7 +280,7 @@ HRESULT ALACMFTDecoder::GetOutputStreamAttributes(
 	CHECK_UNLOCKED;
 	CHECK_SHUTDOWN;
 
-	OutputDebugStringA("--------GetOutputStreamAttributes...");
+	OutputDebugStringA("--------GetOutputStreamAttributes...\n");
 
 	return E_NOTIMPL;
 }
@@ -600,29 +602,43 @@ HRESULT ALACMFTDecoder::ProcessMessage(
 
 	HRESULT hr = S_OK;
 
+	auto test = std::this_thread::get_id();
+	auto foo = std::to_string(test.hash()) + " : ";
+	OutputDebugStringA(foo.c_str());
+
 	switch (eMessage)
 	{
 	case MFT_MESSAGE_NOTIFY_START_OF_STREAM:
 		m_canRequestInput = true;
 		m_isDraining = false;
+		OutputDebugStringA("Start of stream\n");
 		RequestInput();
 		break;
 	case MFT_MESSAGE_NOTIFY_BEGIN_STREAMING:
 		// Do nothing, this is just a heads up for us
+		OutputDebugStringA("Notify Begin Streaming\n");
 		break;
 	case MFT_MESSAGE_COMMAND_DRAIN:
-		m_canRequestInput = false;
-		m_isDraining = true;
+		{
+			m_canRequestInput = false;
+			m_isDraining = true;
+			OutputDebugStringA("Command : Drain : ");
+			auto foo = std::to_string(m_numExpectedInputRequests) + ", " + std::to_string(m_numExpectedOutputRequests) + "\n";
+			OutputDebugStringA(foo.c_str());
+		}
 		break;
 	case MFT_MESSAGE_COMMAND_FLUSH:
 		m_canRequestInput = false;
 		FlushBuffers();
+		OutputDebugStringA("Command : Flush\n");
 		break;
 	case MFT_MESSAGE_NOTIFY_END_STREAMING:
 		// Don't do anything in this case
+		OutputDebugStringA("Notify end of streaming\n");
 		break;
 	case MFT_MESSAGE_NOTIFY_END_OF_STREAM:
 		m_canRequestInput = false;
+		OutputDebugStringA("This is the end of the stream\n");
 		break;
 	default:
 		ARC_FAIL("Unhanded message");
@@ -644,11 +660,15 @@ HRESULT ALACMFTDecoder::ProcessInput(
 	CHECK_UNLOCKED;
 	CHECK_SHUTDOWN;
 	CHECK_NULL(pSample);
+	auto test = std::this_thread::get_id();
+	auto foo = std::to_string(test.hash()) + "\n";
+	OutputDebugStringA("Process Input : ");
+	OutputDebugStringA(foo.c_str());
 
 	if (m_numExpectedInputRequests == 0)
 	{
-		ARC_FAIL("I don't think this should actually occur");
-		return E_UNEXPECTED;
+		//ARC_FAIL("I don't think this should actually occur");
+		// return E_UNEXPECTED;
 	}
 
 	--m_numExpectedInputRequests;
@@ -682,6 +702,12 @@ HRESULT ALACMFTDecoder::ProcessOutput(
 	MFT_OUTPUT_DATA_BUFFER  *pOutputSamples, // one per stream
 	DWORD                   *pdwStatus)
 {
+	auto test = std::this_thread::get_id();
+	auto foo = std::to_string(test.hash()) + "\n";
+	OutputDebugStringA("Process Output : ");
+	OutputDebugStringA(foo.c_str());
+
+	SYNC_LOCK;
 	CHECK_UNLOCKED;
 	CHECK_SHUTDOWN;
 	ARC_ASSERT(cOutputBufferCount > 0);
@@ -694,17 +720,29 @@ HRESULT ALACMFTDecoder::ProcessOutput(
 		return E_UNEXPECTED;
 	}
 
+	RequestInput();
 	--m_numExpectedOutputRequests;
 	++m_framesSent;
-	RequestInput();
+
+	OutputDebugStringA("Frames pending: ");
+	OutputDebugStringA(std::to_string(FramesPending()).c_str());
+	OutputDebugStringA("\n");
 	if (m_isDraining && FramesPending() == 0)
 	{
 		NotifyDrainComplete();
 	}
 
-	auto result = m_outputBuffer.GetNext();
-	ARC_ASSERT(result);
-	pOutputSamples->pSample = result->Detach();
+	if (m_outputBuffer.ResultsAvailable())
+	{
+		auto result = m_outputBuffer.GetNext();
+		ARC_ASSERT(result);
+		pOutputSamples->pSample = result->Detach();
+	}
+	else
+	{
+		OutputDebugStringA("No results available\n");
+		pOutputSamples->dwStatus = MFT_OUTPUT_DATA_BUFFER_NO_SAMPLE;
+	}
 	return S_OK;
 }
 
@@ -807,9 +845,16 @@ STDMETHODIMP ALACMFTDecoder::EndGetEvent(IMFAsyncResult *pResult, IMFMediaEvent 
 	hr = IUnknownEvent.As(&event);
 	ARC_ThrowIfFailed(hr);
 
+	MediaEventType type;
+	event->GetType(&type);
+
 	*ppEvent = event.Detach();
 
-	OutputDebugStringA("End get event!\n");
+	auto test = std::this_thread::get_id();
+	auto foo = " : " + std::to_string(test.hash()) + "\n";
+	OutputDebugStringA("End get event! : ");
+	OutputDebugStringA(std::to_string(type).c_str());
+	OutputDebugStringA(foo.c_str());
 
 	return S_OK;
 }
@@ -866,6 +911,14 @@ STDMETHODIMP ALACMFTDecoder::QueueEvent(MediaEventType met, REFGUID guidExtended
 {
 	SYNC_LOCK;
 	CHECK_SHUTDOWN;
+
+	WCHAR extended[100];
+	StringFromGUID2(guidExtendedType, extended, 100);
+
+	auto foo = " : " + std::to_string(met) + "\n";
+	OutputDebugStringA("Queue Event : ");
+	OutputDebugString(extended);
+	OutputDebugStringA(foo.c_str());
 
 	ComPtr<IMFMediaEvent> event;
 	auto hr = MFCreateMediaEvent(met, guidExtendedType, hrStatus, pvValue, &event);
@@ -937,6 +990,7 @@ void ALACMFTDecoder::RequestInput()
 
 	++m_numExpectedInputRequests;
 	m_eventQueue.Append(inputEvent);
+	OutputDebugStringA("Requesting Input\n");
 }
 
 void ALACMFTDecoder::NotifyOutput()
@@ -947,6 +1001,7 @@ void ALACMFTDecoder::NotifyOutput()
 
 	++m_numExpectedOutputRequests;
 	m_eventQueue.Append(outputEvent);
+	OutputDebugStringA("Notify Output\n");
 }
 
 void ALACMFTDecoder::NotifyDrainComplete()
@@ -956,6 +1011,7 @@ void ALACMFTDecoder::NotifyDrainComplete()
 	ARC_ThrowIfFailed(hr);
 
 	m_eventQueue.Append(drainEvent);
+	OutputDebugStringA("Drain Complete\n");
 }
 
 void ALACMFTDecoder::StartEventLoop()
@@ -966,18 +1022,25 @@ void ALACMFTDecoder::StartEventLoop()
 		boost::optional<std::pair<IMFAsyncCallback*, IUnknown*>> callback = boost::none;
 		while (!m_isShuttingDown)
 		{
-			if (!event)
-			{
-				// blocks and waits for the next event
-				event = m_eventQueue.GetNext();
-			}
+			// TODO::JT there is a race condition in this code. What can happen is that
+			// an event is pulled from the queue. Then a flush occurs. Then the event is
+			// passed to the listener. If this happens we get an expected call, typically
+			// to ProcessOutput or ProcessInput.
 			if (!callback)
 			{
 				// blocks and waits for a callback
 				callback = m_eventListenerQueue.GetNext();
+			}if (!event)
+			{
+				// blocks and waits for the next event
+				event = m_eventQueue.GetNext();
 			}
 			if (event && callback)
 			{
+				MediaEventType type;
+				(*event)->GetType(&type);
+				auto foo = "Beginning event loop with : " + std::to_string(type) + "\n";
+				OutputDebugStringA(foo.c_str());
 				ComPtr<IMFAsyncResult> asyncResult = nullptr;
 				HRESULT hr = MFCreateAsyncResult(event->Get(), callback->first, callback->second, &asyncResult);
 				ARC_ThrowIfFailed(hr);
@@ -988,20 +1051,104 @@ void ALACMFTDecoder::StartEventLoop()
 				event = boost::none;
 				callback = boost::none;
 			}
+			if (event)
+			{
+				ARC_FAIL("I don't think this can actually run...");
+				m_eventQueue.Append(*event);
+				event = boost::none;
+			}
 		}
 	});
 }
 
+// Can't use the built in ConvertToContiguousBuffer of IMFSample because the alac code
+// over reads the input buffer by 1 byte in particular cases. As such we need to very slightly
+// over allocate the read buffer to avoid a segfault.
+ComPtr<IMFMediaBuffer> GetContigousMediaBuffer(const ComPtr<IMFSample>& pSample)
+{
+	DWORD bufCount;
+	auto hr = pSample->GetBufferCount(&bufCount);
+	ARC_ThrowIfFailed(hr);
+
+	ComPtr<IMFMediaBuffer> fullBuffer = nullptr;
+
+	if (bufCount == 1)
+	{
+		// Never seem to need over allocation here, just going to return the buffer
+		hr = pSample->GetBufferByIndex(0, &fullBuffer);
+		ARC_ThrowIfFailed(hr);
+		OutputDebugStringA("using 1 buf\n");
+	}
+	else
+	{
+		OutputDebugStringA("using 2 buf\n");
+		DWORD totalLength = 0;
+		for (DWORD index = 0; index < bufCount; ++index)
+		{
+			ComPtr<IMFMediaBuffer> buffer = nullptr;
+			hr = pSample->GetBufferByIndex(index, &buffer);
+			ARC_ThrowIfFailed(hr);
+
+			DWORD length = 0;
+			hr = buffer->GetCurrentLength(&length);
+			ARC_ThrowIfFailed(hr);
+
+			totalLength += length;
+		}
+
+		totalLength += 3;
+
+		std::vector<unsigned char> contigousBuffer;
+		contigousBuffer.resize(totalLength);
+		BYTE* next = contigousBuffer.data();
+
+		for (DWORD index = 0; index < bufCount; ++index)
+		{
+			ComPtr<IMFMediaBuffer> buffer = nullptr;
+			hr = pSample->GetBufferByIndex(index, &buffer);
+			ARC_ThrowIfFailed(hr);
+
+			BYTE* rawBuf = nullptr;
+			DWORD bufLength = 0;
+			hr = buffer->Lock(&rawBuf, nullptr, &bufLength);
+			ARC_ThrowIfFailed(hr);
+
+			std::copy(rawBuf, rawBuf + bufLength, next);
+			next += bufLength;
+
+			hr = buffer->Unlock();
+			ARC_ThrowIfFailed(hr);
+		}
+
+		hr = MFCreateMemoryBuffer(totalLength, &fullBuffer);
+		ARC_ThrowIfFailed(hr);
+		hr = fullBuffer->SetCurrentLength(totalLength);
+
+		BYTE* rawBuf = nullptr;
+		DWORD bufLength = 0;
+		hr = fullBuffer->Lock(&rawBuf, nullptr, &bufLength);
+		ARC_ThrowIfFailed(hr);
+
+		std::copy(contigousBuffer.data(), contigousBuffer.data() + contigousBuffer.size(), rawBuf);
+
+		hr = fullBuffer->Unlock();
+		ARC_ThrowIfFailed(hr);
+	}
+
+	return fullBuffer;
+}
+
 ComPtr<IMFSample> ALACMFTDecoder::DecodeBuffer(const ComPtr<IMFSample>& pSample)
 {
-	ComPtr<IMFMediaBuffer> inputMediaBuffer = nullptr;
-	auto hr = pSample->ConvertToContiguousBuffer(&inputMediaBuffer);
-	ARC_ThrowIfFailed(hr);
+	ComPtr<IMFMediaBuffer> inputMediaBuffer = GetContigousMediaBuffer(pSample);
 
 	BYTE* inBuffer = nullptr;
 	DWORD inputBufferLength = 0;
 	BYTE* outBuffer = nullptr;
 	DWORD outputBufferLength = 0;
+
+	auto hr = inputMediaBuffer->GetCurrentLength(&inputBufferLength);
+	ARC_ThrowIfFailed(hr);
 
 	auto outBufferSize = GetOutBufferSize();
 	ComPtr<IMFMediaBuffer> outputMediaBuffer = nullptr;
@@ -1031,7 +1178,7 @@ ComPtr<IMFSample> ALACMFTDecoder::DecodeBuffer(const ComPtr<IMFSample>& pSample)
 			ARC_ASSERT(SUCCEEDED(hr));
 		});
 		// zero out the buffer to make sure there are no 'blips' in the buffer
-		std::fill_n(outBuffer, outputBufferLength, 0);
+		std::fill_n(outBuffer, outputBufferLength, 0xBE);
 		ARC_ASSERT(outputBufferLength == outputBufferLength); // one is what we told it to be, the other is what it said it is
 
 		uint32_t numSamplesOut = 0;
@@ -1053,7 +1200,9 @@ ComPtr<IMFSample> ALACMFTDecoder::DecodeBuffer(const ComPtr<IMFSample>& pSample)
 
 int ALACMFTDecoder::FramesPending()
 {
-	return m_framesReceived - m_framesSent;
+	auto res = m_framesReceived - m_framesSent;
+	ARC_ASSERT(res >= 0);
+	return res;
 }
 
 bool ALACMFTDecoder::ShouldRequestMoreInput()
@@ -1063,7 +1212,8 @@ bool ALACMFTDecoder::ShouldRequestMoreInput()
 
 void ALACMFTDecoder::FlushBuffers()
 {
-	m_processor.Stop();
+	m_processor.DropAllWork();
+	
 	m_eventQueue.RemoveIf([](const Microsoft::WRL::ComPtr<IMFMediaEvent>& event)
 	{
 		MediaEventType type;

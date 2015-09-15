@@ -37,15 +37,15 @@ void Set ## externalName(dataType value)							\
 	if(internalName != value)										\
 	{																\
 		internalName = value;										\
-		On ## externalName ## Changed(internalName);				\
+		/*On ## externalName ## Changed(internalName);*/			\
 	}																\
 																	\
 }																	\
 dataType& GetMutable ## externalName()								\
 {																	\
 	return internalName;											\
-}																	\
-Util::MulticastDelegate<void(dataType&)> On ## externalName ## Changed; \
+}																	
+//Util::MulticastDelegate<void(dataType&)> On ## externalName ## Changed; \
 
 #define PROP_SET_AND_GET(dataType, externalName) PROP_SET_AND_GET_EX(dataType, externalName, m_ ## externalName, const)
 

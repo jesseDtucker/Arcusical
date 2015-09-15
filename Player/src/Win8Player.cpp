@@ -13,7 +13,7 @@ using namespace Microsoft::WRL;
 using namespace concurrency;
 
 const std::string Arcusical::Player::IPlayer::ServiceName("Win8Player");
-const double DEFAULT_VOLUME = 0.2;
+const double DEFAULT_VOLUME = 0.5;
 
 namespace Arcusical
 {
@@ -118,6 +118,8 @@ namespace Player
 	{
 		if (!m_currentSong || m_currentSong != song)
 		{
+			OutputDebugString(song.GetTitle().c_str());
+			OutputDebugStringA(" <- New song axb\n");
 			m_currentSong = song;
 			m_isCurrentSongSetForPlay = false;
 			Stop();
@@ -175,8 +177,15 @@ namespace Player
 
 	HRESULT MediaEngineNotify::EventNotify(_In_ DWORD event, _In_ DWORD_PTR param1, _In_ DWORD param2)
 	{
+		static std::mutex hack;
+		OutputDebugStringA("Media Engine Notify\n");
+		// TODO:JT create some sort of processor for this, a new async every time is just asking for trouble
 		std::async([this, event, param1, param2]()
 		{
+			// HAX
+			std::this_thread::sleep_for(std::chrono::milliseconds(100));
+			std::lock_guard<decltype(hack)> lock(hack);
+			OutputDebugStringA("Media Engine Notify Async\n");
 			if (m_player != nullptr)
 			{
 				switch (event)
