@@ -6,11 +6,17 @@
 #include <functional>
 #include <vector>
 
-#include "LocalMusicCache.hpp"
-#include "Song.hpp"
-
 namespace Arcusical
 {
+	namespace LocalMusicStore
+	{
+		class LocalMusicCache;
+	};
+	namespace Model
+	{
+		class Song;
+	};
+
 	namespace MusicProvider
 	{
 		//////////////////////////////////////////////////////////////////////////

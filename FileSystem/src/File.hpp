@@ -25,7 +25,6 @@ namespace FileSystem
 		virtual void WriteToFile(std::vector<unsigned char>& data) override;
 		virtual void ReadFromFile(std::vector<unsigned char>& buffer, unsigned int length = 0, unsigned long long startPosition = 0) const override;
 
-#ifdef __cplusplus_winrt
 		// This should not be instantiated by anything outside of the FileSystem project!
 		// unfortunately it cannot be private due to the need to use make_shared. I'll find
 		// a better workaround later.
@@ -34,9 +33,6 @@ namespace FileSystem
 		virtual Windows::Storage::StorageFile^ GetRawHandle() const override;
 	private:
 		Windows::Storage::StorageFile^ m_file;
-#else
-#error UNSUPPORTED PLATFORM
-#endif
 	};
 }
 

@@ -76,8 +76,8 @@ static const unordered_map<ContainerType, Container> MODEL_CONTAINER_TO_CACHE =
 
 LocalMusicCache::LocalMusicCache()
 {
-	async([this](){this->LoadSongs(); });
-	async([this](){this->LoadAlbums(); });
+	m_songLoadFuture = async(std::launch::async, [this](){this->LoadSongs(); });
+	m_albumLoadFuture = async(std::launch::async, [this](){this->LoadAlbums(); });
 }
 
 SongCollectionLockedPtr LocalMusicCache::GetLocalSongs() const

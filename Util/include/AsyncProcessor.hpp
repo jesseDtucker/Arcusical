@@ -167,7 +167,7 @@ namespace Util
 		m_inputBuffer.Reset();
 		m_outputBuffer->Reset();
 		m_isRunning = true;
-		m_workFuture = std::async(m_processorFunction);
+		m_workFuture = std::async(std::launch::async, m_processorFunction);
 	}
 
 	template<typename Input, typename Output>

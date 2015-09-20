@@ -1,33 +1,29 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tga;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
     <Filter Include="src">
-      <UniqueIdentifier>{03f111cf-4cc0-446b-ba87-aae29ffdc8f8}</UniqueIdentifier>
+      <UniqueIdentifier>{2bb51305-d067-47e0-936c-2ddf22e5b41b}</UniqueIdentifier>
     </Filter>
     <Filter Include="include">
-      <UniqueIdentifier>{86c7a715-4f63-4958-af35-cfd95c4aa276}</UniqueIdentifier>
+      <UniqueIdentifier>{2762a9d2-01db-469c-a076-f88b9145627e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\IPlayer.hpp">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="src\Win8Player.hpp">
-      <Filter>src</Filter>
-    </ClInclude>
     <ClInclude Include="include\Playlist.hpp">
       <Filter>include</Filter>
     </ClInclude>
+    <ClInclude Include="src\Win8Player.hpp">
+      <Filter>src</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Win8Player.cpp">
+    <ClCompile Include="src\Playlist.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\Playlist.cpp">
+    <ClCompile Include="src\Win8Player.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>

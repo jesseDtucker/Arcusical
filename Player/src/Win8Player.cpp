@@ -41,7 +41,7 @@ namespace Player
 		result = MFCreateAttributes(&m_attributes, 1);
 		ARC_ThrowIfFailed(result);
 
-		result = m_attributes->SetUINT32(MF_MEDIA_ENGINE_AUDIO_CATEGORY, AudioCategory_BackgroundCapableMedia);
+		result = m_attributes->SetUINT32(MF_MEDIA_ENGINE_AUDIO_CATEGORY, AudioCategory_Media);
 		ARC_ThrowIfFailed(result);
 
 		result = m_attributes->SetUnknown(MF_MEDIA_ENGINE_CALLBACK, &m_mediaEngineNotify);

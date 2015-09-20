@@ -1,18 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
-    <ProjectConfiguration Include="DebugWithCodeAnalysis|ARM">
-      <Configuration>DebugWithCodeAnalysis</Configuration>
-      <Platform>ARM</Platform>
-    </ProjectConfiguration>
-    <ProjectConfiguration Include="DebugWithCodeAnalysis|Win32">
-      <Configuration>DebugWithCodeAnalysis</Configuration>
-      <Platform>Win32</Platform>
-    </ProjectConfiguration>
-    <ProjectConfiguration Include="DebugWithCodeAnalysis|x64">
-      <Configuration>DebugWithCodeAnalysis</Configuration>
-      <Platform>x64</Platform>
-    </ProjectConfiguration>
     <ProjectConfiguration Include="Debug|ARM">
       <Configuration>Debug</Configuration>
       <Platform>ARM</Platform>
@@ -38,165 +26,130 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\LocalMusicCache.hpp" />
+    <ClInclude Include="proto\impl\CachedAlbum.pb.h" />
+    <ClInclude Include="proto\impl\CachedAlbumList.pb.h" />
+    <ClInclude Include="proto\impl\CachedSong.pb.h" />
+    <ClInclude Include="proto\impl\CachedSongList.pb.h" />
+    <ClInclude Include="proto\impl\GUID.pb.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="proto\impl\CachedAlbum.pb.cc" />
+    <ClCompile Include="proto\impl\CachedAlbumList.pb.cc" />
+    <ClCompile Include="proto\impl\CachedSong.pb.cc" />
+    <ClCompile Include="proto\impl\CachedSongList.pb.cc" />
+    <ClCompile Include="proto\impl\GUID.pb.cc" />
+    <ClCompile Include="src\LocalMusicCache.cpp" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{2d3c7da8-e61e-430d-a17b-0e56612a6042}</ProjectGuid>
-    <Keyword>Win32Proj</Keyword>
+    <ProjectGuid>{5aee04ab-7e66-4440-989a-5a7b794aee44}</ProjectGuid>
+    <Keyword>StaticLibrary</Keyword>
     <ProjectName>LocalMusicStore</ProjectName>
     <RootNamespace>LocalMusicStore</RootNamespace>
     <DefaultLanguage>en-US</DefaultLanguage>
-    <MinimumVisualStudioVersion>12.0</MinimumVisualStudioVersion>
+    <MinimumVisualStudioVersion>14.0</MinimumVisualStudioVersion>
     <AppContainerApplication>true</AppContainerApplication>
     <ApplicationType>Windows Store</ApplicationType>
-    <ApplicationTypeRevision>8.1</ApplicationTypeRevision>
+    <WindowsTargetPlatformVersion>10.0.10240.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformMinVersion>10.0.10240.0</WindowsTargetPlatformMinVersion>
+    <ApplicationTypeRevision>10.0</ApplicationTypeRevision>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v120</PlatformToolset>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DebugWithCodeAnalysis|Win32'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
-    <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v120</PlatformToolset>
+    <PlatformToolset>v140</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v120</PlatformToolset>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DebugWithCodeAnalysis|ARM'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
-    <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v120</PlatformToolset>
+    <PlatformToolset>v140</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v120</PlatformToolset>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DebugWithCodeAnalysis|x64'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
-    <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v120</PlatformToolset>
+    <PlatformToolset>v140</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <WholeProgramOptimization>true</WholeProgramOptimization>
-    <PlatformToolset>v120</PlatformToolset>
+    <PlatformToolset>v140</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <WholeProgramOptimization>true</WholeProgramOptimization>
-    <PlatformToolset>v120</PlatformToolset>
+    <PlatformToolset>v140</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <WholeProgramOptimization>true</WholeProgramOptimization>
-    <PlatformToolset>v120</PlatformToolset>
+    <PlatformToolset>v140</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-  </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='DebugWithCodeAnalysis|Win32'" Label="PropertySheets">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\Common.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\Common.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-  </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='DebugWithCodeAnalysis|ARM'" Label="PropertySheets">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\Common.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\Common.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-  </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='DebugWithCodeAnalysis|x64'" Label="PropertySheets">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\Common.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\Common.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <GenerateManifest>false</GenerateManifest>
-    <IncludePath>$(ProjectDir)include;$(ProjectDir)src;$(SolutionDir)Model\include;$(SolutionDir)protobuf/src/;$(ProjectDir)protoc\impl;$(SolutionDir)util\include;$(SolutionDir)FileSystem\include;$(SolutionDir)boost\;$(IncludePath)</IncludePath>
-    <RunCodeAnalysis>false</RunCodeAnalysis>
-    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\$(MSBuildProjectName)\</OutDir>
-    <IntDir>$(ProjectDir)$(Platform)\$(Configuration)\$(MSBuildProjectName)\</IntDir>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DebugWithCodeAnalysis|Win32'">
-    <GenerateManifest>false</GenerateManifest>
-    <IncludePath>$(ProjectDir)include;$(ProjectDir)src;$(SolutionDir)Model\include;$(SolutionDir)protobuf/src/;$(ProjectDir)protoc\impl;$(SolutionDir)util\include;$(SolutionDir)FileSystem\include;$(SolutionDir)boost\;$(IncludePath)</IncludePath>
-    <RunCodeAnalysis>false</RunCodeAnalysis>
-    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\$(MSBuildProjectName)\</OutDir>
-    <IntDir>$(ProjectDir)$(Platform)\$(Configuration)\$(MSBuildProjectName)\</IntDir>
+    <IncludePath>$(ProjectDir)proto\impl;$(SolutionDir)Model\include;$(SolutionDir)FileSystem\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <GenerateManifest>false</GenerateManifest>
-    <IncludePath>$(ProjectDir)include;$(ProjectDir)src;$(SolutionDir)Model\include;$(SolutionDir)protobuf/src/;$(ProjectDir)protoc\impl;$(SolutionDir)util\include;$(SolutionDir)FileSystem\include;$(SolutionDir)boost\;$(IncludePath)</IncludePath>
-    <RunCodeAnalysis>false</RunCodeAnalysis>
-    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\$(MSBuildProjectName)\</OutDir>
-    <IntDir>$(ProjectDir)$(Platform)\$(Configuration)\$(MSBuildProjectName)\</IntDir>
+    <IncludePath>$(ProjectDir)proto\impl;$(SolutionDir)Model\include;$(SolutionDir)FileSystem\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
     <GenerateManifest>false</GenerateManifest>
-    <IncludePath>$(ProjectDir)include;$(ProjectDir)src;$(SolutionDir)Model\include;$(SolutionDir)protobuf/src/;$(ProjectDir)protoc\impl;$(SolutionDir)util\include;$(SolutionDir)FileSystem\include;$(SolutionDir)boost\;$(IncludePath)</IncludePath>
-    <RunCodeAnalysis>false</RunCodeAnalysis>
-    <IntDir>$(ProjectDir)$(Platform)\$(Configuration)\$(MSBuildProjectName)\</IntDir>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DebugWithCodeAnalysis|ARM'">
-    <GenerateManifest>false</GenerateManifest>
-    <IncludePath>$(ProjectDir)include;$(ProjectDir)src;$(SolutionDir)Model\include;$(SolutionDir)protobuf/src/;$(ProjectDir)protoc\impl;$(SolutionDir)util\include;$(SolutionDir)FileSystem\include;$(SolutionDir)boost\;$(IncludePath)</IncludePath>
-    <RunCodeAnalysis>false</RunCodeAnalysis>
-    <IntDir>$(ProjectDir)$(Platform)\$(Configuration)\$(MSBuildProjectName)\</IntDir>
+    <IncludePath>$(ProjectDir)proto\impl;$(SolutionDir)Model\include;$(SolutionDir)FileSystem\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
     <GenerateManifest>false</GenerateManifest>
-    <IncludePath>$(ProjectDir)include;$(ProjectDir)src;$(SolutionDir)Model\include;$(SolutionDir)protobuf/src/;$(ProjectDir)protoc\impl;$(SolutionDir)util\include;$(SolutionDir)FileSystem\include;$(SolutionDir)boost\;$(IncludePath)</IncludePath>
-    <RunCodeAnalysis>false</RunCodeAnalysis>
-    <IntDir>$(ProjectDir)$(Platform)\$(Configuration)\$(MSBuildProjectName)\</IntDir>
+    <IncludePath>$(ProjectDir)proto\impl;$(SolutionDir)Model\include;$(SolutionDir)FileSystem\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <GenerateManifest>false</GenerateManifest>
-    <IncludePath>$(ProjectDir)include;$(ProjectDir)src;$(SolutionDir)Model\include;$(SolutionDir)protobuf/src/;$(ProjectDir)protoc\impl;$(SolutionDir)util\include;$(SolutionDir)FileSystem\include;$(SolutionDir)boost\;$(IncludePath)</IncludePath>
-    <RunCodeAnalysis>false</RunCodeAnalysis>
-    <IntDir>$(ProjectDir)$(Platform)\$(Configuration)\$(MSBuildProjectName)\</IntDir>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DebugWithCodeAnalysis|x64'">
-    <GenerateManifest>false</GenerateManifest>
-    <IncludePath>$(ProjectDir)include;$(ProjectDir)src;$(SolutionDir)Model\include;$(SolutionDir)protobuf/src/;$(ProjectDir)protoc\impl;$(SolutionDir)util\include;$(SolutionDir)FileSystem\include;$(SolutionDir)boost\;$(IncludePath)</IncludePath>
-    <RunCodeAnalysis>false</RunCodeAnalysis>
-    <IntDir>$(ProjectDir)$(Platform)\$(Configuration)\$(MSBuildProjectName)\</IntDir>
+    <IncludePath>$(ProjectDir)proto\impl;$(SolutionDir)Model\include;$(SolutionDir)FileSystem\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <GenerateManifest>false</GenerateManifest>
-    <IncludePath>$(ProjectDir)include;$(ProjectDir)src;$(SolutionDir)Model\include;$(SolutionDir)protobuf/src/;$(ProjectDir)protoc\impl;$(SolutionDir)util\include;$(SolutionDir)FileSystem\include;$(SolutionDir)boost\;$(IncludePath)</IncludePath>
-    <RunCodeAnalysis>false</RunCodeAnalysis>
-    <IntDir>$(ProjectDir)$(Platform)\$(Configuration)\$(MSBuildProjectName)\</IntDir>
+    <IncludePath>$(ProjectDir)proto\impl;$(SolutionDir)Model\include;$(SolutionDir)FileSystem\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <CompileAsWinRT>true</CompileAsWinRT>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <CompileAsWinRT>false</CompileAsWinRT>
       <SDLCheck>true</SDLCheck>
-      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalOptions>-D_SCL_SECURE_NO_WARNINGS /d2Zi+ %(AdditionalOptions)</AdditionalOptions>
-      <EnablePREfast>false</EnablePREfast>
-      <PreprocessorDefinitions>_SCL_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <WarningLevel>Level2</WarningLevel>
-      <TreatWarningAsError>true</TreatWarningAsError>
-      <BrowseInformation>true</BrowseInformation>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -204,53 +157,16 @@
       <GenerateWindowsMetadata>false</GenerateWindowsMetadata>
     </Link>
     <PreBuildEvent>
-      <Command>$(ProjectDir)protoc/buildProto.bat</Command>
+      <Command>cd $(ProjectDir)proto
+ruby buildProto.rb</Command>
     </PreBuildEvent>
-    <Lib>
-      <AdditionalOptions>/ignore:4264 %(AdditionalOptions)</AdditionalOptions>
-    </Lib>
-    <Bscmake>
-      <PreserveSbr>true</PreserveSbr>
-    </Bscmake>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DebugWithCodeAnalysis|Win32'">
-    <ClCompile>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <CompileAsWinRT>true</CompileAsWinRT>
-      <SDLCheck>true</SDLCheck>
-      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalOptions>-D_SCL_SECURE_NO_WARNINGS /d2Zi+ %(AdditionalOptions)</AdditionalOptions>
-      <EnablePREfast>false</EnablePREfast>
-      <PreprocessorDefinitions>_SCL_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <WarningLevel>Level2</WarningLevel>
-      <TreatWarningAsError>true</TreatWarningAsError>
-      <BrowseInformation>true</BrowseInformation>
-    </ClCompile>
-    <Link>
-      <SubSystem>Console</SubSystem>
-      <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
-      <GenerateWindowsMetadata>false</GenerateWindowsMetadata>
-    </Link>
-    <PreBuildEvent>
-      <Command>$(ProjectDir)protoc/buildProto.bat</Command>
-    </PreBuildEvent>
-    <Lib>
-      <AdditionalOptions>/ignore:4264 %(AdditionalOptions)</AdditionalOptions>
-    </Lib>
-    <Bscmake>
-      <PreserveSbr>true</PreserveSbr>
-    </Bscmake>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <CompileAsWinRT>true</CompileAsWinRT>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <CompileAsWinRT>false</CompileAsWinRT>
       <SDLCheck>true</SDLCheck>
-      <EnablePREfast>false</EnablePREfast>
-      <PreprocessorDefinitions>_SCL_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <WarningLevel>Level2</WarningLevel>
-      <TreatWarningAsError>true</TreatWarningAsError>
-      <AdditionalOptions>-D_SCL_SECURE_NO_WARNINGS /d2Zi+ %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -258,22 +174,16 @@
       <GenerateWindowsMetadata>false</GenerateWindowsMetadata>
     </Link>
     <PreBuildEvent>
-      <Command>$(ProjectDir)protoc/buildProto.bat</Command>
+      <Command>cd $(ProjectDir)proto
+ruby buildProto.rb</Command>
     </PreBuildEvent>
-    <Lib>
-      <AdditionalOptions>/ignore:4264 %(AdditionalOptions)</AdditionalOptions>
-    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|arm'">
     <ClCompile>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <CompileAsWinRT>true</CompileAsWinRT>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <CompileAsWinRT>false</CompileAsWinRT>
       <SDLCheck>true</SDLCheck>
-      <EnablePREfast>false</EnablePREfast>
-      <PreprocessorDefinitions>_SCL_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <WarningLevel>Level2</WarningLevel>
-      <TreatWarningAsError>true</TreatWarningAsError>
-      <AdditionalOptions>-D_SCL_SECURE_NO_WARNINGS /d2Zi+ %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -281,45 +191,16 @@
       <GenerateWindowsMetadata>false</GenerateWindowsMetadata>
     </Link>
     <PreBuildEvent>
-      <Command>$(ProjectDir)protoc/buildProto.bat</Command>
+      <Command>cd $(ProjectDir)proto
+ruby buildProto.rb</Command>
     </PreBuildEvent>
-    <Lib>
-      <AdditionalOptions>/ignore:4264 %(AdditionalOptions)</AdditionalOptions>
-    </Lib>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DebugWithCodeAnalysis|arm'">
-    <ClCompile>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <CompileAsWinRT>true</CompileAsWinRT>
-      <SDLCheck>true</SDLCheck>
-      <EnablePREfast>false</EnablePREfast>
-      <PreprocessorDefinitions>_SCL_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <WarningLevel>Level2</WarningLevel>
-      <TreatWarningAsError>true</TreatWarningAsError>
-      <AdditionalOptions>-D_SCL_SECURE_NO_WARNINGS /d2Zi+ %(AdditionalOptions)</AdditionalOptions>
-    </ClCompile>
-    <Link>
-      <SubSystem>Console</SubSystem>
-      <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
-      <GenerateWindowsMetadata>false</GenerateWindowsMetadata>
-    </Link>
-    <PreBuildEvent>
-      <Command>$(ProjectDir)protoc/buildProto.bat</Command>
-    </PreBuildEvent>
-    <Lib>
-      <AdditionalOptions>/ignore:4264 %(AdditionalOptions)</AdditionalOptions>
-    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|arm'">
     <ClCompile>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <CompileAsWinRT>true</CompileAsWinRT>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <CompileAsWinRT>false</CompileAsWinRT>
       <SDLCheck>true</SDLCheck>
-      <EnablePREfast>false</EnablePREfast>
-      <PreprocessorDefinitions>_SCL_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <WarningLevel>Level2</WarningLevel>
-      <TreatWarningAsError>true</TreatWarningAsError>
-      <AdditionalOptions>-D_SCL_SECURE_NO_WARNINGS /d2Zi+ %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -327,22 +208,15 @@
       <GenerateWindowsMetadata>false</GenerateWindowsMetadata>
     </Link>
     <PreBuildEvent>
-      <Command>$(ProjectDir)protoc/buildProto.bat</Command>
+      <Command>cd $(ProjectDir)proto
+ruby buildProto.rb</Command>
     </PreBuildEvent>
-    <Lib>
-      <AdditionalOptions>/ignore:4264 %(AdditionalOptions)</AdditionalOptions>
-    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <CompileAsWinRT>true</CompileAsWinRT>
       <SDLCheck>true</SDLCheck>
-      <EnablePREfast>false</EnablePREfast>
-      <PreprocessorDefinitions>_SCL_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <WarningLevel>Level2</WarningLevel>
-      <TreatWarningAsError>true</TreatWarningAsError>
-      <AdditionalOptions>-D_SCL_SECURE_NO_WARNINGS /d2Zi+ %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -350,45 +224,15 @@
       <GenerateWindowsMetadata>false</GenerateWindowsMetadata>
     </Link>
     <PreBuildEvent>
-      <Command>$(ProjectDir)protoc/buildProto.bat</Command>
+      <Command>cd $(ProjectDir)proto
+ruby buildProto.rb</Command>
     </PreBuildEvent>
-    <Lib>
-      <AdditionalOptions>/ignore:4264 %(AdditionalOptions)</AdditionalOptions>
-    </Lib>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DebugWithCodeAnalysis|x64'">
-    <ClCompile>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <CompileAsWinRT>true</CompileAsWinRT>
-      <SDLCheck>true</SDLCheck>
-      <EnablePREfast>false</EnablePREfast>
-      <PreprocessorDefinitions>_SCL_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <WarningLevel>Level2</WarningLevel>
-      <TreatWarningAsError>true</TreatWarningAsError>
-      <AdditionalOptions>-D_SCL_SECURE_NO_WARNINGS /d2Zi+ %(AdditionalOptions)</AdditionalOptions>
-    </ClCompile>
-    <Link>
-      <SubSystem>Console</SubSystem>
-      <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
-      <GenerateWindowsMetadata>false</GenerateWindowsMetadata>
-    </Link>
-    <PreBuildEvent>
-      <Command>$(ProjectDir)protoc/buildProto.bat</Command>
-    </PreBuildEvent>
-    <Lib>
-      <AdditionalOptions>/ignore:4264 %(AdditionalOptions)</AdditionalOptions>
-    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <CompileAsWinRT>true</CompileAsWinRT>
       <SDLCheck>true</SDLCheck>
-      <EnablePREfast>false</EnablePREfast>
-      <PreprocessorDefinitions>_SCL_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <WarningLevel>Level2</WarningLevel>
-      <TreatWarningAsError>true</TreatWarningAsError>
-      <AdditionalOptions>-D_SCL_SECURE_NO_WARNINGS /d2Zi+ %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -396,28 +240,10 @@
       <GenerateWindowsMetadata>false</GenerateWindowsMetadata>
     </Link>
     <PreBuildEvent>
-      <Command>$(ProjectDir)protoc/buildProto.bat</Command>
+      <Command>cd $(ProjectDir)proto
+ruby buildProto.rb</Command>
     </PreBuildEvent>
-    <Lib>
-      <AdditionalOptions>/ignore:4264 %(AdditionalOptions)</AdditionalOptions>
-    </Lib>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClInclude Include="protoc\impl\CachedAlbum.pb.h" />
-    <ClInclude Include="protoc\impl\CachedAlbumList.pb.h" />
-    <ClInclude Include="protoc\impl\CachedSong.pb.h" />
-    <ClInclude Include="protoc\impl\CachedSongList.pb.h" />
-    <ClInclude Include="protoc\impl\GUID.pb.h" />
-    <ClInclude Include="include\LocalMusicCache.hpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="protoc\impl\CachedAlbum.pb.cc" />
-    <ClCompile Include="protoc\impl\CachedAlbumList.pb.cc" />
-    <ClCompile Include="protoc\impl\CachedSong.pb.cc" />
-    <ClCompile Include="protoc\impl\CachedSongList.pb.cc" />
-    <ClCompile Include="protoc\impl\GUID.pb.cc" />
-    <ClCompile Include="src\LocalMusicCache.cpp" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

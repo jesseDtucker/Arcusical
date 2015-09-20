@@ -61,6 +61,10 @@ namespace LocalMusicStore
 		Model::AlbumCollection m_localAlbums;
 		Model::SongCollection m_localSongs;
 
+		std::future<void> m_songLoadFuture;
+		std::future<void> m_albumLoadFuture;
+
+		// TODO::JT replace these with the futures
 		bool m_areSongsLoaded = false;
 		bool m_areAlbumsLoaded = false;
 

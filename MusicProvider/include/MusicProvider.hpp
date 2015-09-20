@@ -71,6 +71,9 @@ namespace MusicProvider
 		Util::Subscription m_artLoadSubscription;
 		AlbumArtLoader m_artLoader;
 
+		//TODO::JT refine loading process
+		std::future<void> m_songsLoadingFuture;
+		std::future<void> m_albumsLoadingFuture;
 		bool m_hasSongLoadingBegun = false;
 		bool m_hasAlbumLoadingBegun = false;
 		Model::LoadProgress m_songLoadProgress;

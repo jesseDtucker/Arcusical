@@ -40,6 +40,7 @@ namespace Arcusical
 		MusicProvider::MusicSearcher m_searcher;
 		std::unique_ptr<Player::Playlist> m_playlist;
 		std::unique_ptr<Player::IPlayer> m_player;
-		
+		std::future<void> m_playerLoading;
+		std::future<void> m_setupDependencies;
 	};
 }

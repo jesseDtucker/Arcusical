@@ -114,7 +114,7 @@ Arcusical::MusicProvider::AlbumArtLoader::AlbumArtLoader(LocalMusicStore::LocalM
 	m_verifier.Start();
 	m_embededLoader.Start();
 
-	m_imagePathFuture = std::async([this]()
+	m_imagePathFuture = std::async(std::launch::async, [this]()
 	{
 		return FileSystem::Storage::MusicFolder().FindFilesWithExtensions({ L".bmp", L".jpg", L".jpeg", L".png", L".tiff" });
 	});

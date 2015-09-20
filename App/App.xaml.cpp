@@ -55,21 +55,12 @@ App::App()
 
 void App::SetupApplication()
 {
-	mutex loadingLock;
-	unique_lock<mutex> lockGuard(loadingLock);
-	condition_variable loadingWait;
-
 	// some of the services use COM and so should not be initialized on the UI thread
-	async([&]()
+	m_playerLoading = async([&]()
 	{
 		m_player = make_unique<Win8Player>();
 		m_playlist = make_unique<Playlist>(m_player.get(), &m_musicProvider);
-
-		unique_lock<mutex> lckGrd(loadingLock);
-		loadingWait.notify_all();
 	});
-
-	loadingWait.wait(lockGuard);
 }
 
 /// <summary>
@@ -121,14 +112,16 @@ void App::OnLaunched(Windows::ApplicationModel::Activation::LaunchActivatedEvent
 
 		MainPage^ mainPage = dynamic_cast<MainPage^>(rootFrame->Content);
 		ARC_ASSERT(mainPage != nullptr);
-		mainPage->SetDependencies(&m_searcher, &m_musicProvider, m_player.get(), m_playlist.get());
+		m_setupDependencies = std::async([mainPage, this]()
+		{
+			m_playerLoading.wait();
+			mainPage->SetDependencies(&m_searcher, &m_musicProvider, m_player.get(), m_playlist.get());
+		});
 
 		// Place the frame in the current Window
 		Window::Current->Content = rootFrame;
 		// Ensure the current window is active
 		Window::Current->Activate();
-
-		
 	}
 	else
 	{

@@ -602,10 +602,6 @@ HRESULT ALACMFTDecoder::ProcessMessage(
 
 	HRESULT hr = S_OK;
 
-	auto test = std::this_thread::get_id();
-	auto foo = std::to_string(test.hash()) + " : ";
-	OutputDebugStringA(foo.c_str());
-
 	switch (eMessage)
 	{
 	case MFT_MESSAGE_NOTIFY_START_OF_STREAM:
@@ -660,10 +656,7 @@ HRESULT ALACMFTDecoder::ProcessInput(
 	CHECK_UNLOCKED;
 	CHECK_SHUTDOWN;
 	CHECK_NULL(pSample);
-	auto test = std::this_thread::get_id();
-	auto foo = std::to_string(test.hash()) + "\n";
 	OutputDebugStringA("Process Input : ");
-	OutputDebugStringA(foo.c_str());
 
 	if (m_numExpectedInputRequests == 0)
 	{
@@ -702,10 +695,7 @@ HRESULT ALACMFTDecoder::ProcessOutput(
 	MFT_OUTPUT_DATA_BUFFER  *pOutputSamples, // one per stream
 	DWORD                   *pdwStatus)
 {
-	auto test = std::this_thread::get_id();
-	auto foo = std::to_string(test.hash()) + "\n";
 	OutputDebugStringA("Process Output : ");
-	OutputDebugStringA(foo.c_str());
 
 	SYNC_LOCK;
 	CHECK_UNLOCKED;
@@ -850,11 +840,8 @@ STDMETHODIMP ALACMFTDecoder::EndGetEvent(IMFAsyncResult *pResult, IMFMediaEvent 
 
 	*ppEvent = event.Detach();
 
-	auto test = std::this_thread::get_id();
-	auto foo = " : " + std::to_string(test.hash()) + "\n";
 	OutputDebugStringA("End get event! : ");
 	OutputDebugStringA(std::to_string(type).c_str());
-	OutputDebugStringA(foo.c_str());
 
 	return S_OK;
 }

@@ -171,7 +171,7 @@ Subscription MusicProvider::SubscribeSongs(SongsChangedCallback callback)
 		if (!m_hasSongLoadingBegun)
 		{
 			m_hasSongLoadingBegun = true;
-			async([this](){ LoadSongs(); });
+			m_songsLoadingFuture = async(std::launch::async, [this](){ LoadSongs(); });
 		}
 		else
 		{
@@ -197,7 +197,7 @@ Subscription MusicProvider::SubscribeAlbums(AlbumsChangedCallback callback)
 		if (!m_hasAlbumLoadingBegun)
 		{
 			m_hasAlbumLoadingBegun = true;
-			async([this](){ this->LoadAlbums(); });
+			m_albumsLoadingFuture = async(std::launch::async, [this](){ this->LoadAlbums(); });
 		}
 		else
 		{
@@ -314,7 +314,7 @@ vector<FileSystem::FilePtr> MusicProvider::ProcessSongFiles(Util::WorkBuffer<Fil
 			m_musicCache->SaveSongs();
 
 			// doing this async so that song loading can continue while other code reads the song info found thus far.
-			publishFuture = async([this, mergedSongs]()
+			publishFuture = async(std::launch::async, [this, mergedSongs]()
 			{
 				auto songs = m_musicCache->GetLocalSongs();
 				PublishSongs(m_songCallbacks, std::move(songs), m_songLoadProgress, m_songCallbackLock, *mergedSongs);

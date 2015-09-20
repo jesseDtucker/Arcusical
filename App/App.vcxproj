@@ -1,0 +1,366 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{8f5cdead-0983-4970-b855-8994b51ab666}</ProjectGuid>
+    <RootNamespace>App</RootNamespace>
+    <DefaultLanguage>en-US</DefaultLanguage>
+    <MinimumVisualStudioVersion>14.0</MinimumVisualStudioVersion>
+    <AppContainerApplication>true</AppContainerApplication>
+    <ApplicationType>Windows Store</ApplicationType>
+    <WindowsTargetPlatformVersion>10.0.10240.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformMinVersion>10.0.10240.0</WindowsTargetPlatformMinVersion>
+    <ApplicationTypeRevision>10.0</ApplicationTypeRevision>
+    <EnableDotNetNativeCompatibleProfile>true</EnableDotNetNativeCompatibleProfile>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|ARM">
+      <Configuration>Debug</Configuration>
+      <Platform>ARM</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|ARM">
+      <Configuration>Release</Configuration>
+      <Platform>ARM</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <PlatformToolset>v140</PlatformToolset>
+    <UseDotNetNativeToolchain>true</UseDotNetNativeToolchain>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <PlatformToolset>v140</PlatformToolset>
+    <UseDotNetNativeToolchain>true</UseDotNetNativeToolchain>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <PlatformToolset>v140</PlatformToolset>
+    <UseDotNetNativeToolchain>true</UseDotNetNativeToolchain>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\Common.props" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\Common.props" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\Common.props" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\Common.props" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\Common.props" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\Common.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <PackageCertificateKeyFile>App_TemporaryKey.pfx</PackageCertificateKeyFile>
+    <AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
+    <AppxBundle>Always</AppxBundle>
+    <AppxBundlePlatforms>x64</AppxBundlePlatforms>
+    <PackageCertificateThumbprint>92F8592320800FDFBF8EEDC2210857B5D34ACDA3</PackageCertificateThumbprint>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <IncludePath>$(SolutionDir)MusicProvider\include;$(SolutionDir)Model\include;$(SolutionDir)Player\include;$(SolutionDir)LocalMusicStore\include;$(SolutionDir)FileSystem\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)$(Platform)\$(Configuration)\Model;$(SolutionDir)$(Platform)\$(Configuration)\FileSystem;$(SolutionDir)$(Platform)\$(Configuration)\Util;$(SolutionDir)$(Platform)\$(Configuration)\MusicProvider;$(SolutionDir)$(Platform)\$(Configuration)\LocalMusicStore;$(SolutionDir)$(Platform)\$(Configuration)\MPEG4Parser;$(SolutionDir)$(Platform)\$(Configuration)\libprotobuf;$(SolutionDir)$(Platform)\$(Configuration)\Player;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <IncludePath>$(SolutionDir)MusicProvider\include;$(SolutionDir)Model\include;$(SolutionDir)Player\include;$(SolutionDir)LocalMusicStore\include;$(SolutionDir)FileSystem\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)$(Platform)\$(Configuration)\Model;$(SolutionDir)$(Platform)\$(Configuration)\FileSystem;$(SolutionDir)$(Platform)\$(Configuration)\Util;$(SolutionDir)$(Platform)\$(Configuration)\MusicProvider;$(SolutionDir)$(Platform)\$(Configuration)\LocalMusicStore;$(SolutionDir)$(Platform)\$(Configuration)\MPEG4Parser;$(SolutionDir)$(Platform)\$(Configuration)\libprotobuf;$(SolutionDir)$(Platform)\$(Configuration)\Player;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
+    <IncludePath>$(SolutionDir)MusicProvider\include;$(SolutionDir)Model\include;$(SolutionDir)Player\include;$(SolutionDir)LocalMusicStore\include;$(SolutionDir)FileSystem\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)$(Platform)\$(Configuration)\Model;$(SolutionDir)$(Platform)\$(Configuration)\FileSystem;$(SolutionDir)$(Platform)\$(Configuration)\Util;$(SolutionDir)$(Platform)\$(Configuration)\MusicProvider;$(SolutionDir)$(Platform)\$(Configuration)\LocalMusicStore;$(SolutionDir)$(Platform)\$(Configuration)\MPEG4Parser;$(SolutionDir)$(Platform)\$(Configuration)\libprotobuf;$(SolutionDir)$(Platform)\$(Configuration)\Player;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
+    <IncludePath>$(SolutionDir)MusicProvider\include;$(SolutionDir)Model\include;$(SolutionDir)Player\include;$(SolutionDir)LocalMusicStore\include;$(SolutionDir)FileSystem\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)$(Platform)\$(Configuration)\Model;$(SolutionDir)$(Platform)\$(Configuration)\FileSystem;$(SolutionDir)$(Platform)\$(Configuration)\Util;$(SolutionDir)$(Platform)\$(Configuration)\MusicProvider;$(SolutionDir)$(Platform)\$(Configuration)\LocalMusicStore;$(SolutionDir)$(Platform)\$(Configuration)\MPEG4Parser;$(SolutionDir)$(Platform)\$(Configuration)\libprotobuf;$(SolutionDir)$(Platform)\$(Configuration)\Player;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <IncludePath>$(SolutionDir)MusicProvider\include;$(SolutionDir)Model\include;$(SolutionDir)Player\include;$(SolutionDir)LocalMusicStore\include;$(SolutionDir)FileSystem\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)$(Platform)\$(Configuration)\Model;$(SolutionDir)$(Platform)\$(Configuration)\FileSystem;$(SolutionDir)$(Platform)\$(Configuration)\Util;$(SolutionDir)$(Platform)\$(Configuration)\MusicProvider;$(SolutionDir)$(Platform)\$(Configuration)\LocalMusicStore;$(SolutionDir)$(Platform)\$(Configuration)\MPEG4Parser;$(SolutionDir)$(Platform)\$(Configuration)\libprotobuf;$(SolutionDir)$(Platform)\$(Configuration)\Player;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <IncludePath>$(SolutionDir)MusicProvider\include;$(SolutionDir)Model\include;$(SolutionDir)Player\include;$(SolutionDir)LocalMusicStore\include;$(SolutionDir)FileSystem\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)$(Platform)\$(Configuration)\Model;$(SolutionDir)$(Platform)\$(Configuration)\FileSystem;$(SolutionDir)$(Platform)\$(Configuration)\Util;$(SolutionDir)$(Platform)\$(Configuration)\MusicProvider;$(SolutionDir)$(Platform)\$(Configuration)\LocalMusicStore;$(SolutionDir)$(Platform)\$(Configuration)\MPEG4Parser;$(SolutionDir)$(Platform)\$(Configuration)\libprotobuf;$(SolutionDir)$(Platform)\$(Configuration)\Player;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
+    <ClCompile>
+      <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
+      <DisableSpecificWarnings>4453;28204</DisableSpecificWarnings>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>FileSystem.lib;Util.lib;Model.lib;LocalMusicStore.lib;libprotobuf.lib;MPEG4Parser.lib;MusicProvider.lib;Player.lib;ole32.lib;oleaut32.lib;Mfplat.lib;mfuuid.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
+    <ClCompile>
+      <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
+      <DisableSpecificWarnings>4453;28204</DisableSpecificWarnings>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>FileSystem.lib;Util.lib;Model.lib;LocalMusicStore.lib;libprotobuf.lib;MPEG4Parser.lib;MusicProvider.lib;Player.lib;ole32.lib;oleaut32.lib;Mfplat.lib;mfuuid.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
+      <DisableSpecificWarnings>4453;28204</DisableSpecificWarnings>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>FileSystem.lib;Util.lib;Model.lib;LocalMusicStore.lib;libprotobuf.lib;MPEG4Parser.lib;MusicProvider.lib;Player.lib;ole32.lib;oleaut32.lib;Mfplat.lib;mfuuid.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
+      <DisableSpecificWarnings>4453;28204</DisableSpecificWarnings>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>FileSystem.lib;Util.lib;Model.lib;LocalMusicStore.lib;libprotobuf.lib;MPEG4Parser.lib;MusicProvider.lib;Player.lib;ole32.lib;oleaut32.lib;Mfplat.lib;mfuuid.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
+      <DisableSpecificWarnings>4453;28204</DisableSpecificWarnings>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>FileSystem.lib;Util.lib;Model.lib;LocalMusicStore.lib;libprotobuf.lib;MPEG4Parser.lib;MusicProvider.lib;Player.lib;ole32.lib;oleaut32.lib;Mfplat.lib;mfuuid.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
+      <DisableSpecificWarnings>4453;28204</DisableSpecificWarnings>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>FileSystem.lib;Util.lib;Model.lib;LocalMusicStore.lib;libprotobuf.lib;MPEG4Parser.lib;MusicProvider.lib;Player.lib;ole32.lib;oleaut32.lib;Mfplat.lib;mfuuid.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="Controls\AlbumListControl.xaml.h">
+      <DependentUpon>Controls\AlbumListControl.xaml</DependentUpon>
+    </ClInclude>
+    <ClInclude Include="Controls\BottomBar.xaml.h">
+      <DependentUpon>Controls\BottomBar.xaml</DependentUpon>
+    </ClInclude>
+    <ClInclude Include="Controls\PlayerButtons.xaml.h">
+      <DependentUpon>Controls\PlayerButtons.xaml</DependentUpon>
+    </ClInclude>
+    <ClInclude Include="Controls\Search.xaml.h">
+      <DependentUpon>Controls\Search.xaml</DependentUpon>
+    </ClInclude>
+    <ClInclude Include="Controls\SearchResultsControl.xaml.h">
+      <DependentUpon>Controls\SearchResultsControl.xaml</DependentUpon>
+    </ClInclude>
+    <ClInclude Include="Controls\SongListControl.xaml.h">
+      <DependentUpon>Controls\SongListControl.xaml</DependentUpon>
+    </ClInclude>
+    <ClInclude Include="Controls\VolumeSilder.xaml.h">
+      <DependentUpon>Controls\VolumeSilder.xaml</DependentUpon>
+    </ClInclude>
+    <ClInclude Include="Converters\AlternateConverter.hpp" />
+    <ClInclude Include="Converters\IsPlayingToIconPath.hpp" />
+    <ClInclude Include="Converters\SongListSizeToVisiblity.hpp" />
+    <ClInclude Include="Events\AlbumSelectedEvent.hpp" />
+    <ClInclude Include="Events\EventService.hpp" />
+    <ClInclude Include="Events\SongSelectedEvent.hpp" />
+    <ClInclude Include="Pages\MainPage.xaml.h">
+      <DependentUpon>Pages\MainPage.xaml</DependentUpon>
+    </ClInclude>
+    <ClInclude Include="pch.h" />
+    <ClInclude Include="App.xaml.h">
+      <DependentUpon>App.xaml</DependentUpon>
+    </ClInclude>
+    <ClInclude Include="Utility\DispatcherHelper.hpp" />
+    <ClInclude Include="Utility\XamlMacros.hpp" />
+    <ClInclude Include="ViewModels\AlbumListControlVM.hpp" />
+    <ClInclude Include="ViewModels\AlbumVM.hpp" />
+    <ClInclude Include="ViewModels\SearchResultsVM.hpp" />
+    <ClInclude Include="ViewModels\SearchVM.hpp" />
+    <ClInclude Include="ViewModels\SongListControlVM.hpp" />
+    <ClInclude Include="ViewModels\SongListVM.hpp" />
+    <ClInclude Include="ViewModels\SongPlayerVM.hpp" />
+    <ClInclude Include="ViewModels\SongVM.hpp" />
+    <ClInclude Include="ViewModels\VolumeSilderVM.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Page Include="Controls\AlbumListControl.xaml" />
+    <Page Include="Controls\BottomBar.xaml" />
+    <Page Include="Controls\PlayerButtons.xaml" />
+    <Page Include="Controls\Search.xaml" />
+    <Page Include="Controls\SearchResultsControl.xaml" />
+    <Page Include="Controls\SongListControl.xaml" />
+    <Page Include="Controls\VolumeSilder.xaml" />
+    <Page Include="Converters\Converters.xaml" />
+    <Page Include="Pages\MainPage.xaml" />
+    <Page Include="Styles\ButtonStyles.xaml" />
+    <Page Include="Styles\SongProgressBar.xaml" />
+    <Page Include="Themes\Generic.xaml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="App.xaml.cpp">
+      <DependentUpon>App.xaml</DependentUpon>
+    </ClCompile>
+    <ClCompile Include="Controls\AlbumListControl.xaml.cpp">
+      <DependentUpon>Controls\AlbumListControl.xaml</DependentUpon>
+    </ClCompile>
+    <ClCompile Include="Controls\BottomBar.xaml.cpp">
+      <DependentUpon>Controls\BottomBar.xaml</DependentUpon>
+    </ClCompile>
+    <ClCompile Include="Controls\PlayerButtons.xaml.cpp">
+      <DependentUpon>Controls\PlayerButtons.xaml</DependentUpon>
+    </ClCompile>
+    <ClCompile Include="Controls\Search.xaml.cpp">
+      <DependentUpon>Controls\Search.xaml</DependentUpon>
+    </ClCompile>
+    <ClCompile Include="Controls\SearchResultsControl.xaml.cpp">
+      <DependentUpon>Controls\SearchResultsControl.xaml</DependentUpon>
+    </ClCompile>
+    <ClCompile Include="Controls\SongListControl.xaml.cpp">
+      <DependentUpon>Controls\SongListControl.xaml</DependentUpon>
+    </ClCompile>
+    <ClCompile Include="Controls\VolumeSilder.xaml.cpp">
+      <DependentUpon>Controls\VolumeSilder.xaml</DependentUpon>
+    </ClCompile>
+    <ClCompile Include="Converters\AlternateConverter.cpp" />
+    <ClCompile Include="Converters\IsPlayingToIconPath.cpp" />
+    <ClCompile Include="Converters\SongListSizeToVisiblity.cpp" />
+    <ClCompile Include="Events\AlbumSelectedEvent.cpp" />
+    <ClCompile Include="Events\SongSelectedEvent.cpp" />
+    <ClCompile Include="Pages\MainPage.xaml.cpp">
+      <DependentUpon>Pages\MainPage.xaml</DependentUpon>
+    </ClCompile>
+    <ClCompile Include="pch.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Utility\DispatcherHelper.cpp" />
+    <ClCompile Include="ViewModels\AlbumListControlVM.cpp" />
+    <ClCompile Include="ViewModels\AlbumVM.cpp" />
+    <ClCompile Include="ViewModels\SearchResultsVM.cpp" />
+    <ClCompile Include="ViewModels\SearchVM.cpp" />
+    <ClCompile Include="ViewModels\SongListControlVM.cpp" />
+    <ClCompile Include="ViewModels\SongListVM.cpp" />
+    <ClCompile Include="ViewModels\SongPlayerVM.cpp" />
+    <ClCompile Include="ViewModels\SongVM.cpp" />
+    <ClCompile Include="ViewModels\VolumeSliderVM.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Assets\DefaultAlbumBackgrounds\default_black.png" />
+    <Image Include="Assets\DefaultAlbumBackgrounds\default_cyan.png" />
+    <Image Include="Assets\DefaultAlbumBackgrounds\default_dark_blue.png" />
+    <Image Include="Assets\DefaultAlbumBackgrounds\default_dark_red.png" />
+    <Image Include="Assets\DefaultAlbumBackgrounds\default_fuchsia.png" />
+    <Image Include="Assets\DefaultAlbumBackgrounds\default_green.png" />
+    <Image Include="Assets\DefaultAlbumBackgrounds\default_light_cyan.png" />
+    <Image Include="Assets\DefaultAlbumBackgrounds\default_light_green.png" />
+    <Image Include="Assets\DefaultAlbumBackgrounds\default_lime.png" />
+    <Image Include="Assets\DefaultAlbumBackgrounds\default_orange.png" />
+    <Image Include="Assets\DefaultAlbumBackgrounds\default_red.png" />
+    <Image Include="Assets\DefaultAlbumBackgrounds\default_violet.png" />
+    <Image Include="Assets\Icons\Details.png" />
+    <Image Include="Assets\Icons\Forward.png" />
+    <Image Include="Assets\Icons\Pause.png" />
+    <Image Include="Assets\Icons\Play.png" />
+    <Image Include="Assets\Icons\Reverse.png" />
+    <Image Include="Assets\Icons\SearchIcon.png" />
+    <Image Include="Assets\Logo\Logo.scale-100.png">
+      <DeploymentContent>true</DeploymentContent>
+    </Image>
+    <Image Include="Assets\Logo\Logo.scale-140.png" />
+    <Image Include="Assets\Logo\Logo.scale-180.png" />
+    <Image Include="Assets\Logo\Logo.scale-80.png" />
+    <Image Include="Assets\Logo\SmallLogo.scale-100.png" />
+    <Image Include="Assets\Logo\SmallLogo.scale-140.png" />
+    <Image Include="Assets\Logo\SmallLogo.scale-180.png" />
+    <Image Include="Assets\Logo\SmallLogo.scale-80.png" />
+    <Image Include="Assets\Logo\SmallLogo.targetsize-16.png" />
+    <Image Include="Assets\Logo\SmallLogo.targetsize-256.png">
+      <DeploymentContent>true</DeploymentContent>
+    </Image>
+    <Image Include="Assets\Logo\SmallLogo.targetsize-32.png" />
+    <Image Include="Assets\Logo\SmallLogo.targetsize-48.png" />
+    <Image Include="Assets\Logo\SplashScreen.scale-100.png" />
+    <Image Include="Assets\Logo\SplashScreen.scale-140.png" />
+    <Image Include="Assets\Logo\SplashScreen.scale-180.png" />
+    <Image Include="Assets\Logo\Square310x310Logo.scale-100.png" />
+    <Image Include="Assets\Logo\Square310x310Logo.scale-140.png" />
+    <Image Include="Assets\Logo\Square310x310Logo.scale-180.png" />
+    <Image Include="Assets\Logo\Square310x310Logo.scale-80.png" />
+    <Image Include="Assets\Logo\Wide310x150Logo.scale-100.png" />
+    <Image Include="Assets\Logo\Wide310x150Logo.scale-140.png" />
+    <Image Include="Assets\Logo\Wide310x150Logo.scale-180.png" />
+    <Image Include="Assets\Logo\Wide310x150Logo.scale-80.png" />
+    <Image Include="Assets\Misc\CornerGradient.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppxManifest Include="Package.appxmanifest">
+      <SubType>Designer</SubType>
+    </AppxManifest>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App_TemporaryKey.pfx" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

@@ -1,0 +1,345 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Common">
+      <UniqueIdentifier>8f5cdead-0983-4970-b855-8994b51ab666</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Assets">
+      <UniqueIdentifier>52ebf2d1-cc56-4cf3-a98c-49e7fce262ae</UniqueIdentifier>
+      <Extensions>bmp;fbx;gif;jpg;jpeg;tga;tiff;tif;png</Extensions>
+    </Filter>
+    <Filter Include="Assets\Logo">
+      <UniqueIdentifier>{8c03e952-4a36-4687-97e7-9cd27a2133a4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Assets\DefaultAlbumBackgrounds">
+      <UniqueIdentifier>{2fb68a5f-87a9-4402-91c6-b875dc50769d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Assets\Icons">
+      <UniqueIdentifier>{e7cdb719-3f79-4cac-a716-a49a99783ae4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Assets\Misc">
+      <UniqueIdentifier>{423ec3a8-8e99-472c-8237-f46622d67116}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Controls">
+      <UniqueIdentifier>{f1bc9816-bc48-4c5c-bfec-b2be9a9271c3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Converters">
+      <UniqueIdentifier>{f8379ff8-b6d5-485d-aa2b-e0437650df4b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Events">
+      <UniqueIdentifier>{4a1ea874-074f-4f70-9abb-751fa6ba0a42}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pages">
+      <UniqueIdentifier>{2ff9d140-0d7d-4cde-8dd0-8227edf74481}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Styles">
+      <UniqueIdentifier>{9777d17c-ed80-44df-8bbd-059b81bfc9d6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Themes">
+      <UniqueIdentifier>{f57811f1-28d5-4858-8cc6-78277f7507b0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utility">
+      <UniqueIdentifier>{8cc91aad-2935-484d-89e1-5c3f6fc40ffc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ViewModels">
+      <UniqueIdentifier>{7af99a54-1509-421c-8b4e-cb1bcf541633}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="App.xaml.cpp" />
+    <ClCompile Include="MainPage.xaml.cpp" />
+    <ClCompile Include="pch.cpp" />
+    <ClCompile Include="Converters\AlternateConverter.cpp">
+      <Filter>Converters</Filter>
+    </ClCompile>
+    <ClCompile Include="Converters\IsPlayingToIconPath.cpp">
+      <Filter>Converters</Filter>
+    </ClCompile>
+    <ClCompile Include="Converters\SongListSizeToVisiblity.cpp">
+      <Filter>Converters</Filter>
+    </ClCompile>
+    <ClCompile Include="Events\AlbumSelectedEvent.cpp">
+      <Filter>Events</Filter>
+    </ClCompile>
+    <ClCompile Include="Events\SongSelectedEvent.cpp">
+      <Filter>Events</Filter>
+    </ClCompile>
+    <ClCompile Include="Utility\DispatcherHelper.cpp">
+      <Filter>Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="ViewModels\AlbumListControlVM.cpp">
+      <Filter>ViewModels</Filter>
+    </ClCompile>
+    <ClCompile Include="ViewModels\AlbumVM.cpp">
+      <Filter>ViewModels</Filter>
+    </ClCompile>
+    <ClCompile Include="ViewModels\SearchResultsVM.cpp">
+      <Filter>ViewModels</Filter>
+    </ClCompile>
+    <ClCompile Include="ViewModels\SearchVM.cpp">
+      <Filter>ViewModels</Filter>
+    </ClCompile>
+    <ClCompile Include="ViewModels\SongListControlVM.cpp">
+      <Filter>ViewModels</Filter>
+    </ClCompile>
+    <ClCompile Include="ViewModels\SongListVM.cpp">
+      <Filter>ViewModels</Filter>
+    </ClCompile>
+    <ClCompile Include="ViewModels\SongPlayerVM.cpp">
+      <Filter>ViewModels</Filter>
+    </ClCompile>
+    <ClCompile Include="ViewModels\SongVM.cpp">
+      <Filter>ViewModels</Filter>
+    </ClCompile>
+    <ClCompile Include="ViewModels\VolumeSliderVM.cpp">
+      <Filter>ViewModels</Filter>
+    </ClCompile>
+    <ClCompile Include="Controls\AlbumListControl.xaml.cpp" />
+    <ClCompile Include="Controls\BottomBar.xaml.cpp" />
+    <ClCompile Include="Controls\PlayerButtons.xaml.cpp" />
+    <ClCompile Include="Controls\Search.xaml.cpp" />
+    <ClCompile Include="Controls\SearchResultsControl.xaml.cpp" />
+    <ClCompile Include="Controls\SongListControl.xaml.cpp" />
+    <ClCompile Include="Controls\VolumeSilder.xaml.cpp" />
+    <ClCompile Include="Pages\MainPage.xaml.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="pch.h" />
+    <ClInclude Include="App.xaml.h" />
+    <ClInclude Include="MainPage.xaml.h" />
+    <ClInclude Include="Converters\AlternateConverter.hpp">
+      <Filter>Converters</Filter>
+    </ClInclude>
+    <ClInclude Include="Converters\IsPlayingToIconPath.hpp">
+      <Filter>Converters</Filter>
+    </ClInclude>
+    <ClInclude Include="Converters\SongListSizeToVisiblity.hpp">
+      <Filter>Converters</Filter>
+    </ClInclude>
+    <ClInclude Include="Events\AlbumSelectedEvent.hpp">
+      <Filter>Events</Filter>
+    </ClInclude>
+    <ClInclude Include="Events\EventService.hpp">
+      <Filter>Events</Filter>
+    </ClInclude>
+    <ClInclude Include="Events\SongSelectedEvent.hpp">
+      <Filter>Events</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility\DispatcherHelper.hpp">
+      <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility\XamlMacros.hpp">
+      <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="ViewModels\AlbumListControlVM.hpp">
+      <Filter>ViewModels</Filter>
+    </ClInclude>
+    <ClInclude Include="ViewModels\AlbumVM.hpp">
+      <Filter>ViewModels</Filter>
+    </ClInclude>
+    <ClInclude Include="ViewModels\SearchResultsVM.hpp">
+      <Filter>ViewModels</Filter>
+    </ClInclude>
+    <ClInclude Include="ViewModels\SearchVM.hpp">
+      <Filter>ViewModels</Filter>
+    </ClInclude>
+    <ClInclude Include="ViewModels\SongListControlVM.hpp">
+      <Filter>ViewModels</Filter>
+    </ClInclude>
+    <ClInclude Include="ViewModels\SongListVM.hpp">
+      <Filter>ViewModels</Filter>
+    </ClInclude>
+    <ClInclude Include="ViewModels\SongPlayerVM.hpp">
+      <Filter>ViewModels</Filter>
+    </ClInclude>
+    <ClInclude Include="ViewModels\SongVM.hpp">
+      <Filter>ViewModels</Filter>
+    </ClInclude>
+    <ClInclude Include="ViewModels\VolumeSilderVM.hpp">
+      <Filter>ViewModels</Filter>
+    </ClInclude>
+    <ClInclude Include="Controls\AlbumListControl.xaml.h" />
+    <ClInclude Include="Controls\BottomBar.xaml.h" />
+    <ClInclude Include="Controls\PlayerButtons.xaml.h" />
+    <ClInclude Include="Controls\Search.xaml.h" />
+    <ClInclude Include="Controls\SearchResultsControl.xaml.h" />
+    <ClInclude Include="Controls\SongListControl.xaml.h" />
+    <ClInclude Include="Controls\VolumeSilder.xaml.h" />
+    <ClInclude Include="Pages\MainPage.xaml.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="Controls\AlbumListControl.xaml">
+      <Filter>Controls</Filter>
+    </Page>
+    <Page Include="Controls\BottomBar.xaml">
+      <Filter>Controls</Filter>
+    </Page>
+    <Page Include="Controls\PlayerButtons.xaml">
+      <Filter>Controls</Filter>
+    </Page>
+    <Page Include="Controls\Search.xaml">
+      <Filter>Controls</Filter>
+    </Page>
+    <Page Include="Controls\SearchResultsControl.xaml">
+      <Filter>Controls</Filter>
+    </Page>
+    <Page Include="Controls\SongListControl.xaml">
+      <Filter>Controls</Filter>
+    </Page>
+    <Page Include="Controls\VolumeSilder.xaml">
+      <Filter>Controls</Filter>
+    </Page>
+    <Page Include="Converters\Converters.xaml">
+      <Filter>Converters</Filter>
+    </Page>
+    <Page Include="Pages\MainPage.xaml">
+      <Filter>Pages</Filter>
+    </Page>
+    <Page Include="Styles\ButtonStyles.xaml">
+      <Filter>Styles</Filter>
+    </Page>
+    <Page Include="Styles\SongProgressBar.xaml">
+      <Filter>Styles</Filter>
+    </Page>
+    <Page Include="Themes\Generic.xaml">
+      <Filter>Themes</Filter>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Assets\Logo\Logo.scale-80.png">
+      <Filter>Assets\Logo</Filter>
+    </Image>
+    <Image Include="Assets\Logo\Logo.scale-100.png">
+      <Filter>Assets\Logo</Filter>
+    </Image>
+    <Image Include="Assets\Logo\Logo.scale-140.png">
+      <Filter>Assets\Logo</Filter>
+    </Image>
+    <Image Include="Assets\Logo\Logo.scale-180.png">
+      <Filter>Assets\Logo</Filter>
+    </Image>
+    <Image Include="Assets\Logo\SmallLogo.scale-80.png">
+      <Filter>Assets\Logo</Filter>
+    </Image>
+    <Image Include="Assets\Logo\SmallLogo.scale-100.png">
+      <Filter>Assets\Logo</Filter>
+    </Image>
+    <Image Include="Assets\Logo\SmallLogo.scale-140.png">
+      <Filter>Assets\Logo</Filter>
+    </Image>
+    <Image Include="Assets\Logo\SmallLogo.scale-180.png">
+      <Filter>Assets\Logo</Filter>
+    </Image>
+    <Image Include="Assets\Logo\SmallLogo.targetsize-16.png">
+      <Filter>Assets\Logo</Filter>
+    </Image>
+    <Image Include="Assets\Logo\SmallLogo.targetsize-32.png">
+      <Filter>Assets\Logo</Filter>
+    </Image>
+    <Image Include="Assets\Logo\SmallLogo.targetsize-48.png">
+      <Filter>Assets\Logo</Filter>
+    </Image>
+    <Image Include="Assets\Logo\SmallLogo.targetsize-256.png">
+      <Filter>Assets\Logo</Filter>
+    </Image>
+    <Image Include="Assets\Logo\SplashScreen.scale-100.png">
+      <Filter>Assets\Logo</Filter>
+    </Image>
+    <Image Include="Assets\Logo\SplashScreen.scale-140.png">
+      <Filter>Assets\Logo</Filter>
+    </Image>
+    <Image Include="Assets\Logo\SplashScreen.scale-180.png">
+      <Filter>Assets\Logo</Filter>
+    </Image>
+    <Image Include="Assets\Logo\Square310x310Logo.scale-80.png">
+      <Filter>Assets\Logo</Filter>
+    </Image>
+    <Image Include="Assets\Logo\Square310x310Logo.scale-100.png">
+      <Filter>Assets\Logo</Filter>
+    </Image>
+    <Image Include="Assets\Logo\Square310x310Logo.scale-140.png">
+      <Filter>Assets\Logo</Filter>
+    </Image>
+    <Image Include="Assets\Logo\Square310x310Logo.scale-180.png">
+      <Filter>Assets\Logo</Filter>
+    </Image>
+    <Image Include="Assets\Logo\Wide310x150Logo.scale-80.png">
+      <Filter>Assets\Logo</Filter>
+    </Image>
+    <Image Include="Assets\Logo\Wide310x150Logo.scale-100.png">
+      <Filter>Assets\Logo</Filter>
+    </Image>
+    <Image Include="Assets\Logo\Wide310x150Logo.scale-140.png">
+      <Filter>Assets\Logo</Filter>
+    </Image>
+    <Image Include="Assets\Logo\Wide310x150Logo.scale-180.png">
+      <Filter>Assets\Logo</Filter>
+    </Image>
+    <Image Include="Assets\DefaultAlbumBackgrounds\default_black.png">
+      <Filter>Assets\DefaultAlbumBackgrounds</Filter>
+    </Image>
+    <Image Include="Assets\DefaultAlbumBackgrounds\default_cyan.png">
+      <Filter>Assets\DefaultAlbumBackgrounds</Filter>
+    </Image>
+    <Image Include="Assets\DefaultAlbumBackgrounds\default_dark_blue.png">
+      <Filter>Assets\DefaultAlbumBackgrounds</Filter>
+    </Image>
+    <Image Include="Assets\DefaultAlbumBackgrounds\default_dark_red.png">
+      <Filter>Assets\DefaultAlbumBackgrounds</Filter>
+    </Image>
+    <Image Include="Assets\DefaultAlbumBackgrounds\default_fuchsia.png">
+      <Filter>Assets\DefaultAlbumBackgrounds</Filter>
+    </Image>
+    <Image Include="Assets\DefaultAlbumBackgrounds\default_green.png">
+      <Filter>Assets\DefaultAlbumBackgrounds</Filter>
+    </Image>
+    <Image Include="Assets\DefaultAlbumBackgrounds\default_light_cyan.png">
+      <Filter>Assets\DefaultAlbumBackgrounds</Filter>
+    </Image>
+    <Image Include="Assets\DefaultAlbumBackgrounds\default_light_green.png">
+      <Filter>Assets\DefaultAlbumBackgrounds</Filter>
+    </Image>
+    <Image Include="Assets\DefaultAlbumBackgrounds\default_lime.png">
+      <Filter>Assets\DefaultAlbumBackgrounds</Filter>
+    </Image>
+    <Image Include="Assets\DefaultAlbumBackgrounds\default_orange.png">
+      <Filter>Assets\DefaultAlbumBackgrounds</Filter>
+    </Image>
+    <Image Include="Assets\DefaultAlbumBackgrounds\default_red.png">
+      <Filter>Assets\DefaultAlbumBackgrounds</Filter>
+    </Image>
+    <Image Include="Assets\DefaultAlbumBackgrounds\default_violet.png">
+      <Filter>Assets\DefaultAlbumBackgrounds</Filter>
+    </Image>
+    <Image Include="Assets\Icons\Details.png">
+      <Filter>Assets\Icons</Filter>
+    </Image>
+    <Image Include="Assets\Icons\Forward.png">
+      <Filter>Assets\Icons</Filter>
+    </Image>
+    <Image Include="Assets\Icons\Pause.png">
+      <Filter>Assets\Icons</Filter>
+    </Image>
+    <Image Include="Assets\Icons\Play.png">
+      <Filter>Assets\Icons</Filter>
+    </Image>
+    <Image Include="Assets\Icons\Reverse.png">
+      <Filter>Assets\Icons</Filter>
+    </Image>
+    <Image Include="Assets\Icons\SearchIcon.png">
+      <Filter>Assets\Icons</Filter>
+    </Image>
+    <Image Include="Assets\Misc\CornerGradient.png">
+      <Filter>Assets\Misc</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <AppxManifest Include="Package.appxmanifest" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App_TemporaryKey.pfx" />
+  </ItemGroup>
+</Project>

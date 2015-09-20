@@ -2,6 +2,7 @@
 #include <random>
 
 #include "SongSelector.hpp"
+#include "LocalMusicCache.hpp"
 
 using namespace std;
 

@@ -1,35 +1,43 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="include">
+      <UniqueIdentifier>{859d1eb9-62d9-445f-a973-292831ec0e2c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src">
+      <UniqueIdentifier>{9ee3775b-e7bf-45bd-83ed-89f70f32299b}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Alac.cpp">
-      <Filter>Boxes</Filter>
+      <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\Box.cpp">
-      <Filter>Boxes</Filter>
+      <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\BoxFactory.cpp">
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\ContainerBox.cpp">
-      <Filter>Boxes</Filter>
+      <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\Databox.cpp">
-      <Filter>Boxes</Filter>
+      <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\Dinf.cpp">
-      <Filter>Boxes</Filter>
+      <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\Dref.cpp">
-      <Filter>Boxes</Filter>
+      <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\Esds.cpp">
-      <Filter>Boxes</Filter>
+      <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\FreeBox.cpp">
-      <Filter>Boxes</Filter>
+      <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\Ftyp.cpp">
-      <Filter>Boxes</Filter>
+      <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\GenreTypes.cpp">
       <Filter>src</Filter>
@@ -38,82 +46,82 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\Hdlr.cpp">
-      <Filter>Boxes</Filter>
+      <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\iAlbum.cpp">
-      <Filter>Boxes</Filter>
+      <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\iAlbumArtist.cpp">
-      <Filter>Boxes</Filter>
+      <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\iAppleID.cpp">
-      <Filter>Boxes</Filter>
+      <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\iArtist.cpp">
-      <Filter>Boxes</Filter>
+      <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\iComposer.cpp">
-      <Filter>Boxes</Filter>
+      <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\iCover.cpp">
-      <Filter>Boxes</Filter>
+      <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\iDiskNumber.cpp">
-      <Filter>Boxes</Filter>
+      <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\iEncoderName.cpp">
-      <Filter>Boxes</Filter>
+      <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\iGenre.cpp">
-      <Filter>Boxes</Filter>
+      <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\Ilst.cpp">
-      <Filter>Boxes</Filter>
+      <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\ImageTypes.cpp">
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\iName.cpp">
-      <Filter>Boxes</Filter>
+      <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\iPurchaseDate.cpp">
-      <Filter>Boxes</Filter>
+      <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\iReleaseDate.cpp">
-      <Filter>Boxes</Filter>
+      <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\iTrackNumber.cpp">
-      <Filter>Boxes</Filter>
+      <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\ItunesDashBox.cpp">
-      <Filter>Boxes</Filter>
+      <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\iXid.cpp">
-      <Filter>Boxes</Filter>
+      <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\Mdat.cpp">
-      <Filter>Boxes</Filter>
+      <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\Mdhd.cpp">
-      <Filter>Boxes</Filter>
+      <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\Mdia.cpp">
-      <Filter>Boxes</Filter>
+      <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\MeanBox.cpp">
-      <Filter>Boxes</Filter>
+      <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\Meta.cpp">
-      <Filter>Boxes</Filter>
+      <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\Minf.cpp">
-      <Filter>Boxes</Filter>
+      <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\Moov.cpp">
-      <Filter>Boxes</Filter>
+      <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\Mp4a.cpp">
-      <Filter>Boxes</Filter>
+      <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\MPEG4_Parser.cpp">
       <Filter>src</Filter>
@@ -125,46 +133,46 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\Mvhd.cpp">
-      <Filter>Boxes</Filter>
+      <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\Name.cpp">
-      <Filter>Boxes</Filter>
+      <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\Smhd.cpp">
-      <Filter>Boxes</Filter>
+      <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\Stbl.cpp">
-      <Filter>Boxes</Filter>
+      <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\Stco.cpp">
-      <Filter>Boxes</Filter>
+      <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\Stsc.cpp">
-      <Filter>Boxes</Filter>
+      <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\Stsd.cpp">
-      <Filter>Boxes</Filter>
+      <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\Stsz.cpp">
-      <Filter>Boxes</Filter>
+      <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\Stts.cpp">
-      <Filter>Boxes</Filter>
+      <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\Tkhd.cpp">
-      <Filter>Boxes</Filter>
+      <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\Trak.cpp">
-      <Filter>Boxes</Filter>
+      <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\Udta.cpp">
-      <Filter>Boxes</Filter>
+      <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\UnknownBox.cpp">
-      <Filter>Boxes</Filter>
+      <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\Url.cpp">
-      <Filter>Boxes</Filter>
+      <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\pch.cpp">
       <Filter>src</Filter>
@@ -172,40 +180,43 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Alac.hpp">
-      <Filter>Boxes</Filter>
+      <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="include\Box.hpp">
-      <Filter>Boxes</Filter>
+      <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="include\BoxFactory.hpp">
-      <Filter>src</Filter>
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\BoxParsingException.hpp">
+      <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="include\BoxTypes.hpp">
       <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="include\ContainerBox.hpp">
-      <Filter>Boxes</Filter>
+      <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="include\Cprt.hpp">
-      <Filter>Boxes</Filter>
+      <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="include\Databox.hpp">
-      <Filter>Boxes</Filter>
+      <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="include\Dinf.hpp">
-      <Filter>Boxes</Filter>
+      <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="include\Dref.hpp">
-      <Filter>Boxes</Filter>
+      <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="include\Esds.hpp">
-      <Filter>Boxes</Filter>
+      <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="include\FreeBox.hpp">
-      <Filter>Boxes</Filter>
+      <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="include\Ftyp.hpp">
-      <Filter>Boxes</Filter>
+      <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="include\GenreTypes.hpp">
       <Filter>include</Filter>
@@ -214,118 +225,124 @@
       <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="include\Hdlr.hpp">
-      <Filter>Boxes</Filter>
+      <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="include\iAkID.hpp">
-      <Filter>Boxes</Filter>
+      <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="include\iAlbum.hpp">
-      <Filter>Boxes</Filter>
+      <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="include\iAlbumArtist.hpp">
-      <Filter>Boxes</Filter>
+      <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="include\iAppleID.hpp">
-      <Filter>Boxes</Filter>
+      <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="include\iArtist.hpp">
-      <Filter>Boxes</Filter>
+      <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="include\iAtID.hpp">
-      <Filter>Boxes</Filter>
+      <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="include\iCnid.hpp">
-      <Filter>Boxes</Filter>
+      <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="include\iComposer.hpp">
-      <Filter>Boxes</Filter>
+      <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="include\iCover.hpp">
-      <Filter>Boxes</Filter>
+      <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="include\iCpil.hpp">
-      <Filter>Boxes</Filter>
+      <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="include\iDiskNumber.hpp">
-      <Filter>Boxes</Filter>
+      <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="include\iEncoderName.hpp">
-      <Filter>Boxes</Filter>
+      <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="include\iFlvr.hpp">
-      <Filter>Boxes</Filter>
+      <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="include\iGeID.hpp">
-      <Filter>Boxes</Filter>
+      <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="include\iGenre.hpp">
-      <Filter>Boxes</Filter>
+      <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="include\Ilst.hpp">
-      <Filter>Boxes</Filter>
+      <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="include\ImageTypes.hpp">
       <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="include\iName.hpp">
-      <Filter>Boxes</Filter>
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\IncompatibleBoxTypeException.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\InvalidValueException.hpp">
+      <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="include\iPgap.hpp">
-      <Filter>Boxes</Filter>
+      <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="include\iPlID.hpp">
-      <Filter>Boxes</Filter>
+      <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="include\iPurchaseDate.hpp">
-      <Filter>Boxes</Filter>
+      <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="include\iReleaseDate.hpp">
-      <Filter>Boxes</Filter>
+      <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="include\iRtng.hpp">
-      <Filter>Boxes</Filter>
+      <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="include\iSfID.hpp">
-      <Filter>Boxes</Filter>
+      <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="include\iStik.hpp">
-      <Filter>Boxes</Filter>
+      <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="include\iTmpo.hpp">
-      <Filter>Boxes</Filter>
+      <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="include\iTrackNumber.hpp">
-      <Filter>Boxes</Filter>
+      <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="include\ItunesDashBox.hpp">
-      <Filter>Boxes</Filter>
+      <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="include\iXid.hpp">
-      <Filter>Boxes</Filter>
+      <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="include\Mdat.hpp">
-      <Filter>Boxes</Filter>
+      <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="include\Mdhd.hpp">
-      <Filter>Boxes</Filter>
+      <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="include\Mdia.hpp">
-      <Filter>Boxes</Filter>
+      <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="include\MeanBox.hpp">
-      <Filter>Boxes</Filter>
+      <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="include\Meta.hpp">
-      <Filter>Boxes</Filter>
+      <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="include\Minf.hpp">
-      <Filter>Boxes</Filter>
+      <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="include\Moov.hpp">
-      <Filter>Boxes</Filter>
+      <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="include\Mp4a.hpp">
-      <Filter>Boxes</Filter>
+      <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="include\MPEG4_Parser.hpp">
       <Filter>include</Filter>
@@ -337,84 +354,61 @@
       <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="include\Mvhd.hpp">
-      <Filter>Boxes</Filter>
+      <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="include\Name.hpp">
-      <Filter>Boxes</Filter>
+      <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="include\Pinf.hpp">
-      <Filter>Boxes</Filter>
+      <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="include\Sbtd.hpp">
-      <Filter>Boxes</Filter>
+      <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="include\Smhd.hpp">
-      <Filter>Boxes</Filter>
+      <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="include\Stbl.hpp">
-      <Filter>Boxes</Filter>
+      <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="include\Stco.hpp">
-      <Filter>Boxes</Filter>
+      <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="include\Stsc.hpp">
-      <Filter>Boxes</Filter>
+      <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="include\Stsd.hpp">
-      <Filter>Boxes</Filter>
+      <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="include\Stsz.hpp">
-      <Filter>Boxes</Filter>
+      <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="include\Stts.hpp">
-      <Filter>Boxes</Filter>
+      <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="include\Tkhd.hpp">
-      <Filter>Boxes</Filter>
+      <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="include\Trak.hpp">
-      <Filter>Boxes</Filter>
+      <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="include\Udta.hpp">
-      <Filter>Boxes</Filter>
+      <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="include\UnknownBox.hpp">
-      <Filter>Boxes</Filter>
-    </ClInclude>
-    <ClInclude Include="include\BoxParsingException.hpp">
-      <Filter>include\Exceptions</Filter>
-    </ClInclude>
-    <ClInclude Include="include\IncompatibleBoxTypeException.hpp">
-      <Filter>include\Exceptions</Filter>
+      <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="include\UnknownBoxTypeException.hpp">
-      <Filter>include\Exceptions</Filter>
-    </ClInclude>
-    <ClInclude Include="include\InvalidValueException.hpp">
-      <Filter>include\Exceptions</Filter>
+      <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="include\Url.hpp">
-      <Filter>Boxes</Filter>
+      <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="include\Xtra.hpp">
-      <Filter>Boxes</Filter>
+      <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="src\pch.h">
       <Filter>src</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <Filter Include="Boxes">
-      <UniqueIdentifier>{834a5add-7271-4b8a-89ca-414a0bc6bb8d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="src">
-      <UniqueIdentifier>{8e84f784-82bd-468f-92db-859478e47cc9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="include">
-      <UniqueIdentifier>{00eb9104-7f3e-4314-b797-4157cabe294b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="include\Exceptions">
-      <UniqueIdentifier>{68d5f079-a8a9-4dc3-9920-c2dd7d78f39e}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
 </Project>

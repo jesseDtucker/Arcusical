@@ -104,7 +104,7 @@ void MainPage::SetupTransportControls(IPlayer* player)
 				displayUpdater->MusicProperties->Artist = "";
 			}
 			
-
+			// TODO::JT move to task runner
 			std::async([this, newSong, displayUpdater]()
 			{
 				ARC_ASSERT(m_musicProvider != nullptr);
@@ -186,21 +186,22 @@ void Arcusical::MainPage::SetDependencies(	MusicSearcher* musicSearcher,
 	m_playlist = playlist;
 	m_searcher = musicSearcher;
 
-	m_searchVM = ref new SearchVM(*musicSearcher, *playlist, *player);
-	m_songListVM = ref new SongListControlVM(*playlist);
-	m_albumListVM = ref new AlbumListControlVM();
-	m_playerVM = ref new SongPlayerVM(*player, *playlist, *musicProvider);
-	m_volumeSlideVM = ref new VolumeSliderVM(*player);
-	m_searchResultsVM = ref new SearchResultsVM(m_searchVM, *playlist);
+	auto vmLoads = DispatchToUI([&]()
+	{
+		m_searchVM = ref new SearchVM(*musicSearcher, *playlist, *player);
+		m_songListVM = ref new SongListControlVM(*playlist);
+		m_albumListVM = ref new AlbumListControlVM();
+		m_playerVM = ref new SongPlayerVM(*player, *playlist, *musicProvider);
+		m_volumeSlideVM = ref new VolumeSliderVM(*player);
+		m_searchResultsVM = ref new SearchResultsVM(m_searchVM, *playlist);
 
-	m_playerVM->VolumeVM = m_volumeSlideVM;
+		m_playerVM->VolumeVM = m_volumeSlideVM;
 
-	AlbumsChangedCallback cb = [this](const AlbumCollectionChanges& albums){ this->OnAlbumsReady(albums); };
-	m_albumSub = m_musicProvider->SubscribeAlbums(cb);
-
-	v_albumListControl->VM = m_albumListVM;
-	v_songListControl->VM = m_songListVM;
-	v_bottomBar->VM = m_playerVM;
+		v_albumListControl->VM = m_albumListVM;
+		v_songListControl->VM = m_songListVM;
+		v_bottomBar->VM = m_playerVM;
+	});
+	vmLoads.wait();
 
 	function<void(const Events::AlbumSelectedEvent&)> albumSelctedCB = [this](const Events::AlbumSelectedEvent& ev)
 	{
@@ -208,7 +209,10 @@ void Arcusical::MainPage::SetDependencies(	MusicSearcher* musicSearcher,
 	};
 	m_albumSelectedSub = Events::EventService<Events::AlbumSelectedEvent>::RegisterListener(albumSelctedCB);
 
-	SetupTransportControls(player);
+	AlbumsChangedCallback cb = [this](const AlbumCollectionChanges& albums) { this->OnAlbumsReady(albums); };
+	m_albumSub = m_musicProvider->SubscribeAlbums(cb);
+
+	//SetupTransportControls(player);
 }
 
 int FindIndexOf(AlbumList^ albums, boost::uuids::uuid id)
