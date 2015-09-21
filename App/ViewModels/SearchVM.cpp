@@ -10,10 +10,11 @@ using namespace Arcusical::Player;
 using namespace Arcusical::ViewModel;
 using namespace Util;
 
-SearchVM::SearchVM(MusicSearcher& searcher, Playlist& playlist, IPlayer& player)
+SearchVM::SearchVM(MusicSearcher& searcher, Playlist& playlist, IPlayer& player, BackgroundWorker& worker)
 	: m_searcher(searcher)
 	, m_playlist(playlist)
 	, m_player(player)
+	, m_worker(worker)
 {
 	this->SearchTerm = "Search";
 	m_onSearchTermChangedSub = this->OnSearchTermChanged += [this](Platform::String^ newValue)
@@ -38,13 +39,13 @@ void Arcusical::ViewModel::SearchVM::StartSearch(Platform::String^ searchTerm)
 	wstring term{ searchTerm->Data() };
 	m_searchCancelToken = make_shared<CancellationToken>();
 
-	std::async([term, this]()
+	m_worker.Append([term, this]()
 	{
 		auto results = m_searcher.Find(term, m_searchCancelToken);
 		if (!results.CancellationToken->IsCanceled())
 		{
-			AlbumList^ albums = ViewModel::AlbumListControlVM::CreateAlbumList(results.Albums, m_playlist, m_player);
-			SongListVM^ songs = ref new SongListVM(results.Songs, m_playlist, m_player);
+			AlbumList^ albums = ViewModel::AlbumListControlVM::CreateAlbumList(results.Albums, m_playlist, m_player, m_worker);
+			SongListVM^ songs = ref new SongListVM(results.Songs, m_playlist, m_player, m_worker);
 			SearchResults(albums, songs, results.CancellationToken);
 		}
 	});

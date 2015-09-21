@@ -1,8 +1,9 @@
 #ifndef SONG_LIST_CONTROL_VM_HPP
 #define SONG_LIST_CONTROL_VM_HPP
 
-#include "Utility/XamlMacros.hpp"
+#include "AsyncProcessor.hpp"
 #include "Subscription.hpp"
+#include "Utility/XamlMacros.hpp"
 
 namespace Arcusical{
 	namespace Events
@@ -25,9 +26,10 @@ namespace ViewModel{
 		void Shuffle();
 
 	internal:
-		SongListControlVM(Player::Playlist& playlist);
+		SongListControlVM(Player::Playlist& playlist, Util::BackgroundWorker& worker);
 	private:
 		Player::Playlist& m_playlist;
+		Util::BackgroundWorker& m_worker;
 	};
 
 }

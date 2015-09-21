@@ -2,8 +2,9 @@
 #ifndef SONG_PLAYER_VM_HPP
 #define SONG_PLAYER_VM_HPP
 
-#include "Subscription.hpp"
+#include "AsyncProcessor.hpp"
 #include "PropertyHelper.hpp"
+#include "Subscription.hpp"
 #include "Utility/XamlMacros.hpp"
 #include "ViewModels/SongVM.hpp"
 #include "ViewModels/VolumeSilderVM.hpp"
@@ -38,7 +39,7 @@ namespace Arcusical
 			void ChangeTimeTo(double newTime);
 
 		internal:
-			SongPlayerVM(Player::IPlayer& player, Player::Playlist& playlist, MusicProvider::MusicProvider& provider);
+			SongPlayerVM(Player::IPlayer& player, Player::Playlist& playlist, MusicProvider::MusicProvider& provider, Util::BackgroundWorker& worker);
 
 		private:
 			void UpdateTime(double amountPlayed, double duration);
@@ -52,6 +53,7 @@ namespace Arcusical
 			Player::IPlayer& m_player;
 			Player::Playlist& m_playlist;
 			MusicProvider::MusicProvider& m_provider;
+			Util::BackgroundWorker& m_worker;
 		};
 	}
 }

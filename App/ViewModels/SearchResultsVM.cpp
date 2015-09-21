@@ -5,10 +5,10 @@
 using namespace Arcusical::Player;
 using namespace Arcusical::ViewModel;
 
-SearchResultsVM::SearchResultsVM(SearchVM^ searchVm, Playlist& playlist)
+SearchResultsVM::SearchResultsVM(SearchVM^ searchVm, Playlist& playlist, Util::BackgroundWorker& worker)
 {
 	this->Albums = ref new AlbumListControlVM();
-	this->Songs = ref new SongListControlVM(playlist);
+	this->Songs = ref new SongListControlVM(playlist, worker);
 	m_resultsSub = searchVm->SearchResults += [this](ViewModel::AlbumList^ albums, ViewModel::SongListVM^ songs, Util::CancellationTokenRef token)
 	{
 		auto future = DispatchToUI([this, &albums, &songs, token]()

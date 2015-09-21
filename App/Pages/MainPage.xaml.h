@@ -7,6 +7,7 @@
 
 #include "Pages/MainPage.g.h"
 
+#include "AsyncProcessor.hpp"
 #include "ViewModels/AlbumListControlVM.hpp"
 #include "ViewModels/SearchVM.hpp"
 #include "ViewModels/SearchResultsVM.hpp"
@@ -34,7 +35,8 @@ namespace Arcusical
 		void SetDependencies(	MusicProvider::MusicSearcher* musicSearcher,
 								MusicProvider::MusicProvider* musicProvider,
 								Player::IPlayer* player,
-								Player::Playlist* playlist);
+								Player::Playlist* playlist,
+								Util::BackgroundWorker* worker);
 	private:
 		void SetupTransportControls(Player::IPlayer* player);
 		void OnTransportControlButtonPressed(Windows::Media::SystemMediaTransportControls^ sender, Windows::Media::SystemMediaTransportControlsButtonPressedEventArgs^ args);
@@ -51,6 +53,7 @@ namespace Arcusical
 		MusicProvider::MusicProvider* m_musicProvider;
 		Player::Playlist* m_playlist;
 		Player::IPlayer* m_player;
+		Util::BackgroundWorker* m_backgroundWorker;
 
 		ViewModel::AlbumListControlVM^ m_albumListVM;
 		ViewModel::SongListControlVM^ m_songListVM;

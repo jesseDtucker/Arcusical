@@ -159,6 +159,29 @@ namespace Util
 		m_outputBuffer = outputBuffer;
 	}
 
+	template<>
+	inline
+	void AsyncProcessor<std::function<void()>, void>::Start()
+	{
+		ARC_ASSERT(!m_isRunning);
+
+		m_processorFunction = [this]()
+		{
+			while (m_inputBuffer.ResultsPending() && !m_isStopping)
+			{
+				auto input = m_inputBuffer.GetNext(m_timeout);
+				if (input)
+				{
+					(*input)();
+				}
+			}
+		};
+
+		m_inputBuffer.Reset();
+		m_isRunning = true;
+		m_workFuture = std::async(std::launch::async, m_processorFunction);
+	}
+
 	template<typename Input, typename Output>
 	void AsyncProcessor<Input, Output>::Start()
 	{
@@ -239,6 +262,8 @@ namespace Util
 	{
 		m_inputBuffer.Append(value);
 	}
+
+	typedef Util::AsyncProcessor<std::function<void()>, void> BackgroundWorker;
 }
 
 #endif

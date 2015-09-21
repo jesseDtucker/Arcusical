@@ -12,13 +12,11 @@ using namespace std;
 using namespace Arcusical::Model;
 using namespace Arcusical::Player;
 
-#define UNUSED(x) (void)x;
-
 namespace Arcusical
 {
 	namespace ViewModel
 	{
-		SongPlayerVM::SongPlayerVM(IPlayer& player, Playlist& playlist, MusicProvider::MusicProvider& provider)
+		SongPlayerVM::SongPlayerVM(IPlayer& player, Playlist& playlist, MusicProvider::MusicProvider& provider, Util::BackgroundWorker& worker)
 			: m_CurrentSong(nullptr)
 			, m_AmountPlayed(0.0)
 			, m_AmoutRemaining(0.0)
@@ -27,6 +25,7 @@ namespace Arcusical
 			, m_player(player)
 			, m_playlist(playlist)
 			, m_provider(provider)
+			, m_worker(worker)
 		{
 			// listen to the song player and respond to changes in state
 			m_durationSub = m_player.GetDurationChanged() += [this](double duration)
@@ -59,7 +58,7 @@ namespace Arcusical
 			m_songChangedSub = m_player.GetSongChanged() += [this](const boost::optional<Song>& newSong)
 			{
 				Song song = newSong ? *newSong : Song();
-				SongVM^ curSong = ref new SongVM(song, m_playlist, m_player);
+				SongVM^ curSong = ref new SongVM(song, m_playlist, m_player, m_worker);
 
 				Platform::String^ imgPath = AlbumImagePath;
 				if (newSong)
@@ -83,7 +82,7 @@ namespace Arcusical
 
 		void SongPlayerVM::Play()
 		{
-			async([this]()
+			m_worker.Append([this]()
 			{
 				m_player.Play();
 			});
@@ -91,7 +90,7 @@ namespace Arcusical
 
 		void SongPlayerVM::Pause()
 		{
-			async([this]()
+			m_worker.Append([this]()
 			{
 				m_player.Stop();
 			});
@@ -99,7 +98,7 @@ namespace Arcusical
 
 		void SongPlayerVM::Previous()
 		{
-			async([this]()
+			m_worker.Append([this]()
 			{
 				m_playlist.PlayPrevious();
 			});
@@ -107,7 +106,7 @@ namespace Arcusical
 
 		void SongPlayerVM::Next()
 		{
-			async([this]()
+			m_worker.Append([this]()
 			{
 				m_playlist.PlayNext();
 			});

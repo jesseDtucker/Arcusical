@@ -4,6 +4,7 @@
 
 #include <string>
 
+#include "AsyncProcessor.hpp"
 #include "MulticastDelegate.hpp"
 #include "PropertyHelper.hpp"
 #include "Utility/XamlMacros.hpp"
@@ -29,7 +30,7 @@ namespace ViewModel{
 		void SelectCurrent();
 
 	internal:
-		SearchVM(MusicProvider::MusicSearcher& searcher, Player::Playlist& playlist, Player:: IPlayer& player);
+		SearchVM(MusicProvider::MusicSearcher& searcher, Player::Playlist& playlist, Player:: IPlayer& player, Util::BackgroundWorker& worker);
 		Util::MulticastDelegate<void(AlbumList^, SongListVM^, Util::CancellationTokenRef)> SearchResults;
 
 	private:
@@ -39,6 +40,7 @@ namespace ViewModel{
 		MusicProvider::MusicSearcher& m_searcher;
 		Player::Playlist& m_playlist;
 		Player::IPlayer& m_player;
+		Util::BackgroundWorker& m_worker;
 
 		Util::CancellationTokenRef m_searchCancelToken = nullptr;
 		Util::Subscription m_onSearchTermChangedSub;

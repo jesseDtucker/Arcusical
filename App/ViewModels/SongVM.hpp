@@ -3,6 +3,7 @@
 
 #include <memory>
 
+#include "AsyncProcessor.hpp"
 #include "Song.hpp"
 #include "Stream.hpp"
 #include "PropertyHelper.hpp"
@@ -63,13 +64,14 @@ namespace Arcusical{ namespace ViewModel {
 		void Pause();
 
 	internal:
-		SongVM(const Model::Song& song, Player::Playlist& playlist, Player::IPlayer& player);
+		SongVM(const Model::Song& song, Player::Playlist& playlist, Player::IPlayer& player, Util::BackgroundWorker& worker);
 		Model::Song* GetModel();
 
 	private:
 		Model::Song m_song;
 		Player::Playlist& m_playlist;
 		Player::IPlayer& m_player;
+		Util::BackgroundWorker& m_worker;
 	};
 
 } /* ViewModel */

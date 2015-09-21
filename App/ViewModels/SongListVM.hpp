@@ -4,6 +4,7 @@
 #include <collection.h>
 #include <vector>
 
+#include "AsyncProcessor.hpp"
 #include "MusicTypes.hpp"
 #include "PropertyHelper.hpp"
 #include "ViewModels/SongVM.hpp"
@@ -30,7 +31,7 @@ namespace ViewModel
 		PROP_SET_AND_GET_WINRT(Windows::Foundation::Collections::IVector<ViewModel::SongVM^>^, List);
 
 	internal:
-		SongListVM(const std::vector<Model::Song>& songs, Player::Playlist& playlist, Player::IPlayer& player);
+		SongListVM(const std::vector<Model::Song>& songs, Player::Playlist& playlist, Player::IPlayer& player, Util::BackgroundWorker& worker);
 	private:
 		
 	};

@@ -41,6 +41,7 @@ using namespace Arcusical::ViewModel;
 using namespace Arcusical::MusicProvider;
 using namespace Arcusical::Player;
 using namespace FileSystem;
+using namespace Util;
 
 MainPage::MainPage()
 	// Models
@@ -174,26 +175,29 @@ void MainPage::OnTransportControlButtonPressed(SystemMediaTransportControls^ sen
 void Arcusical::MainPage::SetDependencies(	MusicSearcher* musicSearcher, 
 											MusicProvider::MusicProvider* musicProvider, 
 											IPlayer* player, 
-											Playlist* playlist)
+											Playlist* playlist,
+											BackgroundWorker* worker)
 {
 	ARC_ASSERT(musicSearcher != nullptr);
 	ARC_ASSERT(musicProvider != nullptr);
 	ARC_ASSERT(player != nullptr);
 	ARC_ASSERT(playlist != nullptr);
+	ARC_ASSERT(worker != nullptr);
 
 	m_musicProvider = musicProvider;
 	m_player = player;
 	m_playlist = playlist;
 	m_searcher = musicSearcher;
+	m_backgroundWorker = worker;
 
 	auto vmLoads = DispatchToUI([&]()
 	{
-		m_searchVM = ref new SearchVM(*musicSearcher, *playlist, *player);
-		m_songListVM = ref new SongListControlVM(*playlist);
+		m_searchVM = ref new SearchVM(*musicSearcher, *playlist, *player, *m_backgroundWorker);
+		m_songListVM = ref new SongListControlVM(*playlist, *m_backgroundWorker);
 		m_albumListVM = ref new AlbumListControlVM();
-		m_playerVM = ref new SongPlayerVM(*player, *playlist, *musicProvider);
+		m_playerVM = ref new SongPlayerVM(*player, *playlist, *musicProvider, *m_backgroundWorker);
 		m_volumeSlideVM = ref new VolumeSliderVM(*player);
-		m_searchResultsVM = ref new SearchResultsVM(m_searchVM, *playlist);
+		m_searchResultsVM = ref new SearchResultsVM(m_searchVM, *playlist, *m_backgroundWorker);
 
 		m_playerVM->VolumeVM = m_volumeSlideVM;
 
@@ -241,7 +245,7 @@ void Arcusical::MainPage::OnAlbumsReady(const Model::AlbumCollectionChanges& alb
 	if (albumChanges.NewAlbums.size() + m_albumListVM->Albums->Size - albumChanges.DeletedAlbums.size() != albumChanges.AllAlbums->size())
 	{
 		// then the sizes do not add up. In this case just refresh the list and carry on
-		auto allAblums = AlbumListControlVM::CreateAlbumList(*albumChanges.AllAlbums, *m_playlist, *m_player);
+		auto allAblums = AlbumListControlVM::CreateAlbumList(*albumChanges.AllAlbums, *m_playlist, *m_player, *m_backgroundWorker);
 		sort(begin(allAblums), end(allAblums), [](AlbumVM^ a, AlbumVM^ b)
 		{
 			return a->Title < b->Title;
@@ -255,7 +259,7 @@ void Arcusical::MainPage::OnAlbumsReady(const Model::AlbumCollectionChanges& alb
 	{
 		// numbers match up, just do a partial update
 		// create a list of new view models
-		auto newAlbums = AlbumListControlVM::CreateAlbumList(albumChanges.NewAlbums, *m_playlist, *m_player);
+		auto newAlbums = AlbumListControlVM::CreateAlbumList(albumChanges.NewAlbums, *m_playlist, *m_player, *m_backgroundWorker);
 
 		// modified albums need to be copied out because they will but used by another thread
 		vector<Album> modifiedAlbums;

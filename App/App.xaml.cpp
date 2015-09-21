@@ -12,7 +12,7 @@
 #include <memory>
 #include <mutex>
 
-
+#include "AsyncProcessor.hpp"
 #include "Playlist.hpp"
 #include "MusicProvider.hpp"
 #include "../src/Win8Player.hpp" // This is a hack for the time being. I need something similar to flow engine for resolving dependencies...
@@ -56,7 +56,7 @@ App::App()
 void App::SetupApplication()
 {
 	// some of the services use COM and so should not be initialized on the UI thread
-	m_playerLoading = async([&]()
+	m_backgroundWorker.Append([&]()
 	{
 		m_player = make_unique<Win8Player>();
 		m_playlist = make_unique<Playlist>(m_player.get(), &m_musicProvider);
@@ -112,10 +112,10 @@ void App::OnLaunched(Windows::ApplicationModel::Activation::LaunchActivatedEvent
 
 		MainPage^ mainPage = dynamic_cast<MainPage^>(rootFrame->Content);
 		ARC_ASSERT(mainPage != nullptr);
-		m_setupDependencies = std::async([mainPage, this]()
+		m_backgroundWorker.Start();
+		m_backgroundWorker.Append([mainPage, this]()
 		{
-			m_playerLoading.wait();
-			mainPage->SetDependencies(&m_searcher, &m_musicProvider, m_player.get(), m_playlist.get());
+			mainPage->SetDependencies(&m_searcher, &m_musicProvider, m_player.get(), m_playlist.get(), &m_backgroundWorker);
 		});
 
 		// Place the frame in the current Window

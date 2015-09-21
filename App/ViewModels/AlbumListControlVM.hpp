@@ -5,12 +5,14 @@
 
 #include "PropertyHelper.hpp"
 #include "Utility/XamlMacros.hpp"
+#include "AsyncProcessor.hpp"
 
 namespace Arcusical {
 namespace ViewModel{
 
 	typedef Windows::Foundation::Collections::IObservableVector<AlbumVM^> AlbumList;
 
+	// TODO::JT. This code is confusing. Is this a factory? An object? both? Clarify the design!
 	[Windows::UI::Xaml::Data::Bindable]
 	public ref class AlbumListControlVM sealed : INotifyPropertyChanged_t
 	{
@@ -25,17 +27,20 @@ namespace ViewModel{
 		static AlbumList^
 			CreateAlbumList(const Model::AlbumPtrCollection& albums,
 			Player::Playlist& playlist,
-			Player::IPlayer& player);
+			Player::IPlayer& player,
+			Util::BackgroundWorker& worker);
 
 		static AlbumList^
 			CreateAlbumList(const std::vector<Model::Album>& albums,
 			Player::Playlist& playlist,
-			Player::IPlayer& player);
+			Player::IPlayer& player,
+			Util::BackgroundWorker& worker);
 
 		static AlbumList^
 			CreateAlbumList(const Model::AlbumCollection& albums,
 			Player::Playlist& playlist,
-			Player::IPlayer& player);
+			Player::IPlayer& player,
+			Util::BackgroundWorker& worker);
 
 	private:
 

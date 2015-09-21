@@ -3,6 +3,7 @@
 
 #include <memory>
 
+#include "AsyncProcessor.hpp"
 #include "PropertyHelper.hpp"
 #include "ViewModels/SongListVM.hpp"
 #include "Utility/DispatcherHelper.hpp"
@@ -34,7 +35,7 @@ namespace ViewModel{
 		void Play();
 		
 	internal:
-		AlbumVM(const Model::Album& album, Player::Playlist& playlist, Player::IPlayer& player);
+		AlbumVM(const Model::Album& album, Player::Playlist& playlist, Player::IPlayer& player, Util::BackgroundWorker& worker);
 		void SetFrom(const Model::Album& album); // intended for use with live/progressive updates
 
 		const Model::Album* GetModel() const;
@@ -42,6 +43,7 @@ namespace ViewModel{
 		Model::Album m_album;
 		Player::Playlist& m_playlist;
 		Player::IPlayer& m_player;
+		Util::BackgroundWorker& m_worker;
 		SongListVM^ m_songs;
 	};
 

@@ -18,19 +18,21 @@ using namespace Windows::UI::Xaml::Data;
 using namespace Arcusical::Events;
 using namespace Arcusical::Model;
 using namespace Arcusical::Player;
+using namespace Util;
 
 namespace Arcusical {
 namespace ViewModel{
 
-	SongListControlVM::SongListControlVM(Playlist& playlist)
+	SongListControlVM::SongListControlVM(Playlist& playlist, BackgroundWorker& worker)
 		: m_playlist(playlist)
+		, m_worker(worker)
 	{
 		
 	}
 
 	void SongListControlVM::PlaySongsAfterAndIncluding(SongVM^ song)
 	{
-		async([this, song]()
+		m_worker.Append([this, song]()
 		{
 			auto itr = SongList->List->First();
 			vector<Song> songsToPlay;
@@ -63,7 +65,7 @@ namespace ViewModel{
 			return;
 		}
 
-		std::async([this]()
+		m_worker.Append([this]()
 		{
 			auto itr = SongList->List->First();
 			vector<Song> songsToPlay;
@@ -82,8 +84,6 @@ namespace ViewModel{
 				m_playlist.Enqueue(songsToPlay);
 			}
 		});
-		
 	}
-
 }
 }

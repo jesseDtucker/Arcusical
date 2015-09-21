@@ -14,6 +14,7 @@ using namespace std;
 using namespace Windows::UI::Xaml::Data;
 
 using namespace Arcusical::Player;
+using namespace Util;
 
 namespace Arcusical{
 namespace ViewModel {
@@ -26,11 +27,12 @@ namespace ViewModel {
 		{ Model::AudioFormat::MP3, ViewModel::AudioFormat::MP3 }
 	};
 
-	SongVM::SongVM(const Model::Song& song, Playlist& playlist, IPlayer& player)
+	SongVM::SongVM(const Model::Song& song, Playlist& playlist, IPlayer& player, BackgroundWorker& worker)
 		: m_song(song)
 		, m_playlist(playlist)
 		, m_player(player)
 		, m_IsAlternate(false)
+		, m_worker(worker)
 	{
 		auto title = m_song.GetTitle();
 
@@ -79,7 +81,7 @@ namespace ViewModel {
 
 	void SongVM::Play()
 	{
-		async([this]()
+		m_worker.Append([this]()
 		{
 			m_playlist.Clear();
 			m_playlist.Enqueue(m_song);
@@ -88,7 +90,7 @@ namespace ViewModel {
 
 	void SongVM::Pause()
 	{
-		async([this]()
+		m_worker.Append([this]()
 		{
 			m_player.Stop();
 		});
