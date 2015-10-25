@@ -58,7 +58,7 @@ void App::SetupApplication()
 	// some of the services use COM and so should not be initialized on the UI thread
 	m_backgroundWorker.Append([&]()
 	{
-		m_player = make_unique<Win8Player>();
+		m_player = make_unique<Win8Player>(m_backgroundWorker);
 		m_playlist = make_unique<Playlist>(m_player.get(), &m_musicProvider);
 	});
 }

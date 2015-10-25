@@ -6,6 +6,7 @@
 #include <deque>
 #include <functional>
 #include <future>
+#include <iterator>
 
 #include "Arc_Assert.hpp"
 #include "MulticastDelegate.hpp"
@@ -250,7 +251,7 @@ namespace Util
 	{
 		WORK_BUFFER_LOCK;
 		ARC_ASSERT(!m_isDone);
-		std::move(begin(values), end(values), back_inserter(m_buffer));
+		std::move(begin(values), end(values), std::back_inserter(m_buffer));
 		m_consumerCP.notify_all();
 	}
 
@@ -280,7 +281,7 @@ namespace Util
 		WORK_BUFFER_LOCK;
 		std::vector<T> results;
 		results.reserve(m_buffer.size());
-		std::move(begin(m_buffer), end(m_buffer), back_inserter(results));
+		std::move(begin(m_buffer), end(m_buffer), std::back_inserter(results));
 		m_buffer = {};
 		return results;
 	}
@@ -322,7 +323,7 @@ namespace Util
 			results.reserve(numToGet);
 
 			auto last = std::next(begin(m_buffer), numToGet);
-			std::move(begin(m_buffer), last, back_inserter(results));
+			std::move(begin(m_buffer), last, std::back_inserter(results));
 			m_buffer.erase(begin(m_buffer), last);
 
 			return results;

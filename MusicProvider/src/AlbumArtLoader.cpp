@@ -424,6 +424,9 @@ wstring GetOnlyPathToFile(const wstring& fullPath)
 
 wstring FindArt(const wstring& albumName, const vector<tuple<wstring, ContainerType>>& albumSongInfo, const vector<wstring>& imagePaths)
 {
+	if (imagePaths.size() == 0) {
+		return L"";
+	}
 	// this is gonna get messy...
 	// will find art for a song by simply: 
 	// 1) determining the number of identical characters in the song path and art path

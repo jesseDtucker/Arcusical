@@ -4,6 +4,7 @@
 #include <ppltasks.h>
 
 #include "Arc_Assert.hpp"
+#include "AsyncProcessor.hpp"
 #include "Song.hpp"
 #include "Win8Player.hpp"
 
@@ -11,6 +12,7 @@ using namespace ATL;
 using namespace Windows::Media;
 using namespace Microsoft::WRL;
 using namespace concurrency;
+using namespace Util;
 
 const std::string Arcusical::Player::IPlayer::ServiceName("Win8Player");
 const double DEFAULT_VOLUME = 0.5;
@@ -20,8 +22,9 @@ namespace Arcusical
 namespace Player
 {
 
-	Win8Player::Win8Player()
-		: m_currentSong(boost::none)
+	Win8Player::Win8Player(BackgroundWorker& backgroundWorker)
+		: m_backgroundWorker(backgroundWorker)
+		, m_currentSong(boost::none)
 		, m_mediaEngine(nullptr)
 		, m_factory(nullptr)
 		, m_attributes(nullptr)
@@ -53,8 +56,6 @@ namespace Player
 		result = engine.Get()->QueryInterface(__uuidof(IMFMediaEngine), (void**)(&m_mediaEngine));
 		ARC_ThrowIfFailed(result);
 
-		SetVolume(DEFAULT_VOLUME);
-
 		auto alacInputId = MFMPEG4Format_Base;
 		alacInputId.Data1 = 'alac';
 
@@ -63,7 +64,10 @@ namespace Player
 		m_extensionManager = ref new MediaExtensionManager();
 		m_extensionManager->RegisterAudioDecoder("ALACDecoder.ALACDecoder", alacInputId, alacOutputId);
 
+		m_mediaEngineNotify.SetBackgroundWorker(&m_backgroundWorker);
 		m_mediaEngineNotify.SetPlayer(this);
+
+		SetVolume(DEFAULT_VOLUME);
 	}
 
 	Win8Player::~Win8Player()
@@ -177,15 +181,8 @@ namespace Player
 
 	HRESULT MediaEngineNotify::EventNotify(_In_ DWORD event, _In_ DWORD_PTR param1, _In_ DWORD param2)
 	{
-		static std::mutex hack;
-		OutputDebugStringA("Media Engine Notify\n");
-		// TODO:JT create some sort of processor for this, a new async every time is just asking for trouble
-		std::async([this, event, param1, param2]()
+		m_backgroundWorker->Append([this, event, param1, param2]()
 		{
-			// HAX
-			std::this_thread::sleep_for(std::chrono::milliseconds(100));
-			std::lock_guard<decltype(hack)> lock(hack);
-			OutputDebugStringA("Media Engine Notify Async\n");
 			if (m_player != nullptr)
 			{
 				switch (event)
@@ -226,6 +223,12 @@ namespace Player
 	{
 		ARC_ASSERT(player != nullptr);
 		m_player = player;
+	}
+
+	void MediaEngineNotify::SetBackgroundWorker(BackgroundWorker* worker)
+	{
+		ARC_ASSERT(worker != nullptr);
+		m_backgroundWorker = worker;
 	}
 
 	ULONG MediaEngineNotify::AddRef()

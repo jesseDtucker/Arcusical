@@ -8,6 +8,7 @@
 #include <mfapi.h>
 #include <Mfmediaengine.h>
 
+#include "AsyncProcessor.hpp"
 #include "IPlayer.hpp"
 
 namespace Arcusical
@@ -25,6 +26,7 @@ namespace Player
 	public:
 
 		void SetPlayer(Win8Player* player);
+		void SetBackgroundWorker(Util::BackgroundWorker* worker);
 
 		// IMFMediaEngineNotify + IUnknown interface
 		virtual HRESULT STDMETHODCALLTYPE EventNotify
@@ -47,12 +49,13 @@ namespace Player
 
 		std::atomic<ULONG> m_refCount = 1;
 		Win8Player* m_player = nullptr;
+		Util::BackgroundWorker* m_backgroundWorker = nullptr;
 	};
 
 	class Win8Player final : public IPlayer
 	{
 	public:
-		Win8Player();
+		Win8Player(Util::BackgroundWorker& backgroundWorker);
 		virtual ~Win8Player();
 
 		virtual void SetSong(const Model::Song& song) override;
@@ -72,6 +75,7 @@ namespace Player
 	private:
 		void PlayNativeSong(Model::SongStream& stream);
 
+		Util::BackgroundWorker& m_backgroundWorker;
 		boost::optional<Model::Song> m_currentSong;
 		MediaEngineNotify m_mediaEngineNotify;
 		bool m_isCurrentSongSetForPlay;
