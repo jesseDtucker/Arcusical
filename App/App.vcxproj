@@ -249,7 +249,13 @@
     <Page Include="Converters\Converters.xaml" />
     <Page Include="Pages\MainPage.xaml" />
     <Page Include="Styles\ButtonStyles.xaml" />
+    <Page Include="Styles\ColourPalette.xaml">
+      <DeploymentContent>true</DeploymentContent>
+    </Page>
     <Page Include="Styles\SongProgressBar.xaml" />
+    <Page Include="Styles\VolumeSliderStyle.xaml">
+      <DeploymentContent>true</DeploymentContent>
+    </Page>
     <Page Include="Themes\Generic.xaml" />
   </ItemGroup>
   <ItemGroup>
@@ -323,6 +329,7 @@
     <Image Include="Assets\Icons\Play.png" />
     <Image Include="Assets\Icons\Reverse.png" />
     <Image Include="Assets\Icons\SearchIcon.png" />
+    <Image Include="Assets\Icons\Volume.png" />
     <Image Include="Assets\Logo\Logo.scale-100.png">
       <DeploymentContent>true</DeploymentContent>
     </Image>

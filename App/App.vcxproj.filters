@@ -50,7 +50,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App.xaml.cpp" />
-    <ClCompile Include="MainPage.xaml.cpp" />
     <ClCompile Include="pch.cpp" />
     <ClCompile Include="Converters\AlternateConverter.cpp">
       <Filter>Converters</Filter>
@@ -109,7 +108,6 @@
   <ItemGroup>
     <ClInclude Include="pch.h" />
     <ClInclude Include="App.xaml.h" />
-    <ClInclude Include="MainPage.xaml.h" />
     <ClInclude Include="Converters\AlternateConverter.hpp">
       <Filter>Converters</Filter>
     </ClInclude>
@@ -206,6 +204,12 @@
     </Page>
     <Page Include="Themes\Generic.xaml">
       <Filter>Themes</Filter>
+    </Page>
+    <Page Include="Styles\VolumeSliderStyle.xaml">
+      <Filter>Styles</Filter>
+    </Page>
+    <Page Include="Styles\ColourPalette.xaml">
+      <Filter>Styles</Filter>
     </Page>
   </ItemGroup>
   <ItemGroup>
@@ -334,6 +338,9 @@
     </Image>
     <Image Include="Assets\Misc\CornerGradient.png">
       <Filter>Assets\Misc</Filter>
+    </Image>
+    <Image Include="Assets\Icons\Volume.png">
+      <Filter>Assets\Icons</Filter>
     </Image>
   </ItemGroup>
   <ItemGroup>
