@@ -32,14 +32,8 @@
 			</DataTemplate>
 		</ResourceDictionary>
 	</UserControl.Resources>
-	<Grid>
-				<!--
-				<Button HorizontalAlignment="Stretch" Click="Shuffle_Clicked" 
-							Visibility="{Binding Path=SongList, Converter={StaticResource SongListVisibilityConverter}}">
-					<TextBlock Text="SHUFFLE"/>
-				</Button>
-				-->
-		<ListView Height="Auto" ItemsSource="{Binding SongList.List}" Foreground="Blue"
+    <Grid>
+        <ListView Height="Auto" ItemsSource="{Binding SongList.List}" Foreground="Blue"
 						ItemTemplate="{StaticResource SongListItemTemplate}">
 			<ListView.ItemContainerStyle>
 				<Style TargetType="ListViewItem">

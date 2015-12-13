@@ -1,39 +1,41 @@
 ﻿<Page
-	x:Class="Arcusical.MainPage"
-	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-	xmlns:local="using:Arcusical"
-	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-	VerticalAlignment="Stretch"
-	mc:Ignorable="d">
-	<Page.Resources>
-		<ResourceDictionary>
-			<LinearGradientBrush x:Name="shadowBrush" StartPoint="0,0" EndPoint="0,1">
-				<GradientStop Color="Black" Offset="-0.7"/>
-				<GradientStop Color="#00000000" Offset="1"/>
-			</LinearGradientBrush>
-			<LinearGradientBrush x:Name="shadowBrushVertical" StartPoint="0,0" EndPoint="1,0">
-				<GradientStop Color="Black" Offset="-0.7"/>
-				<GradientStop Color="#00000000" Offset="1"/>
-			</LinearGradientBrush>
-			<LinearGradientBrush x:Name="shadowBrushVerticalReverse" StartPoint="0,0" EndPoint="1,0">
-				<GradientStop Color="#00000000" Offset="0"/>
-				<GradientStop Color="Black" Offset="1.7"/>
-			</LinearGradientBrush>
-		</ResourceDictionary>
-	</Page.Resources>
+    x:Class="Arcusical.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Arcusical"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    VerticalAlignment="Stretch"
+    mc:Ignorable="d"
+    d:DesignHeight="600"
+    d:DesignWidth="1000">
+    <Page.Resources>
+        <ResourceDictionary>
+            <LinearGradientBrush x:Name="shadowBrush" StartPoint="0,0" EndPoint="0,1">
+                <GradientStop Color="Black" Offset="-0.7"/>
+                <GradientStop Color="#00000000" Offset="1"/>
+            </LinearGradientBrush>
+            <LinearGradientBrush x:Name="shadowBrushVertical" StartPoint="0,0" EndPoint="1,0">
+                <GradientStop Color="Black" Offset="-0.7"/>
+                <GradientStop Color="#00000000" Offset="1"/>
+            </LinearGradientBrush>
+            <LinearGradientBrush x:Name="shadowBrushVerticalReverse" StartPoint="0,0" EndPoint="1,0">
+                <GradientStop Color="#00000000" Offset="0"/>
+                <GradientStop Color="Black" Offset="1.7"/>
+            </LinearGradientBrush>
+        </ResourceDictionary>
+    </Page.Resources>
 
-	<Grid>
-		<Grid Background="#F0F0F0" Margin="0,0,0,70">
-			<Grid.ColumnDefinitions>
-				<ColumnDefinition Width="15*"/>
-				<ColumnDefinition Width="45*"/>
-			</Grid.ColumnDefinitions>
-			<local:SongListControl Grid.Column="0" x:Name="v_songListControl"/>
-			<local:AlbumListControl Grid.Column="1" x:Name="v_albumListControl" HorizontalAlignment="Center"/>
-		</Grid>
-		<local:BottomBar x:Name="v_bottomBar"  VerticalAlignment="Bottom" HorizontalAlignment="Stretch" MaxHeight="128"/>
-	</Grid>
+    <Grid>
+        <Grid Background="#F0F0F0" Margin="0,0,0,70">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="15*"/>
+                <ColumnDefinition Width="45*"/>
+            </Grid.ColumnDefinitions>
+            <local:Guide Grid.Column="0" x:Name="v_guide" VerticalAlignment="Stretch"/>
+            <local:AlbumListControl Grid.Column="1" x:Name="v_albumListControl" HorizontalAlignment="Center"/>
+        </Grid>
+        <local:BottomBar x:Name="v_bottomBar"  VerticalAlignment="Bottom" HorizontalAlignment="Stretch" MaxHeight="128"/>
+    </Grid>
 
 </Page>

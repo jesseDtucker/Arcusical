@@ -15,7 +15,7 @@
    version="1.1"
    inkscape:version="0.48.4 r9939"
    sodipodi:docname="SearchIcon.svg"
-   inkscape:export-filename="D:\Development\Github\Arcusical\Arcusical\Assets\Icons\SearchIcon.png"
+   inkscape:export-filename="D:\Development\Github\Arcusical\App\Assets\Icons\SearchIcon.png"
    inkscape:export-xdpi="45.127403"
    inkscape:export-ydpi="45.127403">
   <defs
@@ -56,7 +56,8 @@
      id="layer1">
     <g
        id="g3772"
-       transform="matrix(0.99908869,-0.04268243,0.04268243,0.99908869,37.925948,81.374325)">
+       transform="matrix(0.99908869,-0.04268243,0.04268243,0.99908869,37.925948,81.374325)"
+       style="stroke:#ffffff">
       <path
          transform="translate(-24.184724,-96.738895)"
          d="m 580.43336,321.43765 c 0,74.41676 -60.32669,134.74346 -134.74345,134.74346 -74.41675,0 -134.74345,-60.3267 -134.74345,-134.74346 0,-74.41675 60.3267,-134.74345 134.74345,-134.74345 74.41676,0 134.74345,60.3267 134.74345,134.74345 z"
@@ -65,13 +66,13 @@
          sodipodi:cy="321.43765"
          sodipodi:cx="445.68991"
          id="path3000"
-         style="fill:none;stroke:#323232;stroke-width:70.86614227;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+         style="fill:none;stroke:#ffffff;stroke-width:70.86614226999999700;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
          sodipodi:type="arc" />
       <path
          inkscape:connector-curvature="0"
          id="path3770"
          d="m 513.63747,327.19591 140.50173,146.26"
-         style="fill:none;stroke:#323232;stroke-width:70.86614227;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+         style="fill:none;stroke:#ffffff;stroke-width:70.86614226999999700;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
     </g>
   </g>
 </svg>

@@ -9,6 +9,7 @@
 
 #include "AsyncProcessor.hpp"
 #include "ViewModels/AlbumListControlVM.hpp"
+#include "ViewModels/GuideVM.hpp"
 #include "ViewModels/SearchVM.hpp"
 #include "ViewModels/SearchResultsVM.hpp"
 #include "ViewModels/SongListControlVM.hpp"
@@ -56,7 +57,7 @@ namespace Arcusical
 		Util::BackgroundWorker* m_backgroundWorker;
 
 		ViewModel::AlbumListControlVM^ m_albumListVM;
-		ViewModel::SongListControlVM^ m_songListVM;
+		ViewModel::GuideVM^ m_guideVM;
 		ViewModel::SearchVM^ m_searchVM;
 		ViewModel::VolumeSliderVM^ m_volumeSlideVM;
 		ViewModel::SongPlayerVM^ m_playerVM;

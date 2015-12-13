@@ -104,6 +104,9 @@
     <ClCompile Include="Controls\SongListControl.xaml.cpp" />
     <ClCompile Include="Controls\VolumeSilder.xaml.cpp" />
     <ClCompile Include="Pages\MainPage.xaml.cpp" />
+    <ClCompile Include="ViewModels\GuideVM.cpp">
+      <Filter>ViewModels</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -167,6 +170,9 @@
     <ClInclude Include="Controls\SongListControl.xaml.h" />
     <ClInclude Include="Controls\VolumeSilder.xaml.h" />
     <ClInclude Include="Pages\MainPage.xaml.h" />
+    <ClInclude Include="ViewModels\GuideVM.hpp">
+      <Filter>ViewModels</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Page Include="Controls\AlbumListControl.xaml">
@@ -210,6 +216,9 @@
     </Page>
     <Page Include="Styles\ColourPalette.xaml">
       <Filter>Styles</Filter>
+    </Page>
+    <Page Include="Controls\Guide.xaml">
+      <Filter>Controls</Filter>
     </Page>
   </ItemGroup>
   <ItemGroup>
@@ -340,6 +349,21 @@
       <Filter>Assets\Misc</Filter>
     </Image>
     <Image Include="Assets\Icons\Volume.png">
+      <Filter>Assets\Icons</Filter>
+    </Image>
+    <Image Include="Assets\Misc\placeholder_album_background.jpg">
+      <Filter>Assets\Misc</Filter>
+    </Image>
+    <Image Include="Assets\Icons\Clock.png">
+      <Filter>Assets\Icons</Filter>
+    </Image>
+    <Image Include="Assets\Icons\Play_btn.png">
+      <Filter>Assets\Icons</Filter>
+    </Image>
+    <Image Include="Assets\Icons\Shuffle.png">
+      <Filter>Assets\Icons</Filter>
+    </Image>
+    <Image Include="Assets\Icons\Add.png">
       <Filter>Assets\Icons</Filter>
     </Image>
   </ItemGroup>

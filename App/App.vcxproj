@@ -195,6 +195,9 @@
     <ClInclude Include="Controls\BottomBar.xaml.h">
       <DependentUpon>Controls\BottomBar.xaml</DependentUpon>
     </ClInclude>
+    <ClInclude Include="Controls\Guide.xaml.h">
+      <DependentUpon>Controls\Guide.xaml</DependentUpon>
+    </ClInclude>
     <ClInclude Include="Controls\PlayerButtons.xaml.h">
       <DependentUpon>Controls\PlayerButtons.xaml</DependentUpon>
     </ClInclude>
@@ -227,6 +230,7 @@
     <ClInclude Include="Utility\XamlMacros.hpp" />
     <ClInclude Include="ViewModels\AlbumListControlVM.hpp" />
     <ClInclude Include="ViewModels\AlbumVM.hpp" />
+    <ClInclude Include="ViewModels\GuideVM.hpp" />
     <ClInclude Include="ViewModels\SearchResultsVM.hpp" />
     <ClInclude Include="ViewModels\SearchVM.hpp" />
     <ClInclude Include="ViewModels\SongListControlVM.hpp" />
@@ -241,6 +245,9 @@
     </ApplicationDefinition>
     <Page Include="Controls\AlbumListControl.xaml" />
     <Page Include="Controls\BottomBar.xaml" />
+    <Page Include="Controls\Guide.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Controls\PlayerButtons.xaml" />
     <Page Include="Controls\Search.xaml" />
     <Page Include="Controls\SearchResultsControl.xaml" />
@@ -267,6 +274,9 @@
     </ClCompile>
     <ClCompile Include="Controls\BottomBar.xaml.cpp">
       <DependentUpon>Controls\BottomBar.xaml</DependentUpon>
+    </ClCompile>
+    <ClCompile Include="Controls\Guide.xaml.cpp">
+      <DependentUpon>Controls\Guide.xaml</DependentUpon>
     </ClCompile>
     <ClCompile Include="Controls\PlayerButtons.xaml.cpp">
       <DependentUpon>Controls\PlayerButtons.xaml</DependentUpon>
@@ -302,6 +312,7 @@
     <ClCompile Include="Utility\DispatcherHelper.cpp" />
     <ClCompile Include="ViewModels\AlbumListControlVM.cpp" />
     <ClCompile Include="ViewModels\AlbumVM.cpp" />
+    <ClCompile Include="ViewModels\GuideVM.cpp" />
     <ClCompile Include="ViewModels\SearchResultsVM.cpp" />
     <ClCompile Include="ViewModels\SearchVM.cpp" />
     <ClCompile Include="ViewModels\SongListControlVM.cpp" />
@@ -323,12 +334,16 @@
     <Image Include="Assets\DefaultAlbumBackgrounds\default_orange.png" />
     <Image Include="Assets\DefaultAlbumBackgrounds\default_red.png" />
     <Image Include="Assets\DefaultAlbumBackgrounds\default_violet.png" />
+    <Image Include="Assets\Icons\Add.png" />
+    <Image Include="Assets\Icons\Clock.png" />
     <Image Include="Assets\Icons\Details.png" />
     <Image Include="Assets\Icons\Forward.png" />
     <Image Include="Assets\Icons\Pause.png" />
     <Image Include="Assets\Icons\Play.png" />
+    <Image Include="Assets\Icons\Play_btn.png" />
     <Image Include="Assets\Icons\Reverse.png" />
     <Image Include="Assets\Icons\SearchIcon.png" />
+    <Image Include="Assets\Icons\Shuffle.png" />
     <Image Include="Assets\Icons\Volume.png" />
     <Image Include="Assets\Logo\Logo.scale-100.png">
       <DeploymentContent>true</DeploymentContent>
@@ -358,6 +373,7 @@
     <Image Include="Assets\Logo\Wide310x150Logo.scale-180.png" />
     <Image Include="Assets\Logo\Wide310x150Logo.scale-80.png" />
     <Image Include="Assets\Misc\CornerGradient.png" />
+    <Image Include="Assets\Misc\placeholder_album_background.jpg" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">

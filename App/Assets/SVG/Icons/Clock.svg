@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="744.09448819"
+   height="1052.3622047"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.48.4 r9939"
+   sodipodi:docname="Clock.svg"
+   inkscape:export-filename="D:\Development\Github\Arcusical\App\Assets\Icons\Clock.png"
+   inkscape:export-xdpi="45.127403"
+   inkscape:export-ydpi="45.127403">
+  <defs
+     id="defs4">
+    <inkscape:path-effect
+       effect="skeletal"
+       id="path-effect3779"
+       is_visible="true"
+       pattern="M 0,0 1,0"
+       copytype="single_stretched"
+       prop_scale="1"
+       scale_y_rel="false"
+       spacing="0"
+       normal_offset="0"
+       tang_offset="0"
+       prop_units="false"
+       vertical_pattern="false"
+       fuse_tolerance="0" />
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.24748738"
+     inkscape:cx="333.88986"
+     inkscape:cy="332.45289"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:snap-object-midpoints="true"
+     inkscape:snap-global="false"
+     inkscape:snap-grids="true"
+     inkscape:window-width="708"
+     inkscape:window-height="423"
+     inkscape:window-x="2791"
+     inkscape:window-y="112"
+     inkscape:window-maximized="0" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <g
+       id="g3766"
+       inkscape:export-filename="D:\Development\Github\Arcusical\App\Assets\Icons\g3766.png"
+       inkscape:export-xdpi="45.127403"
+       inkscape:export-ydpi="45.127403">
+      <path
+         transform="matrix(0.94886258,0,0,0.94886258,79.347563,140.21398)"
+         d="m 528.81485,506.62726 a 145.71451,145.71451 0 1 1 -291.42902,0 145.71451,145.71451 0 1 1 291.42902,0 z"
+         sodipodi:ry="145.71451"
+         sodipodi:rx="145.71451"
+         sodipodi:cy="506.62726"
+         sodipodi:cx="383.10034"
+         id="path2987"
+         style="fill:none;stroke:#000000;stroke-width:47.4252025;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+         sodipodi:type="arc" />
+      <g
+         transform="translate(1.2801579,5.8086008)"
+         id="g3762">
+        <rect
+           style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:21.91728973;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none"
+           id="rect3758"
+           width="18.08271"
+           height="109.90133"
+           x="424.66028"
+           y="534.46808" />
+        <rect
+           style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:21.99972916;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none"
+           id="rect3760"
+           width="82.238274"
+           height="18.000271"
+           x="424.70151"
+           y="626.32794" />
+      </g>
+    </g>
+  </g>
+</svg>

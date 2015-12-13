@@ -11,6 +11,7 @@
 #include "CheckedCasts.hpp"
 #include "Controls/AlbumListControl.xaml.h"
 #include "Controls/BottomBar.xaml.h"
+#include "Controls/Guide.xaml.h"
 #include "Controls/SongListControl.xaml.h"
 #include "Controls/Search.xaml.h"
 #include "Controls/SearchResultsControl.xaml.h"
@@ -51,7 +52,6 @@ MainPage::MainPage()
 	, m_searcher(nullptr)
 	// View Models
 	, m_searchVM(nullptr)
-	, m_songListVM(nullptr)
 	, m_volumeSlideVM(nullptr)
 	, m_playerVM(nullptr)
 	, m_albumListVM(nullptr)
@@ -193,23 +193,24 @@ void Arcusical::MainPage::SetDependencies(	MusicSearcher* musicSearcher,
 	auto vmLoads = DispatchToUI([&]()
 	{
 		m_searchVM = ref new SearchVM(*musicSearcher, *playlist, *player, *m_backgroundWorker);
-		m_songListVM = ref new SongListControlVM(*playlist, *m_backgroundWorker);
 		m_albumListVM = ref new AlbumListControlVM();
 		m_playerVM = ref new SongPlayerVM(*player, *playlist, *musicProvider, *m_backgroundWorker);
 		m_volumeSlideVM = ref new VolumeSliderVM(*player);
 		m_searchResultsVM = ref new SearchResultsVM(m_searchVM, *playlist, *m_backgroundWorker);
+		m_guideVM = ref new GuideVM(*playlist, *m_backgroundWorker);
 
 		m_playerVM->VolumeVM = m_volumeSlideVM;
-
 		v_albumListControl->VM = m_albumListVM;
-		v_songListControl->VM = m_songListVM;
 		v_bottomBar->VM = m_playerVM;
+
+		m_guideVM->SearchVM = m_searchVM;
+		v_guide->VM = m_guideVM;
 	});
 	vmLoads.wait();
 
 	function<void(const Events::AlbumSelectedEvent&)> albumSelctedCB = [this](const Events::AlbumSelectedEvent& ev)
 	{
-		m_songListVM->SongList = ev.GetSelectedAlbum()->Songs;
+		v_guide->VM->SelectedAlbum = ev.GetSelectedAlbum();
 	};
 	m_albumSelectedSub = Events::EventService<Events::AlbumSelectedEvent>::RegisterListener(albumSelctedCB);
 
