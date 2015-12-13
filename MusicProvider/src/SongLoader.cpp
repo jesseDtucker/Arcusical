@@ -25,6 +25,7 @@
 #include "Song.hpp"
 #include "SongLoader.hpp"
 #include "Storage.hpp"
+#include "UUIDGenerator.hpp"
 
 using namespace Arcusical;
 using namespace Arcusical::Model;
@@ -40,7 +41,7 @@ static Song DefaultSongLoad(const IFile& file, AudioFormat encoding = AudioForma
 static Song LoadMP3(const IFile& file);
 static Song LoadWav(const IFile& file);
 
-static boost::uuids::random_generator s_idGenerator;
+static Util::UUIDGenerator s_idGenerator;
 static const unsigned long long MIN_LENGTH = 5; // minimum length of a song for it to be considered a song
 
 static const unordered_map<MPEG4::Encoding, AudioFormat> MPEG4_TO_MODEL_MAPPING =
@@ -482,7 +483,7 @@ vector<Song> FilterSongs(const vector<Song>& songs)
 	return result;
 }
 
-SongMergeResult MusicProvider::MergeSongs(const SongCollection& existingSongs, 
+SongMergeResult MusicProvider::MergeSongs(const SongCollection& existingSongs,
 									const vector<shared_ptr<IFile>>& files)
 {
 	SongMergeResult result;
@@ -518,9 +519,9 @@ vector<pair<wstring, const Song*>> DetermineMissingFiles(const SongCollection& e
 				return{ songFile.filePath, &songPair.second };
 			});
 		}
-		
+
 	}
-	
+
 	transform(begin(files), end(files), back_inserter(actualPaths), [](const shared_ptr<IFile>& file) -> pair<wstring, const Song*>
 	{
 		return{ file->GetFullPath(), nullptr };
@@ -533,10 +534,10 @@ vector<pair<wstring, const Song*>> DetermineMissingFiles(const SongCollection& e
 
 	sort(begin(expectedPaths), end(expectedPaths), sortPred);
 	sort(begin(actualPaths), end(actualPaths), sortPred);
-	
+
 	vector<pair<wstring, const Song*>> results;
 
-	set_difference(begin(expectedPaths), end(expectedPaths), begin(actualPaths), end(actualPaths), 
+	set_difference(begin(expectedPaths), end(expectedPaths), begin(actualPaths), end(actualPaths),
 				   back_inserter(results), sortPred);
 
 	return results;
