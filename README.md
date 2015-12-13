@@ -9,7 +9,7 @@ The player is still a work in progress
 
 ## Build
 
-Requires Visual Studio 2013. May work with 2015.
+Requires Visual Studio 2015.
 
 To build Arcusical follow these steps:
 ```
@@ -21,7 +21,7 @@ cd ..
 Arcusical.sln
 ```
 
-Now just pick your target and build. Will work for both x86 and x64 builds. Just be aware that the git clone will take a while because one of the submodules is [Boost](http://www.boost.org/). Also make sure you have a recent version of git. There is a bug in some of the older git versions that causes the submodules to not get pulled correctly.
+Now just pick your target and build. Will work for x64 builds, will probably build for x86 but I removed support in the project config as it was causing unneeded overhead. Just be aware that the git clone will take a while because one of the submodules is [Boost](http://www.boost.org/). Also make sure you have a recent version of git. There is a bug in some of the older git versions that causes the submodules to not get pulled correctly.
 
 After it has launched it will start automatically searching for music in your music folder. It does take a moment to get going so give it a bit of time. I'm working on improving the time-to-first-album but there is a fair bit of work required to do that. After the library is loaded startup will be fast as all metadata is cached.
 
@@ -35,7 +35,7 @@ Enjoy!
   
 2. What were the project goals?
 
-  I wanted a player that was very simple, handled duplicate songs and unknown albums intelligently (ie. don't lump all unknown albums into a single massive album). It also had to be good at finding album art. Typically embedded album art is always used but when it's not available I want it to automatically search for something from disk. If that is not available use a default image that looks okay, ie. Not grey or faded. Finally playing whatever format of song that happens to be in my library is important. Windows does not support ALAC so most players that just rely on the built in codecs can't play this format without some effort by the user. I wanted something that would 'just work'.
+  I wanted a player that was very simple, handled duplicate songs and unknown albums intelligently (ie. don't lump all unknown albums into a single massive album). It also had to be good at finding album art. Typically embedded album art is always used but when it's not available I want it to automatically search for something from disk. If that is not available use a default image that looks okay, ie. Not grey or faded. Finally playing whatever format of song that happens to be in my library is important. Windows did not support ALAC until Win 10 so most players that just rely on the built in codecs can't play this format without some effort by the user. I wanted something that would 'just work'.
   
 3. Why a Windows 8 App?
 
