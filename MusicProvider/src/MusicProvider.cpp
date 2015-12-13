@@ -85,7 +85,7 @@ AlbumCollectionChanges CreateAlbumCollectionDelta(const boost::optional<AlbumMer
 }
 
 template<typename CB>
-void PublishSongs(const CB& cb, 
+void PublishSongs(const CB& cb,
 	              SongCollectionLockedPtr&& songs,
 	              LoadProgress progress,
 	              mutex& lock,
@@ -244,7 +244,6 @@ void MusicProvider::LoadSongs()
 		m_songLoadProgress = LoadProgress::DISK_LOAD_COMPLETE;
 		PublishSongs(m_songCallbacks, std::move(songs), m_songLoadProgress, m_songCallbackLock, deletedSongs);
 	}
-	
 }
 
 vector<FileSystem::FilePtr> MusicProvider::ProcessSongFiles(Util::WorkBuffer<FileSystem::FilePtr>& songFilesWB)
@@ -277,7 +276,7 @@ vector<FileSystem::FilePtr> MusicProvider::ProcessSongFiles(Util::WorkBuffer<Fil
 
 		// load adjustment will try to keep the load time to approx the time indicated in SONG_LOAD_TARGET_TIME
 		// this will help adapt the publish time to be on a steady interval instead of variable. This method is
-		// not perfect as we are attempting to estimate future load times based on the prior load time. 
+		// not perfect as we are attempting to estimate future load times based on the prior load time.
 
 		if (numSongsLoaded > 0 && timeSpentLoading.count() > 0)
 		{
@@ -351,7 +350,7 @@ void MusicProvider::LoadAlbums()
 		});
 		m_artLoader.AlbumsToVerify()->Append(std::move(allAlbumIds));
 	}
-	
+
 	// now subscribe to the music search service
 	function<void(const SongCollectionChanges&)> songsCallback = [this](const SongCollectionChanges& songs)
 	{
@@ -389,7 +388,7 @@ void MusicProvider::LoadAlbums()
 				auto albums = m_musicCache->GetLocalAlbums();
 				PublishAlbums(m_albumCallbacks, std::move(albums), m_albumLoadProgress, m_albumCallbackLock, deletedAlbums);
 			}
-			
+
 			m_musicCache->SaveAlbums();
 		}
 

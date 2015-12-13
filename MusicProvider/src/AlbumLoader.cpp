@@ -2,13 +2,13 @@
 #include "boost/algorithm/string/predicate.hpp"
 #include "boost/functional/hash.hpp"
 #include "boost/uuid/uuid.hpp"
-#include "boost/uuid/uuid_generators.hpp"
 #include <string>
 #include <unordered_map>
 
 #include "AlbumLoader.hpp"
 #include "Arc_Assert.hpp"
 #include "MusicTypes.hpp"
+#include "UUIDGenerator.hpp"
 
 using std::locale;
 using std::pair;
@@ -63,7 +63,7 @@ static vector<Album> GetPartiallyDeletedAlbums(const vector<pair<const Album*, v
 
 static wstring SelectMostCommonAlbumArtist(const vector<const Song*>& songs);
 
-static boost::uuids::random_generator s_idGenerator;
+static Util::UUIDGenerator s_idGenerator;
 
 AlbumMergeResult MusicProvider::MergeAlbums(const AlbumCollection& existingAlbums, const SongCollection& songs, const Model::IAlbumToSongMapper* mapper)
 {

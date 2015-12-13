@@ -24,6 +24,9 @@
     <ClCompile Include="src\Subscription.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\UUIDGenerator.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Arc_Assert.hpp">
@@ -93,6 +96,9 @@
       <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="include\WorkBuffer.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\UUIDGenerator.hpp">
       <Filter>include</Filter>
     </ClInclude>
   </ItemGroup>
