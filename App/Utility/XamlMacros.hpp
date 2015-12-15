@@ -26,7 +26,7 @@ property type VM		\
 #define VM_IMPL(type, targetClass)				\
 type targetClass ## ::VM::get()					\
 {												\
-	if(m_viewModel == nullptr)					\
+	if(m_viewModel != this->DataContext)		\
 	{											\
 		m_viewModel = dynamic_cast<type>(this->DataContext); \
 	}											\
