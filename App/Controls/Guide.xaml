@@ -30,7 +30,8 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="auto"/>
             </Grid.ColumnDefinitions>
-            <Button Grid.Column="0" Height="60" Margin="0,-41,0,0" Style="{StaticResource ClearButtonStyle}">
+            <Button Grid.Column="0" Height="60" Margin="0,-41,0,0" Style="{StaticResource ClearButtonStyle}"
+                    Click="Play_Clicked">
                     <Image Source="/Assets/Icons/Play_btn.png"/>
             </Button>
             <StackPanel Grid.Column="1">
@@ -38,7 +39,7 @@
                 <TextBlock Text="{Binding Path=SelectedAlbum.Artist}" FontSize="10" Foreground="Black" Margin="0,0,0,7" MaxLines="1" TextTrimming="CharacterEllipsis"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal" Grid.Column="2" Height="30" Margin="0,0,10,0">
-                <Button Background="Transparent">
+                <Button Background="Transparent" Click="Shuffle_Clicked">
                     <Image Source="/Assets/Icons/Shuffle.png"/>
                 </Button>
                 <Button Background="Transparent">

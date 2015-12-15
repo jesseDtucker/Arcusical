@@ -23,7 +23,5 @@ namespace Arcusical
 	private:
 
 		void SongDoubleTapped(Platform::Object^ sender, Windows::UI::Xaml::Input::DoubleTappedRoutedEventArgs^ e);
-
-		void Shuffle_Clicked(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
 	};
 }

@@ -17,5 +17,8 @@ namespace Arcusical
 	public:
 		Guide();
 		VM_DECLARATION(ViewModel::GuideVM^);
+	private:
+		void Play_Clicked(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
+		void Shuffle_Clicked(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
 	};
 }

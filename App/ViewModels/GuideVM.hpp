@@ -26,6 +26,9 @@ namespace Arcusical {
 			}
 			PROP_SET_AND_GET_WINRT(ViewModel::SongListControlVM^, SongListControlVM);
 			PROP_SET_AND_GET_WINRT(ViewModel::SearchVM^, SearchVM);
+
+			void PlayAll();
+			void Shuffle();
 		internal:
 			GuideVM(Player::Playlist& playlist, Util::BackgroundWorker& worker);
 		private:

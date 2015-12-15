@@ -24,7 +24,15 @@ using namespace Windows::UI::Xaml::Navigation;
 
 VM_IMPL(GuideVM^, Guide);
 
-Guide::Guide()
-{
+Guide::Guide() {
 	InitializeComponent();
+}
+
+
+void Arcusical::Guide::Play_Clicked(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e) {
+	VM->PlayAll();
+}
+
+void Arcusical::Guide::Shuffle_Clicked(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e) {
+	VM->Shuffle();
 }

@@ -26,9 +26,7 @@ namespace ViewModel{
 	SongListControlVM::SongListControlVM(Playlist& playlist, BackgroundWorker& worker)
 		: m_playlist(playlist)
 		, m_worker(worker)
-	{
-		
-	}
+	{ }
 
 	void SongListControlVM::PlaySongsAfterAndIncluding(SongVM^ song)
 	{
@@ -52,34 +50,6 @@ namespace ViewModel{
 
 			if (distance(begin(songsToPlay), end(songsToPlay)) > 0)
 			{
-				m_playlist.Clear();
-				m_playlist.Enqueue(songsToPlay);
-			}
-		});
-	}
-
-	void SongListControlVM::Shuffle()
-	{
-		if (SongList == nullptr)
-		{
-			return;
-		}
-
-		m_worker.Append([this]()
-		{
-			auto itr = SongList->List->First();
-			vector<Song> songsToPlay;
-			while (itr->HasCurrent)
-			{
-				songsToPlay.push_back(*itr->Current->GetModel());
-				itr->MoveNext();
-			}
-
-			if (songsToPlay.size() > 0)
-			{
-				random_device rd;
-				shuffle(begin(songsToPlay), end(songsToPlay), default_random_engine(rd()));
-
 				m_playlist.Clear();
 				m_playlist.Enqueue(songsToPlay);
 			}

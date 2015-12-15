@@ -23,7 +23,6 @@ namespace ViewModel{
 		PROP_SET_AND_GET_WINRT(SongListVM^, SongList);
 
 		void PlaySongsAfterAndIncluding(SongVM^ song);
-		void Shuffle();
 
 	internal:
 		SongListControlVM(Player::Playlist& playlist, Util::BackgroundWorker& worker);

@@ -45,9 +45,3 @@ void SongListControl::SongDoubleTapped(Platform::Object^ sender, Windows::UI::Xa
 		}
 	}
 }
-
-
-void SongListControl::Shuffle_Clicked(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
-{
-	VM->Shuffle();
-}
