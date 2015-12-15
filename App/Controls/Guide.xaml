@@ -12,41 +12,56 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/Styles/ButtonStyles.xaml"/>
+                <ResourceDictionary>
+                    <LinearGradientBrush x:Name="shadowBrush" StartPoint="0,0" EndPoint="1,0">
+                        <GradientStop Color="Black" Offset="-0.7"/>
+                        <GradientStop Color="#00000000" Offset="1"/>
+                    </LinearGradientBrush>
+                </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-        <local:Search Height="25" HorizontalAlignment="Stretch" VerticalAlignment="Top" Grid.Row="0"/>
-        <Image Source="{Binding Path=SelectedAlbum.ImagePath}" HorizontalAlignment="Stretch" Grid.Row="1"/>
-        <Grid Background="LightGray"  Grid.Row="2">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="auto"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="auto"/>
-            </Grid.ColumnDefinitions>
-            <Button Grid.Column="0" Height="60" Margin="0,-41,0,0" Style="{StaticResource ClearButtonStyle}"
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="7"/>
+        </Grid.ColumnDefinitions>
+        <Grid Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <local:Search Height="25" HorizontalAlignment="Stretch" VerticalAlignment="Top" Grid.Row="0"/>
+            <Image Source="{Binding Path=SelectedAlbum.ImagePath}" HorizontalAlignment="Stretch" Grid.Row="1"/>
+            <Grid Background="LightGray"  Grid.Row="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="auto"/>
+                </Grid.ColumnDefinitions>
+                <Button Grid.Column="0" Height="60" Margin="0,-41,0,0" Style="{StaticResource ClearButtonStyle}"
                     Click="Play_Clicked">
                     <Image Source="/Assets/Icons/Play_btn.png"/>
-            </Button>
-            <StackPanel Grid.Column="1">
-                <TextBlock Text="{Binding Path=SelectedAlbum.Title}" FontWeight="Bold" FontSize="14" Foreground="Black" MaxLines="1" TextTrimming="CharacterEllipsis"/>
-                <TextBlock Text="{Binding Path=SelectedAlbum.Artist}" FontSize="10" Foreground="Black" Margin="0,0,0,7" MaxLines="1" TextTrimming="CharacterEllipsis"/>
-            </StackPanel>
-            <StackPanel Orientation="Horizontal" Grid.Column="2" Height="30" Margin="0,0,10,0">
-                <Button Background="Transparent" Click="Shuffle_Clicked">
-                    <Image Source="/Assets/Icons/Shuffle.png"/>
                 </Button>
-                <Button Background="Transparent">
-                    <Image Source="/Assets/Icons/Add.png"/>
-                </Button>
-            </StackPanel>
+                <StackPanel Grid.Column="1">
+                    <TextBlock Text="{Binding Path=SelectedAlbum.Title}" FontWeight="Bold" FontSize="14" Foreground="Black" MaxLines="1" TextTrimming="CharacterEllipsis"/>
+                    <TextBlock Text="{Binding Path=SelectedAlbum.Artist}" FontSize="10" Foreground="Black" Margin="0,0,0,7" MaxLines="1" TextTrimming="CharacterEllipsis"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Grid.Column="2" Height="30" Margin="0,0,10,0">
+                    <Button Background="Transparent" Click="Shuffle_Clicked">
+                        <Image Source="/Assets/Icons/Shuffle.png"/>
+                    </Button>
+                    <Button Background="Transparent">
+                        <Image Source="/Assets/Icons/Add.png"/>
+                    </Button>
+                </StackPanel>
+            </Grid>
+            <local:SongListControl DataContext="{Binding Path=SongListControlVM}" Grid.Row="3"/>
         </Grid>
-        <local:SongListControl DataContext="{Binding Path=SongListControlVM}" Grid.Row="3"/>
+        <!-- Shadow -->
+        <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
+                          Grid.Column="1" Background="{StaticResource shadowBrush}"/>
     </Grid>
 </UserControl>
