@@ -14,7 +14,7 @@ using namespace Util;
 
 namespace Arcusical{
 namespace ViewModel{
-	
+
 	AlbumVM::AlbumVM(const Model::Album& album, Playlist& playlist, IPlayer& player, BackgroundWorker& worker)
 		: m_album(album)
 		, m_playlist(playlist)
@@ -25,6 +25,18 @@ namespace ViewModel{
 		this->m_Artist = ref new Platform::String(album.GetArtist().c_str());
 		this->m_Title = ref new Platform::String(album.GetTitle().c_str());
 		this->m_ImagePath = ref new Platform::String(album.GetImageFilePath().c_str());
+	}
+
+	AlbumVM::AlbumVM(const AlbumVM^ albumVM)
+		: m_album(albumVM->m_album)
+		, m_playlist(albumVM->m_playlist)
+		, m_songs(albumVM->m_songs)
+		, m_player(albumVM->m_player)
+		, m_worker(albumVM->m_worker)
+	{
+		this->m_Artist = ref new Platform::String(m_album.GetArtist().c_str());
+		this->m_Title = ref new Platform::String(m_album.GetTitle().c_str());
+		this->m_ImagePath = ref new Platform::String(m_album.GetImageFilePath().c_str());
 	}
 
 	void AlbumVM::Play()

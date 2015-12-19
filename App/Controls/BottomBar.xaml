@@ -8,22 +8,21 @@
     mc:Ignorable="d"
     d:DesignHeight="128"
     d:DesignWidth="1920">
-    
+
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Styles/ButtonStyles.xaml"/>
                 <ResourceDictionary Source="/Styles/SongProgressBar.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid x:Name="v_base">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="auto" MaxWidth="256"/> <!-- Album Image -->
-            <ColumnDefinition Width="*"/> <!-- Rest of Bar -->
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="auto" MaxWidth="256"/>
         </Grid.ColumnDefinitions>
-        <Image Source="{Binding AlbumImagePath}"
-               Grid.Column="0" HorizontalAlignment="Stretch"/>
-        <Grid Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+        <Grid Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
             <Grid.RowDefinitions>
                 <RowDefinition Height="50*"/> <!-- Progress Bar -->
                 <RowDefinition Height="50*"/> <!-- Main Body, ie. info, buttons, etc -->
@@ -33,17 +32,25 @@
                     Height="10" Style="{StaticResource SongProgressBar}"
                     x:Name="v_slider"/>
             <Grid Grid.Row="1" Background="#1976d2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
                 <StackPanel Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Left"
-                            Margin="5" DataContext="{Binding CurrentSong}">
-                    <TextBlock Text="{Binding Title}" Foreground="White" FontSize="26"
+                            Margin="5" DataContext="{Binding CurrentSong}" Grid.Column="0">
+                    <TextBlock Text="{Binding Title}" Foreground="White" FontSize="24"
                                FontWeight="Bold"/>
                     <TextBlock Text="{Binding AlbumPlusArtist}" Foreground="White"
-                               FontSize="24"/>
+                               FontSize="22"/>
                 </StackPanel>
-                <local:PlayerButtons HorizontalAlignment="Center" VerticalAlignment="Stretch"/>
-                <!-- TODO::JT shuffle and volume buttons on the right -->
-                <local:VolumeSilder HorizontalAlignment="Right" VerticalAlignment="Stretch" Margin="15" DataContext="{Binding VolumeVM}"/>
+                <local:PlayerButtons HorizontalAlignment="Center" VerticalAlignment="Stretch" Grid.Column="1"/>
+                <local:VolumeSilder HorizontalAlignment="Right" VerticalAlignment="Stretch" Margin="15,15,25,15" DataContext="{Binding VolumeVM}"
+                                    Grid.Column="2"/>
             </Grid>
         </Grid>
+        <Button BorderThickness="0" Padding="0" Grid.Column="1" Click="AlbumSelected">
+            <Image Source="{Binding Album.ImagePath}" HorizontalAlignment="Stretch"/>
+        </Button>
     </Grid>
 </UserControl>

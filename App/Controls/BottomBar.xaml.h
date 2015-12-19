@@ -18,5 +18,7 @@ namespace Arcusical
 		BottomBar();
 
 		VM_DECLARATION(ViewModel::SongPlayerVM^);
+	private:
+		void AlbumSelected(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
 	};
 }

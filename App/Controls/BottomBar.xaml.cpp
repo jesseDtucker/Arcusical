@@ -8,6 +8,9 @@
 
 #include <cmath>
 
+#include "Events/EventService.hpp"
+#include "Events/AlbumSelectedEvent.hpp"
+
 using namespace Arcusical;
 using namespace Arcusical::ViewModel;
 
@@ -26,15 +29,20 @@ VM_IMPL(SongPlayerVM^, BottomBar);
 
 const double MIN_JUMP = 1.0;
 
-BottomBar::BottomBar()
-{
+BottomBar::BottomBar() {
 	InitializeComponent();
 
-	v_slider->ValueChanged += ref new Primitives::RangeBaseValueChangedEventHandler([this](Object^ sender, Primitives::RangeBaseValueChangedEventArgs^ e)
-	{
-		if (abs(e->NewValue - e->OldValue) > MIN_JUMP)
-		{
+	v_slider->ValueChanged += ref new Primitives::RangeBaseValueChangedEventHandler([this](Object^ sender, Primitives::RangeBaseValueChangedEventArgs^ e) {
+		if (abs(e->NewValue - e->OldValue) > MIN_JUMP) {
 			VM->ChangeTimeTo(e->NewValue);
 		}
 	});
+}
+
+
+void Arcusical::BottomBar::AlbumSelected(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e) {
+	if (VM != nullptr && VM->Album != nullptr) {
+		Events::AlbumSelectedEvent selectedEvent(VM->Album);
+		Events::EventService<Events::AlbumSelectedEvent>::BroadcastEvent(selectedEvent);
+	}
 }

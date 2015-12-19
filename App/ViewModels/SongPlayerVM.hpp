@@ -6,6 +6,7 @@
 #include "PropertyHelper.hpp"
 #include "Subscription.hpp"
 #include "Utility/XamlMacros.hpp"
+#include "ViewModels/AlbumVM.hpp"
 #include "ViewModels/SongVM.hpp"
 #include "ViewModels/VolumeSilderVM.hpp"
 
@@ -29,7 +30,7 @@ namespace Arcusical
 			PROP_SET_AND_GET_WINRT(double, Length);
 			PROP_SET_AND_GET_WINRT(Platform::Boolean, IsPlaying);
 			PROP_SET_AND_GET_WINRT(ViewModel::VolumeSliderVM^, VolumeVM);
-			PROP_SET_AND_GET_WINRT(Platform::String^, AlbumImagePath);
+			PROP_SET_AND_GET_WINRT(ViewModel::AlbumVM^, Album);
 
 			void Play();
 			void Pause();
@@ -43,7 +44,6 @@ namespace Arcusical
 
 		private:
 			void UpdateTime(double amountPlayed, double duration);
-			void FetchAlbumArt();
 
 			Util::Subscription m_durationSub;
 			Util::Subscription m_timeUpdateSub;

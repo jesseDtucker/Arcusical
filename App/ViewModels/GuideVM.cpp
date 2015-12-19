@@ -16,7 +16,12 @@ GuideVM::GuideVM(Player::Playlist& playlist, Util::BackgroundWorker& worker)
 }
 
 void GuideVM::SelectedAlbum::set(AlbumVM^ selectedAlbum) {
-	m_selectedAlbum = selectedAlbum;
+	if (m_selectedAlbum == nullptr) {
+		m_selectedAlbum = ref new AlbumVM(selectedAlbum);
+	}
+	else {
+		m_selectedAlbum->SetFrom(*selectedAlbum->GetModel());
+	}
 	auto songListVM = ref new ViewModel::SongListControlVM(m_playlist, m_worker);
 	songListVM->SongList = selectedAlbum->Songs;
 	this->SongListControlVM = songListVM;

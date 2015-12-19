@@ -59,23 +59,22 @@ namespace Arcusical
 			{
 				Song song = newSong ? *newSong : Song();
 				SongVM^ curSong = ref new SongVM(song, m_playlist, m_player, m_worker);
+				auto curAlbum = m_provider.GetAlbum(song.GetAlbumName());
 
-				Platform::String^ imgPath = AlbumImagePath;
-				if (newSong)
-				{
-					// TODO::JT Place this constant somewhere else!
-					imgPath = "ms-appx:///Assets/DefaultAlbumBackgrounds/default_cyan.png";
-					auto album = m_provider.GetAlbum(song.GetAlbumName());
-					if (album)
-					{
-						imgPath = ref new Platform::String(album->GetImageFilePath().c_str());
-					}
-				}
-
-				DispatchToUI([this, curSong, imgPath]()
+				DispatchToUI([this, curSong, curAlbum]()
 				{
 					CurrentSong = curSong;
-					AlbumImagePath = imgPath;
+					if (curAlbum)
+					{
+						if (this->Album != nullptr)
+						{
+							this->Album->SetFrom(*curAlbum);
+						}
+						else
+						{
+							this->Album = ref new AlbumVM(*curAlbum, m_playlist, m_player, m_worker);
+						}
+					}
 				});
 			};
 		}

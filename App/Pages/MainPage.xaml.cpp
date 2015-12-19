@@ -104,7 +104,6 @@ void MainPage::SetupTransportControls(IPlayer* player)
 				displayUpdater->MusicProperties->Title = "";
 				displayUpdater->MusicProperties->Artist = "";
 			}
-			
 			// TODO::JT move to task runner
 			std::async([this, newSong, displayUpdater]()
 			{
@@ -119,7 +118,6 @@ void MainPage::SetupTransportControls(IPlayer* player)
 						imagePath = album->GetImageFilePath();
 					}
 				}
-				
 
 				if (imagePath.size() == 0)
 				{
@@ -138,7 +136,6 @@ void MainPage::SetupTransportControls(IPlayer* player)
 					}
 				}
 			});
-			
 			displayUpdater->Update();
 		};
 	}
@@ -172,9 +169,9 @@ void MainPage::OnTransportControlButtonPressed(SystemMediaTransportControls^ sen
 	}
 }
 
-void Arcusical::MainPage::SetDependencies(	MusicSearcher* musicSearcher, 
-											MusicProvider::MusicProvider* musicProvider, 
-											IPlayer* player, 
+void Arcusical::MainPage::SetDependencies(	MusicSearcher* musicSearcher,
+											MusicProvider::MusicProvider* musicProvider,
+											IPlayer* player,
 											Playlist* playlist,
 											BackgroundWorker* worker)
 {
