@@ -39,10 +39,10 @@
                 </Grid.ColumnDefinitions>
                 <StackPanel Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Left"
                             Margin="5" DataContext="{Binding CurrentSong}" Grid.Column="0">
-                    <TextBlock Text="{Binding Title}" Foreground="White" FontSize="24"
-                               FontWeight="Bold"/>
+                    <TextBlock Text="{Binding Title}" Foreground="White" FontSize="22"
+                               FontWeight="Bold" MaxLines="1" TextTrimming="CharacterEllipsis"/>
                     <TextBlock Text="{Binding AlbumPlusArtist}" Foreground="White"
-                               FontSize="22"/>
+                               FontSize="18" MaxLines="1" TextTrimming="CharacterEllipsis"/>
                 </StackPanel>
                 <local:PlayerButtons HorizontalAlignment="Center" VerticalAlignment="Stretch" Grid.Column="1"/>
                 <local:VolumeSilder HorizontalAlignment="Right" VerticalAlignment="Stretch" Margin="15,15,25,15" DataContext="{Binding VolumeVM}"
