@@ -202,6 +202,8 @@ void Arcusical::MainPage::SetDependencies(	MusicSearcher* musicSearcher,
 
 		m_guideVM->SearchVM = m_searchVM;
 		v_guide->VM = m_guideVM;
+
+		v_searchResults->VM = m_searchResultsVM;
 	});
 	vmLoads.wait();
 

@@ -15,6 +15,7 @@ using namespace Windows::UI::Xaml::Controls::Primitives;
 using namespace Windows::UI::Xaml::Data;
 using namespace Windows::UI::Xaml::Input;
 using namespace Windows::UI::Xaml::Media;
+using namespace Windows::UI::Xaml::Media::Animation;
 using namespace Windows::UI::Xaml::Navigation;
 
 using namespace Arcusical;
@@ -22,9 +23,46 @@ using namespace Arcusical::ViewModel;
 
 // The User Control item template is documented at http://go.microsoft.com/fwlink/?LinkId=234236
 
-SearchResultsControl::SearchResultsControl()
-{
+SearchResultsControl::SearchResultsControl() {
 	InitializeComponent();
+	m_animIn = safe_cast<Storyboard^>(v_root->Resources->Lookup("slideInAnim"));
+	m_animOut = safe_cast<Storyboard^>(v_root->Resources->Lookup("slideOutAnim"));
 }
 
-VM_IMPL(SearchResultsVM^, SearchResultsControl);
+SearchResultsVM^ SearchResultsControl::VM::get() {
+	if(m_viewModel != this->DataContext) {
+		m_viewModel = dynamic_cast<SearchResultsVM^>(this->DataContext);
+	}
+	return m_viewModel;
+}
+void SearchResultsControl::VM::set(SearchResultsVM^ vm) {
+	ARC_ASSERT(Arcusical::HasThreadAccess());
+	m_viewModel = vm;
+	this->DataContext = m_viewModel;
+
+	m_albumChangedSub = m_viewModel->Albums->OnAlbumsChanged += [this](auto unused) {
+		ShowIfNeeded();
+	};
+
+	m_songChangedSub = m_viewModel->Songs->OnSongListChanged += [this](auto unused) {
+		ShowIfNeeded();
+	};
+}
+
+void Arcusical::SearchResultsControl::ShowResults() {
+	m_animOut->Stop();
+	m_animIn->Begin();
+}
+void Arcusical::SearchResultsControl::HideResults() {
+	m_animIn->Stop();
+	m_animOut->Begin();
+}
+
+void Arcusical::SearchResultsControl::ShowIfNeeded() {
+	ShowResults();
+}
+
+void Arcusical::SearchResultsControl::BackClicked(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e) {
+	auto val = v_root->ActualWidth;
+	HideResults();
+}

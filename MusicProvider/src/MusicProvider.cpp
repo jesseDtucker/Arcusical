@@ -328,7 +328,7 @@ vector<FileSystem::FilePtr> MusicProvider::ProcessSongFiles(Util::WorkBuffer<Fil
 		publishFuture->wait();
 	}
 
-	return std::move(songFiles);
+	return songFiles;
 }
 
 void MusicProvider::LoadAlbums()

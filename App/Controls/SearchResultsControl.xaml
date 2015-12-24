@@ -1,18 +1,45 @@
 ﻿<UserControl
-	x:Class="Arcusical.SearchResultsControl"
-	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-	xmlns:local="using:Arcusical"
-	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-	mc:Ignorable="d"
-	d:DesignHeight="700"
-	d:DesignWidth="400">
-
-	<ScrollViewer HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-		<StackPanel Orientation="Vertical">
-			<local:AlbumListControl DataContext="{Binding Path=Albums}"/>
-			<local:SongListControl DataContext="{Binding Path=Songs}"/>
-		</StackPanel>
-	</ScrollViewer>
+    x:Class="Arcusical.SearchResultsControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Arcusical"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="700"
+    d:DesignWidth="600">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Styles/ButtonStyles.xaml"/>
+                <ResourceDictionary Source="/Styles/ColourPalette.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid x:Name="v_root">
+        <Grid.Resources>
+            <Storyboard x:Name="slideInAnim">
+                <DoubleAnimation To="0" Storyboard.TargetName="offset" Storyboard.TargetProperty="X"/>
+            </Storyboard>
+            <Storyboard x:Name="slideOutAnim">
+                <DoubleAnimation To="700"
+                                 Storyboard.TargetName="offset" Storyboard.TargetProperty="X"/>
+            </Storyboard>
+        </Grid.Resources>
+        <Grid.RenderTransform>
+            <TranslateTransform X="700" x:Name="offset"/>
+        </Grid.RenderTransform>
+        <ScrollViewer HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <StackPanel Orientation="Vertical" Background="Orange">
+                <Grid Height="45">
+                    <Rectangle Fill="{StaticResource primaryBrush}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+                    <Button Style="{StaticResource ClearButtonStyle}" Click="BackClicked">
+                        <Image Source="/Assets/Icons/Back.png"/>
+                    </Button>
+                </Grid>
+                <local:AlbumListControl DataContext="{Binding Path=Albums}"/>
+                <local:SongListControl DataContext="{Binding Path=Songs}"/>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
 </UserControl>

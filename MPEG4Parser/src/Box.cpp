@@ -49,6 +49,7 @@ namespace Arcusical { namespace MPEG4 {
 
 	void Box::ParseBox(uint64_t size, Util::Stream& stream, uint32_t headerSize)
 	{
+		ARC_ASSERT(size > 0);
 		m_fullSize = size;
 		m_bodySize = size - headerSize;
 

@@ -107,6 +107,7 @@
     <ClCompile Include="ViewModels\GuideVM.cpp">
       <Filter>ViewModels</Filter>
     </ClCompile>
+    <ClCompile Include="Controls\Guide.xaml.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -173,6 +174,7 @@
     <ClInclude Include="ViewModels\GuideVM.hpp">
       <Filter>ViewModels</Filter>
     </ClInclude>
+    <ClInclude Include="Controls\Guide.xaml.h" />
   </ItemGroup>
   <ItemGroup>
     <Page Include="Controls\AlbumListControl.xaml">
@@ -364,6 +366,9 @@
       <Filter>Assets\Icons</Filter>
     </Image>
     <Image Include="Assets\Icons\Add.png">
+      <Filter>Assets\Icons</Filter>
+    </Image>
+    <Image Include="Assets\Icons\Back.png">
       <Filter>Assets\Icons</Filter>
     </Image>
   </ItemGroup>

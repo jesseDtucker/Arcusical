@@ -68,6 +68,7 @@ Song LoadSong(const IFile& file)
 	auto loadFunc = FILE_EX_TO_LOADER.find(fileExtension);
 	if (loadFunc != end(FILE_EX_TO_LOADER))
 	{
+		OutputDebugString((file.GetFullPath() + L"\n").c_str());
 		result = loadFunc->second(file);
 	}
 	else

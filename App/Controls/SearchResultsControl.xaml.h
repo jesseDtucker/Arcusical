@@ -17,6 +17,18 @@ namespace Arcusical
 	public:
 		SearchResultsControl();
 
+		void ShowResults();
+		void HideResults();
+
 		VM_DECLARATION(ViewModel::SearchResultsVM^);
+	private:
+		void ShowIfNeeded();
+		void BackClicked(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
+
+		Windows::UI::Xaml::Media::Animation::Storyboard^ m_animIn;
+		Windows::UI::Xaml::Media::Animation::Storyboard^ m_animOut;
+
+		Util::Subscription m_albumChangedSub;
+		Util::Subscription m_songChangedSub;
 	};
 }
