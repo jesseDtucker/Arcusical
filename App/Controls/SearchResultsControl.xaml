@@ -16,25 +16,43 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
-    <Grid x:Name="v_root">
+    <Grid x:Name="v_root" Background="{StaticResource neutralBGBrush}">
         <Grid.Resources>
             <Storyboard x:Name="slideInAnim">
-                <DoubleAnimation To="0" Storyboard.TargetName="offset" Storyboard.TargetProperty="X"/>
+                <DoubleAnimation To="0" Storyboard.TargetName="offset" Storyboard.TargetProperty="X"
+                                 Duration="00:00:0.4">
+                    <DoubleAnimation.EasingFunction>
+                        <SineEase EasingMode="EaseOut"/>
+                    </DoubleAnimation.EasingFunction>
+                </DoubleAnimation>
             </Storyboard>
             <Storyboard x:Name="slideOutAnim">
-                <DoubleAnimation To="700"
-                                 Storyboard.TargetName="offset" Storyboard.TargetProperty="X"/>
+                <DoubleAnimation To="700" From="0" Duration="00:00:0.4"
+                                 Storyboard.TargetName="offset" Storyboard.TargetProperty="X">
+                    <DoubleAnimation.EasingFunction>
+                        <SineEase EasingMode="EaseOut"/>
+                    </DoubleAnimation.EasingFunction>
+                </DoubleAnimation>
             </Storyboard>
+            <LinearGradientBrush x:Name="shadowBrush" StartPoint="1,0" EndPoint="0,0">
+                <GradientStop Color="Black" Offset="-0.7"/>
+                <GradientStop Color="#00000000" Offset="1"/>
+            </LinearGradientBrush>
         </Grid.Resources>
         <Grid.RenderTransform>
             <TranslateTransform X="700" x:Name="offset"/>
         </Grid.RenderTransform>
-        <ScrollViewer HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-            <StackPanel Orientation="Vertical" Background="Orange">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="7"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Rectangle Fill="{StaticResource shadowBrush}" Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+        <ScrollViewer HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="1">
+            <StackPanel Orientation="Vertical">
                 <Grid Height="45">
                     <Rectangle Fill="{StaticResource primaryBrush}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
                     <Button Style="{StaticResource ClearButtonStyle}" Click="BackClicked">
-                        <Image Source="/Assets/Icons/Back.png"/>
+                        <Image Source="/Assets/Icons/Close.png"/>
                     </Button>
                 </Grid>
                 <local:AlbumListControl DataContext="{Binding Path=Albums}"/>

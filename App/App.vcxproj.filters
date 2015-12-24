@@ -371,6 +371,9 @@
     <Image Include="Assets\Icons\Back.png">
       <Filter>Assets\Icons</Filter>
     </Image>
+    <Image Include="Assets\Icons\Close.png">
+      <Filter>Assets\Icons</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest" />

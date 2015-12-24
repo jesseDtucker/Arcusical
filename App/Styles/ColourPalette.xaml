@@ -1,9 +1,11 @@
 ﻿<ResourceDictionary
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:App">
+    <Color x:Key="neutralBG">#F0F0F0</Color>
     <Color x:Key="accentStrong">#FF5722</Color>
     <Color x:Key="accentWeak">#FFB098</Color>
     <Color x:Key="primary">#1976d2</Color>
     <SolidColorBrush x:Key="primaryBrush" Color="{StaticResource primary}"/>
+    <SolidColorBrush x:Key="neutralBGBrush" Color="{StaticResource neutralBG}"/>
 </ResourceDictionary>

@@ -32,6 +32,7 @@ namespace ViewModel{
 	internal:
 		SearchVM(MusicProvider::MusicSearcher& searcher, Player::Playlist& playlist, Player:: IPlayer& player, Util::BackgroundWorker& worker);
 		Util::MulticastDelegate<void(AlbumList^, SongListVM^, Util::CancellationTokenRef)> SearchResults;
+		Util::MulticastDelegate<void()> SelectActive;
 
 	private:
 

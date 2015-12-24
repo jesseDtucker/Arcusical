@@ -337,6 +337,7 @@
     <Image Include="Assets\Icons\Add.png" />
     <Image Include="Assets\Icons\Back.png" />
     <Image Include="Assets\Icons\Clock.png" />
+    <Image Include="Assets\Icons\Close.png" />
     <Image Include="Assets\Icons\Details.png" />
     <Image Include="Assets\Icons\Forward.png" />
     <Image Include="Assets\Icons\Pause.png" />

@@ -51,7 +51,6 @@ void Arcusical::ViewModel::SearchVM::StartSearch(Platform::String^ searchTerm)
 	});
 }
 
-void Arcusical::ViewModel::SearchVM::SelectCurrent()
-{
-	ARC_FAIL("TODO::JT");
+void Arcusical::ViewModel::SearchVM::SelectCurrent() {
+	SelectActive();
 }

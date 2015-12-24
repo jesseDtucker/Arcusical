@@ -28,6 +28,9 @@ namespace Arcusical
 			SearchResultsVM(SearchVM^ searchVm, Player::Playlist& playlist, Util::BackgroundWorker& worker);
 		private:
 			Util::Subscription m_resultsSub;
+			Util::Subscription m_selectedSub;
+			Player::Playlist& m_playlist;
+			Util::BackgroundWorker& m_worker;
 		};
 	}
 }
