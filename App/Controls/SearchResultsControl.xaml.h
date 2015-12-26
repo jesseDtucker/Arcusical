@@ -27,8 +27,8 @@ namespace Arcusical
 
 		Windows::UI::Xaml::Media::Animation::Storyboard^ m_animIn;
 		Windows::UI::Xaml::Media::Animation::Storyboard^ m_animOut;
+		bool m_isShown;
 
-		Util::Subscription m_albumChangedSub;
-		Util::Subscription m_songChangedSub;
+		Util::Subscription m_hasResultsSub;
 	};
 }

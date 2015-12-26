@@ -65,5 +65,6 @@ namespace Arcusical
 
 		Util::Subscription m_albumSub;
 		Util::Subscription m_albumSelectedSub;
+		void KeyPressed(Windows::UI::Core::CoreWindow ^window, Windows::UI::Core::KeyEventArgs^ e);
 	};
 }

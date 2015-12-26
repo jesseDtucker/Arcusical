@@ -23,6 +23,7 @@ namespace Arcusical
 
 			PROP_SET_AND_GET_WINRT(ViewModel::AlbumListControlVM^, Albums);
 			PROP_SET_AND_GET_WINRT(ViewModel::SongListControlVM^, Songs);
+			PROP_SET_AND_GET_WINRT(bool, HasResults);
 
 		internal:
 			SearchResultsVM(SearchVM^ searchVm, Player::Playlist& playlist, Util::BackgroundWorker& worker);

@@ -40,29 +40,41 @@ void SearchResultsControl::VM::set(SearchResultsVM^ vm) {
 	m_viewModel = vm;
 	this->DataContext = m_viewModel;
 
-	m_albumChangedSub = m_viewModel->Albums->OnAlbumsChanged += [this](auto unused) {
-		ShowIfNeeded();
-	};
-
-	m_songChangedSub = m_viewModel->Songs->OnSongListChanged += [this](auto unused) {
-		ShowIfNeeded();
+	m_hasResultsSub = m_viewModel->OnHasResultsChanged += [this](auto hasResults) {
+		if (hasResults) {
+			ShowIfNeeded();
+		}
+		else {
+			HideResults();
+		}
 	};
 }
 
 void Arcusical::SearchResultsControl::ShowResults() {
-	m_animOut->Stop();
-	m_animIn->Begin();
+	if (!m_isShown) {
+		m_isShown = true;
+		m_animOut->Stop();
+		m_animIn->Begin();
+	}
 }
 void Arcusical::SearchResultsControl::HideResults() {
-	m_animIn->Stop();
-	m_animOut->Begin();
+	if (m_isShown) {
+		m_isShown = false;
+		m_animIn->Stop();
+		m_animOut->Begin();
+	}
 }
 
 void Arcusical::SearchResultsControl::ShowIfNeeded() {
-	ShowResults();
+	auto albumCount = m_viewModel->Albums->Albums->Size;
+	auto songCount = (m_viewModel->Songs->SongList != nullptr)
+		? m_viewModel->Songs->SongList->List->Size
+		: 0;
+	if (albumCount > 0 || songCount > 0) {
+		ShowResults();
+	}
 }
 
 void Arcusical::SearchResultsControl::BackClicked(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e) {
-	auto val = v_root->ActualWidth;
 	HideResults();
 }

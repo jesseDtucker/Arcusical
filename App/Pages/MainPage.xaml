@@ -37,7 +37,6 @@
             <local:SearchResultsControl x:Name="v_searchResults" Grid.Column="1" HorizontalAlignment="Right" Width="700"/>
         </Grid>
         <local:BottomBar x:Name="v_bottomBar"  VerticalAlignment="Bottom" HorizontalAlignment="Stretch" MaxHeight="128"/>
-
     </Grid>
 
 </Page>

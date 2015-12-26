@@ -16,7 +16,7 @@ SearchVM::SearchVM(MusicSearcher& searcher, Playlist& playlist, IPlayer& player,
 	, m_player(player)
 	, m_worker(worker)
 {
-	this->SearchTerm = "Search";
+	this->SearchTerm = "";
 	m_onSearchTermChangedSub = this->OnSearchTermChanged += [this](Platform::String^ newValue)
 	{
 		this->StartSearch(newValue);

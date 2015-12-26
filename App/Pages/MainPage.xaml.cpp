@@ -26,6 +26,7 @@ using namespace concurrency;
 using namespace Platform;
 using namespace Windows::Foundation;
 using namespace Windows::Foundation::Collections;
+using namespace Windows::UI::Core;
 using namespace Windows::UI::Xaml;
 using namespace Windows::UI::Xaml::Controls;
 using namespace Windows::UI::Xaml::Controls::Primitives;
@@ -204,6 +205,9 @@ void Arcusical::MainPage::SetDependencies(	MusicSearcher* musicSearcher,
 		v_guide->VM = m_guideVM;
 
 		v_searchResults->VM = m_searchResultsVM;
+
+		auto wnd = Windows::ApplicationModel::Core::CoreApplication::MainView->CoreWindow;
+		wnd->KeyDown += ref new TypedEventHandler<CoreWindow^, KeyEventArgs^>(this, &MainPage::KeyPressed);
 	});
 	vmLoads.wait();
 
@@ -316,4 +320,22 @@ void Arcusical::MainPage::OnAlbumsReady(const Model::AlbumCollectionChanges& alb
 	}
 }
 
-
+void Arcusical::MainPage::KeyPressed(Windows::UI::Core::CoreWindow ^window, Windows::UI::Core::KeyEventArgs^ e) {
+	if (e->VirtualKey == Windows::System::VirtualKey::Escape) {
+		v_searchResults->HideResults();
+	}
+	else if (e->VirtualKey == Windows::System::VirtualKey::Space && !v_guide->SearchBox()->IsReceivingText()) {
+		m_backgroundWorker->Append([this]() {
+			if (m_player->GetIsPlaying()) {
+				m_player->Stop();
+			}
+			else {
+				m_player->Play();
+			}
+		});
+	}
+	else {
+		auto text = e->VirtualKey.ToString();
+		v_guide->SearchBox()->NotifyTextEntered(text);
+	}
+}

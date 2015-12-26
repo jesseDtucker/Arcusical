@@ -18,7 +18,7 @@
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid Background="{StaticResource primaryBrush}">
-        <TextBox HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextAlignment="Right" 
+        <TextBox HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextAlignment="Right"
                  Text="{Binding Path=SearchTerm, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" x:Name="v_searchBox"
                  KeyDown="TextBox_KeyDown" Background="Transparent" BorderBrush="Transparent"/>
         <Image Source="/Assets/Icons/SearchIcon.png" HorizontalAlignment="Right" Margin="5,12,5,12" Opacity="1.0"/>
