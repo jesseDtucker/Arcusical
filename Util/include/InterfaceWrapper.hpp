@@ -24,15 +24,16 @@
 //		Example:
 //			DefineMethod(Update, void); // method called Update, takes nothing and returns nothing
 //			DefineMethod(Rotate, void, Matrix3D); // method called Rotate, takes a Matrix3D and returns
-//nothing
+// nothing
 //			DefineMethod(Translate, bool, Matrix3D, GroundCollisionMesh); // returns a bool and takes 2
-//parameters
+// parameters
 //			DefineOperator(DereferenceOperator, *, RawCamera&);	// dereference operator that returns a
-//RawCamera reference
+// RawCamera reference
 //
 //			// Note: typedef is just a convenience
-//			typedef InterfaceWrapper<Update, Rotate, Translate, DereferenceOperator> CameraInterface;	//
-//define the interface
+//			typedef InterfaceWrapper<Update, Rotate, Translate, DereferenceOperator> CameraInterface;
+////
+// define the interface
 //
 //
 //	General Notes:

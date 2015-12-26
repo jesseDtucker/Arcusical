@@ -41,7 +41,7 @@ class Mvhd : public Box {
   uint64_t m_modificationTime;
   uint32_t m_timeScale;
   uint64_t m_duration;
-  float m_rate;  // 16.16 fixed point number
+  float m_rate;    // 16.16 fixed point number
   float m_volume;  // 8.8 fixed point number
   std::vector<uint32_t> m_matrix;
   uint32_t m_nextTrackId;

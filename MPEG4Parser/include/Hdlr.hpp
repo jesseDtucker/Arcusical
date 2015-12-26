@@ -26,7 +26,7 @@ class Hdlr : public Box {
   uint32_t GetVersion();
   HandlerType GetHandleType();
   std::string GetName();  // Note: this name exists for debugging and inspection purpose.
-  // please see page 22 of standard for details.
+                          // please see page 22 of standard for details.
 
  protected:
   virtual void ReadContents(Util::Stream& stream) override;

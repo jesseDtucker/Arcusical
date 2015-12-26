@@ -32,7 +32,7 @@ class Tkhd : public Box {
   uint64_t GetAlternateGroup();
   float GetVolume();  // 8.8 fixed point number
   std::vector<uint32_t> GetMatrix();
-  float GetWidth();  // 16.16 fixed point number
+  float GetWidth();   // 16.16 fixed point number
   float GetHeight();  // 16.16 fixed point number
 
  protected:
@@ -49,7 +49,7 @@ class Tkhd : public Box {
   uint64_t m_alternateGroup;
   float m_volume;  // 8.8 fixed point number
   std::vector<uint32_t> m_matrix;
-  float m_width;  // 16.16 fixed point number
+  float m_width;   // 16.16 fixed point number
   float m_height;  // 16.16 fixed point number
 };
 
