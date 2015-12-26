@@ -47,28 +47,35 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Rectangle Fill="{StaticResource shadowBrush}" Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
-        <ScrollViewer HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="1">
-            <StackPanel Orientation="Vertical">
-                <Grid Height="45">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="auto"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="auto"/>
-                    </Grid.ColumnDefinitions>
-                    <Rectangle Fill="{StaticResource primaryBrush}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid Height="45" Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="auto"/>
+                </Grid.ColumnDefinitions>
+                <Rectangle Fill="{StaticResource primaryBrush}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                                Grid.ColumnSpan="3"/>
-                    <Button Style="{StaticResource ClearButtonStyle}" Click="BackClicked" Grid.Column="0">
-                        <Image Source="/Assets/Icons/Close.png"/>
-                    </Button>
-                    <TextBox HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextAlignment="Right" Grid.Column="1"
+                <Button Style="{StaticResource ClearButtonStyle}" Click="BackClicked" Grid.Column="0">
+                    <Image Source="/Assets/Icons/Close.png"/>
+                </Button>
+                <TextBox HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextAlignment="Left" Grid.Column="1"
                              Text="{Binding Path=SearchTerm, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                             x:Name="v_searchBox" KeyDown="TextBoxKeyDown" Background="Transparent" BorderBrush="Transparent"/>
-                    <Image Source="/Assets/Icons/SearchIcon.png" HorizontalAlignment="Right" Margin="5,12,5,12" Opacity="1.0"
+                             x:Name="v_searchBox" KeyDown="TextBoxKeyDown" Margin="5" FontSize="18"
+                             PlaceholderText="Search..."/>
+                <Image Source="/Assets/Icons/SearchIcon.png" HorizontalAlignment="Right" Margin="5,12,15,12" Opacity="1.0"
                            Grid.Column="2"/>
-                </Grid>
-                <local:AlbumListControl DataContext="{Binding Path=AlbumListControlVM}"/>
-                <local:SongListControl DataContext="{Binding Path=SongListControlVM}"/>
-            </StackPanel>
-        </ScrollViewer>
+            </Grid>
+            <ScrollViewer HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Row="1">
+                <StackPanel Orientation="Vertical">
+                    <local:AlbumListControl DataContext="{Binding Path=AlbumListControlVM}"/>
+                    <local:SongListControl DataContext="{Binding Path=SongListControlVM}"/>
+                </StackPanel>
+            </ScrollViewer>
+        </Grid>
     </Grid>
 </UserControl>

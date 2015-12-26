@@ -10,8 +10,10 @@
 
 #include "Events/EventService.hpp"
 #include "Events/AlbumSelectedEvent.hpp"
+#include "Events/SearchSelectedEvent.hpp"
 
 using namespace Arcusical;
+using namespace Arcusical::Events;
 using namespace Arcusical::ViewModel;
 
 using namespace Platform;
@@ -42,7 +44,10 @@ BottomBar::BottomBar() {
 
 void Arcusical::BottomBar::AlbumSelected(Platform::Object ^ sender, Windows::UI::Xaml::RoutedEventArgs ^ e) {
   if (VM != nullptr && VM->Album != nullptr) {
-    Events::AlbumSelectedEvent selectedEvent(VM->Album);
-    Events::EventService<Events::AlbumSelectedEvent>::BroadcastEvent(selectedEvent);
+    EventService<AlbumSelectedEvent>::BroadcastEvent({VM->Album});
   }
+}
+
+void Arcusical::BottomBar::SearchClicked(Platform::Object ^ sender, Windows::UI::Xaml::RoutedEventArgs ^ e) {
+  EventService<SearchSelectedEvent>::BroadcastEvent({});
 }

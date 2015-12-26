@@ -5,7 +5,9 @@
 
 #include "pch.h"
 
-#include "Utility\KeyboardUtil.hpp"
+#include "Events/EventService.hpp"
+#include "Events/SearchSelectedEvent.hpp"
+#include "Utility/KeyboardUtil.hpp"
 #include "SearchControl.xaml.h"
 
 using namespace Platform;
@@ -21,6 +23,7 @@ using namespace Windows::UI::Xaml::Media::Animation;
 using namespace Windows::UI::Xaml::Navigation;
 
 using namespace Arcusical;
+using namespace Arcusical::Events;
 using namespace Arcusical::ViewModel;
 
 // The User Control item template is documented at http://go.microsoft.com/fwlink/?LinkId=234236
@@ -31,6 +34,8 @@ SearchControl::SearchControl() {
   InitializeComponent();
   m_animIn = safe_cast<Storyboard ^ >(v_root->Resources->Lookup("slideInAnim"));
   m_animOut = safe_cast<Storyboard ^ >(v_root->Resources->Lookup("slideOutAnim"));
+  m_searchSelectedSub =
+      EventService<SearchSelectedEvent>::RegisterListener({[this](const auto unused) { ShowResults(); }});
 }
 
 void SearchControl::SetActive() {

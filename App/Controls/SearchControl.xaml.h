@@ -29,6 +29,6 @@ namespace Arcusical {
   Windows::UI::Xaml::Media::Animation::Storyboard ^ m_animOut;
   bool m_isShown;
 
-  Util::Subscription m_hasResultsSub;
+  Util::Subscription m_searchSelectedSub;
 };
 }

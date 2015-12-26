@@ -175,6 +175,9 @@
     <ClInclude Include="Utility\KeyboardUtil.hpp">
       <Filter>Utility</Filter>
     </ClInclude>
+    <ClInclude Include="Events\SearchSelectedEvent.hpp">
+      <Filter>Events</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Page Include="Controls\AlbumListControl.xaml">

@@ -215,6 +215,7 @@
     <ClInclude Include="Converters\SongListSizeToVisiblity.hpp" />
     <ClInclude Include="Events\AlbumSelectedEvent.hpp" />
     <ClInclude Include="Events\EventService.hpp" />
+    <ClInclude Include="Events\SearchSelectedEvent.hpp" />
     <ClInclude Include="Events\SongSelectedEvent.hpp" />
     <ClInclude Include="Pages\MainPage.xaml.h">
       <DependentUpon>Pages\MainPage.xaml</DependentUpon>
