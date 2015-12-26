@@ -201,11 +201,8 @@
     <ClInclude Include="Controls\PlayerButtons.xaml.h">
       <DependentUpon>Controls\PlayerButtons.xaml</DependentUpon>
     </ClInclude>
-    <ClInclude Include="Controls\Search.xaml.h">
-      <DependentUpon>Controls\Search.xaml</DependentUpon>
-    </ClInclude>
-    <ClInclude Include="Controls\SearchResultsControl.xaml.h">
-      <DependentUpon>Controls\SearchResultsControl.xaml</DependentUpon>
+    <ClInclude Include="Controls\SearchControl.xaml.h">
+      <DependentUpon>Controls\SearchControl.xaml</DependentUpon>
     </ClInclude>
     <ClInclude Include="Controls\SongListControl.xaml.h">
       <DependentUpon>Controls\SongListControl.xaml</DependentUpon>
@@ -227,11 +224,11 @@
       <DependentUpon>App.xaml</DependentUpon>
     </ClInclude>
     <ClInclude Include="Utility\DispatcherHelper.hpp" />
+    <ClInclude Include="Utility\KeyboardUtil.hpp" />
     <ClInclude Include="Utility\XamlMacros.hpp" />
     <ClInclude Include="ViewModels\AlbumListControlVM.hpp" />
     <ClInclude Include="ViewModels\AlbumVM.hpp" />
     <ClInclude Include="ViewModels\GuideVM.hpp" />
-    <ClInclude Include="ViewModels\SearchResultsVM.hpp" />
     <ClInclude Include="ViewModels\SearchVM.hpp" />
     <ClInclude Include="ViewModels\SongListControlVM.hpp" />
     <ClInclude Include="ViewModels\SongListVM.hpp" />
@@ -249,8 +246,7 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Controls\PlayerButtons.xaml" />
-    <Page Include="Controls\Search.xaml" />
-    <Page Include="Controls\SearchResultsControl.xaml" />
+    <Page Include="Controls\SearchControl.xaml" />
     <Page Include="Controls\SongListControl.xaml" />
     <Page Include="Controls\VolumeSilder.xaml" />
     <Page Include="Converters\Converters.xaml" />
@@ -281,11 +277,8 @@
     <ClCompile Include="Controls\PlayerButtons.xaml.cpp">
       <DependentUpon>Controls\PlayerButtons.xaml</DependentUpon>
     </ClCompile>
-    <ClCompile Include="Controls\Search.xaml.cpp">
-      <DependentUpon>Controls\Search.xaml</DependentUpon>
-    </ClCompile>
-    <ClCompile Include="Controls\SearchResultsControl.xaml.cpp">
-      <DependentUpon>Controls\SearchResultsControl.xaml</DependentUpon>
+    <ClCompile Include="Controls\SearchControl.xaml.cpp">
+      <DependentUpon>Controls\SearchControl.xaml</DependentUpon>
     </ClCompile>
     <ClCompile Include="Controls\SongListControl.xaml.cpp">
       <DependentUpon>Controls\SongListControl.xaml</DependentUpon>
@@ -310,10 +303,10 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Utility\DispatcherHelper.cpp" />
+    <ClCompile Include="Utility\KeyboardUtil.cpp" />
     <ClCompile Include="ViewModels\AlbumListControlVM.cpp" />
     <ClCompile Include="ViewModels\AlbumVM.cpp" />
     <ClCompile Include="ViewModels\GuideVM.cpp" />
-    <ClCompile Include="ViewModels\SearchResultsVM.cpp" />
     <ClCompile Include="ViewModels\SearchVM.cpp" />
     <ClCompile Include="ViewModels\SongListControlVM.cpp" />
     <ClCompile Include="ViewModels\SongListVM.cpp" />

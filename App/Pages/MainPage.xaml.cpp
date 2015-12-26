@@ -13,13 +13,13 @@
 #include "Controls/BottomBar.xaml.h"
 #include "Controls/Guide.xaml.h"
 #include "Controls/SongListControl.xaml.h"
-#include "Controls/Search.xaml.h"
-#include "Controls/SearchResultsControl.xaml.h"
+#include "Controls/SearchControl.xaml.h"
 #include "Controls/PlayerButtons.xaml.h"
 #include "Events/AlbumSelectedEvent.hpp"
 #include "Events/EventService.hpp"
 #include "Playlist.hpp"
 #include "Storage.hpp"
+#include "Utility/KeyboardUtil.hpp"
 #include "ViewModels/AlbumListControlVM.hpp"
 
 using namespace concurrency;
@@ -169,21 +169,19 @@ void Arcusical::MainPage::SetDependencies(MusicSearcher* musicSearcher, MusicPro
   m_backgroundWorker = worker;
 
   auto vmLoads = DispatchToUI([&]() {
-    m_searchVM = ref new SearchVM(*musicSearcher, *playlist, *player, *m_backgroundWorker);
+    m_searchVM = ref new SearchVM(*musicSearcher, *playlist, *m_backgroundWorker, *player);
     m_albumListVM = ref new AlbumListControlVM();
     m_playerVM = ref new SongPlayerVM(*player, *playlist, *musicProvider, *m_backgroundWorker);
     m_volumeSlideVM = ref new VolumeSliderVM(*player);
-    m_searchResultsVM = ref new SearchResultsVM(m_searchVM, *playlist, *m_backgroundWorker);
     m_guideVM = ref new GuideVM(*playlist, *m_backgroundWorker);
 
     m_playerVM->VolumeVM = m_volumeSlideVM;
     v_albumListControl->VM = m_albumListVM;
     v_bottomBar->VM = m_playerVM;
 
-    m_guideVM->SearchVM = m_searchVM;
     v_guide->VM = m_guideVM;
 
-    v_searchResults->VM = m_searchResultsVM;
+    v_searchPane->VM = m_searchVM;
 
     auto wnd = Windows::ApplicationModel::Core::CoreApplication::MainView->CoreWindow;
     wnd->KeyDown += ref new TypedEventHandler<CoreWindow ^, KeyEventArgs ^ >(this, &MainPage::KeyPressed);
@@ -276,8 +274,8 @@ void Arcusical::MainPage::OnAlbumsReady(const Model::AlbumCollectionChanges& alb
 
 void Arcusical::MainPage::KeyPressed(Windows::UI::Core::CoreWindow ^ window, Windows::UI::Core::KeyEventArgs ^ e) {
   if (e->VirtualKey == Windows::System::VirtualKey::Escape) {
-    v_searchResults->HideResults();
-  } else if (e->VirtualKey == Windows::System::VirtualKey::Space && !v_guide->SearchBox()->IsReceivingText()) {
+    v_searchPane->HideResults();
+  } else if (e->VirtualKey == Windows::System::VirtualKey::Space && !v_searchPane->IsActive()) {
     m_backgroundWorker->Append([this]() {
       if (m_player->GetIsPlaying()) {
         m_player->Stop();
@@ -285,8 +283,7 @@ void Arcusical::MainPage::KeyPressed(Windows::UI::Core::CoreWindow ^ window, Win
         m_player->Play();
       }
     });
-  } else {
-    auto text = e->VirtualKey.ToString();
-    v_guide->SearchBox()->NotifyTextEntered(text);
+  } else if (IsAlphaNumeric(e->VirtualKey)) {
+    v_searchPane->SetActive();
   }
 }

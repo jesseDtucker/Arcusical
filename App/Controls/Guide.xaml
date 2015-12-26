@@ -33,8 +33,6 @@
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            <local:Search DataContext="{Binding SearchVM}" Height="25" HorizontalAlignment="Stretch"
-                          VerticalAlignment="Top" Grid.Row="0" x:Name="v_search"/>
             <Image Source="{Binding Path=SelectedAlbum.ImagePath}" HorizontalAlignment="Stretch" Grid.Row="1"/>
             <Grid Background="LightGray"  Grid.Row="2">
                 <Grid.ColumnDefinitions>

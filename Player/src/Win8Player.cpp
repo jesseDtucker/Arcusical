@@ -112,8 +112,6 @@ void Win8Player::Stop() {
 
 void Win8Player::SetSong(const Model::Song& song) {
   if (!m_currentSong || m_currentSong != song) {
-    OutputDebugString(song.GetTitle().c_str());
-    OutputDebugStringA(" <- New song axb\n");
     m_currentSong = song;
     m_isCurrentSongSetForPlay = false;
     Stop();

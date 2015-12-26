@@ -22,7 +22,6 @@ namespace ViewModel {
     void set(ViewModel::AlbumVM ^ );
   }
   PROP_SET_AND_GET_WINRT(ViewModel::SongListControlVM ^, SongListControlVM);
-  PROP_SET_AND_GET_WINRT(ViewModel::SearchVM ^, SearchVM);
 
   void PlayAll();
   void Shuffle();

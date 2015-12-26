@@ -1,5 +1,5 @@
 ﻿<UserControl
-    x:Class="Arcusical.SearchResultsControl"
+    x:Class="Arcusical.SearchControl"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:Arcusical"
@@ -50,13 +50,24 @@
         <ScrollViewer HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="1">
             <StackPanel Orientation="Vertical">
                 <Grid Height="45">
-                    <Rectangle Fill="{StaticResource primaryBrush}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
-                    <Button Style="{StaticResource ClearButtonStyle}" Click="BackClicked">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Rectangle Fill="{StaticResource primaryBrush}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                               Grid.ColumnSpan="3"/>
+                    <Button Style="{StaticResource ClearButtonStyle}" Click="BackClicked" Grid.Column="0">
                         <Image Source="/Assets/Icons/Close.png"/>
                     </Button>
+                    <TextBox HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextAlignment="Right" Grid.Column="1"
+                             Text="{Binding Path=SearchTerm, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                             x:Name="v_searchBox" KeyDown="TextBoxKeyDown" Background="Transparent" BorderBrush="Transparent"/>
+                    <Image Source="/Assets/Icons/SearchIcon.png" HorizontalAlignment="Right" Margin="5,12,5,12" Opacity="1.0"
+                           Grid.Column="2"/>
                 </Grid>
-                <local:AlbumListControl DataContext="{Binding Path=Albums}"/>
-                <local:SongListControl DataContext="{Binding Path=Songs}"/>
+                <local:AlbumListControl DataContext="{Binding Path=AlbumListControlVM}"/>
+                <local:SongListControl DataContext="{Binding Path=SongListControlVM}"/>
             </StackPanel>
         </ScrollViewer>
     </Grid>

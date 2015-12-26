@@ -4,7 +4,9 @@
 //
 
 #include "pch.h"
-#include "SearchResultsControl.xaml.h"
+
+#include "Utility\KeyboardUtil.hpp"
+#include "SearchControl.xaml.h"
 
 using namespace Platform;
 using namespace Windows::Foundation;
@@ -23,55 +25,49 @@ using namespace Arcusical::ViewModel;
 
 // The User Control item template is documented at http://go.microsoft.com/fwlink/?LinkId=234236
 
-SearchResultsControl::SearchResultsControl() {
+VM_IMPL(SearchVM ^, SearchControl);
+
+SearchControl::SearchControl() {
   InitializeComponent();
   m_animIn = safe_cast<Storyboard ^ >(v_root->Resources->Lookup("slideInAnim"));
   m_animOut = safe_cast<Storyboard ^ >(v_root->Resources->Lookup("slideOutAnim"));
 }
 
-SearchResultsVM ^ SearchResultsControl::VM::get() {
-  if (m_viewModel != this->DataContext) {
-    m_viewModel = dynamic_cast<SearchResultsVM ^ >(this->DataContext);
-  }
-  return m_viewModel;
-}
-void SearchResultsControl::VM::set(SearchResultsVM ^ vm) {
-  ARC_ASSERT(Arcusical::HasThreadAccess());
-  m_viewModel = vm;
-  this->DataContext = m_viewModel;
-
-  m_hasResultsSub = m_viewModel->OnHasResultsChanged += [this](auto hasResults) {
-    if (hasResults) {
-      ShowIfNeeded();
-    } else {
-      HideResults();
+void SearchControl::SetActive() {
+  if (!IsActive()) {
+    if (!m_isShown) {
+      v_searchBox->Text = "";
     }
-  };
+    v_searchBox->Focus(Windows::UI::Xaml::FocusState::Keyboard);
+    ShowResults();
+  }
 }
 
-void Arcusical::SearchResultsControl::ShowResults() {
+bool SearchControl::IsActive() { return !(v_searchBox->FocusState == Windows::UI::Xaml::FocusState::Unfocused); }
+
+void SearchControl::TextBoxKeyDown(Platform::Object ^ sender, Windows::UI::Xaml::Input::KeyRoutedEventArgs ^ e) {
+  if (e->Key == Windows::System::VirtualKey::Enter) {
+    VM->SelectCurrent();
+    HideResults();
+  } else if (IsAlphaNumeric(e->Key)) {
+    ShowResults();
+  }
+}
+
+void SearchControl::ShowResults() {
   if (!m_isShown) {
     m_isShown = true;
     m_animOut->Stop();
     m_animIn->Begin();
   }
 }
-void Arcusical::SearchResultsControl::HideResults() {
+void Arcusical::SearchControl::HideResults() {
   if (m_isShown) {
+    VM->SearchTerm = "";
     m_isShown = false;
     m_animIn->Stop();
     m_animOut->Begin();
   }
 }
 
-void Arcusical::SearchResultsControl::ShowIfNeeded() {
-  auto albumCount = m_viewModel->Albums->Albums->Size;
-  auto songCount = (m_viewModel->Songs->SongList != nullptr) ? m_viewModel->Songs->SongList->List->Size : 0;
-  if (albumCount > 0 || songCount > 0) {
-    ShowResults();
-  }
-}
-
-void Arcusical::SearchResultsControl::BackClicked(Platform::Object ^ sender, Windows::UI::Xaml::RoutedEventArgs ^ e) {
-  HideResults();
-}
+void SearchControl::BackClicked(Platform::Object ^ sender, Windows::UI::Xaml::RoutedEventArgs ^ e) { HideResults(); }

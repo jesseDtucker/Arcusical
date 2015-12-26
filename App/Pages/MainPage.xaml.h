@@ -11,7 +11,6 @@
 #include "ViewModels/AlbumListControlVM.hpp"
 #include "ViewModels/GuideVM.hpp"
 #include "ViewModels/SearchVM.hpp"
-#include "ViewModels/SearchResultsVM.hpp"
 #include "ViewModels/SongListControlVM.hpp"
 #include "ViewModels/VolumeSilderVM.hpp"
 #include "ViewModels/SongPlayerVM.hpp"
@@ -64,7 +63,6 @@ internal:
   ViewModel::SearchVM ^ m_searchVM;
   ViewModel::VolumeSliderVM ^ m_volumeSlideVM;
   ViewModel::SongPlayerVM ^ m_playerVM;
-  ViewModel::SearchResultsVM ^ m_searchResultsVM;
 
   Util::Subscription m_albumSub;
   Util::Subscription m_albumSelectedSub;

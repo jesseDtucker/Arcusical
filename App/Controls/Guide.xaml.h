@@ -14,7 +14,6 @@ namespace Arcusical {
  public:
   Guide();
   VM_DECLARATION(ViewModel::GuideVM ^ );
-  Search ^ SearchBox();
 
  private:
   void Play_Clicked(Platform::Object ^ sender, Windows::UI::Xaml::RoutedEventArgs ^ e);

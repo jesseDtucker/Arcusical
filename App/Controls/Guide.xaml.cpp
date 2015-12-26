@@ -26,8 +26,6 @@ VM_IMPL(GuideVM ^, Guide);
 
 Guide::Guide() { InitializeComponent(); }
 
-Search ^ Guide::SearchBox() { return v_search; }
-
 void Arcusical::Guide::Play_Clicked(Platform::Object ^ sender, Windows::UI::Xaml::RoutedEventArgs ^ e) {
   VM->PlayAll();
 }
