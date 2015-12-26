@@ -16,150 +16,132 @@
 
 using namespace std;
 
-namespace Arcusical { namespace MPEG4 {
+namespace Arcusical {
+namespace MPEG4 {
 
-	#pragma region Ctor/Dtor
+#pragma region Ctor / Dtor
 
-	//public
-	MPEG4_Parser::MPEG4_Parser()
-	{
-		m_tree = nullptr;
-	}
+// public
+MPEG4_Parser::MPEG4_Parser() { m_tree = nullptr; }
 
-	//public
-	MPEG4_Parser::~MPEG4_Parser()
-	{
-		//smart pointers will handle it all
-	}
+// public
+MPEG4_Parser::~MPEG4_Parser() {
+  // smart pointers will handle it all
+}
 
-	#pragma endregion
+#pragma endregion
 
-	#pragma region Public Methods
+#pragma region Public Methods
 
-	//public
-	std::shared_ptr<MPEG4_SongFile> MPEG4_Parser::ReadAndParseFromStream(Util::Stream& inStream)
-	{
-		m_tree = std::make_shared<MPEG4_Tree>();
-		return make_shared<MPEG4_SongFile>(MPEG4_SongFile(ParseTree(inStream)));
-	}
+// public
+std::shared_ptr<MPEG4_SongFile> MPEG4_Parser::ReadAndParseFromStream(Util::Stream& inStream) {
+  m_tree = std::make_shared<MPEG4_Tree>();
+  return make_shared<MPEG4_SongFile>(MPEG4_SongFile(ParseTree(inStream)));
+}
 
-	#pragma endregion
+#pragma endregion
 
-	#pragma region Public Static Methods
+#pragma region Public Static Methods
 
-	//public static
-	std::vector<std::shared_ptr<Box>> MPEG4_Parser::ParseBoxes(Util::Stream& stream, long long bytesToParse)
-	{
-		std::vector<std::shared_ptr<Box>> boxes;
-		bool doneParsing = false;
+// public static
+std::vector<std::shared_ptr<Box>> MPEG4_Parser::ParseBoxes(Util::Stream& stream, long long bytesToParse) {
+  std::vector<std::shared_ptr<Box>> boxes;
+  bool doneParsing = false;
 
-		auto startPosition = stream.GetPosition();
+  auto startPosition = stream.GetPosition();
 
-		while(!doneParsing && stream.GetPosition() < startPosition + bytesToParse && stream.GetBytesRemainaingLength() > 0)
-		{
-			BoxHeader header = ReadHeader(stream);
-			auto headerSize = header.m_is64BitSize ? 16 : 8;
+  while (!doneParsing && stream.GetPosition() < startPosition + bytesToParse && stream.GetBytesRemainaingLength() > 0) {
+    BoxHeader header = ReadHeader(stream);
+    auto headerSize = header.m_is64BitSize ? 16 : 8;
 
-			//get the box
-			std::shared_ptr<Box> box = BoxFactory::GetBox(header.m_type);
-			//parse box
-			box->ParseBox(header.m_size, stream, headerSize);
-			//add box to tree
-			boxes.push_back(box);
+    // get the box
+    std::shared_ptr<Box> box = BoxFactory::GetBox(header.m_type);
+    // parse box
+    box->ParseBox(header.m_size, stream, headerSize);
+    // add box to tree
+    boxes.push_back(box);
 
-			if (header.m_size == 0)
-			{
-				doneParsing = true;
-			}
-		}
+    if (header.m_size == 0) {
+      doneParsing = true;
+    }
+  }
 
-		ARC_ASSERT_MSG(stream.GetPosition() - startPosition == bytesToParse, "Did not parse the number of bytes that we were supposed to");
-		
-		return boxes;
-	}
+  ARC_ASSERT_MSG(stream.GetPosition() - startPosition == bytesToParse,
+                 "Did not parse the number of bytes that we were supposed to");
 
-	//public static
-	uint64_t MPEG4_Parser::GetSize(Util::Stream& stream, bool& is64bit)
-	{
-		uint64_t size = 0;
-		uint32_t shorterSize = 0;
-		is64bit = false;
+  return boxes;
+}
 
-		shorterSize = stream.ReadInteger<uint32_t>();
-		stream.Rewind(sizeof(uint32_t));
+// public static
+uint64_t MPEG4_Parser::GetSize(Util::Stream& stream, bool& is64bit) {
+  uint64_t size = 0;
+  uint32_t shorterSize = 0;
+  is64bit = false;
 
-		if(shorterSize == 1)
-		{
-			//then it is a 64 bit value
-			stream.Advance(4); //skip the type bytes
-			size = stream.ReadInteger<uint64_t>();
-			is64bit = true;
-			stream.Rewind(4);
-		}
-		else
-		{
-			size = shorterSize;
-		}
+  shorterSize = stream.ReadInteger<uint32_t>();
+  stream.Rewind(sizeof(uint32_t));
 
-		return size;
-	}
+  if (shorterSize == 1) {
+    // then it is a 64 bit value
+    stream.Advance(4);  // skip the type bytes
+    size = stream.ReadInteger<uint64_t>();
+    is64bit = true;
+    stream.Rewind(4);
+  } else {
+    size = shorterSize;
+  }
 
-	//public static
-	BoxType MPEG4_Parser::GetType(Util::Stream& stream)
-	{
-		stream.Advance(4); // skip the size field
-		std::string typeStr = stream.ReadString(4);
-		stream.Rewind(8); // go back to the start of the header
+  return size;
+}
 
-		auto type = StringToBoxType.find(typeStr);
+// public static
+BoxType MPEG4_Parser::GetType(Util::Stream& stream) {
+  stream.Advance(4);  // skip the size field
+  std::string typeStr = stream.ReadString(4);
+  stream.Rewind(8);  // go back to the start of the header
 
-		//ARC_ASSERT_MSG(type != StringToBoxType.end(), "Found unknown box type!")
-		if(type != StringToBoxType.end())
-		{
-			return type->second;
-		}
-		else
-		{
-			return BoxType::UNKNOWN;
-		}
-	}
+  auto type = StringToBoxType.find(typeStr);
 
-	#pragma endregion
+  // ARC_ASSERT_MSG(type != StringToBoxType.end(), "Found unknown box type!")
+  if (type != StringToBoxType.end()) {
+    return type->second;
+  } else {
+    return BoxType::UNKNOWN;
+  }
+}
 
-	#pragma region Protected Methods
+#pragma endregion
 
-	//protected
-	std::shared_ptr<MPEG4_Tree> MPEG4_Parser::ParseTree(Util::Stream& stream)
-	{
-		auto boxes = ParseBoxes(stream, stream.GetLength());
-		std::for_each(boxes.begin(), boxes.end(),[this](std::shared_ptr<Box> box){ m_tree->AddBox(box);});
+#pragma region Protected Methods
 
-		return m_tree;
-	}
+// protected
+std::shared_ptr<MPEG4_Tree> MPEG4_Parser::ParseTree(Util::Stream& stream) {
+  auto boxes = ParseBoxes(stream, stream.GetLength());
+  std::for_each(boxes.begin(), boxes.end(), [this](std::shared_ptr<Box> box) { m_tree->AddBox(box); });
 
-	BoxHeader MPEG4_Parser::ReadHeader(Util::Stream& stream)
-	{
-		BoxHeader header;
+  return m_tree;
+}
 
-		//get the type
-		header.m_type = GetType(stream);	//plus 4 because we need to skip the size field
-		header.m_size = GetSize(stream, header.m_is64BitSize);
+BoxHeader MPEG4_Parser::ReadHeader(Util::Stream& stream) {
+  BoxHeader header;
 
-		//advance the iterator to the start of the data
-		if(header.m_is64BitSize)
-		{
-			//skip the first size field, the type field and the second size field
-			stream.Advance(16);
-		}
-		else
-		{
-			//skip just the first size field and the type field
-			stream.Advance(8);
-		}
+  // get the type
+  header.m_type = GetType(stream);  // plus 4 because we need to skip the size field
+  header.m_size = GetSize(stream, header.m_is64BitSize);
 
-		return header;
-	}
+  // advance the iterator to the start of the data
+  if (header.m_is64BitSize) {
+    // skip the first size field, the type field and the second size field
+    stream.Advance(16);
+  } else {
+    // skip just the first size field and the type field
+    stream.Advance(8);
+  }
 
-	#pragma endregion
+  return header;
+}
 
-} /*namespace: MPEG4*/}/*namespace: Arcusical*/ 
+#pragma endregion
+
+} /*namespace: MPEG4*/
+} /*namespace: Arcusical*/

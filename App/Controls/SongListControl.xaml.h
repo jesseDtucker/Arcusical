@@ -11,17 +11,14 @@
 
 using namespace Windows::UI::Xaml;
 
-namespace Arcusical
-{
-	[Windows::Foundation::Metadata::WebHostHidden]
-	public ref class SongListControl sealed
-	{
-	public:
-		SongListControl();
+namespace Arcusical {
+[Windows::Foundation::Metadata::WebHostHidden] public ref class SongListControl sealed {
+ public:
+  SongListControl();
 
-		VM_DECLARATION(ViewModel::SongListControlVM^);
-	private:
+  VM_DECLARATION(ViewModel::SongListControlVM ^ );
 
-		void SongDoubleTapped(Platform::Object^ sender, Windows::UI::Xaml::Input::DoubleTappedRoutedEventArgs^ e);
-	};
+ private:
+  void SongDoubleTapped(Platform::Object ^ sender, Windows::UI::Xaml::Input::DoubleTappedRoutedEventArgs ^ e);
+};
 }

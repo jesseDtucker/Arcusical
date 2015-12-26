@@ -11,22 +11,22 @@
 
 #include "Mdat.hpp"
 
-namespace Arcusical { namespace MPEG4 {
+namespace Arcusical {
+namespace MPEG4 {
 
-	void Mdat::ReadContents(Util::Stream& stream)
-	{
-		// TODO::JT figure out how to handle this case!
-		// Note: current code is not at all safe!
-		stream.Advance(Util::SafeIntCast<unsigned int>(m_bodySize));
-	}
+void Mdat::ReadContents(Util::Stream& stream) {
+  // TODO::JT figure out how to handle this case!
+  // Note: current code is not at all safe!
+  stream.Advance(Util::SafeIntCast<unsigned int>(m_bodySize));
+}
 
-	void Mdat::PrintBox(std::ostream& outStream, int depth)
-	{
-		std::string tabs = GetTabs(depth);
+void Mdat::PrintBox(std::ostream& outStream, int depth) {
+  std::string tabs = GetTabs(depth);
 
-		outStream << tabs << "Data Box:" << std::endl;
-		outStream << tabs << "\tSize: " << m_bodySize << std::endl;
-		outStream << tabs << "\tName: " << *GetBoxName() << std::endl;
-	}
+  outStream << tabs << "Data Box:" << std::endl;
+  outStream << tabs << "\tSize: " << m_bodySize << std::endl;
+  outStream << tabs << "\tName: " << *GetBoxName() << std::endl;
+}
 
-} /*namespace: MPEG4*/}/*namespace: Arcusical*/
+} /*namespace: MPEG4*/
+} /*namespace: Arcusical*/

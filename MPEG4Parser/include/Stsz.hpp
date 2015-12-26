@@ -13,32 +13,32 @@
 
 #include "Box.hpp"
 
-namespace Arcusical { namespace MPEG4 {
+namespace Arcusical {
+namespace MPEG4 {
 
-	class Stsz : public Box
-	{
-		public:
-			Stsz();
-			virtual ~Stsz() override;
+class Stsz : public Box {
+ public:
+  Stsz();
+  virtual ~Stsz() override;
 
-			virtual void PrintBox(std::ostream& outStream, int depth = 0) override;
+  virtual void PrintBox(std::ostream& outStream, int depth = 0) override;
 
-			uint32_t GetVersion();
-			uint32_t GetSampleSize();
-			uint32_t GetSampleCount();
-			std::vector<uint32_t> GetEntries();
+  uint32_t GetVersion();
+  uint32_t GetSampleSize();
+  uint32_t GetSampleCount();
+  std::vector<uint32_t> GetEntries();
 
-		protected:
-			virtual void ReadContents(Util::Stream& stream) override;
+ protected:
+  virtual void ReadContents(Util::Stream& stream) override;
 
-		private:
+ private:
+  uint32_t m_version;
+  uint32_t m_sampleSize;
+  uint32_t m_sampleCount;
+  std::vector<uint32_t> m_entries;
+};
 
-			uint32_t m_version;
-			uint32_t m_sampleSize;
-			uint32_t m_sampleCount;
-			std::vector<uint32_t> m_entries;
-	};
-
-} /*namespace: MPEG4*/}/*namespace: Arcusical*/
+} /*namespace: MPEG4*/
+} /*namespace: Arcusical*/
 
 #endif

@@ -7,16 +7,26 @@
 
 #if _DEBUG
 
-#define ARC_FAIL(msg) { std::cerr << msg << std::endl; __debugbreak(); }
-#define ARC_ASSERT(statement) if (!(statement)) { __debugbreak(); }
-#define ARC_ASSERT_MSG(statement, msg) if(!(statement)) { std::cerr << msg << std::endl; __debugbreak(); }
+#define ARC_FAIL(msg)              \
+  {                                \
+    std::cerr << msg << std::endl; \
+    __debugbreak();                \
+  }
+#define ARC_ASSERT(statement) \
+  if (!(statement)) {         \
+    __debugbreak();           \
+  }
+#define ARC_ASSERT_MSG(statement, msg) \
+  if (!(statement)) {                  \
+    std::cerr << msg << std::endl;     \
+    __debugbreak();                    \
+  }
 
-#define ARC_ThrowIfFailed(hresult)								\
-	if(FAILED(hresult))											\
-	{															\
-		__debugbreak();											\
-		throw Platform::Exception::CreateException(hresult);	\
-	}															\
+#define ARC_ThrowIfFailed(hresult)                       \
+  if (FAILED(hresult)) {                                 \
+    __debugbreak();                                      \
+    throw Platform::Exception::CreateException(hresult); \
+  }
 
 #else
 

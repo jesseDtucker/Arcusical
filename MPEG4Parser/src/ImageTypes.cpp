@@ -8,13 +8,13 @@
 
 #include "Imagetypes.hpp"
 
-namespace Arcusical { namespace MPEG4 {
+namespace Arcusical {
+namespace MPEG4 {
 
-	std::ostream& operator << (std::ostream& outStream, ImageType type)
-	{
-		outStream << ImageTypeToString.at(type);
-		return outStream;
-	}
+std::ostream& operator<<(std::ostream& outStream, ImageType type) {
+  outStream << ImageTypeToString.at(type);
+  return outStream;
+}
 
-
-} /*namespace: MPEG4*/}/*namespace: Arcusical*/ 
+} /*namespace: MPEG4*/
+} /*namespace: Arcusical*/

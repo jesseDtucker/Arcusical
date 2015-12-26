@@ -12,28 +12,26 @@
 #include "Mdia.hpp"
 #include "MPEG4_Parser.hpp"
 
-namespace Arcusical { namespace MPEG4 {
+namespace Arcusical {
+namespace MPEG4 {
 
-	Mdia::Mdia()
-	{
-		//Nothing to do
-	}
+Mdia::Mdia() {
+  // Nothing to do
+}
 
-	Mdia::~Mdia()
-	{
-		//nothing to do
-	}
+Mdia::~Mdia() {
+  // nothing to do
+}
 
-	void Mdia::PrintBox(std::ostream& outStream, int depth)
-	{
-		std::string tabs = GetTabs(depth);
+void Mdia::PrintBox(std::ostream& outStream, int depth) {
+  std::string tabs = GetTabs(depth);
 
-		outStream << tabs << "MDIA Box:" << std::endl;
+  outStream << tabs << "MDIA Box:" << std::endl;
 
-		for(std::shared_ptr<Box> child : m_children)
-		{
-			child->PrintBox(outStream, depth + 1);
-		}
-	}
+  for (std::shared_ptr<Box> child : m_children) {
+    child->PrintBox(outStream, depth + 1);
+  }
+}
 
-} /*namespace: MPEG4*/}/*namespace: Arcusical*/ 
+} /*namespace: MPEG4*/
+} /*namespace: Arcusical*/

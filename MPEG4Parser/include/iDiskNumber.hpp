@@ -12,29 +12,28 @@
 
 #include "Box.hpp"
 
-namespace Arcusical { namespace MPEG4 {
+namespace Arcusical {
+namespace MPEG4 {
 
-	class iDiskNumber : public Box
-	{
-		public:
+class iDiskNumber : public Box {
+ public:
+  iDiskNumber() {}
+  virtual ~iDiskNumber() {}
 
-			iDiskNumber() {}
-			virtual ~iDiskNumber() {}
+  virtual void PrintBox(std::ostream& outStream, int depth = 0) override;
 
-			virtual void PrintBox(std::ostream& outStream, int depth = 0) override;
+  uint16_t GetDiskNumber();
+  uint16_t GetMaxDisk();
 
-			uint16_t GetDiskNumber();
-			uint16_t GetMaxDisk();
+ protected:
+  virtual void ReadContents(Util::Stream& stream) override;
 
-		protected:
-			virtual void ReadContents(Util::Stream& stream) override;
+ private:
+  uint16_t m_diskNumber;
+  uint16_t m_maxDisk;
+};
 
-		private:
-
-			uint16_t m_diskNumber;
-			uint16_t m_maxDisk;
-	};
-
-}/*Arcusical*/}/*MPEG4*/
+} /*Arcusical*/
+} /*MPEG4*/
 
 #endif

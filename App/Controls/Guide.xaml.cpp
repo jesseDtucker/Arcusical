@@ -22,20 +22,16 @@ using namespace Windows::UI::Xaml::Navigation;
 
 // The User Control item template is documented at http://go.microsoft.com/fwlink/?LinkId=234236
 
-VM_IMPL(GuideVM^, Guide);
+VM_IMPL(GuideVM ^, Guide);
 
-Guide::Guide() {
-	InitializeComponent();
+Guide::Guide() { InitializeComponent(); }
+
+Search ^ Guide::SearchBox() { return v_search; }
+
+void Arcusical::Guide::Play_Clicked(Platform::Object ^ sender, Windows::UI::Xaml::RoutedEventArgs ^ e) {
+  VM->PlayAll();
 }
 
-Search^ Guide::SearchBox() {
-	return v_search;
-}
-
-void Arcusical::Guide::Play_Clicked(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e) {
-	VM->PlayAll();
-}
-
-void Arcusical::Guide::Shuffle_Clicked(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e) {
-	VM->Shuffle();
+void Arcusical::Guide::Shuffle_Clicked(Platform::Object ^ sender, Windows::UI::Xaml::RoutedEventArgs ^ e) {
+  VM->Shuffle();
 }

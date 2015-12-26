@@ -12,18 +12,18 @@
 
 #include "ContainerBox.hpp"
 
-namespace Arcusical { namespace MPEG4 {
+namespace Arcusical {
+namespace MPEG4 {
 
-	class Minf : public ContainerBox
-	{
-		public:
+class Minf : public ContainerBox {
+ public:
+  Minf();
+  virtual ~Minf() override;
 
-			Minf();
-			virtual ~Minf() override;
+  virtual void PrintBox(std::ostream& outStream, int depth = 0) override;
+};
 
-			virtual void PrintBox(std::ostream& outStream, int depth = 0) override;
-	};
-
-} /*namespace: MPEG4*/}/*namespace: Arcusical*/ 
+} /*namespace: MPEG4*/
+} /*namespace: Arcusical*/
 
 #endif /*!BOX_FTYP_H*/

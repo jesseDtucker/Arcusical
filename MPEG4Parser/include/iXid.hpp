@@ -13,27 +13,26 @@
 
 #include "Box.hpp"
 
-namespace Arcusical { namespace MPEG4 {
+namespace Arcusical {
+namespace MPEG4 {
 
-	class iXID : public Box
-	{
-		public:
+class iXID : public Box {
+ public:
+  iXID() {}
+  virtual ~iXID() {}
 
-			iXID() {}
-			virtual ~iXID() {}
+  virtual void PrintBox(std::ostream& outStream, int depth = 0) override;
 
-			virtual void PrintBox(std::ostream& outStream, int depth = 0) override;
+  std::string GetXID();
 
-			std::string GetXID();
+ protected:
+  virtual void ReadContents(Util::Stream& stream) override;
 
-		protected:
-			virtual void ReadContents(Util::Stream& stream) override;
+ private:
+  std::string m_XID;
+};
 
-		private:
-
-			std::string m_XID;
-	};
-
-} /*namespace: MPEG4*/}/*namespace: Arcusical*/ 
+} /*namespace: MPEG4*/
+} /*namespace: Arcusical*/
 
 #endif

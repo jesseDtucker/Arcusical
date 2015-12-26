@@ -23,12 +23,16 @@
 //
 //		Example:
 //			DefineMethod(Update, void); // method called Update, takes nothing and returns nothing
-//			DefineMethod(Rotate, void, Matrix3D); // method called Rotate, takes a Matrix3D and returns nothing
-//			DefineMethod(Translate, bool, Matrix3D, GroundCollisionMesh); // returns a bool and takes 2 parameters
-//			DefineOperator(DereferenceOperator, *, RawCamera&);	// dereference operator that returns a RawCamera reference
+//			DefineMethod(Rotate, void, Matrix3D); // method called Rotate, takes a Matrix3D and returns
+//nothing
+//			DefineMethod(Translate, bool, Matrix3D, GroundCollisionMesh); // returns a bool and takes 2
+//parameters
+//			DefineOperator(DereferenceOperator, *, RawCamera&);	// dereference operator that returns a
+//RawCamera reference
 //
 //			// Note: typedef is just a convenience
-//			typedef InterfaceWrapper<Update, Rotate, Translate, DereferenceOperator> CameraInterface;	// define the interface
+//			typedef InterfaceWrapper<Update, Rotate, Translate, DereferenceOperator> CameraInterface;	//
+//define the interface
 //
 //
 //	General Notes:
@@ -47,159 +51,132 @@
 //			impossible. Also methods that take another instance of an interface will not compile.
 //
 //////////////////////////////////////////////////////////////////////////
-namespace Util
-{
+namespace Util {
 
 #define NULL_PTR_WARNING "Attempted to access freed interface!"
 
 // Wraps any provided method and a pointer to its implementation
-#define METHOD_WRAPPER(Name)																\
-template<typename ReturnType, typename... Params>											\
-class t_ ## Name																			\
-{																							\
-public:																						\
-	template<typename Pimpl>																\
-	t_ ## Name(Pimpl pimpl)																	\
-	{																						\
-		m_implCall = [pimpl](Params... params)												\
-		{																					\
-			auto sharedPtr = pimpl.lock();													\
-			ARC_ASSERT_MSG(sharedPtr != nullptr, NULL_PTR_WARNING);	\
-			return sharedPtr->Name(params...);												\
-		};																					\
-	}																						\
-																							\
-	ReturnType Name(Params... params)														\
-	{																						\
-		return m_implCall(params...);														\
-	}																						\
-																							\
-private:																					\
-	std::function<ReturnType(Params...)> m_implCall;										\
-};																							\
+#define METHOD_WRAPPER(Name)                                            \
+  \
+template<typename ReturnType, typename... Params> \
+class t_##Name \
+{                                                     \
+  \
+public:                                                                 \
+    template <typename Pimpl>                                           \
+    t_##Name(Pimpl pimpl) {                                             \
+      m_implCall = [pimpl](Params... params) {                          \
+        auto sharedPtr = pimpl.lock();                                  \
+        ARC_ASSERT_MSG(sharedPtr != nullptr, NULL_PTR_WARNING);         \
+        return sharedPtr->Name(params...);                              \
+      };                                                                \
+    }                                                                   \
+                                                                        \
+    ReturnType Name(Params... params) { return m_implCall(params...); } \
+  \
+private:                                                                \
+    std::function<ReturnType(Params...)> m_implCall;                    \
+  \
+};
 
 // Wraps most operators, does not work well with post and pre increment (on or the other can be used,
 // using both can cause problems
-#define OPERATOR_WRAPPER(OperatorName, OperatorType)										\
-template<typename ReturnType, typename... Params>											\
-class t_ ## OperatorName																	\
-{																							\
-public:																						\
-	template<typename Pimpl>																\
-	t_ ## OperatorName(Pimpl pimpl)															\
-	{																						\
-		m_implCall = [pimpl](Params... params)												\
-		{																					\
-			auto sharedPtr = pimpl.lock();													\
-			ARC_ASSERT_MSG(sharedPtr != nullptr, NULL_PTR_WARNING);	\
-			return sharedPtr->operator ## OperatorType(params...);							\
-		};																					\
-	}																						\
-																							\
-	ReturnType operator ## OperatorType(Params... params)									\
-	{																						\
-		return m_implCall(params...);														\
-	}																						\
-																							\
-private:																					\
-	std::function<ReturnType(Params...)> m_implCall;										\
-};																							\
+#define OPERATOR_WRAPPER(OperatorName, OperatorType)                                      \
+  \
+template<typename ReturnType, typename... Params> \
+class t_##OperatorName \
+{                                                               \
+  \
+public:                                                                                   \
+    template <typename Pimpl>                                                             \
+    t_##OperatorName(Pimpl pimpl) {                                                       \
+      m_implCall = [pimpl](Params... params) {                                            \
+        auto sharedPtr = pimpl.lock();                                                    \
+        ARC_ASSERT_MSG(sharedPtr != nullptr, NULL_PTR_WARNING);                           \
+        return sharedPtr->operator##OperatorType(params...);                              \
+      };                                                                                  \
+    }                                                                                     \
+                                                                                          \
+    ReturnType operator##OperatorType(Params... params) { return m_implCall(params...); } \
+  \
+private:                                                                                  \
+    std::function<ReturnType(Params...)> m_implCall;                                      \
+  \
+};
 
 // Explicit version of operator used for post and pre increment
-template<typename ReturnType, typename... Params>
-class PostAndPreIncrementOperator
-{
-public:
-	template<typename Pimpl>
-	PostAndPreIncrementOperator(Pimpl pimpl)
-	{
-		m_preImplCall = [pimp]()
-		{
-			auto sharedPtr = pimpl.lock();
-			ARC_ASSERT_MSG(sharedPtr != nullptr, NULL_PTR_WARNING);
-			return ++(*pimpl);
-		}
+template <typename ReturnType, typename... Params>
+class PostAndPreIncrementOperator {
+ public:
+  template <typename Pimpl>
+  PostAndPreIncrementOperator(Pimpl pimpl) {
+    m_preImplCall = [pimp]() {
+      auto sharedPtr = pimpl.lock();
+      ARC_ASSERT_MSG(sharedPtr != nullptr, NULL_PTR_WARNING);
+      return ++(*pimpl);
+    } m_postImplCall =
+        [pimpl]() {
+          auto sharePtr = pimpl.lock();
+          ARC_ASSERT_MSG(sharePtr != nullptr, NULL_PTR_WARNING);
+          return (*pimpl)++;
+        }
+  }
 
-		m_postImplCall = [pimpl]()
-		{
-			auto sharePtr = pimpl.lock();
-			ARC_ASSERT_MSG(sharePtr != nullptr, NULL_PTR_WARNING);
-			return (*pimpl)++;
-		}
-	}
+  ReturnType operator++() { return m_preImplCall(); }
 
-	ReturnType operator++()
-	{
-		return m_preImplCall();
-	}
+  ReturnType operator++(int) { return m_postImplCall(); }
 
-	ReturnType operator++(int)
-	{
-		return m_postImplCall();
-	}
-private:
-	std::function<ReturnType(Params...)> m_preImplCall;
-	std::function<ReturnType(Params...)> m_postImplCall;
+ private:
+  std::function<ReturnType(Params...)> m_preImplCall;
+  std::function<ReturnType(Params...)> m_postImplCall;
 };
 
-template<typename ReturnType, typename... Params>
-class PostAndPreDecrementOperator
-{
-public:
-	template<typename Pimpl>
-	PostAndPreDecrementOperator(Pimpl pimpl)
-	{
-		m_preImplCall = [pimp]()
-		{
-			auto sharedPtr = pimpl.lock();
-			ARC_ASSERT_MSG(sharedPtr != nullptr, NULL_PTR_WARNING);
-			return --(*pimpl);
-		}
+template <typename ReturnType, typename... Params>
+class PostAndPreDecrementOperator {
+ public:
+  template <typename Pimpl>
+  PostAndPreDecrementOperator(Pimpl pimpl) {
+    m_preImplCall = [pimp]() {
+      auto sharedPtr = pimpl.lock();
+      ARC_ASSERT_MSG(sharedPtr != nullptr, NULL_PTR_WARNING);
+      return --(*pimpl);
+    } m_postImplCall =
+        [pimpl]() {
+          auto sharePtr = pimpl.lock();
+          ARC_ASSERT_MSG(sharePtr != nullptr, NULL_PTR_WARNING);
+          return (*pimpl)--;
+        }
+  }
 
-		m_postImplCall = [pimpl]()
-		{
-			auto sharePtr = pimpl.lock();
-			ARC_ASSERT_MSG(sharePtr != nullptr, NULL_PTR_WARNING);
-			return (*pimpl)--;
-		}
-	}
+  ReturnType operator--() { return m_preImplCall(); }
 
-	ReturnType operator--()
-	{
-		return m_preImplCall();
-	}
+  ReturnType operator--(int) { return m_postImplCall(); }
 
-	ReturnType operator--(int)
-	{
-		return m_postImplCall();
-	}
-private:
-	std::function<ReturnType(Params...)> m_preImplCall;
-	std::function<ReturnType(Params...)> m_postImplCall;
+ private:
+  std::function<ReturnType(Params...)> m_preImplCall;
+  std::function<ReturnType(Params...)> m_postImplCall;
 };
 
-#define DefineMethod(Name, ReturnValue, ...)												\
-METHOD_WRAPPER(Name)																		\
-typedef t_##Name<ReturnValue, __VA_ARGS__> Name												\
+#define DefineMethod(Name, ReturnValue, ...) \
+  \
+METHOD_WRAPPER(Name) \
+typedef t_##Name<ReturnValue, __VA_ARGS__> Name
 
 // Note: This does not correctly handle overload such as pre and post increment!
-#define DefineOperator(OperatorName, OperatorType, ReturnValue, ...)						\
-OPERATOR_WRAPPER(OperatorName, OperatorType)												\
-typedef t_ ## OperatorName<ReturnValue, __VA_ARGS__> OperatorName							\
+#define DefineOperator(OperatorName, OperatorType, ReturnValue, ...) \
+  \
+OPERATOR_WRAPPER(OperatorName, OperatorType) \
+typedef t_##OperatorName<ReturnValue, __VA_ARGS__> OperatorName
 
-template<typename... MethodWrappers>
-class InterfaceWrapper : public MethodWrappers...
-{
-public:
-	template<typename Pimpl>
-	InterfaceWrapper(Pimpl pimpl)
-		: MethodWrappers(pimpl)...
-	{
+template <typename... MethodWrappers>
+class InterfaceWrapper : public MethodWrappers... {
+ public:
+  template <typename Pimpl>
+  InterfaceWrapper(Pimpl pimpl)
+      : MethodWrappers(pimpl)... {}
 
-	}
-private:
+ private:
 };
-
 }
 
 #endif

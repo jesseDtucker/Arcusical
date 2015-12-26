@@ -13,39 +13,42 @@
 #include "CancellationToken.hpp"
 
 namespace Arcusical {
-	namespace Player { class IPlayer; class Playlist; }
-	namespace MusicProvider{ class MusicSearcher; }
+namespace Player {
+class IPlayer;
+class Playlist;
+}
+namespace MusicProvider {
+class MusicSearcher;
+}
 
-namespace ViewModel{
+namespace ViewModel {
 
-	[Windows::UI::Xaml::Data::Bindable]
-	public ref class SearchVM sealed : INotifyPropertyChanged_t
-	{
-	public:
-		NOTIFY_PROPERTY_CHANGED_IMPL;
+[Windows::UI::Xaml::Data::Bindable] public ref class SearchVM sealed : INotifyPropertyChanged_t {
+ public:
+  NOTIFY_PROPERTY_CHANGED_IMPL;
 
-		PROP_SET_AND_GET_WINRT(Platform::Boolean, IsDefault);
-		PROP_SET_AND_GET_WINRT(Platform::String^, SearchTerm);
+  PROP_SET_AND_GET_WINRT(Platform::Boolean, IsDefault);
+  PROP_SET_AND_GET_WINRT(Platform::String ^, SearchTerm);
 
-		void SelectCurrent();
+  void SelectCurrent();
 
-	internal:
-		SearchVM(MusicProvider::MusicSearcher& searcher, Player::Playlist& playlist, Player:: IPlayer& player, Util::BackgroundWorker& worker);
-		Util::MulticastDelegate<void(AlbumList^, SongListVM^, Util::CancellationTokenRef)> SearchResults;
-		Util::MulticastDelegate<void()> SelectActive;
+internal:
+  SearchVM(MusicProvider::MusicSearcher& searcher, Player::Playlist& playlist, Player::IPlayer& player,
+           Util::BackgroundWorker& worker);
+  Util::MulticastDelegate<void(AlbumList ^, SongListVM ^, Util::CancellationTokenRef)> SearchResults;
+  Util::MulticastDelegate<void()> SelectActive;
 
-	private:
+ private:
+  void StartSearch(Platform::String ^ searchTerm);
 
-		void StartSearch(Platform::String^ searchTerm);
+  MusicProvider::MusicSearcher& m_searcher;
+  Player::Playlist& m_playlist;
+  Player::IPlayer& m_player;
+  Util::BackgroundWorker& m_worker;
 
-		MusicProvider::MusicSearcher& m_searcher;
-		Player::Playlist& m_playlist;
-		Player::IPlayer& m_player;
-		Util::BackgroundWorker& m_worker;
-
-		Util::CancellationTokenRef m_searchCancelToken = nullptr;
-		Util::Subscription m_onSearchTermChangedSub;
-	};
+  Util::CancellationTokenRef m_searchCancelToken = nullptr;
+  Util::Subscription m_onSearchTermChangedSub;
+};
 }
 }
 #endif

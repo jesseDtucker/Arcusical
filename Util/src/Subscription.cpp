@@ -1,65 +1,43 @@
 #include "Arc_Assert.hpp"
 #include "Subscription.hpp"
 
-namespace Util
-{
-	Subscription::Subscription(UnsubscribeCallback unsubscribeCallback)
-		: m_unsubscribeCallback(unsubscribeCallback)
-		, m_isSubscribed(true)
-	{}
+namespace Util {
+Subscription::Subscription(UnsubscribeCallback unsubscribeCallback)
+    : m_unsubscribeCallback(unsubscribeCallback), m_isSubscribed(true) {}
 
-	Subscription::Subscription(Subscription&& other)
-		: m_unsubscribeCallback(other.m_unsubscribeCallback)
-		, m_isSubscribed(other.m_isSubscribed)
-	{
-		other.m_isSubscribed = false;
-		other.m_unsubscribeCallback = nullptr;
-	}
+Subscription::Subscription(Subscription&& other)
+    : m_unsubscribeCallback(other.m_unsubscribeCallback), m_isSubscribed(other.m_isSubscribed) {
+  other.m_isSubscribed = false;
+  other.m_unsubscribeCallback = nullptr;
+}
 
-	Subscription::Subscription()
-		: m_unsubscribeCallback(nullptr)
-		, m_isSubscribed(false)
-	{
+Subscription::Subscription() : m_unsubscribeCallback(nullptr), m_isSubscribed(false) {}
 
-	}
+Subscription::Subscription(std::nullptr_t) : Subscription() {}
 
-	Subscription::Subscription(std::nullptr_t)
-		: Subscription()
-	{
+Subscription& Subscription::operator=(Subscription&& other) {
+  if (this != &other) {
+    // remove the existing subscription
+    Unsubscribe();
 
-	}
+    m_isSubscribed = other.m_isSubscribed;
+    m_unsubscribeCallback = other.m_unsubscribeCallback;
 
-	Subscription& Subscription::operator=(Subscription&& other)
-	{
-		if (this != &other)
-		{
-			// remove the existing subscription
-			Unsubscribe();
+    other.m_isSubscribed = false;
+    other.m_unsubscribeCallback = nullptr;
+  }
 
-			m_isSubscribed = other.m_isSubscribed;
-			m_unsubscribeCallback = other.m_unsubscribeCallback;
+  return *this;
+}
 
-			other.m_isSubscribed = false;
-			other.m_unsubscribeCallback = nullptr;
-		}
+Subscription::~Subscription() { Unsubscribe(); }
 
-		return *this;
-	}
-
-	Subscription::~Subscription()
-	{
-		Unsubscribe();
-	}
-
-	void Subscription::Unsubscribe()
-	{
-		if (m_isSubscribed)
-		{
-			if (m_unsubscribeCallback != nullptr)
-			{
-				m_unsubscribeCallback();
-			}
-			m_isSubscribed = false;
-		}
-	}
+void Subscription::Unsubscribe() {
+  if (m_isSubscribed) {
+    if (m_unsubscribeCallback != nullptr) {
+      m_unsubscribeCallback();
+    }
+    m_isSubscribed = false;
+  }
+}
 }

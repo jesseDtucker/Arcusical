@@ -13,14 +13,15 @@
 
 #include "Box.hpp"
 
-namespace Arcusical { namespace MPEG4 {
+namespace Arcusical {
+namespace MPEG4 {
 
-	class BoxFactory final
-	{
-		public:
-			static std::shared_ptr<Box> GetBox(BoxType type);
-	};
+class BoxFactory final {
+ public:
+  static std::shared_ptr<Box> GetBox(BoxType type);
+};
 
-}/*MPEG4*/}/*Arcusical*/
+} /*MPEG4*/
+} /*Arcusical*/
 
 #endif

@@ -11,15 +11,16 @@
 
 #include "UnknownBox.hpp"
 
-namespace Arcusical { namespace MPEG4 {
+namespace Arcusical {
+namespace MPEG4 {
 
-	class iGeID : public UnknownBox
-	{
-		public:
-			iGeID() {}
-			virtual ~iGeID() {}
-	};
+class iGeID : public UnknownBox {
+ public:
+  iGeID() {}
+  virtual ~iGeID() {}
+};
 
-} /*namespace: MPEG4*/}/*namespace: Arcusical*/ 
+} /*namespace: MPEG4*/
+} /*namespace: Arcusical*/
 
 #endif

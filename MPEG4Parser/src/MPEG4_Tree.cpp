@@ -12,30 +12,21 @@
 
 using namespace std;
 
-namespace Arcusical { namespace MPEG4 {
+namespace Arcusical {
+namespace MPEG4 {
 
-	MPEG4_Tree::MPEG4_Tree()
-	{
-		
-	}
+MPEG4_Tree::MPEG4_Tree() {}
 
-	//public
-	void MPEG4_Tree::AddBox(std::shared_ptr<Box> box)
-	{
-		m_boxes.push_back(box);
-	}
+// public
+void MPEG4_Tree::AddBox(std::shared_ptr<Box> box) { m_boxes.push_back(box); }
 
-	void MPEG4_Tree::PrintTree(ostream& outStream)
-	{
-		for(std::shared_ptr<Box>& box : m_boxes)
-		{
-			box->PrintBox(outStream);
-		}
-	}
+void MPEG4_Tree::PrintTree(ostream& outStream) {
+  for (std::shared_ptr<Box>& box : m_boxes) {
+    box->PrintBox(outStream);
+  }
+}
 
-	std::vector<std::shared_ptr<Box>>& MPEG4_Tree::GetBoxes()
-	{
-		return m_boxes;
-	}
+std::vector<std::shared_ptr<Box>>& MPEG4_Tree::GetBoxes() { return m_boxes; }
 
-} /*MPEG4*/}/*Arcusical*/
+} /*MPEG4*/
+} /*Arcusical*/

@@ -12,14 +12,15 @@
 #ifndef UNKNOWN_BOX_TYPE_HPP
 #define UNKNOWN_BOX_TYPE_HPP
 
-namespace Arcusical { namespace MPEG4 {
+namespace Arcusical {
+namespace MPEG4 {
 
-	class UnknownBoxTypeException : public BoxParsingException
-	{
-		public:
-			UnknownBoxTypeException(const char* errMessage):BoxParsingException(errMessage){}
-	};
+class UnknownBoxTypeException : public BoxParsingException {
+ public:
+  UnknownBoxTypeException(const char* errMessage) : BoxParsingException(errMessage) {}
+};
 
-}/*Arcusical*/}/*MPEG4*/
+} /*Arcusical*/
+} /*MPEG4*/
 
 #endif

@@ -12,28 +12,26 @@
 #include "Moov.hpp"
 #include "MPEG4_Parser.hpp"
 
-namespace Arcusical { namespace MPEG4 {
+namespace Arcusical {
+namespace MPEG4 {
 
-	Moov::Moov()
-	{
-		//nothing to do
-	}
+Moov::Moov() {
+  // nothing to do
+}
 
-	Moov::~Moov()
-	{
-		//nothing to do...
-	}
+Moov::~Moov() {
+  // nothing to do...
+}
 
-	void Moov::PrintBox(std::ostream& outStream, int depth)
-	{
-		std::string tabs = GetTabs(depth);
+void Moov::PrintBox(std::ostream& outStream, int depth) {
+  std::string tabs = GetTabs(depth);
 
-		outStream << tabs << "MOOV Box:" << std::endl;
+  outStream << tabs << "MOOV Box:" << std::endl;
 
-		for(std::shared_ptr<Box> child : m_children)
-		{
-			child->PrintBox(outStream, depth + 1);
-		}
-	}
+  for (std::shared_ptr<Box> child : m_children) {
+    child->PrintBox(outStream, depth + 1);
+  }
+}
 
-} /*Arcusical*/}/*MPEG4*/
+} /*Arcusical*/
+} /*MPEG4*/

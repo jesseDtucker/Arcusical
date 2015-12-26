@@ -15,28 +15,26 @@
 
 using namespace std;
 
-namespace Arcusical { namespace MPEG4 {
+namespace Arcusical {
+namespace MPEG4 {
 
-	Dinf::Dinf()
-	{
-		//nothing to do
-	}
+Dinf::Dinf() {
+  // nothing to do
+}
 
-	Dinf::~Dinf()
-	{
-		//still nothing to do (isn't this great...?)
-	}
+Dinf::~Dinf() {
+  // still nothing to do (isn't this great...?)
+}
 
-	void Dinf::PrintBox(ostream& outStream, int depth)
-	{
-		std::string tabs = GetTabs(depth);
+void Dinf::PrintBox(ostream& outStream, int depth) {
+  std::string tabs = GetTabs(depth);
 
-		outStream << tabs << "Dinf Box:" << std::endl;
+  outStream << tabs << "Dinf Box:" << std::endl;
 
-		for(std::shared_ptr<Box> child : m_children)
-		{
-			child->PrintBox(outStream, depth + 1);
-		}
-	}
+  for (std::shared_ptr<Box> child : m_children) {
+    child->PrintBox(outStream, depth + 1);
+  }
+}
 
-} /*namespace: MPEG4*/}/*namespace: Arcusical*/ 
+} /*namespace: MPEG4*/
+} /*namespace: Arcusical*/

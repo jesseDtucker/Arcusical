@@ -12,23 +12,20 @@
 #include "ContainerBox.hpp"
 #include "MPEG4_Parser.hpp"
 
-namespace Arcusical { namespace MPEG4 {
+namespace Arcusical {
+namespace MPEG4 {
 
-	void ContainerBox::ReadContents(Util::Stream& stream)
-	{
-		m_children = MPEG4_Parser::ParseBoxes(stream, m_bodySize);
-	}
+void ContainerBox::ReadContents(Util::Stream& stream) { m_children = MPEG4_Parser::ParseBoxes(stream, m_bodySize); }
 
-	void ContainerBox::PrintBox(std::ostream& outStream, int depth)
-	{
-		std::string tabs = GetTabs(depth);
+void ContainerBox::PrintBox(std::ostream& outStream, int depth) {
+  std::string tabs = GetTabs(depth);
 
-		outStream << tabs << "Container Box:" << std::endl;
+  outStream << tabs << "Container Box:" << std::endl;
 
-		for(std::shared_ptr<Box> child : m_children)
-		{
-			child->PrintBox(outStream, depth + 1);
-		}
-	}
+  for (std::shared_ptr<Box> child : m_children) {
+    child->PrintBox(outStream, depth + 1);
+  }
+}
 
-} /*namespace: MPEG4*/}/*namespace: Arcusical*/
+} /*namespace: MPEG4*/
+} /*namespace: Arcusical*/

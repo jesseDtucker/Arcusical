@@ -14,16 +14,16 @@
 
 using namespace std;
 
-namespace Arcusical { namespace MPEG4 {
+namespace Arcusical {
+namespace MPEG4 {
 
-	void ItunesDashBox::PrintBox(ostream& outStream, int depth)
-	{
-		outStream << GetTabs(depth) << "ItunesDashBox:" << std::endl;
+void ItunesDashBox::PrintBox(ostream& outStream, int depth) {
+  outStream << GetTabs(depth) << "ItunesDashBox:" << std::endl;
 
-		for(std::shared_ptr<Box> child : m_children)
-		{
-			child->PrintBox(outStream, depth + 1);
-		}
-	}
+  for (std::shared_ptr<Box> child : m_children) {
+    child->PrintBox(outStream, depth + 1);
+  }
+}
 
-}/*MPEG4*/}/*Arcusical*/
+} /*MPEG4*/
+} /*Arcusical*/

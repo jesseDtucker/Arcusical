@@ -12,14 +12,15 @@
 #ifndef INVALID_VALUE_EXCEPTION_HPP
 #define INVALID_VALUE_EXCEPTION_HPP
 
-namespace Arcusical { namespace MPEG4 {
+namespace Arcusical {
+namespace MPEG4 {
 
-	class InvalidValueException : public BoxParsingException
-	{
-		public:
-			InvalidValueException(const char* errMessage):BoxParsingException(errMessage){}
-	};
+class InvalidValueException : public BoxParsingException {
+ public:
+  InvalidValueException(const char* errMessage) : BoxParsingException(errMessage) {}
+};
 
-}/*Arcusical*/}/*MPEG4*/
+} /*Arcusical*/
+} /*MPEG4*/
 
 #endif

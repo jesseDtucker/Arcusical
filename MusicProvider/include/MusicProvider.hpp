@@ -20,66 +20,60 @@
 #include "Storage.hpp"
 #include "WorkBuffer.hpp"
 
-namespace Arcusical
-{
-namespace LocalMusicStore
-{
-	class LocalMusicCache;
+namespace Arcusical {
+namespace LocalMusicStore {
+class LocalMusicCache;
 }
-namespace Model
-{
-	class Song;
+namespace Model {
+class Song;
 }
 }
 
-namespace Arcusical
-{
-namespace MusicProvider
-{
-	typedef Util::Delegate<void(const Model::SongCollectionChanges&)> SongsChangedCallback;
-	typedef Util::Delegate<void(const Model::AlbumCollectionChanges&)> AlbumsChangedCallback;
+namespace Arcusical {
+namespace MusicProvider {
+typedef Util::Delegate<void(const Model::SongCollectionChanges&)> SongsChangedCallback;
+typedef Util::Delegate<void(const Model::AlbumCollectionChanges&)> AlbumsChangedCallback;
 
-	struct AlbumMergeResult;
+struct AlbumMergeResult;
 
-	class MusicProvider final
-	{
-	public:
-		MusicProvider(LocalMusicStore::LocalMusicCache* cache);
-		Util::Subscription SubscribeSongs(SongsChangedCallback callback);
-		Util::Subscription SubscribeAlbums(AlbumsChangedCallback callback);
-		SongSelector* GetSongSelector();
-		boost::optional<Model::Album> GetAlbum(const std::wstring& name);
-	private:
+class MusicProvider final {
+ public:
+  MusicProvider(LocalMusicStore::LocalMusicCache* cache);
+  Util::Subscription SubscribeSongs(SongsChangedCallback callback);
+  Util::Subscription SubscribeAlbums(AlbumsChangedCallback callback);
+  SongSelector* GetSongSelector();
+  boost::optional<Model::Album> GetAlbum(const std::wstring& name);
 
-		void LoadSongs();
-		void LoadAlbums();
+ private:
+  void LoadSongs();
+  void LoadAlbums();
 
-		std::vector<FileSystem::FilePtr> ProcessSongFiles(Util::WorkBuffer<FileSystem::FilePtr>& songFilesWB);
-		void LoadAlbumArt(const AlbumMergeResult& albumChanges);
-		void OnArtLoaded(const std::vector<boost::uuids::uuid> albumIdsLoaded);
-		
-		Util::MulticastDelegate<SongsChangedCallback::CB_Type> m_songCallbacks;
-		Util::MulticastDelegate<AlbumsChangedCallback::CB_Type> m_albumCallbacks;
+  std::vector<FileSystem::FilePtr> ProcessSongFiles(Util::WorkBuffer<FileSystem::FilePtr>& songFilesWB);
+  void LoadAlbumArt(const AlbumMergeResult& albumChanges);
+  void OnArtLoaded(const std::vector<boost::uuids::uuid> albumIdsLoaded);
 
-		std::mutex m_albumCallbackLock;
-		std::mutex m_songCallbackLock;
+  Util::MulticastDelegate<SongsChangedCallback::CB_Type> m_songCallbacks;
+  Util::MulticastDelegate<AlbumsChangedCallback::CB_Type> m_albumCallbacks;
 
-		LocalMusicStore::LocalMusicCache* m_musicCache;
-		SongSelector m_songSelector;
+  std::mutex m_albumCallbackLock;
+  std::mutex m_songCallbackLock;
 
-		Util::Subscription m_songSubscription;
-		Util::Subscription m_artLoadSubscription;
-		AlbumArtLoader m_artLoader;
+  LocalMusicStore::LocalMusicCache* m_musicCache;
+  SongSelector m_songSelector;
 
-		//TODO::JT refine loading process
-		std::future<void> m_songsLoadingFuture;
-		std::future<void> m_albumsLoadingFuture;
-		bool m_hasSongLoadingBegun = false;
-		bool m_hasAlbumLoadingBegun = false;
-		Model::LoadProgress m_songLoadProgress;
-		Model::LoadProgress m_albumLoadProgress;
-		std::mutex m_isLoadingLock;
-	};
+  Util::Subscription m_songSubscription;
+  Util::Subscription m_artLoadSubscription;
+  AlbumArtLoader m_artLoader;
+
+  // TODO::JT refine loading process
+  std::future<void> m_songsLoadingFuture;
+  std::future<void> m_albumsLoadingFuture;
+  bool m_hasSongLoadingBegun = false;
+  bool m_hasAlbumLoadingBegun = false;
+  Model::LoadProgress m_songLoadProgress;
+  Model::LoadProgress m_albumLoadProgress;
+  std::mutex m_isLoadingLock;
+};
 }
 }
 

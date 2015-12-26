@@ -21,26 +21,21 @@ using namespace Arcusical;
 using namespace Arcusical::ViewModel;
 using namespace Arcusical::MusicProvider;
 
+Search::Search() { InitializeComponent(); }
 
-Search::Search() {
-    InitializeComponent();
+VM_IMPL(SearchVM ^, Search);
+
+void Search::NotifyTextEntered(Platform::String ^ text) {
+  if (!IsReceivingText()) {
+    v_searchBox->Text = "";
+    v_searchBox->Focus(Windows::UI::Xaml::FocusState::Keyboard);
+  }
 }
 
-VM_IMPL(SearchVM^, Search);
+bool Search::IsReceivingText() { return !(v_searchBox->FocusState == Windows::UI::Xaml::FocusState::Unfocused); }
 
-void Search::NotifyTextEntered(Platform::String^ text) {
-    if (!IsReceivingText()) {
-        v_searchBox->Text = "";
-        v_searchBox->Focus(Windows::UI::Xaml::FocusState::Keyboard);
-    }
-}
-
-bool Search::IsReceivingText() {
-    return !(v_searchBox->FocusState == Windows::UI::Xaml::FocusState::Unfocused);
-}
-
-void Search::TextBox_KeyDown(Platform::Object^ sender, Windows::UI::Xaml::Input::KeyRoutedEventArgs^ e) {
-    if (e->Key == Windows::System::VirtualKey::Enter) {
-        VM->SelectCurrent();
-    }
+void Search::TextBox_KeyDown(Platform::Object ^ sender, Windows::UI::Xaml::Input::KeyRoutedEventArgs ^ e) {
+  if (e->Key == Windows::System::VirtualKey::Enter) {
+    VM->SelectCurrent();
+  }
 }

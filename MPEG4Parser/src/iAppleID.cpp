@@ -16,31 +16,27 @@
 
 using namespace std;
 
-namespace Arcusical { namespace MPEG4 {
+namespace Arcusical {
+namespace MPEG4 {
 
-	void iAppleID::ReadContents(Util::Stream& stream)
-	{
-		m_children = MPEG4_Parser::ParseBoxes(stream, m_bodySize);
+void iAppleID::ReadContents(Util::Stream& stream) {
+  m_children = MPEG4_Parser::ParseBoxes(stream, m_bodySize);
 
-		ARC_ASSERT_MSG(m_children.size() > 0, "iAlbum box with no data!");
-		if (m_children.size() > 0)
-		{
-			std::vector<unsigned char>& data = *dynamic_pointer_cast<DataBox>(m_children[0])->GetData();
-			m_ID = std::string(data.begin() + 8, data.end());
-		}
-	}
+  ARC_ASSERT_MSG(m_children.size() > 0, "iAlbum box with no data!");
+  if (m_children.size() > 0) {
+    std::vector<unsigned char>& data = *dynamic_pointer_cast<DataBox>(m_children[0])->GetData();
+    m_ID = std::string(data.begin() + 8, data.end());
+  }
+}
 
-	void iAppleID::PrintBox(ostream& outStream, int depth)
-	{
-		std::string tabs = GetTabs(depth);
+void iAppleID::PrintBox(ostream& outStream, int depth) {
+  std::string tabs = GetTabs(depth);
 
-		outStream << tabs << "iApple ID Box: " << std::endl;
-		outStream << tabs << "\tID: " << m_ID<< std::endl;
-	}
-	
-	std::string iAppleID::GetID()
-	{
-		return m_ID;
-	}
-	
-} /*namespace: MPEG4*/}/*namespace: Arcusical*/
+  outStream << tabs << "iApple ID Box: " << std::endl;
+  outStream << tabs << "\tID: " << m_ID << std::endl;
+}
+
+std::string iAppleID::GetID() { return m_ID; }
+
+} /*namespace: MPEG4*/
+} /*namespace: Arcusical*/

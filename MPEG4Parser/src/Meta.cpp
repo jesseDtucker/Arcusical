@@ -12,34 +12,30 @@
 #include "Meta.hpp"
 #include "MPEG4_Parser.hpp"
 
-namespace Arcusical { namespace MPEG4 {
+namespace Arcusical {
+namespace MPEG4 {
 
-	Meta::Meta() : m_version(0) {}
-	Meta::~Meta() {}
+Meta::Meta() : m_version(0) {}
+Meta::~Meta() {}
 
-	void Meta::ReadContents(Util::Stream& stream)
-	{
-		m_version = stream.ReadInteger<uint32_t>();
+void Meta::ReadContents(Util::Stream& stream) {
+  m_version = stream.ReadInteger<uint32_t>();
 
-		m_children = MPEG4_Parser::ParseBoxes(stream, m_bodySize - sizeof(uint32_t));
-	}
+  m_children = MPEG4_Parser::ParseBoxes(stream, m_bodySize - sizeof(uint32_t));
+}
 
-	void Meta::PrintBox(std::ostream& outStream, int depth)
-	{
-		std::string tabs = GetTabs(depth);
+void Meta::PrintBox(std::ostream& outStream, int depth) {
+  std::string tabs = GetTabs(depth);
 
-		outStream << tabs << "META Box: " << std::endl;
-		outStream << tabs << "\tVersion: " << m_version << std::endl;
+  outStream << tabs << "META Box: " << std::endl;
+  outStream << tabs << "\tVersion: " << m_version << std::endl;
 
-		for(std::shared_ptr<Box> child : m_children)
-		{
-			child->PrintBox(outStream, depth + 1);
-		}
-	}
+  for (std::shared_ptr<Box> child : m_children) {
+    child->PrintBox(outStream, depth + 1);
+  }
+}
 
-	uint32_t Meta::GetVersion()
-	{
-		return m_version;
-	}
+uint32_t Meta::GetVersion() { return m_version; }
 
-} /*namespace: MPEG4*/}/*namespace: Arcusical*/
+} /*namespace: MPEG4*/
+} /*namespace: Arcusical*/

@@ -13,17 +13,18 @@
 
 #include "ContainerBox.hpp"
 
-namespace Arcusical { namespace MPEG4 {
+namespace Arcusical {
+namespace MPEG4 {
 
-	class Ilst : public ContainerBox
-	{
-		public:
-			Ilst();
-			virtual ~Ilst() override;
+class Ilst : public ContainerBox {
+ public:
+  Ilst();
+  virtual ~Ilst() override;
 
-			virtual void PrintBox(std::ostream& outStream, int depth = 0) override;
-	};
+  virtual void PrintBox(std::ostream& outStream, int depth = 0) override;
+};
 
-} /*namespace: MPEG4*/}/*namespace: Arcusical*/
+} /*namespace: MPEG4*/
+} /*namespace: Arcusical*/
 
 #endif

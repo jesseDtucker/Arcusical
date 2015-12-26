@@ -29,34 +29,25 @@ using namespace Arcusical::ViewModel;
 
 // The User Control item template is documented at http://go.microsoft.com/fwlink/?LinkId=234236
 
-PlayerButtons::PlayerButtons()
-{
-	InitializeComponent();
+PlayerButtons::PlayerButtons() { InitializeComponent(); }
+
+VM_IMPL(SongPlayerVM ^, PlayerButtons);
+
+void PlayerButtons::PlayPauseButton_Clicked(Platform::Object ^ sender, Windows::UI::Xaml::RoutedEventArgs ^ e) {
+  ARC_ASSERT(VM != nullptr);
+  if (VM->IsPlaying) {
+    VM->Pause();
+  } else {
+    VM->Play();
+  }
 }
 
-VM_IMPL(SongPlayerVM^, PlayerButtons);
-
-void PlayerButtons::PlayPauseButton_Clicked(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
-{
-	ARC_ASSERT(VM != nullptr);
-	if (VM->IsPlaying)
-	{
-		VM->Pause();
-	}
-	else
-	{
-		VM->Play();
-	}
+void PlayerButtons::Previous_Click(Platform::Object ^ sender, Windows::UI::Xaml::RoutedEventArgs ^ e) {
+  ARC_ASSERT(VM != nullptr);
+  VM->Previous();
 }
 
-void PlayerButtons::Previous_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
-{
-	ARC_ASSERT(VM != nullptr);
-	VM->Previous();
-}
-
-void PlayerButtons::Next_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
-{
-	ARC_ASSERT(VM != nullptr);
-	VM->Next();
+void PlayerButtons::Next_Click(Platform::Object ^ sender, Windows::UI::Xaml::RoutedEventArgs ^ e) {
+  ARC_ASSERT(VM != nullptr);
+  VM->Next();
 }

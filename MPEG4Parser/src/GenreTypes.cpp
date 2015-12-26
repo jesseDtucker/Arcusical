@@ -10,12 +10,13 @@
 
 #include "GenreTypes.hpp"
 
-namespace Arcusical { namespace MPEG4 {
-	
-	std::ostream& operator << (std::ostream& outStream, GenreType type)
-	{
-		outStream << GenreToString.at(type);
-		return outStream;
-	}
+namespace Arcusical {
+namespace MPEG4 {
 
-}/*MPEG4*/}/*Arcusical*/
+std::ostream& operator<<(std::ostream& outStream, GenreType type) {
+  outStream << GenreToString.at(type);
+  return outStream;
+}
+
+} /*MPEG4*/
+} /*Arcusical*/

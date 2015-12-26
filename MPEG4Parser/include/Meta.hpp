@@ -12,26 +12,26 @@
 
 #include "Box.hpp"
 
-namespace Arcusical { namespace MPEG4 {
+namespace Arcusical {
+namespace MPEG4 {
 
-	class Meta : public Box
-	{
-		public:
+class Meta : public Box {
+ public:
+  Meta();
+  virtual ~Meta() override;
 
-			Meta();
-			virtual ~Meta() override;
+  virtual void PrintBox(std::ostream& outStream, int depth = 0) override;
 
-			virtual void PrintBox(std::ostream& outStream, int depth = 0) override;
+  uint32_t GetVersion();
 
-			uint32_t GetVersion();
+ protected:
+  virtual void ReadContents(Util::Stream& stream) override;
 
-		protected:
-			virtual void ReadContents(Util::Stream& stream) override;
+ private:
+  uint32_t m_version;
+};
 
-		private:
-			uint32_t m_version;
-	};
-
-} /*namespace: MPEG4*/}/*namespace: Arcusical*/ 
+} /*namespace: MPEG4*/
+} /*namespace: Arcusical*/
 
 #endif

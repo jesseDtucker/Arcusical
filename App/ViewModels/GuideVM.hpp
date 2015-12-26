@@ -11,32 +11,30 @@
 #include "ViewModels/SongListControlVM.hpp"
 
 namespace Arcusical {
-	namespace ViewModel {
+namespace ViewModel {
 
-		[Windows::UI::Xaml::Data::Bindable]
-		public ref class GuideVM sealed : INotifyPropertyChanged_t
-		{
-		public:
-			NOTIFY_PROPERTY_CHANGED_IMPL;
+[Windows::UI::Xaml::Data::Bindable] public ref class GuideVM sealed : INotifyPropertyChanged_t {
+ public:
+  NOTIFY_PROPERTY_CHANGED_IMPL;
 
-			property ViewModel::AlbumVM^ SelectedAlbum
-			{
-				ViewModel::AlbumVM^ get();
-				void set(ViewModel::AlbumVM^);
-			}
-			PROP_SET_AND_GET_WINRT(ViewModel::SongListControlVM^, SongListControlVM);
-			PROP_SET_AND_GET_WINRT(ViewModel::SearchVM^, SearchVM);
+  property ViewModel::AlbumVM ^ SelectedAlbum {
+    ViewModel::AlbumVM ^ get();
+    void set(ViewModel::AlbumVM ^ );
+  }
+  PROP_SET_AND_GET_WINRT(ViewModel::SongListControlVM ^, SongListControlVM);
+  PROP_SET_AND_GET_WINRT(ViewModel::SearchVM ^, SearchVM);
 
-			void PlayAll();
-			void Shuffle();
-		internal:
-			GuideVM(Player::Playlist& playlist, Util::BackgroundWorker& worker);
-		private:
-			ViewModel::AlbumVM^ m_selectedAlbum;
-			Player::Playlist& m_playlist;
-			Util::BackgroundWorker& m_worker;
-		};
-	}
+  void PlayAll();
+  void Shuffle();
+internal:
+  GuideVM(Player::Playlist& playlist, Util::BackgroundWorker& worker);
+
+ private:
+  ViewModel::AlbumVM ^ m_selectedAlbum;
+  Player::Playlist& m_playlist;
+  Util::BackgroundWorker& m_worker;
+};
+}
 }
 
 #endif

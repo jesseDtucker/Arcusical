@@ -14,25 +14,24 @@
 
 #include "Box.hpp"
 
-namespace Arcusical { namespace MPEG4 {
+namespace Arcusical {
+namespace MPEG4 {
 
-	class DataBox : public Box
-	{
-		public:
+class DataBox : public Box {
+ public:
+  DataBox();
+  virtual ~DataBox() override;
 
-			DataBox();
-			virtual ~DataBox() override;
+  virtual std::shared_ptr<std::vector<unsigned char>> GetData();
+  virtual void PrintBox(std::ostream& outStream, int depth = 0) override;
 
-			virtual std::shared_ptr<std::vector<unsigned char>> GetData();
-			virtual void PrintBox(std::ostream& outStream, int depth = 0) override;
+ protected:
+  virtual void ReadContents(Util::Stream& stream) override;
 
-		protected:
+  std::shared_ptr<std::vector<unsigned char>> m_data;
+};
 
-			virtual void ReadContents(Util::Stream& stream) override;
-
-			std::shared_ptr<std::vector<unsigned char>> m_data;
-	};
-
-}/*MPEG4*/}/*Arcusical*/
+} /*MPEG4*/
+} /*Arcusical*/
 
 #endif

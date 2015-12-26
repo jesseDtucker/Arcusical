@@ -12,18 +12,18 @@
 
 #include "ContainerBox.hpp"
 
-namespace Arcusical { namespace MPEG4 {
+namespace Arcusical {
+namespace MPEG4 {
 
-	class ItunesDashBox : public ContainerBox
-	{
-		public:
+class ItunesDashBox : public ContainerBox {
+ public:
+  ItunesDashBox() {}
+  virtual ~ItunesDashBox() {}
 
-			ItunesDashBox() {}
-			virtual ~ItunesDashBox() {}
+  virtual void PrintBox(std::ostream& outStream, int depth = 0) override;
+};
 
-			virtual void PrintBox(std::ostream& outStream, int depth = 0) override;
-	};
-
-}/*MPEG4*/}/*Arcusical*/
+} /*MPEG4*/
+} /*Arcusical*/
 
 #endif

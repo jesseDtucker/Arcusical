@@ -14,75 +14,60 @@
 #include "MPEG4_Parser.hpp"
 #include "Stream.hpp"
 
-namespace Arcusical { namespace MPEG4 {
+namespace Arcusical {
+namespace MPEG4 {
 
-	Mp4a::Mp4a() : m_dataReferenceIndex(0), m_channelCount(0), m_sampleSize(0),
-		m_sampleRate(0)
-	{
-		//done
-	}
+Mp4a::Mp4a() : m_dataReferenceIndex(0), m_channelCount(0), m_sampleSize(0), m_sampleRate(0) {
+  // done
+}
 
-	Mp4a::~Mp4a() {}
+Mp4a::~Mp4a() {}
 
-	void Mp4a::ReadContents(Util::Stream& stream)
-	{
-		auto startPosition = stream.GetPosition();
+void Mp4a::ReadContents(Util::Stream& stream) {
+  auto startPosition = stream.GetPosition();
 
-		//first 6 bytes are reserved
-		stream.Advance(6);
-		m_dataReferenceIndex = stream.ReadInteger<uint16_t>();
+  // first 6 bytes are reserved
+  stream.Advance(6);
+  m_dataReferenceIndex = stream.ReadInteger<uint16_t>();
 
-		//next two 32 bit integers reserved
-		stream.Advance(8);
-		m_channelCount = stream.ReadInteger<uint16_t>();
-		m_sampleSize = stream.ReadInteger<uint16_t>();
-		//next 4 bytes are zero
-		stream.Advance(4);
-		m_sampleRate = stream.ReadFixedPoint<uint32_t>(16);
-	
-		auto childBytes = m_bodySize - (stream.GetPosition() - startPosition);
-		m_children = MPEG4_Parser::ParseBoxes(stream, childBytes);
-	}
+  // next two 32 bit integers reserved
+  stream.Advance(8);
+  m_channelCount = stream.ReadInteger<uint16_t>();
+  m_sampleSize = stream.ReadInteger<uint16_t>();
+  // next 4 bytes are zero
+  stream.Advance(4);
+  m_sampleRate = stream.ReadFixedPoint<uint32_t>(16);
 
-	void Mp4a::PrintBox(std::ostream& outStream, int depth)
-	{
-		std::string tabs = GetTabs(depth);
+  auto childBytes = m_bodySize - (stream.GetPosition() - startPosition);
+  m_children = MPEG4_Parser::ParseBoxes(stream, childBytes);
+}
 
-		outStream << tabs << "MP4A Box:" << std::endl;
+void Mp4a::PrintBox(std::ostream& outStream, int depth) {
+  std::string tabs = GetTabs(depth);
 
-		outStream << tabs << "\tData Reference Index: " << m_dataReferenceIndex << std::endl;
-		outStream << tabs << "\tChannel Count: " << m_channelCount << std::endl;
-		outStream << tabs << "\tSample Size: " << m_sampleSize << std::endl;
-		outStream << tabs << "\tSample Rate: " << m_sampleRate << std::endl;
+  outStream << tabs << "MP4A Box:" << std::endl;
 
-		for(std::shared_ptr<Box> child : m_children)
-		{
-			child->PrintBox(outStream, depth + 1);
-		}
-	}
+  outStream << tabs << "\tData Reference Index: " << m_dataReferenceIndex << std::endl;
+  outStream << tabs << "\tChannel Count: " << m_channelCount << std::endl;
+  outStream << tabs << "\tSample Size: " << m_sampleSize << std::endl;
+  outStream << tabs << "\tSample Rate: " << m_sampleRate << std::endl;
 
-	#pragma region Public Getters
+  for (std::shared_ptr<Box> child : m_children) {
+    child->PrintBox(outStream, depth + 1);
+  }
+}
 
-	uint16_t Mp4a::GetDataReferenceIndex()
-	{
-		return m_dataReferenceIndex;
-	}
+#pragma region Public Getters
 
-	uint16_t Mp4a::GetChannelCount()
-	{
-		return m_channelCount;
-	}
+uint16_t Mp4a::GetDataReferenceIndex() { return m_dataReferenceIndex; }
 
-	uint16_t Mp4a::GetSampleSize()
-	{
-		return m_sampleSize;
-	}
+uint16_t Mp4a::GetChannelCount() { return m_channelCount; }
 
-	float Mp4a::GetSampleRate()
-	{
-		return m_sampleRate;
-	}
+uint16_t Mp4a::GetSampleSize() { return m_sampleSize; }
 
-	#pragma endregion
+float Mp4a::GetSampleRate() { return m_sampleRate; }
 
-} /*namespace: MPEG4*/}/*namespace: Arcusical*/ 
+#pragma endregion
+
+} /*namespace: MPEG4*/
+} /*namespace: Arcusical*/

@@ -17,54 +17,57 @@
 #include "ViewModels/SongPlayerVM.hpp"
 #include "Subscription.hpp"
 
-namespace Arcusical
-{
-namespace MusicProvider { class MusicSearcher; class MusicProvider; }
-namespace Player { class IPlayer; class Playlist; }
+namespace Arcusical {
+namespace MusicProvider {
+class MusicSearcher;
+class MusicProvider;
+}
+namespace Player {
+class IPlayer;
+class Playlist;
+}
 }
 
-namespace Arcusical
-{
-	/// <summary>
-	/// An empty page that can be used on its own or navigated to within a Frame.
-	/// </summary>
-	public ref class MainPage sealed
-	{
-	public:
-		MainPage();
-	internal:
-		void SetDependencies(	MusicProvider::MusicSearcher* musicSearcher,
-								MusicProvider::MusicProvider* musicProvider,
-								Player::IPlayer* player,
-								Player::Playlist* playlist,
-								Util::BackgroundWorker* worker);
-	private:
-		void SetupTransportControls(Player::IPlayer* player);
-		void OnTransportControlButtonPressed(Windows::Media::SystemMediaTransportControls^ sender, Windows::Media::SystemMediaTransportControlsButtonPressedEventArgs^ args);
+namespace Arcusical {
+/// <summary>
+/// An empty page that can be used on its own or navigated to within a Frame.
+/// </summary>
+public
+ref class MainPage sealed {
+ public:
+  MainPage();
+internal:
+  void SetDependencies(MusicProvider::MusicSearcher* musicSearcher, MusicProvider::MusicProvider* musicProvider,
+                       Player::IPlayer* player, Player::Playlist* playlist, Util::BackgroundWorker* worker);
 
-		void OnAlbumsReady(const Model::AlbumCollectionChanges& albums);
+ private:
+  void SetupTransportControls(Player::IPlayer* player);
+  void OnTransportControlButtonPressed(Windows::Media::SystemMediaTransportControls ^ sender,
+                                       Windows::Media::SystemMediaTransportControlsButtonPressedEventArgs ^ args);
 
-		std::wstring oldImagePath;
+  void OnAlbumsReady(const Model::AlbumCollectionChanges& albums);
 
-		Util::Subscription m_isPlayingSub;
-		Util::Subscription m_songChangedSub;
-		Util::Subscription m_isEndedSub;
+  std::wstring oldImagePath;
 
-		MusicProvider::MusicSearcher* m_searcher;
-		MusicProvider::MusicProvider* m_musicProvider;
-		Player::Playlist* m_playlist;
-		Player::IPlayer* m_player;
-		Util::BackgroundWorker* m_backgroundWorker;
+  Util::Subscription m_isPlayingSub;
+  Util::Subscription m_songChangedSub;
+  Util::Subscription m_isEndedSub;
 
-		ViewModel::AlbumListControlVM^ m_albumListVM;
-		ViewModel::GuideVM^ m_guideVM;
-		ViewModel::SearchVM^ m_searchVM;
-		ViewModel::VolumeSliderVM^ m_volumeSlideVM;
-		ViewModel::SongPlayerVM^ m_playerVM;
-		ViewModel::SearchResultsVM^ m_searchResultsVM;
+  MusicProvider::MusicSearcher* m_searcher;
+  MusicProvider::MusicProvider* m_musicProvider;
+  Player::Playlist* m_playlist;
+  Player::IPlayer* m_player;
+  Util::BackgroundWorker* m_backgroundWorker;
 
-		Util::Subscription m_albumSub;
-		Util::Subscription m_albumSelectedSub;
-		void KeyPressed(Windows::UI::Core::CoreWindow ^window, Windows::UI::Core::KeyEventArgs^ e);
-	};
+  ViewModel::AlbumListControlVM ^ m_albumListVM;
+  ViewModel::GuideVM ^ m_guideVM;
+  ViewModel::SearchVM ^ m_searchVM;
+  ViewModel::VolumeSliderVM ^ m_volumeSlideVM;
+  ViewModel::SongPlayerVM ^ m_playerVM;
+  ViewModel::SearchResultsVM ^ m_searchResultsVM;
+
+  Util::Subscription m_albumSub;
+  Util::Subscription m_albumSelectedSub;
+  void KeyPressed(Windows::UI::Core::CoreWindow ^ window, Windows::UI::Core::KeyEventArgs ^ e);
+};
 }

@@ -18,69 +18,59 @@
 #include "MPEG4_Parser.hpp"
 #include "InvalidValueException.hpp"
 
-namespace Arcusical { namespace MPEG4 {
+namespace Arcusical {
+namespace MPEG4 {
 
-	Stco::Stco() : m_version(0) {}
+Stco::Stco() : m_version(0) {}
 
-	Stco::~Stco() {}
+Stco::~Stco() {}
 
-	void Stco::ReadContents(Util::Stream& stream)
-	{
-		m_version = stream.ReadInteger<uint32_t>();
+void Stco::ReadContents(Util::Stream& stream) {
+  m_version = stream.ReadInteger<uint32_t>();
 
-		uint32_t numEntries = stream.ReadInteger<uint32_t>();
+  uint32_t numEntries = stream.ReadInteger<uint32_t>();
 
-		m_entries.reserve(numEntries);
+  m_entries.reserve(numEntries);
 
-		// times 2 because we have just read in 2 32 bit numbers
-		auto bytesLeft = m_bodySize - 2 * sizeof(uint32_t);
-		while (bytesLeft > 0)
-		{
-			m_entries.push_back(stream.ReadInteger<uint32_t>());
-			bytesLeft -= sizeof(uint32_t);
-		}
+  // times 2 because we have just read in 2 32 bit numbers
+  auto bytesLeft = m_bodySize - 2 * sizeof(uint32_t);
+  while (bytesLeft > 0) {
+    m_entries.push_back(stream.ReadInteger<uint32_t>());
+    bytesLeft -= sizeof(uint32_t);
+  }
 
-		ARC_ASSERT_MSG(bytesLeft == 0, "Read more entries than the number of bytes available!");
+  ARC_ASSERT_MSG(bytesLeft == 0, "Read more entries than the number of bytes available!");
 
-		if(numEntries != m_entries.size())
-		{
-			throw InvalidValueException("The number of table entries does not match the size of the table!");
-		}
-	}
+  if (numEntries != m_entries.size()) {
+    throw InvalidValueException("The number of table entries does not match the size of the table!");
+  }
+}
 
-	void Stco::PrintBox(std::ostream& outStream, int depth)
-	{
-		std::string tabs = GetTabs(depth);
+void Stco::PrintBox(std::ostream& outStream, int depth) {
+  std::string tabs = GetTabs(depth);
 
-		outStream << tabs << "STCO Box:" << std::endl;
+  outStream << tabs << "STCO Box:" << std::endl;
 
-		outStream << tabs << "\tVersion: " << m_version << std::endl;
-		outStream << tabs << "\tNumber of Entries: " << m_entries.size() << std::endl;
+  outStream << tabs << "\tVersion: " << m_version << std::endl;
+  outStream << tabs << "\tNumber of Entries: " << m_entries.size() << std::endl;
 
-		int entryNumber = 0;
-		for (auto& entry : m_entries)
-		{
-			outStream << tabs << "\t\tEntry " << entryNumber << " : " << entry << std::endl;
-			if (entryNumber > 0)
-			{
-				outStream << tabs << "\t\t\tDelta : " << entry - m_entries[entryNumber - 1] << std::endl;
-			}
-			entryNumber++;
-		}
-	}
+  int entryNumber = 0;
+  for (auto& entry : m_entries) {
+    outStream << tabs << "\t\tEntry " << entryNumber << " : " << entry << std::endl;
+    if (entryNumber > 0) {
+      outStream << tabs << "\t\t\tDelta : " << entry - m_entries[entryNumber - 1] << std::endl;
+    }
+    entryNumber++;
+  }
+}
 
-	#pragma region Public Getters
+#pragma region Public Getters
 
-	uint32_t Stco::GetVersion()
-	{
-		return m_version;
-	}
+uint32_t Stco::GetVersion() { return m_version; }
 
-	std::vector<uint32_t> Stco::GetEntries()
-	{
-		return m_entries;
-	}
+std::vector<uint32_t> Stco::GetEntries() { return m_entries; }
 
-	#pragma endregion
+#pragma endregion
 
-} /*namespace: MPEG4*/}/*namespace: Arcusical*/
+} /*namespace: MPEG4*/
+} /*namespace: Arcusical*/

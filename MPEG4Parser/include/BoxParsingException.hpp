@@ -12,19 +12,20 @@
 #ifndef BOX_PARSING_EXCEPTION_HPP
 #define BOX_PARSING_EXCEPTION_HPP
 
-namespace Arcusical { namespace MPEG4 {
+namespace Arcusical {
+namespace MPEG4 {
 
-	class BoxParsingException : public std::exception
-	{
-		public:
-			BoxParsingException(const char* errMessage):m_message(errMessage){}
-			// overriden what() method from exception class
-			const char* what() const throw() { return m_message; }
- 
-		 protected:
-			const char* m_message;
-	};
+class BoxParsingException : public std::exception {
+ public:
+  BoxParsingException(const char* errMessage) : m_message(errMessage) {}
+  // overriden what() method from exception class
+  const char* what() const throw() { return m_message; }
 
-}/*Arcusical*/}/*MPEG4*/
+ protected:
+  const char* m_message;
+};
+
+} /*Arcusical*/
+} /*MPEG4*/
 
 #endif

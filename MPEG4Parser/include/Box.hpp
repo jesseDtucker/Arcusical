@@ -17,68 +17,66 @@
 
 #include "BoxTypes.hpp"
 
-namespace Util
-{
-	class Stream;
+namespace Util {
+class Stream;
 }
 
-namespace Arcusical { namespace MPEG4 {
+namespace Arcusical {
+namespace MPEG4 {
 
-	class Box
-	{
-		public:
-			/*
-			*	Create a box and initialize its default values
-			*/
-			Box();
+class Box {
+ public:
+  /*
+  *	Create a box and initialize its default values
+  */
+  Box();
 
-			/*
-			*	Destroy the box and cleanup memory
-			*/
-			virtual ~Box();
+  /*
+  *	Destroy the box and cleanup memory
+  */
+  virtual ~Box();
 
-			/*
-			*	Returns the size of this box
-			*/
-			uint64_t GetSize();
+  /*
+  *	Returns the size of this box
+  */
+  uint64_t GetSize();
 
-			/*
-			*	Returns references to the children of this box
-			*/
-			std::vector<std::shared_ptr<Box>>& GetChildren();
+  /*
+  *	Returns references to the children of this box
+  */
+  std::vector<std::shared_ptr<Box>>& GetChildren();
 
-			/*
-			*	Will parse the contents of the box from the buffer
-			*/
-			virtual void ParseBox(uint64_t size, Util::Stream& stream, uint32_t headerSize);
+  /*
+  *	Will parse the contents of the box from the buffer
+  */
+  virtual void ParseBox(uint64_t size, Util::Stream& stream, uint32_t headerSize);
 
-			/*
-			*	Print out the contents of this box in a human readable form to the provided stream.
-			*	depth = depth of indentation, largely used internally however can be adjusted externally
-			*	to increase number of tabs at beginning of lines.
-			*/
-			virtual void PrintBox(std::ostream& outStream, int depth = 0) = 0;
+  /*
+  *	Print out the contents of this box in a human readable form to the provided stream.
+  *	depth = depth of indentation, largely used internally however can be adjusted externally
+  *	to increase number of tabs at beginning of lines.
+  */
+  virtual void PrintBox(std::ostream& outStream, int depth = 0) = 0;
 
-			virtual std::shared_ptr<std::string> GetBoxName();
+  virtual std::shared_ptr<std::string> GetBoxName();
 
-		protected:
+ protected:
+  int64_t m_bodySize;
+  int64_t m_fullSize;
+  std::vector<std::shared_ptr<Box>> m_children;
 
-			int64_t m_bodySize;
-			int64_t m_fullSize;
-			std::vector<std::shared_ptr<Box>> m_children;
+  virtual void ReadContents(Util::Stream& stream) = 0;
 
-			virtual void ReadContents(Util::Stream& stream) = 0;
+  /*
+  *	Simple helper function used for indentation
+  */
+  static const std::string& GetTabs(int count);
 
-			/*
-			*	Simple helper function used for indentation
-			*/
-			static const std::string& GetTabs(int count);
+ private:
+  std::shared_ptr<std::string> m_boxName;
+};
 
-		private:
-			std::shared_ptr<std::string> m_boxName;
-	};
+} /*namespace: MPEG4*/
+} /*namespace: Arcusical*/
 
-} /*namespace: MPEG4*/}/*namespace: Arcusical*/ 
-
-
-#endif // !BOX_H
+#endif  // !BOX_H

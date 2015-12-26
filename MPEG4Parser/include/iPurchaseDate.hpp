@@ -11,27 +11,26 @@
 
 #include "Box.hpp"
 
-namespace Arcusical { namespace MPEG4 {
+namespace Arcusical {
+namespace MPEG4 {
 
-	class iPurchaseDate : public Box
-	{
-		public:
+class iPurchaseDate : public Box {
+ public:
+  iPurchaseDate() {}
+  virtual ~iPurchaseDate() {}
 
-			iPurchaseDate() {}
-			virtual ~iPurchaseDate() {}
+  virtual void PrintBox(std::ostream& outStream, int depth = 0) override;
 
-			virtual void PrintBox(std::ostream& outStream, int depth = 0) override;
+  std::string GetPurchaseDate();
 
-			std::string GetPurchaseDate();
+ protected:
+  virtual void ReadContents(Util::Stream& stream) override;
 
-		protected:
-			virtual void ReadContents(Util::Stream& stream) override;
+ private:
+  std::string m_purchaseDate;
+};
 
-		private:
-
-			std::string m_purchaseDate;
-	};
-
-} /*namespace: MPEG4*/}/*namespace: Arcusical*/ 
+} /*namespace: MPEG4*/
+} /*namespace: Arcusical*/
 
 #endif

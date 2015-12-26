@@ -10,15 +10,16 @@
 
 #include "UnknownBox.hpp"
 
-namespace Arcusical { namespace MPEG4 {
+namespace Arcusical {
+namespace MPEG4 {
 
-	void UnknownBox::PrintBox(std::ostream& outStream, int depth)
-	{
-		std::string tabs = GetTabs(depth);
+void UnknownBox::PrintBox(std::ostream& outStream, int depth) {
+  std::string tabs = GetTabs(depth);
 
-		outStream << tabs << "Unknown Box:" << std::endl;
-		outStream << tabs << "\tSize: " << m_bodySize << std::endl;
-		outStream << tabs << "\tName: " << *GetBoxName() << std::endl;
-	}
+  outStream << tabs << "Unknown Box:" << std::endl;
+  outStream << tabs << "\tSize: " << m_bodySize << std::endl;
+  outStream << tabs << "\tName: " << *GetBoxName() << std::endl;
+}
 
-}/*MPEG4*/}/*Arcusical*/
+} /*MPEG4*/
+} /*Arcusical*/

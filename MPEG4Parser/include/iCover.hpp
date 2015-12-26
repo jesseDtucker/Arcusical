@@ -14,37 +14,36 @@
 #include "Box.hpp"
 #include "ImageTypes.hpp"
 
-namespace Arcusical { namespace MPEG4 {
+namespace Arcusical {
+namespace MPEG4 {
 
-	class iCover : public Box
-	{
-		public:
+class iCover : public Box {
+ public:
+  iCover() : m_type(ImageType::UNKNOWN) {};
+  virtual ~iCover() {};
 
-			iCover() : m_type(ImageType::UNKNOWN) {};
-			virtual ~iCover() {};
+  virtual void PrintBox(std::ostream& outStream, int depth = 0) override;
 
-			virtual void PrintBox(std::ostream& outStream, int depth = 0) override;
+  std::vector<unsigned char>::const_iterator GetImageData();
+  uint64_t GetImageDataSize();
+  ImageType GetType();
 
-			std::vector<unsigned char>::const_iterator GetImageData();
-			uint64_t GetImageDataSize();
-			ImageType GetType();
+ protected:
+  virtual void ReadContents(Util::Stream& stream) override;
 
-		protected:
+  virtual ImageType DetermineType(std::vector<unsigned char>::const_iterator itr);
 
-			virtual void ReadContents(Util::Stream& stream) override;
+  std::vector<unsigned char>::const_iterator m_imageData;
+  uint64_t m_imageDataSize;
+  ImageType m_type;
 
-			virtual ImageType DetermineType(std::vector<unsigned char>::const_iterator itr);
+  // constant sets of bytes found at the head of image files.
+  static const std::vector<unsigned char> JPEG_HEADER_START;
+  static const std::vector<unsigned char> PNG_HEADER_START;
+  static const std::vector<unsigned char> EXIF_HEADER_START;
+};
 
-			std::vector<unsigned char>::const_iterator m_imageData;
-			uint64_t m_imageDataSize;
-			ImageType m_type;
-
-			//constant sets of bytes found at the head of image files.
-			static const std::vector<unsigned char> JPEG_HEADER_START;
-			static const std::vector<unsigned char> PNG_HEADER_START;
-			static const std::vector<unsigned char> EXIF_HEADER_START;
-	};
-
-} /*namespace: MPEG4*/}/*namespace: Arcusical*/ 
+} /*namespace: MPEG4*/
+} /*namespace: Arcusical*/
 
 #endif

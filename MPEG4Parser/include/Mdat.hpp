@@ -12,18 +12,19 @@
 
 #include "DataBox.hpp"
 
-namespace Arcusical { namespace MPEG4 {
+namespace Arcusical {
+namespace MPEG4 {
 
-	class Mdat : public Box
-	{
-		public:
-			Mdat() {}
-			virtual ~Mdat() {}
+class Mdat : public Box {
+ public:
+  Mdat() {}
+  virtual ~Mdat() {}
 
-			virtual void ReadContents(Util::Stream& stream) override;
-			virtual void PrintBox(std::ostream& outStream, int depth = 0) override;
-	};
+  virtual void ReadContents(Util::Stream& stream) override;
+  virtual void PrintBox(std::ostream& outStream, int depth = 0) override;
+};
 
-} /*namespace: MPEG4*/}/*namespace: Arcusical*/ 
+} /*namespace: MPEG4*/
+} /*namespace: Arcusical*/
 
 #endif

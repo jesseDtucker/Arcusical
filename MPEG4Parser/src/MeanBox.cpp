@@ -13,28 +13,25 @@
 #include "MeanBox.hpp"
 #include "MPEG4_Parser.hpp"
 
-namespace Arcusical { namespace MPEG4 {
-	
-	void MeanBox::ReadContents(Util::Stream& stream)
-	{
-		//first 4 bytes appear to always be zero, either its a version number or reserved. No way of knowing...
-		stream.Advance(4);
+namespace Arcusical {
+namespace MPEG4 {
 
-		//the remainder is a std::string
-		m_data = stream.ReadString(Util::SafeIntCast<unsigned int>(m_bodySize) - 4);
-	}
+void MeanBox::ReadContents(Util::Stream& stream) {
+  // first 4 bytes appear to always be zero, either its a version number or reserved. No way of knowing...
+  stream.Advance(4);
 
-	void MeanBox::PrintBox(std::ostream& outStream, int depth)
-	{
-		std::string tabs = GetTabs(depth);
+  // the remainder is a std::string
+  m_data = stream.ReadString(Util::SafeIntCast<unsigned int>(m_bodySize) - 4);
+}
 
-		outStream << tabs << "Mean Box: " << std::endl;
-		outStream << tabs << "\tData: " << m_data << std::endl;
-	}
+void MeanBox::PrintBox(std::ostream& outStream, int depth) {
+  std::string tabs = GetTabs(depth);
 
-	std::string MeanBox::GetDataString()
-	{
-		return m_data;
-	}
+  outStream << tabs << "Mean Box: " << std::endl;
+  outStream << tabs << "\tData: " << m_data << std::endl;
+}
 
-}/*MPEG4*/}/*Arcusical*/
+std::string MeanBox::GetDataString() { return m_data; }
+
+} /*MPEG4*/
+} /*Arcusical*/

@@ -16,20 +16,20 @@
 
 using namespace std;
 
-namespace Arcusical { namespace MPEG4 {
+namespace Arcusical {
+namespace MPEG4 {
 
-	Udta::Udta() {};
-	Udta::~Udta() {};
+Udta::Udta() {};
+Udta::~Udta() {};
 
-	void Udta::PrintBox(ostream& outStream, int depth)
-	{
-		std::string tabs = GetTabs(depth);
-		outStream << tabs << "UDTA Box:" << std::endl;
+void Udta::PrintBox(ostream& outStream, int depth) {
+  std::string tabs = GetTabs(depth);
+  outStream << tabs << "UDTA Box:" << std::endl;
 
-		for(std::shared_ptr<Box> child : m_children)
-		{
-			child->PrintBox(outStream, depth + 1);
-		}
-	}
+  for (std::shared_ptr<Box> child : m_children) {
+    child->PrintBox(outStream, depth + 1);
+  }
+}
 
-} /*namespace: MPEG4*/}/*namespace: Arcusical*/ 
+} /*namespace: MPEG4*/
+} /*namespace: Arcusical*/

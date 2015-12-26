@@ -13,29 +13,28 @@
 #include "Box.hpp"
 #include "GenreTypes.hpp"
 
-namespace Arcusical { namespace MPEG4 {
+namespace Arcusical {
+namespace MPEG4 {
 
-	class iGenre : public Box
-	{
-		public:
+class iGenre : public Box {
+ public:
+  iGenre() : m_genre(GenreType::UNKNOWN) {}
+  virtual ~iGenre() {}
 
-			iGenre() : m_genre(GenreType::UNKNOWN) {}
-			virtual ~iGenre() {}
+  virtual void PrintBox(std::ostream& outStream, int depth = 0) override;
 
-			virtual void PrintBox(std::ostream& outStream, int depth = 0) override;
+  GenreType GetGenre();
+  std::wstring GetNonStandardGenre();
 
-			GenreType GetGenre();
-			std::wstring GetNonStandardGenre();
+ protected:
+  virtual void ReadContents(Util::Stream& stream) override;
 
-		protected:
-			virtual void ReadContents(Util::Stream& stream) override;
+ private:
+  GenreType m_genre;
+  std::wstring m_nonStandardGenre;
+};
 
-		private:
-
-			GenreType m_genre;
-			std::wstring m_nonStandardGenre;
-	};
-
-}/*Arcusical*/}/*MPEG4*/
+} /*Arcusical*/
+} /*MPEG4*/
 
 #endif

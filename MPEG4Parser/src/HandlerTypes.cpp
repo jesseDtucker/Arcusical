@@ -11,12 +11,13 @@
 
 #include "HandlerTypes.hpp"
 
-namespace Arcusical { namespace MPEG4 {
+namespace Arcusical {
+namespace MPEG4 {
 
-	std::ostream& operator << (std::ostream& outStream, HandlerType type)
-	{
-		outStream << HandlerTypeToString.at(type);
-		return outStream;
-	}
+std::ostream& operator<<(std::ostream& outStream, HandlerType type) {
+  outStream << HandlerTypeToString.at(type);
+  return outStream;
+}
 
-} /*namespace: MPEG4*/}/*namespace: Arcusical*/ 
+} /*namespace: MPEG4*/
+} /*namespace: Arcusical*/

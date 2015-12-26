@@ -8,7 +8,8 @@
 *	to be contained within the udta box however apple has another box by the same name (cprt) contained within
 *	their apple specific metadata, however it has a different format.
 *
-*	As a result of this discrepency, and the low priority of being able to edit the cprt box, this box is implemented
+*	As a result of this discrepency, and the low priority of being able to edit the cprt box, this box is
+*implemented
 *	as if it were an unknown type. This may change in the future.
 */
 
@@ -24,15 +25,16 @@
 
 #include "UnknownBox.hpp"
 
-namespace Arcusical { namespace MPEG4 {
+namespace Arcusical {
+namespace MPEG4 {
 
-	class Cprt : public UnknownBox
-	{
-		public:
-			Cprt() {}
-			virtual ~Cprt() {}
-	};
+class Cprt : public UnknownBox {
+ public:
+  Cprt() {}
+  virtual ~Cprt() {}
+};
 
-} /*namespace: MPEG4*/}/*namespace: Arcusical*/ 
+} /*namespace: MPEG4*/
+} /*namespace: Arcusical*/
 
 #endif

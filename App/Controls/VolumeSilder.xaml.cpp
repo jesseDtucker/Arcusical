@@ -21,7 +21,4 @@ using namespace Windows::UI::Xaml::Navigation;
 
 using namespace Arcusical::ViewModel;
 
-VolumeSilder::VolumeSilder()
-{
-	InitializeComponent();
-}
+VolumeSilder::VolumeSilder() { InitializeComponent(); }

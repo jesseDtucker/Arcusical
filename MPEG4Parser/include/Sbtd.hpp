@@ -12,16 +12,17 @@
 
 #include "UnknownBox.hpp"
 
-namespace Arcusical { namespace MPEG4 {
+namespace Arcusical {
+namespace MPEG4 {
 
-	//this class is minimal, exists soley to distinguish itself from a truly unknown box.
-	class Sbtd : public UnknownBox
-	{
-		public:
-			Sbtd() {}
-			virtual ~Sbtd () {};
-	};
+// this class is minimal, exists soley to distinguish itself from a truly unknown box.
+class Sbtd : public UnknownBox {
+ public:
+  Sbtd() {}
+  virtual ~Sbtd() {};
+};
 
-} /*namespace: MPEG4*/}/*namespace: Arcusical*/ 
+} /*namespace: MPEG4*/
+} /*namespace: Arcusical*/
 
 #endif

@@ -8,20 +8,18 @@
 
 #include "MusicTypes.hpp"
 
-namespace Arcusical{
-namespace Model
-{
-	class Song;
+namespace Arcusical {
+namespace Model {
+class Song;
 
-	//
-	// Class provides a mean for albums to locate their songs from their ids on demand
-	//
-	class IAlbumToSongMapper
-	{
-	public:
-		virtual SongCollection GetSongsFromIds(const std::set<boost::uuids::uuid>& ids) const = 0;
-	};
-	}
+//
+// Class provides a mean for albums to locate their songs from their ids on demand
+//
+class IAlbumToSongMapper {
+ public:
+  virtual SongCollection GetSongsFromIds(const std::set<boost::uuids::uuid>& ids) const = 0;
+};
+}
 }
 
 #endif

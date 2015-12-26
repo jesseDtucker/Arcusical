@@ -14,26 +14,26 @@
 #include "Box.hpp"
 #include <string>
 
-namespace Arcusical { namespace MPEG4 {
+namespace Arcusical {
+namespace MPEG4 {
 
-	class MeanBox : public Box
-	{
-		public:
-			MeanBox() {}
-			virtual ~MeanBox() {}
+class MeanBox : public Box {
+ public:
+  MeanBox() {}
+  virtual ~MeanBox() {}
 
-			virtual void PrintBox(std::ostream& outStream, int depth = 0) override;
+  virtual void PrintBox(std::ostream& outStream, int depth = 0) override;
 
-			std::string GetDataString();
+  std::string GetDataString();
 
-		protected:
-			virtual void ReadContents(Util::Stream& stream) override;
+ protected:
+  virtual void ReadContents(Util::Stream& stream) override;
 
-		private:
+ private:
+  std::string m_data;
+};
 
-			std::string m_data;
-	};
-
-}/*MPEG4*/}/*Arcusical*/
+} /*MPEG4*/
+} /*Arcusical*/
 
 #endif

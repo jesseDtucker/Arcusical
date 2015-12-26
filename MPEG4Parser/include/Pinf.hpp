@@ -13,16 +13,17 @@
 
 #include "UnknownBox.hpp"
 
-namespace Arcusical { namespace MPEG4 {
+namespace Arcusical {
+namespace MPEG4 {
 
-	//this class is minimal, exists soley to distinguish itself from a truly unknown box.
-	class Pinf : public UnknownBox
-	{
-		public:
-			Pinf() {}
-			virtual ~Pinf () {};
-	};
+// this class is minimal, exists soley to distinguish itself from a truly unknown box.
+class Pinf : public UnknownBox {
+ public:
+  Pinf() {}
+  virtual ~Pinf() {};
+};
 
-} /*namespace: MPEG4*/}/*namespace: Arcusical*/ 
+} /*namespace: MPEG4*/
+} /*namespace: Arcusical*/
 
 #endif

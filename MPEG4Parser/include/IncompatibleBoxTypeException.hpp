@@ -12,14 +12,15 @@
 #ifndef INCOMPATIBLE_BOX_TYPE_EXCEPTION_HPP
 #define INCOMPATIBLE_BOX_TYPE_EXCEPTION_HPP
 
-namespace Arcusical { namespace MPEG4 {
+namespace Arcusical {
+namespace MPEG4 {
 
-	class IncompatibleBoxTypeException : public BoxParsingException
-	{
-		public:
-			IncompatibleBoxTypeException(const char* errMessage):BoxParsingException(errMessage){}
-	};
+class IncompatibleBoxTypeException : public BoxParsingException {
+ public:
+  IncompatibleBoxTypeException(const char* errMessage) : BoxParsingException(errMessage) {}
+};
 
-}/*Arcusical*/}/*MPEG4*/
+} /*Arcusical*/
+} /*MPEG4*/
 
 #endif

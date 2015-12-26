@@ -22,26 +22,21 @@ using namespace Windows::UI::Xaml::Navigation;
 using namespace Arcusical;
 using namespace ViewModel;
 
-SongListControl::SongListControl()
-{
-	InitializeComponent();
-}
+SongListControl::SongListControl() { InitializeComponent(); }
 
-VM_IMPL(SongListControlVM^, SongListControl);
+VM_IMPL(SongListControlVM ^, SongListControl);
 
-void SongListControl::SongDoubleTapped(Platform::Object^ sender, Windows::UI::Xaml::Input::DoubleTappedRoutedEventArgs^ e)
-{
-	ARC_ASSERT(VM != nullptr);
+void SongListControl::SongDoubleTapped(Platform::Object ^ sender,
+                                       Windows::UI::Xaml::Input::DoubleTappedRoutedEventArgs ^ e) {
+  ARC_ASSERT(VM != nullptr);
 
-	auto uiElement = dynamic_cast<FrameworkElement^>(sender);
-	ARC_ASSERT(uiElement != nullptr);
-	if (uiElement != nullptr)
-	{
-		auto song = dynamic_cast<SongVM^>(uiElement->DataContext);
-		ARC_ASSERT(song != nullptr);
-		if (song != nullptr)
-		{
-			VM->PlaySongsAfterAndIncluding(song);
-		}
-	}
+  auto uiElement = dynamic_cast<FrameworkElement ^ >(sender);
+  ARC_ASSERT(uiElement != nullptr);
+  if (uiElement != nullptr) {
+    auto song = dynamic_cast<SongVM ^ >(uiElement->DataContext);
+    ARC_ASSERT(song != nullptr);
+    if (song != nullptr) {
+      VM->PlaySongsAfterAndIncluding(song);
+    }
+  }
 }

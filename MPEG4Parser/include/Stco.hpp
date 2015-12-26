@@ -17,29 +17,28 @@
 
 #include "Box.hpp"
 
-namespace Arcusical { namespace MPEG4 {
+namespace Arcusical {
+namespace MPEG4 {
 
-	class Stco : public Box
-	{
-		public:
+class Stco : public Box {
+ public:
+  Stco();
+  virtual ~Stco() override;
 
-			Stco();
-			virtual ~Stco() override;
+  virtual void PrintBox(std::ostream& outStream, int depth = 0) override;
 
-			virtual void PrintBox(std::ostream& outStream, int depth = 0) override;
+  uint32_t GetVersion();
+  std::vector<uint32_t> GetEntries();
 
-			uint32_t GetVersion();
-			std::vector<uint32_t> GetEntries();
+ protected:
+  virtual void ReadContents(Util::Stream& stream) override;
 
-		protected:
-			virtual void ReadContents(Util::Stream& stream) override;
+ private:
+  uint32_t m_version;
+  std::vector<uint32_t> m_entries;
+};
 
-		private:
-			uint32_t m_version;
-			std::vector<uint32_t> m_entries;
-	};
-
-} /*namespace: MPEG4*/}/*namespace: Arcusical*/
+} /*namespace: MPEG4*/
+} /*namespace: Arcusical*/
 
 #endif
-

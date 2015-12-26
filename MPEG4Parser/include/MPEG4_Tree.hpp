@@ -15,36 +15,36 @@
 
 #include "Box.hpp"
 
-namespace Arcusical { namespace MPEG4 {
+namespace Arcusical {
+namespace MPEG4 {
 
-	class MPEG4_Tree final
-	{
-		public:
+class MPEG4_Tree final {
+ public:
+  /*
+  * Create an empty tree of boxes
+  */
+  MPEG4_Tree();
 
-			/*
-			* Create an empty tree of boxes
-			*/
-			MPEG4_Tree();
+  /*
+  * Add the provided box to the tree
+  */
+  void AddBox(std::shared_ptr<Box> box);
 
-			/*
-			* Add the provided box to the tree
-			*/
-			void AddBox(std::shared_ptr<Box> box);
+  /*
+  * Get the boxes contained within this tree
+  */
+  std::vector<std::shared_ptr<Box>>& GetBoxes();
 
-			/*
-			* Get the boxes contained within this tree
-			*/
-			std::vector<std::shared_ptr<Box>>& GetBoxes();
+  /*
+  *	Print this tree in a readable std::string representation to the provided stream
+  */
+  void PrintTree(std::ostream& outStream);
 
-			/*
-			*	Print this tree in a readable std::string representation to the provided stream
-			*/
-			void PrintTree(std::ostream& outStream);
+ private:
+  std::vector<std::shared_ptr<Box>> m_boxes;
+};
 
-		private:
-			std::vector<std::shared_ptr<Box>> m_boxes;
-	};
-
-} /*namespace: MPEG4*/}/*namespace: Arcusical*/ 
+} /*namespace: MPEG4*/
+} /*namespace: Arcusical*/
 
 #endif /* !MPEG4_TREE_H*/

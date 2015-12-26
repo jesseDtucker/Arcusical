@@ -17,281 +17,236 @@ using namespace Util;
 const std::string Arcusical::Player::IPlayer::ServiceName("Win8Player");
 const double DEFAULT_VOLUME = 0.5;
 
-namespace Arcusical
-{
-namespace Player
-{
+namespace Arcusical {
+namespace Player {
 
-	Win8Player::Win8Player(BackgroundWorker& backgroundWorker)
-		: m_backgroundWorker(backgroundWorker)
-		, m_currentSong(boost::none)
-		, m_mediaEngine(nullptr)
-		, m_factory(nullptr)
-		, m_attributes(nullptr)
-		, m_isCurrentSongSetForPlay(false)
-		, m_mediaEngineNotify()
-	{
-		ComPtr<IMFMediaEngine> engine;
+Win8Player::Win8Player(BackgroundWorker& backgroundWorker)
+    : m_backgroundWorker(backgroundWorker),
+      m_currentSong(boost::none),
+      m_mediaEngine(nullptr),
+      m_factory(nullptr),
+      m_attributes(nullptr),
+      m_isCurrentSongSetForPlay(false),
+      m_mediaEngineNotify() {
+  ComPtr<IMFMediaEngine> engine;
 
-		auto result = CoInitializeEx(NULL, COINIT_MULTITHREADED);
-		ARC_ThrowIfFailed(result);
-		result = MFStartup(MF_VERSION);
-		ARC_ThrowIfFailed(result);
+  auto result = CoInitializeEx(NULL, COINIT_MULTITHREADED);
+  ARC_ThrowIfFailed(result);
+  result = MFStartup(MF_VERSION);
+  ARC_ThrowIfFailed(result);
 
-		result = m_factory.CoCreateInstance(CLSID_MFMediaEngineClassFactory);
-		ARC_ThrowIfFailed(result);
-		
-		result = MFCreateAttributes(&m_attributes, 1);
-		ARC_ThrowIfFailed(result);
+  result = m_factory.CoCreateInstance(CLSID_MFMediaEngineClassFactory);
+  ARC_ThrowIfFailed(result);
 
-		result = m_attributes->SetUINT32(MF_MEDIA_ENGINE_AUDIO_CATEGORY, AudioCategory_Media);
-		ARC_ThrowIfFailed(result);
+  result = MFCreateAttributes(&m_attributes, 1);
+  ARC_ThrowIfFailed(result);
 
-		result = m_attributes->SetUnknown(MF_MEDIA_ENGINE_CALLBACK, &m_mediaEngineNotify);
-		ARC_ThrowIfFailed(result);
+  result = m_attributes->SetUINT32(MF_MEDIA_ENGINE_AUDIO_CATEGORY, AudioCategory_Media);
+  ARC_ThrowIfFailed(result);
 
-		result = m_factory->CreateInstance(MF_MEDIA_ENGINE_AUDIOONLY, m_attributes, &engine);
-		ARC_ThrowIfFailed(result);
+  result = m_attributes->SetUnknown(MF_MEDIA_ENGINE_CALLBACK, &m_mediaEngineNotify);
+  ARC_ThrowIfFailed(result);
 
-		result = engine.Get()->QueryInterface(__uuidof(IMFMediaEngine), (void**)(&m_mediaEngine));
-		ARC_ThrowIfFailed(result);
+  result = m_factory->CreateInstance(MF_MEDIA_ENGINE_AUDIOONLY, m_attributes, &engine);
+  ARC_ThrowIfFailed(result);
 
-		auto alacInputId = MFMPEG4Format_Base;
-		alacInputId.Data1 = 'alac';
+  result = engine.Get()->QueryInterface(__uuidof(IMFMediaEngine), (void**)(&m_mediaEngine));
+  ARC_ThrowIfFailed(result);
 
-		auto alacOutputId = MFAudioFormat_PCM;
+  auto alacInputId = MFMPEG4Format_Base;
+  alacInputId.Data1 = 'alac';
 
-		m_extensionManager = ref new MediaExtensionManager();
-		m_extensionManager->RegisterAudioDecoder("ALACDecoder.ALACDecoder", alacInputId, alacOutputId);
+  auto alacOutputId = MFAudioFormat_PCM;
 
-		m_mediaEngineNotify.SetBackgroundWorker(&m_backgroundWorker);
-		m_mediaEngineNotify.SetPlayer(this);
+  m_extensionManager = ref new MediaExtensionManager();
+  m_extensionManager->RegisterAudioDecoder("ALACDecoder.ALACDecoder", alacInputId, alacOutputId);
 
-		SetVolume(DEFAULT_VOLUME);
-	}
+  m_mediaEngineNotify.SetBackgroundWorker(&m_backgroundWorker);
+  m_mediaEngineNotify.SetPlayer(this);
 
-	Win8Player::~Win8Player()
-	{
-		auto result = MFShutdown();
-		ARC_ASSERT(SUCCEEDED(result));
-		CoUninitialize();
-	}
+  SetVolume(DEFAULT_VOLUME);
+}
 
-	void Win8Player::Play()
-	{
-		if (m_currentSong && m_currentSong->HasStream())
-		{
-			auto stream = m_currentSong->GetStream();
-			PlayNativeSong(stream);
-		}
-	}
+Win8Player::~Win8Player() {
+  auto result = MFShutdown();
+  ARC_ASSERT(SUCCEEDED(result));
+  CoUninitialize();
+}
 
-	void Win8Player::PlayNativeSong(Model::SongStream& stream)
-	{
-		HRESULT result = S_OK;
+void Win8Player::Play() {
+  if (m_currentSong && m_currentSong->HasStream()) {
+    auto stream = m_currentSong->GetStream();
+    PlayNativeSong(stream);
+  }
+}
 
-		if (!m_isCurrentSongSetForPlay)
-		{
-			auto file = create_task(Windows::Storage::StorageFile::GetFileFromPathAsync(ref new Platform::String(stream.songData.filePath.c_str()))).get();
-			auto nativeStream = create_task(file->OpenReadAsync()).get();
+void Win8Player::PlayNativeSong(Model::SongStream& stream) {
+  HRESULT result = S_OK;
 
-			// this is kinda nasty...
-			ComPtr<IUnknown> pStreamUnk = reinterpret_cast<IUnknown*>(nativeStream);
-			ComPtr<IMFByteStream> pMFStream;
+  if (!m_isCurrentSongSetForPlay) {
+    auto file = create_task(Windows::Storage::StorageFile::GetFileFromPathAsync(
+                                ref new Platform::String(stream.songData.filePath.c_str()))).get();
+    auto nativeStream = create_task(file->OpenReadAsync()).get();
 
-			result = ::MFCreateMFByteStreamOnStreamEx(pStreamUnk.Get(), &pMFStream);
-			ARC_ThrowIfFailed(result);
+    // this is kinda nasty...
+    ComPtr<IUnknown> pStreamUnk = reinterpret_cast<IUnknown*>(nativeStream);
+    ComPtr<IMFByteStream> pMFStream;
 
-			CComBSTR path = stream.songData.filePath.c_str();
-			result = m_mediaEngine->SetSourceFromByteStream(pMFStream.Get(), path);
-			ARC_ThrowIfFailed(result);
-		}
+    result = ::MFCreateMFByteStreamOnStreamEx(pStreamUnk.Get(), &pMFStream);
+    ARC_ThrowIfFailed(result);
 
-		result = m_mediaEngine->Play();
-		ARC_ThrowIfFailed(result);
-		m_isCurrentSongSetForPlay = true;
-	}
+    CComBSTR path = stream.songData.filePath.c_str();
+    result = m_mediaEngine->SetSourceFromByteStream(pMFStream.Get(), path);
+    ARC_ThrowIfFailed(result);
+  }
 
-	void Win8Player::Stop()
-	{
-		auto result = m_mediaEngine->Pause();
-		ARC_ThrowIfFailed(result);
-	}
+  result = m_mediaEngine->Play();
+  ARC_ThrowIfFailed(result);
+  m_isCurrentSongSetForPlay = true;
+}
 
-	void Win8Player::SetSong(const Model::Song& song)
-	{
-		if (!m_currentSong || m_currentSong != song)
-		{
-			OutputDebugString(song.GetTitle().c_str());
-			OutputDebugStringA(" <- New song axb\n");
-			m_currentSong = song;
-			m_isCurrentSongSetForPlay = false;
-			Stop();
-			m_songChanged(m_currentSong);
-		}
-	}
+void Win8Player::Stop() {
+  auto result = m_mediaEngine->Pause();
+  ARC_ThrowIfFailed(result);
+}
 
-	Model::Song* Win8Player::GetCurrentSong()
-	{
-		return &*m_currentSong;
-	}
+void Win8Player::SetSong(const Model::Song& song) {
+  if (!m_currentSong || m_currentSong != song) {
+    OutputDebugString(song.GetTitle().c_str());
+    OutputDebugStringA(" <- New song axb\n");
+    m_currentSong = song;
+    m_isCurrentSongSetForPlay = false;
+    Stop();
+    m_songChanged(m_currentSong);
+  }
+}
 
-	double Win8Player::GetCurrentTime() const
-	{
-		return m_mediaEngine->GetCurrentTime();
-	}
+Model::Song* Win8Player::GetCurrentSong() { return &*m_currentSong; }
 
-	double Win8Player::GetDuration() const
-	{
-		return m_mediaEngine->GetDuration();
-	}
+double Win8Player::GetCurrentTime() const { return m_mediaEngine->GetCurrentTime(); }
 
-	void Win8Player::SetCurrentTime(double time)
-	{
-		if (!std::isnan(GetDuration()))
-		{
-			ARC_ASSERT(time <= GetDuration());
-			time = time < GetDuration() ? time : GetDuration();
-			m_mediaEngine->SetCurrentTime(time);
-		}
-	}
+double Win8Player::GetDuration() const { return m_mediaEngine->GetDuration(); }
 
-	void Win8Player::SetVolume(double volume)
-	{
-		auto hr = m_mediaEngine->SetVolume(volume);
-		ARC_ThrowIfFailed(hr);
-	}
+void Win8Player::SetCurrentTime(double time) {
+  if (!std::isnan(GetDuration())) {
+    ARC_ASSERT(time <= GetDuration());
+    time = time < GetDuration() ? time : GetDuration();
+    m_mediaEngine->SetCurrentTime(time);
+  }
+}
 
-	double Win8Player::GetVolume() const
-	{
-		return m_mediaEngine->GetVolume();
-	}
+void Win8Player::SetVolume(double volume) {
+  auto hr = m_mediaEngine->SetVolume(volume);
+  ARC_ThrowIfFailed(hr);
+}
 
-	void Win8Player::ClearSong()
-	{
-		m_currentSong = boost::none;
-		m_songChanged(m_currentSong);
-	}
+double Win8Player::GetVolume() const { return m_mediaEngine->GetVolume(); }
 
-	//////////////////////////////////////////////////////////////////////////
-	//
-	//	Media Engine Notify
-	// 
-	//////////////////////////////////////////////////////////////////////////
+void Win8Player::ClearSong() {
+  m_currentSong = boost::none;
+  m_songChanged(m_currentSong);
+}
 
-	HRESULT MediaEngineNotify::EventNotify(_In_ DWORD event, _In_ DWORD_PTR param1, _In_ DWORD param2)
-	{
-		m_backgroundWorker->Append([this, event, param1, param2]()
-		{
-			if (m_player != nullptr)
-			{
-				switch (event)
-				{
-				case MF_MEDIA_ENGINE_EVENT_PLAYING:
-					m_player->m_IsPlaying = true;
-					m_player->m_IsPaused = false;
-					m_player->GetPlaying()(true);
-					break;
-				case MF_MEDIA_ENGINE_EVENT_PAUSE:
-					m_player->m_IsPlaying = false;
-					m_player->m_IsPaused = true;
-					m_player->GetPlaying()(false);
-					break;
-				case MF_MEDIA_ENGINE_EVENT_ENDED:
-					m_player->m_IsPlaying = false;
-					m_player->m_IsPaused = false;
-					m_player->GetPlaying()(false);
-					m_player->GetEnded()();
-					break;
-				case MF_MEDIA_ENGINE_EVENT_TIMEUPDATE:
-					m_player->GetTimeUpdate()(m_player->GetCurrentTime());
-					break;
-				case MF_MEDIA_ENGINE_EVENT_DURATIONCHANGE:
-					m_player->GetDurationChanged()(m_player->GetDuration());
-					break;
-				case MF_MEDIA_ENGINE_EVENT_ERROR:
-					HandleError(param1, param2);
-					break;
-				}
-			}
-		});
+//////////////////////////////////////////////////////////////////////////
+//
+//	Media Engine Notify
+//
+//////////////////////////////////////////////////////////////////////////
 
-		return S_OK;
-	}
+HRESULT MediaEngineNotify::EventNotify(_In_ DWORD event, _In_ DWORD_PTR param1, _In_ DWORD param2) {
+  m_backgroundWorker->Append([this, event, param1, param2]() {
+    if (m_player != nullptr) {
+      switch (event) {
+        case MF_MEDIA_ENGINE_EVENT_PLAYING:
+          m_player->m_IsPlaying = true;
+          m_player->m_IsPaused = false;
+          m_player->GetPlaying()(true);
+          break;
+        case MF_MEDIA_ENGINE_EVENT_PAUSE:
+          m_player->m_IsPlaying = false;
+          m_player->m_IsPaused = true;
+          m_player->GetPlaying()(false);
+          break;
+        case MF_MEDIA_ENGINE_EVENT_ENDED:
+          m_player->m_IsPlaying = false;
+          m_player->m_IsPaused = false;
+          m_player->GetPlaying()(false);
+          m_player->GetEnded()();
+          break;
+        case MF_MEDIA_ENGINE_EVENT_TIMEUPDATE:
+          m_player->GetTimeUpdate()(m_player->GetCurrentTime());
+          break;
+        case MF_MEDIA_ENGINE_EVENT_DURATIONCHANGE:
+          m_player->GetDurationChanged()(m_player->GetDuration());
+          break;
+        case MF_MEDIA_ENGINE_EVENT_ERROR:
+          HandleError(param1, param2);
+          break;
+      }
+    }
+  });
 
-	void MediaEngineNotify::SetPlayer(Win8Player* player)
-	{
-		ARC_ASSERT(player != nullptr);
-		m_player = player;
-	}
+  return S_OK;
+}
 
-	void MediaEngineNotify::SetBackgroundWorker(BackgroundWorker* worker)
-	{
-		ARC_ASSERT(worker != nullptr);
-		m_backgroundWorker = worker;
-	}
+void MediaEngineNotify::SetPlayer(Win8Player* player) {
+  ARC_ASSERT(player != nullptr);
+  m_player = player;
+}
 
-	ULONG MediaEngineNotify::AddRef()
-	{
-		m_refCount++;
-		return m_refCount;
-	}
+void MediaEngineNotify::SetBackgroundWorker(BackgroundWorker* worker) {
+  ARC_ASSERT(worker != nullptr);
+  m_backgroundWorker = worker;
+}
 
-	ULONG MediaEngineNotify::Release()
-	{
-		m_refCount--;
-		if (m_refCount <= 0)
-		{
-			// I hate this... but it's how the tutorial says to implement com objects...
-			delete this;
-			return 0;
-		}
-		return m_refCount;
-	}
+ULONG MediaEngineNotify::AddRef() {
+  m_refCount++;
+  return m_refCount;
+}
 
-	HRESULT MediaEngineNotify::QueryInterface(_In_ REFIID riid, _Out_ LPVOID* ppvObj)
-	{
-		// Always set out parameter to NULL, validating it first.
-		if (NULL == ppvObj)
-			return E_INVALIDARG;
-		*ppvObj = NULL;
+ULONG MediaEngineNotify::Release() {
+  m_refCount--;
+  if (m_refCount <= 0) {
+    // I hate this... but it's how the tutorial says to implement com objects...
+    delete this;
+    return 0;
+  }
+  return m_refCount;
+}
 
-		// not sure what the riid is for IMFMediaEngineNotify is so I'm not checking it atm
-		if (riid == IID_IUnknown || riid == IID_IMFMediaEngineNotify)
-		{
-			// Increment the reference count and return the pointer.
-			*ppvObj = (LPVOID)this;
-			AddRef();
-			return NOERROR;
-		}
-		return E_NOINTERFACE;
-	}
+HRESULT MediaEngineNotify::QueryInterface(_In_ REFIID riid, _Out_ LPVOID* ppvObj) {
+  // Always set out parameter to NULL, validating it first.
+  if (NULL == ppvObj) return E_INVALIDARG;
+  *ppvObj = NULL;
 
-	void MediaEngineNotify::HandleError(DWORD_PTR param1, DWORD param2)
-	{
-		switch (param1)
-		{
-		case MF_MEDIA_ENGINE_ERR_DECODE:
-			HandleDecodeError(param2);
-			break;
-		default:
-			ARC_FAIL("Unhandled media error!");
-			break;
-		}
-	}
+  // not sure what the riid is for IMFMediaEngineNotify is so I'm not checking it atm
+  if (riid == IID_IUnknown || riid == IID_IMFMediaEngineNotify) {
+    // Increment the reference count and return the pointer.
+    *ppvObj = (LPVOID) this;
+    AddRef();
+    return NOERROR;
+  }
+  return E_NOINTERFACE;
+}
 
-	void MediaEngineNotify::HandleDecodeError(DWORD param2)
-	{
-		// Note: cannot use switch because HRESULT_FROM_WIN32 is not constant
-		if (param2 == HRESULT_FROM_WIN32(ERROR_OPLOCK_HANDLE_CLOSED))
-		{
-			m_player->ClearSong();
-		}
-		else
-		{
-			ARC_FAIL("Unhandled HResult");
-		}
-	}
+void MediaEngineNotify::HandleError(DWORD_PTR param1, DWORD param2) {
+  switch (param1) {
+    case MF_MEDIA_ENGINE_ERR_DECODE:
+      HandleDecodeError(param2);
+      break;
+    default:
+      ARC_FAIL("Unhandled media error!");
+      break;
+  }
+}
 
+void MediaEngineNotify::HandleDecodeError(DWORD param2) {
+  // Note: cannot use switch because HRESULT_FROM_WIN32 is not constant
+  if (param2 == HRESULT_FROM_WIN32(ERROR_OPLOCK_HANDLE_CLOSED)) {
+    m_player->ClearSong();
+  } else {
+    ARC_FAIL("Unhandled HResult");
+  }
+}
 }
 }

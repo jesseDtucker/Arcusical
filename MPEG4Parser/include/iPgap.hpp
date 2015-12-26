@@ -11,15 +11,16 @@
 
 #include "UnknownBox.hpp"
 
-namespace Arcusical { namespace MPEG4 {
+namespace Arcusical {
+namespace MPEG4 {
 
-	class iPgap : public UnknownBox
-	{
-		public:
-			iPgap() {}
-			virtual ~iPgap() {}
-	};
+class iPgap : public UnknownBox {
+ public:
+  iPgap() {}
+  virtual ~iPgap() {}
+};
 
-} /*namespace: MPEG4*/}/*namespace: Arcusical*/ 
+} /*namespace: MPEG4*/
+} /*namespace: Arcusical*/
 
 #endif

@@ -13,31 +13,29 @@
 
 using namespace std;
 
-namespace Arcusical { namespace MPEG4 {
+namespace Arcusical {
+namespace MPEG4 {
 
-	FreeBox::FreeBox()
-	{
-		//Nothing to do
-	}
+FreeBox::FreeBox() {
+  // Nothing to do
+}
 
-	FreeBox::~FreeBox()
-	{
-		//Naughta
-	}
+FreeBox::~FreeBox() {
+  // Naughta
+}
 
-	void FreeBox::ReadContents(Util::Stream& stream)
-	{
-		//the contents of the box are ignored, just advance the iterator to the
-		//correct location
-		stream.Advance(Util::SafeIntCast<unsigned int>(m_bodySize));
-	}
+void FreeBox::ReadContents(Util::Stream& stream) {
+  // the contents of the box are ignored, just advance the iterator to the
+  // correct location
+  stream.Advance(Util::SafeIntCast<unsigned int>(m_bodySize));
+}
 
-	void FreeBox::PrintBox(ostream& outStream, int depth)
-	{
-		std::string tabs = GetTabs(depth);
+void FreeBox::PrintBox(ostream& outStream, int depth) {
+  std::string tabs = GetTabs(depth);
 
-		outStream << tabs << "Free Box: " << std::endl;
-		outStream << tabs << "\tSize: " << m_bodySize << std::endl;
-	}
+  outStream << tabs << "Free Box: " << std::endl;
+  outStream << tabs << "\tSize: " << m_bodySize << std::endl;
+}
 
-}/*MPEG4*/}/*Arcusical*/
+} /*MPEG4*/
+} /*Arcusical*/

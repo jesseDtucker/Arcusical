@@ -13,18 +13,18 @@
 
 #include "DataBox.hpp"
 
-namespace Arcusical { namespace MPEG4 {
+namespace Arcusical {
+namespace MPEG4 {
 
-	class UnknownBox : public DataBox
-	{
-		public:
+class UnknownBox : public DataBox {
+ public:
+  UnknownBox() {};
+  virtual ~UnknownBox() {};
 
-			UnknownBox() {};
-			virtual ~UnknownBox() {};
+  virtual void PrintBox(std::ostream& outStream, int depth = 0) override;
+};
 
-			virtual void PrintBox(std::ostream& outStream, int depth = 0) override;
-	};
-
-}/*MPEG4*/}/*Arcusical*/
+} /*MPEG4*/
+} /*Arcusical*/
 
 #endif

@@ -12,26 +12,24 @@
 #include "Stbl.hpp"
 #include "MPEG4_Parser.hpp"
 
-namespace Arcusical { namespace MPEG4 {
+namespace Arcusical {
+namespace MPEG4 {
 
-	Stbl::Stbl()
-	{
-		//Nothing to do
-	}
+Stbl::Stbl() {
+  // Nothing to do
+}
 
-	Stbl::~Stbl()
-	{
-		//Nothing to do
-	}
+Stbl::~Stbl() {
+  // Nothing to do
+}
 
-	void Stbl::PrintBox(std::ostream& outStream, int depth)
-	{
-		std::string tabs = GetTabs(depth);
+void Stbl::PrintBox(std::ostream& outStream, int depth) {
+  std::string tabs = GetTabs(depth);
 
-		for(std::shared_ptr<Box> child : m_children)
-		{
-			child->PrintBox(outStream, depth + 1);
-		}
-	}
+  for (std::shared_ptr<Box> child : m_children) {
+    child->PrintBox(outStream, depth + 1);
+  }
+}
 
-} /*namespace: MPEG4*/}/*namespace: Arcusical*/ 
+} /*namespace: MPEG4*/
+} /*namespace: Arcusical*/

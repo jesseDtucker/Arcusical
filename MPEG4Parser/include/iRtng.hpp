@@ -11,15 +11,16 @@
 
 #include "UnknownBox.hpp"
 
-namespace Arcusical { namespace MPEG4 {
+namespace Arcusical {
+namespace MPEG4 {
 
-	class iRtng : public UnknownBox
-	{
-		public:
-			iRtng() {}
-			virtual ~iRtng() {}
-	};
+class iRtng : public UnknownBox {
+ public:
+  iRtng() {}
+  virtual ~iRtng() {}
+};
 
-} /*namespace: MPEG4*/}/*namespace: Arcusical*/ 
+} /*namespace: MPEG4*/
+} /*namespace: Arcusical*/
 
 #endif
