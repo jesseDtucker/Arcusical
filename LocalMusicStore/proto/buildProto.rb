@@ -12,8 +12,12 @@ latestImpl = Time.at(0) if latestImpl == nil
 
 if latestProto >= latestImpl
   puts "Generating Protos..."
+  DEBUG_PROTOC = "../../protobuf/vs/Debug/protoc.exe"
+  RELEASE_PROTOC = "../../protobuf/vs/Release/protoc.exe"
+  protoc = DEBUG_PROTOC if File.exist?(DEBUG_PROTOC)
+  protoc = RELEASE_PROTOC if File.exist?(RELEASE_PROTOC)
   protos.each do |protoPath|
-    `../../bin/protoc/protoc.exe --cpp_out=./impl/ #{protoPath}`
+    `#{protoc} --cpp_out=./impl/ #{protoPath}`
   end
   puts "Proto Generation Complete."
 end

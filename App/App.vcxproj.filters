@@ -93,7 +93,6 @@
     <ClCompile Include="Controls\AlbumListControl.xaml.cpp" />
     <ClCompile Include="Controls\BottomBar.xaml.cpp" />
     <ClCompile Include="Controls\PlayerButtons.xaml.cpp" />
-    <ClCompile Include="Controls\Search.xaml.cpp" />
     <ClCompile Include="Controls\SongListControl.xaml.cpp" />
     <ClCompile Include="Controls\VolumeSilder.xaml.cpp" />
     <ClCompile Include="Pages\MainPage.xaml.cpp" />
@@ -160,7 +159,6 @@
     <ClInclude Include="Controls\AlbumListControl.xaml.h" />
     <ClInclude Include="Controls\BottomBar.xaml.h" />
     <ClInclude Include="Controls\PlayerButtons.xaml.h" />
-    <ClInclude Include="Controls\Search.xaml.h" />
     <ClInclude Include="Controls\SongListControl.xaml.h" />
     <ClInclude Include="Controls\VolumeSilder.xaml.h" />
     <ClInclude Include="Pages\MainPage.xaml.h" />

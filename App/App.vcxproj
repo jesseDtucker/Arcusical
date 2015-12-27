@@ -128,11 +128,11 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <IncludePath>$(SolutionDir)MusicProvider\include;$(SolutionDir)Model\include;$(SolutionDir)Player\include;$(SolutionDir)LocalMusicStore\include;$(SolutionDir)FileSystem\include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)$(Platform)\$(Configuration)\Model;$(SolutionDir)$(Platform)\$(Configuration)\FileSystem;$(SolutionDir)$(Platform)\$(Configuration)\Util;$(SolutionDir)$(Platform)\$(Configuration)\MusicProvider;$(SolutionDir)$(Platform)\$(Configuration)\LocalMusicStore;$(SolutionDir)$(Platform)\$(Configuration)\MPEG4Parser;$(SolutionDir)$(Platform)\$(Configuration)\libprotobuf;$(SolutionDir)$(Platform)\$(Configuration)\Player;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(SolutionDir)$(Platform)\$(Configuration)\Model;$(SolutionDir)$(Platform)\$(Configuration)\FileSystem;$(SolutionDir)$(Platform)\$(Configuration)\Util;$(SolutionDir)$(Platform)\$(Configuration)\MusicProvider;$(SolutionDir)$(Platform)\$(Configuration)\LocalMusicStore;$(SolutionDir)$(Platform)\$(Configuration)\MPEG4Parser;$(SolutionDir)protobuf\vs\Debug\;$(SolutionDir)$(Platform)\$(Configuration)\Player;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <IncludePath>$(SolutionDir)MusicProvider\include;$(SolutionDir)Model\include;$(SolutionDir)Player\include;$(SolutionDir)LocalMusicStore\include;$(SolutionDir)FileSystem\include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)$(Platform)\$(Configuration)\Model;$(SolutionDir)$(Platform)\$(Configuration)\FileSystem;$(SolutionDir)$(Platform)\$(Configuration)\Util;$(SolutionDir)$(Platform)\$(Configuration)\MusicProvider;$(SolutionDir)$(Platform)\$(Configuration)\LocalMusicStore;$(SolutionDir)$(Platform)\$(Configuration)\MPEG4Parser;$(SolutionDir)$(Platform)\$(Configuration)\libprotobuf;$(SolutionDir)$(Platform)\$(Configuration)\Player;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(SolutionDir)$(Platform)\$(Configuration)\Model;$(SolutionDir)$(Platform)\$(Configuration)\FileSystem;$(SolutionDir)$(Platform)\$(Configuration)\Util;$(SolutionDir)$(Platform)\$(Configuration)\MusicProvider;$(SolutionDir)$(Platform)\$(Configuration)\LocalMusicStore;$(SolutionDir)$(Platform)\$(Configuration)\MPEG4Parser;$(SolutionDir)protobuf\vs\Release\;$(SolutionDir)$(Platform)\$(Configuration)\Player;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
     <ClCompile>
@@ -176,7 +176,7 @@
       <DisableSpecificWarnings>4453;28204</DisableSpecificWarnings>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>FileSystem.lib;Util.lib;Model.lib;LocalMusicStore.lib;libprotobuf.lib;MPEG4Parser.lib;MusicProvider.lib;Player.lib;ole32.lib;oleaut32.lib;Mfplat.lib;mfuuid.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>FileSystem.lib;Util.lib;Model.lib;LocalMusicStore.lib;libprotobufd.lib;MPEG4Parser.lib;MusicProvider.lib;Player.lib;ole32.lib;oleaut32.lib;Mfplat.lib;mfuuid.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
