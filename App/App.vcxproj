@@ -210,6 +210,9 @@
     <ClInclude Include="Controls\VolumeSilder.xaml.h">
       <DependentUpon>Controls\VolumeSilder.xaml</DependentUpon>
     </ClInclude>
+    <ClInclude Include="Controls\WhatIsPlaying.xaml.h">
+      <DependentUpon>Controls\WhatIsPlaying.xaml</DependentUpon>
+    </ClInclude>
     <ClInclude Include="Converters\AlternateConverter.hpp" />
     <ClInclude Include="Converters\IsPlayingToIconPath.hpp" />
     <ClInclude Include="Converters\SongListSizeToVisiblity.hpp" />
@@ -217,6 +220,7 @@
     <ClInclude Include="Events\EventService.hpp" />
     <ClInclude Include="Events\SearchSelectedEvent.hpp" />
     <ClInclude Include="Events\SongSelectedEvent.hpp" />
+    <ClInclude Include="Events\WhatIsPlayingSelectedEvent.hpp" />
     <ClInclude Include="Pages\MainPage.xaml.h">
       <DependentUpon>Pages\MainPage.xaml</DependentUpon>
     </ClInclude>
@@ -236,6 +240,7 @@
     <ClInclude Include="ViewModels\SongPlayerVM.hpp" />
     <ClInclude Include="ViewModels\SongVM.hpp" />
     <ClInclude Include="ViewModels\VolumeSilderVM.hpp" />
+    <ClInclude Include="ViewModels\WhatIsPlayingVM.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -250,6 +255,9 @@
     <Page Include="Controls\SearchControl.xaml" />
     <Page Include="Controls\SongListControl.xaml" />
     <Page Include="Controls\VolumeSilder.xaml" />
+    <Page Include="Controls\WhatIsPlaying.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Converters\Converters.xaml" />
     <Page Include="Pages\MainPage.xaml" />
     <Page Include="Styles\ButtonStyles.xaml" />
@@ -287,6 +295,9 @@
     <ClCompile Include="Controls\VolumeSilder.xaml.cpp">
       <DependentUpon>Controls\VolumeSilder.xaml</DependentUpon>
     </ClCompile>
+    <ClCompile Include="Controls\WhatIsPlaying.xaml.cpp">
+      <DependentUpon>Controls\WhatIsPlaying.xaml</DependentUpon>
+    </ClCompile>
     <ClCompile Include="Converters\AlternateConverter.cpp" />
     <ClCompile Include="Converters\IsPlayingToIconPath.cpp" />
     <ClCompile Include="Converters\SongListSizeToVisiblity.cpp" />
@@ -314,6 +325,7 @@
     <ClCompile Include="ViewModels\SongPlayerVM.cpp" />
     <ClCompile Include="ViewModels\SongVM.cpp" />
     <ClCompile Include="ViewModels\VolumeSliderVM.cpp" />
+    <ClCompile Include="ViewModels\WhatIsPlayingVM.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\DefaultAlbumBackgrounds\default_black.png" />
@@ -341,6 +353,7 @@
     <Image Include="Assets\Icons\SearchIcon.png" />
     <Image Include="Assets\Icons\Shuffle.png" />
     <Image Include="Assets\Icons\Volume.png" />
+    <Image Include="Assets\Icons\WhatIsNext.png" />
     <Image Include="Assets\Logo\Logo.scale-100.png">
       <DeploymentContent>true</DeploymentContent>
     </Image>

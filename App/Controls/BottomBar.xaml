@@ -49,12 +49,16 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="auto"/>
                         <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="auto"/>
                     </Grid.ColumnDefinitions>
-                    <Button Style="{StaticResource ClearButtonStyle}" Margin="10" Click="SearchClicked">
+                    <Button Style="{StaticResource ClearButtonStyle}" Margin="1" Click="WhatIsPlayingClicked" Grid.Column="0">
+                        <Image Source="/Assets/Icons/WhatIsNext.png"/>
+                    </Button>
+                    <Button Style="{StaticResource ClearButtonStyle}" Margin="10" Click="SearchClicked" Grid.Column="1">
                         <Image Source="/Assets/Icons/SearchIcon.png"/>
                     </Button>
                     <local:VolumeSilder VerticalAlignment="Stretch" Margin="15,15,25,15"
-                                    DataContext="{Binding VolumeVM}" Grid.Column="1"/>
+                                    DataContext="{Binding VolumeVM}" Grid.Column="2"/>
                 </Grid>
             </Grid>
         </Grid>

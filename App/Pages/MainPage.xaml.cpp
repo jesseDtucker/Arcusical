@@ -15,6 +15,7 @@
 #include "Controls/SongListControl.xaml.h"
 #include "Controls/SearchControl.xaml.h"
 #include "Controls/PlayerButtons.xaml.h"
+#include "Controls/WhatIsPlaying.xaml.h"
 #include "Events/AlbumSelectedEvent.hpp"
 #include "Events/EventService.hpp"
 #include "Playlist.hpp"
@@ -174,6 +175,7 @@ void Arcusical::MainPage::SetDependencies(MusicSearcher* musicSearcher, MusicPro
     m_playerVM = ref new SongPlayerVM(*player, *playlist, *musicProvider, *m_backgroundWorker);
     m_volumeSlideVM = ref new VolumeSliderVM(*player);
     m_guideVM = ref new GuideVM(*playlist, *m_backgroundWorker);
+    m_whatIsPlayingVM = ref new WhatIsPlayingVM(*m_playlist, *m_player, *m_backgroundWorker, *m_musicProvider);
 
     m_playerVM->VolumeVM = m_volumeSlideVM;
     v_albumListControl->VM = m_albumListVM;
@@ -182,6 +184,8 @@ void Arcusical::MainPage::SetDependencies(MusicSearcher* musicSearcher, MusicPro
     v_guide->VM = m_guideVM;
 
     v_searchPane->VM = m_searchVM;
+
+    v_whatIsPlaying->VM = m_whatIsPlayingVM;
 
     auto wnd = Windows::ApplicationModel::Core::CoreApplication::MainView->CoreWindow;
     wnd->KeyDown += ref new TypedEventHandler<CoreWindow ^, KeyEventArgs ^ >(this, &MainPage::KeyPressed);
@@ -275,6 +279,7 @@ void Arcusical::MainPage::OnAlbumsReady(const Model::AlbumCollectionChanges& alb
 void Arcusical::MainPage::KeyPressed(Windows::UI::Core::CoreWindow ^ window, Windows::UI::Core::KeyEventArgs ^ e) {
   if (e->VirtualKey == Windows::System::VirtualKey::Escape) {
     v_searchPane->HideResults();
+    v_whatIsPlaying->Hide();
   } else if (e->VirtualKey == Windows::System::VirtualKey::Space && !v_searchPane->IsActive()) {
     m_backgroundWorker->Append([this]() {
       if (m_player->GetIsPlaying()) {

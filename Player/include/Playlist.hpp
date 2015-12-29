@@ -39,14 +39,16 @@ class Playlist final {
   void Clear();
 
   PROP_GET(std::vector<Model::Song>, SongQueue);
+  PROP_GET(std::vector<Model::Song>, RecentlyPlayed);
   PROP_GET(bool, Shuffle);
+
+  Util::MulticastDelegate<void()> PlaylistChanged;
 
  private:
   bool TryStartPlayback();
 
   void SelectMoreSongs();
 
-  std::vector<Model::Song> m_recentlyPlayed;
   IPlayer* m_player = nullptr;
   MusicProvider::MusicProvider* m_musicProvider = nullptr;
   bool m_wasRecentlyCleared = false;
@@ -56,6 +58,9 @@ class Playlist final {
 
 template <typename T>
 void Playlist::Enqueue(const T& collection, bool startPlayback) {
+  if (std::distance(std::begin(collection), std::end(collection)) == 0) {
+    return;
+  }
   std::lock_guard<std::recursive_mutex> lock(m_syncLock);
   for (auto itr = crbegin(collection); itr != crend(collection); ++itr) {
     m_SongQueue.push_back(*itr);
@@ -64,6 +69,7 @@ void Playlist::Enqueue(const T& collection, bool startPlayback) {
     m_Shuffle = false;
     TryStartPlayback();
   }
+  PlaylistChanged();
 }
 }
 }

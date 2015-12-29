@@ -32,6 +32,7 @@
 #include "ViewModels/SongListVM.hpp"
 #include "ViewModels/SongVM.hpp"
 #include "ViewModels/VolumeSilderVM.hpp"
+#include "ViewModels/WhatIsPlayingVM.hpp"
 
 #include "Converters/IsPlayingToIconPath.hpp"
 #include "Converters/SongListSizeToVisiblity.hpp"

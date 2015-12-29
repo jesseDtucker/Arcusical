@@ -13,13 +13,46 @@
    height="210mm"
    id="svg2991"
    version="1.1"
-   inkscape:version="0.48.4 r9939"
+   inkscape:version="0.48.5 r10040"
    sodipodi:docname="SearchIcon.svg"
    inkscape:export-filename="D:\Development\Github\Arcusical\App\Assets\Icons\SearchIcon.png"
    inkscape:export-xdpi="45.127403"
    inkscape:export-ydpi="45.127403">
   <defs
-     id="defs2993" />
+     id="defs2993">
+    <filter
+       style="color-interpolation-filters:sRGB;"
+       inkscape:label="Drop Shadow"
+       id="filter3009">
+      <feFlood
+         flood-opacity="0.25"
+         flood-color="rgb(0,0,0)"
+         result="flood"
+         id="feFlood3011" />
+      <feComposite
+         in="flood"
+         in2="SourceGraphic"
+         operator="in"
+         result="composite1"
+         id="feComposite3013" />
+      <feGaussianBlur
+         in="composite"
+         stdDeviation="4"
+         result="blur"
+         id="feGaussianBlur3015" />
+      <feOffset
+         dx="12"
+         dy="24"
+         result="offset"
+         id="feOffset3017" />
+      <feComposite
+         in="SourceGraphic"
+         in2="offset"
+         operator="over"
+         result="composite2"
+         id="feComposite3019" />
+    </filter>
+  </defs>
   <sodipodi:namedview
      inkscape:document-units="mm"
      pagecolor="#ffffff"
@@ -27,14 +60,14 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.86831672"
-     inkscape:cx="280.01001"
-     inkscape:cy="425.77376"
+     inkscape:zoom="0.43415836"
+     inkscape:cx="226.24349"
+     inkscape:cy="648.45001"
      inkscape:current-layer="layer1"
      id="namedview2995"
      showgrid="false"
-     inkscape:window-width="1920"
-     inkscape:window-height="1057"
+     inkscape:window-width="1440"
+     inkscape:window-height="937"
      inkscape:window-x="-8"
      inkscape:window-y="-8"
      inkscape:window-maximized="1" />
@@ -46,7 +79,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -57,7 +90,7 @@
     <g
        id="g3772"
        transform="matrix(0.99908869,-0.04268243,0.04268243,0.99908869,37.925948,81.374325)"
-       style="stroke:#ffffff">
+       style="stroke:#ffffff;filter:url(#filter3009)">
       <path
          transform="translate(-24.184724,-96.738895)"
          d="m 580.43336,321.43765 c 0,74.41676 -60.32669,134.74346 -134.74345,134.74346 -74.41675,0 -134.74345,-60.3267 -134.74345,-134.74346 0,-74.41675 60.3267,-134.74345 134.74345,-134.74345 74.41676,0 134.74345,60.3267 134.74345,134.74345 z"

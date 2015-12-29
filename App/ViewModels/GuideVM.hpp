@@ -13,7 +13,8 @@
 namespace Arcusical {
 namespace ViewModel {
 
-[Windows::UI::Xaml::Data::Bindable] public ref class GuideVM sealed : INotifyPropertyChanged_t {
+[Windows::UI::Xaml::Data::Bindable]
+public ref class GuideVM sealed : INotifyPropertyChanged_t {
  public:
   NOTIFY_PROPERTY_CHANGED_IMPL;
 

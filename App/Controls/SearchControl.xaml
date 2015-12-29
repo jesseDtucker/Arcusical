@@ -74,6 +74,7 @@
                 <StackPanel Orientation="Vertical">
                     <local:AlbumListControl DataContext="{Binding Path=AlbumListControlVM}"/>
                     <local:SongListControl DataContext="{Binding Path=SongListControlVM}"/>
+                    <Grid Height="30"/>
                 </StackPanel>
             </ScrollViewer>
         </Grid>

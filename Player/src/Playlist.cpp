@@ -36,11 +36,11 @@ void Playlist::PlayNext() {
     m_SongQueue.pop_back();
     try {
       m_player->Play();
-      m_recentlyPlayed.push_back(nextSong);
+      m_RecentlyPlayed.push_back(nextSong);
 
-      if (m_recentlyPlayed.size() > MAX_HISTORY_SIZE) {
-        auto newEnd = copy_n(begin(m_recentlyPlayed), MAX_HISTORY_SIZE / 2, begin(m_recentlyPlayed));
-        m_recentlyPlayed.resize(distance(begin(m_recentlyPlayed), newEnd));
+      if (m_RecentlyPlayed.size() > MAX_HISTORY_SIZE) {
+        auto newEnd = copy_n(begin(m_RecentlyPlayed), MAX_HISTORY_SIZE / 2, begin(m_RecentlyPlayed));
+        m_RecentlyPlayed.resize(distance(begin(m_RecentlyPlayed), newEnd));
       }
     }
     catch (Util::NoSongFileAvailable&) {
@@ -57,20 +57,21 @@ void Playlist::PlayNext() {
 
 void Playlist::PlayPrevious(double goToStartThreshold /* = 5.0 */) {
   std::lock_guard<std::recursive_mutex> lock(m_syncLock);
-  if (m_player->GetCurrentTime() > goToStartThreshold || m_recentlyPlayed.size() <= 1) {
+  if (m_player->GetCurrentTime() > goToStartThreshold || m_RecentlyPlayed.size() <= 1) {
     // then just go to the start of the song
     m_player->SetCurrentTime(0.0);
   } else {
     // start playing the previous song
-    if (m_recentlyPlayed.size() > 1) {
+    if (m_RecentlyPlayed.size() > 1) {
       // put the current song on the queue and then the song before that
-      auto curSong = m_recentlyPlayed.back();
-      m_recentlyPlayed.pop_back();
-      auto prevSong = m_recentlyPlayed.back();
-      m_recentlyPlayed.pop_back();
+      auto curSong = m_RecentlyPlayed.back();
+      m_RecentlyPlayed.pop_back();
+      auto prevSong = m_RecentlyPlayed.back();
+      m_RecentlyPlayed.pop_back();
 
       m_SongQueue.insert(end(m_SongQueue), {curSong, prevSong});
       PlayNext();
+      PlaylistChanged();
     }
   }
 }
@@ -93,32 +94,35 @@ void Playlist::Enqueue(const Model::Song& song, bool startPlayback) {
     m_Shuffle = false;
     TryStartPlayback();
   }
+  PlaylistChanged();
 }
 
 void Playlist::Clear() {
   std::lock_guard<std::recursive_mutex> lock(m_syncLock);
   m_SongQueue = {};
+  m_RecentlyPlayed = {};
   m_Shuffle = false;
   m_wasRecentlyCleared = true;
   m_player->ClearSong();
+  PlaylistChanged();
 }
 
 void Playlist::SelectMoreSongs() {
   ARC_ASSERT(m_musicProvider != nullptr);
 
   auto songFilter = [this](const Model::Song& song) {
-    return find_if(begin(m_recentlyPlayed), end(m_recentlyPlayed),
-                   [&song](const Model::Song& playedSong) { return playedSong == song; }) == end(m_recentlyPlayed);
+    return find_if(begin(m_RecentlyPlayed), end(m_RecentlyPlayed),
+                   [&song](const Model::Song& playedSong) { return playedSong == song; }) == end(m_RecentlyPlayed);
   };
 
   auto songSelector = m_musicProvider->GetSongSelector();
 
-  if (m_recentlyPlayed.size() == 0) {
+  if (m_RecentlyPlayed.size() == 0) {
     m_Shuffle = true;
   }
 
   if (!m_Shuffle) {
-    auto prevSong = m_recentlyPlayed.back();
+    auto prevSong = m_RecentlyPlayed.back();
     auto albumSongs = songSelector->GetFromSameAlbum(prevSong, songFilter);
     if (albumSongs.size() > 0) {
       Enqueue(albumSongs, false);

@@ -63,6 +63,7 @@ internal:
   ViewModel::SearchVM ^ m_searchVM;
   ViewModel::VolumeSliderVM ^ m_volumeSlideVM;
   ViewModel::SongPlayerVM ^ m_playerVM;
+  ViewModel::WhatIsPlayingVM ^ m_whatIsPlayingVM;
 
   Util::Subscription m_albumSub;
   Util::Subscription m_albumSelectedSub;

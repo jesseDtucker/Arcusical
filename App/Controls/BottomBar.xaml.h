@@ -19,5 +19,6 @@ namespace Arcusical {
  private:
   void AlbumSelected(Platform::Object ^ sender, Windows::UI::Xaml::RoutedEventArgs ^ e);
   void SearchClicked(Platform::Object ^ sender, Windows::UI::Xaml::RoutedEventArgs ^ e);
+  void WhatIsPlayingClicked(Platform::Object ^ sender, Windows::UI::Xaml::RoutedEventArgs ^ e);
 };
 }

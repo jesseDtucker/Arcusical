@@ -107,6 +107,9 @@
     <ClCompile Include="Utility\KeyboardUtil.cpp">
       <Filter>Utility</Filter>
     </ClCompile>
+    <ClCompile Include="ViewModels\WhatIsPlayingVM.cpp">
+      <Filter>ViewModels</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -176,6 +179,12 @@
     <ClInclude Include="Events\SearchSelectedEvent.hpp">
       <Filter>Events</Filter>
     </ClInclude>
+    <ClInclude Include="Events\WhatIsPlayingSelectedEvent.hpp">
+      <Filter>Events</Filter>
+    </ClInclude>
+    <ClInclude Include="ViewModels\WhatIsPlayingVM.hpp">
+      <Filter>ViewModels</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Page Include="Controls\AlbumListControl.xaml">
@@ -218,6 +227,9 @@
       <Filter>Controls</Filter>
     </Page>
     <Page Include="Controls\SearchControl.xaml">
+      <Filter>Controls</Filter>
+    </Page>
+    <Page Include="Controls\WhatIsPlaying.xaml">
       <Filter>Controls</Filter>
     </Page>
   </ItemGroup>
@@ -370,6 +382,9 @@
       <Filter>Assets\Icons</Filter>
     </Image>
     <Image Include="Assets\Icons\Close.png">
+      <Filter>Assets\Icons</Filter>
+    </Image>
+    <Image Include="Assets\Icons\WhatIsNext.png">
       <Filter>Assets\Icons</Filter>
     </Image>
   </ItemGroup>
