@@ -148,6 +148,10 @@ void App::OnNavigationFailed(Platform::Object ^ sender, Windows::UI::Xaml::Navig
 void App::OnFileActivated(Windows::ApplicationModel::Activation::FileActivatedEventArgs ^ args) {
   OnLaunched(nullptr);
   m_backgroundWorker.Append([this, args]() {
+    for (auto file : args->Files) {
+      Storage::RegisterStorageItem(file);
+    }
+
     vector<shared_ptr<FileSystem::IFile> > files;
     transform(begin(args->Files), end(args->Files), back_inserter(files), [](auto storageItem) {
       auto storageFile = dynamic_cast<StorageFile ^ >(storageItem);  // Should be safe for now.

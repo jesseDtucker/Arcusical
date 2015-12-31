@@ -6,6 +6,7 @@
 #include <future>
 #include <ppltasks.h>
 #include <string>
+#include <unordered_map>
 #include <unordered_set>
 
 #include "Arc_Assert.hpp"
@@ -25,6 +26,8 @@ IFolder* Storage::s_musicFolder = nullptr;
 IFolder* Storage::s_applicationFolder = nullptr;
 
 static mutex s_loadingLock;
+static mutex s_lookupLock;
+static unordered_map<wstring, StorageFile^> s_registeredFiles;
 static const unordered_set<wchar_t> ILLEGAL_CHARACTERS = {'?', '<', '>', ':', '*', '|', '^', '/'};
 
 #ifdef __cplusplus_winrt
@@ -57,6 +60,17 @@ IFolder& Storage::MusicFolder() {
   return folder;
 }
 
+shared_ptr<IFile> LookupRegisteredFile(const wstring& filePath) {
+  unique_lock<mutex> lockguard(s_lookupLock);
+  auto registeredFile = s_registeredFiles.find(filePath);
+  if (registeredFile != end(s_registeredFiles)) {
+    return make_shared<File>(registeredFile->second);
+  }
+  else {
+    return nullptr;
+  }
+}
+
 IFolder& Storage::ApplicationFolder() {
   if (s_applicationFolder == nullptr) {
     unique_lock<mutex> lockguard(s_loadingLock);
@@ -78,6 +92,11 @@ shared_ptr<IFile> Storage::LoadFileFromPath(wstring filePath) {
   ARC_ASSERT(filePath.size() > 0);
   ARC_ASSERT_MSG(CheckForIllegalCharacters(filePath), "Path to load contained illegal characters!");
   shared_ptr<IFile> file = nullptr;
+
+  auto registeredFile = LookupRegisteredFile(filePath);
+  if (registeredFile != nullptr) {
+    return registeredFile;
+  }
 
   try {
     if (filePath.find(L"ms-appx") != wstring::npos) {
@@ -115,9 +134,17 @@ void Storage::RemoveIllegalCharacters(wstring& filePath, wchar_t replacementChar
   }
 }
 
+void Storage::RegisterStorageItem(Windows::Storage::IStorageItem^ storageItem) {
+  unique_lock<mutex> lockguard(s_lookupLock);
+  auto path = wstring(storageItem->Path->Data());
+  auto storageFile = dynamic_cast<StorageFile^>(storageItem);
+  ARC_ASSERT_MSG(storageFile != nullptr, "Only supporting file registration for now. Folders not yet supported");
+  s_registeredFiles[path] = storageFile;
+}
+
 bool Storage::IsFile(wstring filePath) {
-  auto result = false;
-  if (filePath.size() > 0) {
+  auto result = (LookupRegisteredFile(filePath) != nullptr);
+  if (!result && filePath.size() > 0) {
     try {
       if (boost::istarts_with(filePath, L"ms-appx:///")) {
         auto path = ref new String(filePath.c_str());

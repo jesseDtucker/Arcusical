@@ -206,7 +206,6 @@ vector<Song> MusicProvider::GetSongsFromFiles(const vector<shared_ptr<FileSystem
   });
 
   if (filesToLoad.size() > 0) {
-    ARC_FAIL("Due to limitations in the filesystem library this is presently impossible.");
     shared_ptr<SongMergeResult> mergedSongs;
     {
       auto allSongs = m_musicCache->GetLocalSongs();

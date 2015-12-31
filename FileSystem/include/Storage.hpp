@@ -31,6 +31,8 @@ class EXPORT Storage final {
   static bool CheckForIllegalCharacters(const std::wstring& filePath);
   static void RemoveIllegalCharacters(std::wstring& filePath, wchar_t replacementCharacter = '_');
 
+  static void RegisterStorageItem(Windows::Storage::IStorageItem^ storageItem);
+
  private:
   static IFolder* s_musicFolder;
   static IFolder* s_applicationFolder;

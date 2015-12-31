@@ -5,13 +5,16 @@
 
 #include "Arc_Assert.hpp"
 #include "AsyncProcessor.hpp"
+#include "IFile.hpp"
 #include "Song.hpp"
+#include "Storage.hpp"
 #include "Win8Player.hpp"
 
 using namespace ATL;
 using namespace Windows::Media;
 using namespace Microsoft::WRL;
 using namespace concurrency;
+using namespace FileSystem;
 using namespace Util;
 
 const std::string Arcusical::Player::IPlayer::ServiceName("Win8Player");
@@ -84,9 +87,8 @@ void Win8Player::PlayNativeSong(Model::SongStream& stream) {
   HRESULT result = S_OK;
 
   if (!m_isCurrentSongSetForPlay) {
-    auto file = create_task(Windows::Storage::StorageFile::GetFileFromPathAsync(
-                                ref new Platform::String(stream.songData.filePath.c_str()))).get();
-    auto nativeStream = create_task(file->OpenReadAsync()).get();
+    auto file = Storage::LoadFileFromPath(stream.songData.filePath);
+    auto nativeStream = create_task(file->GetRawHandle()->OpenReadAsync()).get();
 
     // this is kinda nasty...
     ComPtr<IUnknown> pStreamUnk = reinterpret_cast<IUnknown*>(nativeStream);
