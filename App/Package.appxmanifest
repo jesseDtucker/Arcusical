@@ -25,6 +25,18 @@
         </uap:DefaultTile>
         <uap:SplashScreen Image="Assets\Logo\SplashScreen.png" />
       </uap:VisualElements>
+      <Extensions>
+        <uap:Extension Category="windows.fileTypeAssociation">
+          <uap:FileTypeAssociation Name="music">
+            <uap:DisplayName>Music File</uap:DisplayName>
+            <uap:EditFlags OpenIsSafe="true" />
+            <uap:SupportedFileTypes>
+              <uap:FileType ContentType="audio/aac">.m4a</uap:FileType>
+              <uap:FileType ContentType="audio/mp3">.mp3</uap:FileType>
+            </uap:SupportedFileTypes>
+          </uap:FileTypeAssociation>
+        </uap:Extension>
+      </Extensions>
     </Application>
   </Applications>
   <Capabilities>

@@ -209,5 +209,19 @@ size_t Song::GetNumFiles() const {
 
   return songCount;
 }
+
+const std::vector<SongFile> Song::GetSongFiles() const {
+  auto songFilesWithFormat = this->GetFiles();
+  vector<SongFile> songFiles;
+  songFiles.reserve(songFilesWithFormat.size()); // This can underestimate
+  for (auto& songFileList : songFilesWithFormat) {
+    for (auto& file : songFileList.second) {
+      songFiles.push_back(file);
+    }
+  }
+
+  return songFiles;
+}
+
 }
 }

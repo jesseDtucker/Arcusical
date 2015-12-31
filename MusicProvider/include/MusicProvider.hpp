@@ -43,6 +43,7 @@ class MusicProvider final {
   Util::Subscription SubscribeAlbums(AlbumsChangedCallback callback);
   SongSelector* GetSongSelector();
   boost::optional<Model::Album> GetAlbum(const std::wstring& name);
+  std::vector<Model::Song> GetSongsFromFiles(const std::vector<std::shared_ptr<FileSystem::IFile>>& files);
 
  private:
   void LoadSongs();

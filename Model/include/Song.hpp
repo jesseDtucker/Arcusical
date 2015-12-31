@@ -67,6 +67,7 @@ class Song final {
 
   PROP_GET(std::unordered_set<AudioFormat>, AvailableFormats);
   PROP_GET(std::unordered_map<AudioFormat COMMA std::vector<SongFile>>, Files);
+  const std::vector<SongFile> GetSongFiles() const;
   size_t GetNumFiles() const;
   void AddFile(const SongFile& songFile);
   void RemoveFile(const std::wstring& path);

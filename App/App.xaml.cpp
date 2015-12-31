@@ -13,16 +13,19 @@
 #include <mutex>
 
 #include "AsyncProcessor.hpp"
+#include "../src/File.hpp" // Another temp hack. FileSystem library needs a reimagining.
 #include "Playlist.hpp"
 #include "MusicProvider.hpp"
 #include "../src/Win8Player.hpp"  // This is a hack for the time being. I need something similar to flow engine for resolving dependencies...
 #include "MusicSearcher.hpp"
+#include "Storage.hpp"
 
 using namespace Platform;
 using namespace Windows::ApplicationModel;
 using namespace Windows::ApplicationModel::Activation;
 using namespace Windows::Foundation;
 using namespace Windows::Foundation::Collections;
+using namespace Windows::Storage;
 using namespace Windows::UI::Xaml;
 using namespace Windows::UI::Xaml::Controls;
 using namespace Windows::UI::Xaml::Controls::Primitives;
@@ -37,6 +40,7 @@ using namespace Arcusical;
 using namespace Arcusical::LocalMusicStore;
 using namespace Arcusical::MusicProvider;
 using namespace Arcusical::Player;
+using namespace FileSystem;
 
 /// <summary>
 /// Initializes the singleton application object.  This is the first line of authored code
@@ -73,6 +77,7 @@ void App::OnLaunched(Windows::ApplicationModel::Activation::LaunchActivatedEvent
 #endif
 
   auto rootFrame = dynamic_cast<Frame ^ >(Window::Current->Content);
+  auto args = (e != nullptr) ? e->Arguments : "";
 
   // Do not repeat app initialization when the Window already has content,
   // just ensure that the window is active
@@ -87,16 +92,11 @@ void App::OnLaunched(Windows::ApplicationModel::Activation::LaunchActivatedEvent
     rootFrame->NavigationFailed +=
         ref new Windows::UI::Xaml::Navigation::NavigationFailedEventHandler(this, &App::OnNavigationFailed);
 
-    if (e->PreviousExecutionState == ApplicationExecutionState::Terminated) {
-      // TODO: Restore the saved session state only when appropriate, scheduling the
-      // final launch steps after the restore is complete
-    }
-
     if (rootFrame->Content == nullptr) {
       // When the navigation stack isn't restored navigate to the first page,
       // configuring the new page by passing required information as a navigation
       // parameter
-      rootFrame->Navigate(TypeName(MainPage::typeid), e->Arguments);
+      rootFrame->Navigate(TypeName(MainPage::typeid), args);
     }
 
     MainPage ^ mainPage = dynamic_cast<MainPage ^ >(rootFrame->Content);
@@ -115,7 +115,7 @@ void App::OnLaunched(Windows::ApplicationModel::Activation::LaunchActivatedEvent
       // When the navigation stack isn't restored navigate to the first page,
       // configuring the new page by passing required information as a navigation
       // parameter
-      rootFrame->Navigate(TypeName(MainPage::typeid), e->Arguments);
+      rootFrame->Navigate(TypeName(MainPage::typeid), args);
     }
     // Ensure the current window is active
     Window::Current->Activate();
@@ -143,4 +143,19 @@ void App::OnSuspending(Object ^ sender, SuspendingEventArgs ^ e) {
 /// <param name="e">Details about the navigation failure</param>
 void App::OnNavigationFailed(Platform::Object ^ sender, Windows::UI::Xaml::Navigation::NavigationFailedEventArgs ^ e) {
   throw ref new FailureException("Failed to load Page " + e->SourcePageType.Name);
+}
+
+void App::OnFileActivated(Windows::ApplicationModel::Activation::FileActivatedEventArgs^ args) {
+  OnLaunched(nullptr);
+  m_backgroundWorker.Append([this, args]() {
+    vector<shared_ptr<FileSystem::IFile>> files;
+    transform(begin(args->Files), end(args->Files), back_inserter(files), [](auto storageItem) {
+      auto storageFile = dynamic_cast<StorageFile^>(storageItem); // Should be safe for now.
+      ARC_ASSERT(storageFile != nullptr); // TODO::JT remove this assert and sort out the filesystem library.
+      return make_shared<FileSystem::File>(storageFile);
+    });
+    auto songs = m_musicProvider.GetSongsFromFiles(files);
+    m_playlist->Clear();
+    m_playlist->Enqueue(songs, true);
+  });
 }
