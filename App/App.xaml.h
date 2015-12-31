@@ -24,7 +24,7 @@ namespace Arcusical {
 ref class App sealed {
  protected:
   virtual void OnLaunched(Windows::ApplicationModel::Activation::LaunchActivatedEventArgs ^ e) override;
-  virtual void OnFileActivated(Windows::ApplicationModel::Activation::FileActivatedEventArgs^ args) override;
+  virtual void OnFileActivated(Windows::ApplicationModel::Activation::FileActivatedEventArgs ^ args) override;
 
 internal:
   App();

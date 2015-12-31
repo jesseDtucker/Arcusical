@@ -1,7 +1,7 @@
 #pragma once
 
 namespace Arcusical {
-  namespace Events {
-    class WhatIsPlayingSelectedEvent final {};
-  }
+namespace Events {
+class WhatIsPlayingSelectedEvent final {};
+}
 }

@@ -177,10 +177,7 @@ Subscription MusicProvider::SubscribeAlbums(AlbumsChangedCallback callback) {
 
 vector<Song> MusicProvider::GetSongsFromFiles(const vector<shared_ptr<FileSystem::IFile>>& files) {
   vector<wstring> temp;
-  transform(begin(files), end(files), back_inserter(temp), [](auto file) {
-    return file->GetFullPath();
-  });
-
+  transform(begin(files), end(files), back_inserter(temp), [](auto file) { return file->GetFullPath(); });
 
   vector<Song> requestedSongs;
   // First get the songs we have already loaded.
@@ -190,24 +187,21 @@ vector<Song> MusicProvider::GetSongsFromFiles(const vector<shared_ptr<FileSystem
     copy_if(begin(*allSongs), end(*allSongs), back_inserter(songsRequestedWithID), [&files](const auto& song) {
       auto songFiles = song.second.GetSongFiles();
       return any_of(begin(songFiles), end(songFiles), [&files](const auto& songFile) {
-        return any_of(begin(files), end(files), [&songFile](const auto& file) {
-          return songFile.filePath == file->GetFullPath();
-        });
+        return any_of(begin(files), end(files),
+                      [&songFile](const auto& file) { return songFile.filePath == file->GetFullPath(); });
       });
     });
     requestedSongs.reserve(songsRequestedWithID.size());
-    transform(begin(songsRequestedWithID), end(songsRequestedWithID), back_inserter(requestedSongs), [](auto& songWithID) {
-      return songWithID.second;
-    });
+    transform(begin(songsRequestedWithID), end(songsRequestedWithID), back_inserter(requestedSongs),
+              [](auto& songWithID) { return songWithID.second; });
   }
   // Now figure out what files have not yet been loaded
   std::vector<std::shared_ptr<FileSystem::IFile>> filesToLoad;
   copy_if(begin(files), end(files), back_inserter(filesToLoad), [&requestedSongs](const auto& file) {
     return none_of(begin(requestedSongs), end(requestedSongs), [&file](const auto& song) {
       auto songFiles = song.GetSongFiles();
-      return any_of(begin(songFiles), end(songFiles), [&file](const auto& songFile) {
-        return file->GetFullPath() == songFile.filePath;
-      });
+      return any_of(begin(songFiles), end(songFiles),
+                    [&file](const auto& songFile) { return file->GetFullPath() == songFile.filePath; });
     });
   });
 
@@ -222,7 +216,8 @@ vector<Song> MusicProvider::GetSongsFromFiles(const vector<shared_ptr<FileSystem
     m_musicCache->AddToCache(mergedSongs->modifiedSongs);
     m_musicCache->SaveSongs();
     auto allSongs = m_musicCache->GetLocalSongs();
-    PublishSongs(m_songCallbacks, std::move(allSongs), LoadProgress::DISK_LOAD_IN_PROGRESS, m_songCallbackLock, *mergedSongs);
+    PublishSongs(m_songCallbacks, std::move(allSongs), LoadProgress::DISK_LOAD_IN_PROGRESS, m_songCallbackLock,
+                 *mergedSongs);
 
     requestedSongs.insert(end(requestedSongs), begin(mergedSongs->newSongs), end(mergedSongs->newSongs));
   }

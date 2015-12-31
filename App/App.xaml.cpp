@@ -13,7 +13,7 @@
 #include <mutex>
 
 #include "AsyncProcessor.hpp"
-#include "../src/File.hpp" // Another temp hack. FileSystem library needs a reimagining.
+#include "../src/File.hpp"  // Another temp hack. FileSystem library needs a reimagining.
 #include "Playlist.hpp"
 #include "MusicProvider.hpp"
 #include "../src/Win8Player.hpp"  // This is a hack for the time being. I need something similar to flow engine for resolving dependencies...
@@ -145,13 +145,13 @@ void App::OnNavigationFailed(Platform::Object ^ sender, Windows::UI::Xaml::Navig
   throw ref new FailureException("Failed to load Page " + e->SourcePageType.Name);
 }
 
-void App::OnFileActivated(Windows::ApplicationModel::Activation::FileActivatedEventArgs^ args) {
+void App::OnFileActivated(Windows::ApplicationModel::Activation::FileActivatedEventArgs ^ args) {
   OnLaunched(nullptr);
   m_backgroundWorker.Append([this, args]() {
-    vector<shared_ptr<FileSystem::IFile>> files;
+    vector<shared_ptr<FileSystem::IFile> > files;
     transform(begin(args->Files), end(args->Files), back_inserter(files), [](auto storageItem) {
-      auto storageFile = dynamic_cast<StorageFile^>(storageItem); // Should be safe for now.
-      ARC_ASSERT(storageFile != nullptr); // TODO::JT remove this assert and sort out the filesystem library.
+      auto storageFile = dynamic_cast<StorageFile ^ >(storageItem);  // Should be safe for now.
+      ARC_ASSERT(storageFile != nullptr);  // TODO::JT remove this assert and sort out the filesystem library.
       return make_shared<FileSystem::File>(storageFile);
     });
     auto songs = m_musicProvider.GetSongsFromFiles(files);
