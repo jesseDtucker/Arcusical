@@ -14,20 +14,11 @@ Requires Visual Studio 2015.
 To build Arcusical follow these steps:
 ```
 git clone --recursive https://github.com/jesseDtucker/Arcusical.git
-cd boost
-bootstrap.bat
-b2 headers
-cd ..\protobuf
-mkdir vs
-cd vs
-cmake -G "Visual Studio 14 2015 Win64" -Dprotobuf_BUILD_TESTS=OFF ..\cmake
-cd ..\..\
+setup.bat
 Arcusical.sln
 ```
 
 Now just pick your target and build. Will work for x64 builds, will probably build for x86 but I removed support in the project config as it was causing unneeded overhead. Just be aware that the git clone will take a while because one of the submodules is [Boost](http://www.boost.org/). Also make sure you have a recent version of git. There is a bug in some of the older git versions that causes the submodules to not get pulled correctly.
-
-NOTE: There is a problem in the generated protobuf project files. They need to use the dll version of the runtime but the projects generated use the static version. Until I fix this please change the code generation property on the 'libprotobuf', 'libprotoc', and 'protoc' projects to point to the dll equivelents. Ie. goto project property page -> c/c++ -> code generation -> runtime library and change the dropdown from 'Multithreaded[Debug]' to 'Multithread[Debug] DLL'.
 
 After it has launched it will start automatically searching for music in your music folder. It does take a moment to get going so give it a bit of time. I'm working on improving the time-to-first-album but there is a fair bit of work required to do that. After the library is loaded startup will be fast as all metadata is cached.
 
