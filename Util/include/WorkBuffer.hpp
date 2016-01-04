@@ -53,7 +53,7 @@ class OutputBuffer {
 /* Simple produce-consumer queue                                        */
 /************************************************************************/
 template <typename T>
-class WorkBuffer final : public InputBuffer<T>, public OutputBuffer<T> {
+class WorkBuffer : public InputBuffer<T>, public OutputBuffer<T> {
  public:
   WorkBuffer();
   WorkBuffer(const WorkBuffer& rhs) = delete;

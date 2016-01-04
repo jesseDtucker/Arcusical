@@ -110,6 +110,7 @@
     <ClCompile Include="ViewModels\WhatIsPlayingVM.cpp">
       <Filter>ViewModels</Filter>
     </ClCompile>
+    <ClCompile Include="Controls\WhatIsPlaying.xaml.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -185,6 +186,7 @@
     <ClInclude Include="ViewModels\WhatIsPlayingVM.hpp">
       <Filter>ViewModels</Filter>
     </ClInclude>
+    <ClInclude Include="Controls\WhatIsPlaying.xaml.h" />
   </ItemGroup>
   <ItemGroup>
     <Page Include="Controls\AlbumListControl.xaml">
@@ -385,6 +387,9 @@
       <Filter>Assets\Icons</Filter>
     </Image>
     <Image Include="Assets\Icons\WhatIsNext.png">
+      <Filter>Assets\Icons</Filter>
+    </Image>
+    <Image Include="Assets\Icons\fileIcon.png">
       <Filter>Assets\Icons</Filter>
     </Image>
   </ItemGroup>

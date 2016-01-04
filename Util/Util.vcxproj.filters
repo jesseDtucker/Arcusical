@@ -68,9 +68,6 @@
     <ClInclude Include="include\MulticastDelegate.hpp">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="include\ParallelOrderedProcessor.hpp">
-      <Filter>include</Filter>
-    </ClInclude>
     <ClInclude Include="include\PropertyHelper.hpp">
       <Filter>include</Filter>
     </ClInclude>
@@ -99,6 +96,9 @@
       <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="include\UUIDGenerator.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ParallelProcessor.hpp">
       <Filter>include</Filter>
     </ClInclude>
   </ItemGroup>

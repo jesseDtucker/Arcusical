@@ -62,6 +62,7 @@ AsyncProcessor<Input, Output>::AsyncProcessor(int minBatchSize /*= 20*/, int max
       m_maxBatchSize(maxBatchSize),
       m_timeout(batchTimeout),
       m_isRunning(false),
+      m_isStopping(false),
       m_outputBuffer(nullptr) {
   ARC_ASSERT(minBatchSize <= maxBatchSize);
   ARC_ASSERT(minBatchSize > 0 && maxBatchSize > 0);

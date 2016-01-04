@@ -4,6 +4,8 @@
 #include <sstream>
 #endif
 
+#include "SongLoader.hpp"
+
 #include <algorithm>
 #include <cctype>
 #include <codecvt>
@@ -22,8 +24,8 @@
 #include "IFile.hpp"
 #include "IFolder.hpp"
 #include "MPEG4_Parser.hpp"
+#include "ParallelProcessor.hpp"
 #include "Song.hpp"
-#include "SongLoader.hpp"
 #include "Storage.hpp"
 #include "UUIDGenerator.hpp"
 
@@ -33,6 +35,7 @@ using namespace Arcusical::MusicProvider;
 using namespace boost::uuids;
 using namespace FileSystem;
 using namespace std;
+using namespace Util;
 
 Song LoadSong(const IFile& file);
 
@@ -41,6 +44,7 @@ static Song DefaultSongLoad(const IFile& file, AudioFormat encoding = AudioForma
                             ContainerType container = ContainerType::UNKNOWN);
 static Song LoadMP3(const IFile& file);
 static Song LoadWav(const IFile& file);
+static Song LoadFlac(const IFile& file);
 
 static Util::UUIDGenerator s_idGenerator;
 static const unsigned long long MIN_LENGTH = 5;  // minimum length of a song for it to be considered a song
@@ -50,7 +54,7 @@ static const unordered_map<MPEG4::Encoding, AudioFormat> MPEG4_TO_MODEL_MAPPING 
     {MPEG4::Encoding::UNKNOWN, AudioFormat::UNKNOWN}};
 
 static const unordered_map<wstring, function<Song(const IFile&)>> FILE_EX_TO_LOADER = {
-    {L"m4a", LoadMpeg4Song}, {L"mp3", LoadMP3}, {L"wav", LoadWav}};
+    {L"m4a", LoadMpeg4Song}, {L"mp3", LoadMP3}, {L"wav", LoadWav}, {L"flac", LoadFlac} };
 
 Song LoadSong(const IFile& file) {
   Song result;
@@ -60,7 +64,6 @@ Song LoadSong(const IFile& file) {
 
   auto loadFunc = FILE_EX_TO_LOADER.find(fileExtension);
   if (loadFunc != end(FILE_EX_TO_LOADER)) {
-    OutputDebugString((file.GetFullPath() + L"\n").c_str());
     result = loadFunc->second(file);
   } else {
     result = DefaultSongLoad(file);
@@ -169,6 +172,8 @@ Song LoadMP3(const IFile& file) { return DefaultSongLoad(file, AudioFormat::MP3,
 
 Song LoadWav(const IFile& file) { return DefaultSongLoad(file, AudioFormat::WAV, ContainerType::WAV); }
 
+Song LoadFlac(const IFile& file) { return DefaultSongLoad(file, AudioFormat::FLAC, ContainerType::FLAC); }
+
 vector<IFile*> GetNewFiles(const SongCollection& existingSongs, const vector<shared_ptr<IFile>>& files) {
   unordered_set<wstring> existingSongFiles;
   for (auto& song : existingSongs) {
@@ -195,12 +200,15 @@ vector<IFile*> GetNewFiles(const SongCollection& existingSongs, const vector<sha
 }
 
 vector<Song> LoadSongs(vector<IFile*> files) {
-  vector<Song> results;
-  results.resize(files.size());
+  SYSTEM_INFO sysInfo;
+  GetSystemInfo(&sysInfo);
 
-  transform(begin(files), end(files), begin(results), [](const IFile* file) { return LoadSong(*file); });
+  ParallelProcessor<IFile*, Song> parellelProcessor([](const IFile* file) { return LoadSong(*file); }, sysInfo.dwNumberOfProcessors / 2);
+  parellelProcessor.Append(std::move(files));
+  parellelProcessor.Start();
+  parellelProcessor.Complete();
 
-  return results;
+  return parellelProcessor.ResultsBuffer().GetAll();
 }
 
 struct ExistingSongPair {

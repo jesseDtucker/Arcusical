@@ -228,7 +228,7 @@ vector<Song> MusicProvider::GetSongsFromFiles(const vector<shared_ptr<FileSystem
 SongSelector* MusicProvider::GetSongSelector() { return &m_songSelector; }
 
 void MusicProvider::LoadSongs() {
-  auto songFilesWB = FileSystem::Storage::MusicFolder().FindFilesWithExtensions({L".m4a", L".wav", L".mp3"});
+  auto songFilesWB = FileSystem::Storage::MusicFolder().FindFilesWithExtensions({L".m4a", L".wav", L".mp3", L".flac"});
 
   // and publish what we have in the cache
   {
@@ -259,7 +259,7 @@ void MusicProvider::LoadSongs() {
 
 vector<FileSystem::FilePtr> MusicProvider::ProcessSongFiles(Util::WorkBuffer<FileSystem::FilePtr>& songFilesWB) {
   auto numSongsToLoad = BASE_SONGS_TO_LOAD_AT_ONCE;
-  chrono::milliseconds timeSpentLoading;
+  chrono::milliseconds timeSpentLoading = 0ms;
   size_t numSongsLoaded = 0;
   boost::optional<future<void>> publishFuture = boost::none;
   vector<shared_ptr<FileSystem::IFile>> songFiles;
@@ -270,6 +270,9 @@ vector<FileSystem::FilePtr> MusicProvider::ProcessSongFiles(Util::WorkBuffer<Fil
     // either move ctors or unique_ptr.
     shared_ptr<SongMergeResult> mergedSongs;
     auto nextBatch = songFilesWB.GetAtMost(numSongsToLoad, TIME_TO_SEARCH);
+    if (nextBatch.size() == 0) {
+      continue;
+    }
     auto loadStartTime = chrono::system_clock::now();
 
     {
