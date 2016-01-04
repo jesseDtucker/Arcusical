@@ -4,6 +4,8 @@
 #include <sstream>
 #endif
 
+#include "SongLoader.hpp"
+
 #include <algorithm>
 #include <cctype>
 #include <codecvt>
@@ -22,8 +24,8 @@
 #include "IFile.hpp"
 #include "IFolder.hpp"
 #include "MPEG4_Parser.hpp"
+#include "ParallelProcessor.hpp"
 #include "Song.hpp"
-#include "SongLoader.hpp"
 #include "Storage.hpp"
 #include "UUIDGenerator.hpp"
 
@@ -33,6 +35,7 @@ using namespace Arcusical::MusicProvider;
 using namespace boost::uuids;
 using namespace FileSystem;
 using namespace std;
+using namespace Util;
 
 Song LoadSong(const IFile& file);
 
@@ -61,7 +64,6 @@ Song LoadSong(const IFile& file) {
 
   auto loadFunc = FILE_EX_TO_LOADER.find(fileExtension);
   if (loadFunc != end(FILE_EX_TO_LOADER)) {
-    OutputDebugString((file.GetFullPath() + L"\n").c_str());
     result = loadFunc->second(file);
   } else {
     result = DefaultSongLoad(file);
@@ -198,12 +200,15 @@ vector<IFile*> GetNewFiles(const SongCollection& existingSongs, const vector<sha
 }
 
 vector<Song> LoadSongs(vector<IFile*> files) {
-  vector<Song> results;
-  results.resize(files.size());
+  SYSTEM_INFO sysInfo;
+  GetSystemInfo(&sysInfo);
 
-  transform(begin(files), end(files), begin(results), [](const IFile* file) { return LoadSong(*file); });
+  ParallelProcessor<IFile*, Song> parellelProcessor([](const IFile* file) { return LoadSong(*file); }, sysInfo.dwNumberOfProcessors / 2);
+  parellelProcessor.Append(std::move(files));
+  parellelProcessor.Start();
+  parellelProcessor.Complete();
 
-  return results;
+  return parellelProcessor.ResultsBuffer().GetAll();
 }
 
 struct ExistingSongPair {

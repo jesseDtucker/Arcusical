@@ -259,7 +259,7 @@ void MusicProvider::LoadSongs() {
 
 vector<FileSystem::FilePtr> MusicProvider::ProcessSongFiles(Util::WorkBuffer<FileSystem::FilePtr>& songFilesWB) {
   auto numSongsToLoad = BASE_SONGS_TO_LOAD_AT_ONCE;
-  chrono::milliseconds timeSpentLoading;
+  chrono::milliseconds timeSpentLoading = 0ms;
   size_t numSongsLoaded = 0;
   boost::optional<future<void>> publishFuture = boost::none;
   vector<shared_ptr<FileSystem::IFile>> songFiles;
@@ -269,7 +269,12 @@ vector<FileSystem::FilePtr> MusicProvider::ProcessSongFiles(Util::WorkBuffer<Fil
     // not support generalized lambda capture (C++14). After upgrade to VS 2015 this can be implemented with
     // either move ctors or unique_ptr.
     shared_ptr<SongMergeResult> mergedSongs;
+    auto str = "Loading : " + to_string(numSongsToLoad) + "\n";
+    OutputDebugStringA(str.c_str());
     auto nextBatch = songFilesWB.GetAtMost(numSongsToLoad, TIME_TO_SEARCH);
+    if (nextBatch.size() == 0) {
+      continue;
+    }
     auto loadStartTime = chrono::system_clock::now();
 
     {
@@ -289,6 +294,8 @@ vector<FileSystem::FilePtr> MusicProvider::ProcessSongFiles(Util::WorkBuffer<Fil
 
     if (numSongsLoaded > 0 && timeSpentLoading.count() > 0) {
       auto loadTimePerSong = timeSpentLoading.count() / numSongsLoaded;
+      auto debugOut = "Time per song: " + to_string(loadTimePerSong) + "\n";
+      OutputDebugStringA(debugOut.c_str());
       if (loadTimePerSong > 0) {
         auto lowerRateLimit = (size_t)(numSongsToLoad * (1.0 - MAX_RATE_OF_CHANGE_TO_SONG_LOAD_RATE));
         auto upperRateLimit = (size_t)(numSongsToLoad * (1.0 + MAX_RATE_OF_CHANGE_TO_SONG_LOAD_RATE));

@@ -48,7 +48,7 @@
     <ClInclude Include="include\LockedPtrHelper.hpp" />
     <ClInclude Include="include\LockHelper.hpp" />
     <ClInclude Include="include\MulticastDelegate.hpp" />
-    <ClInclude Include="include\ParallelOrderedProcessor.hpp" />
+    <ClInclude Include="include\ParallelProcessor.hpp" />
     <ClInclude Include="include\PropertyHelper.hpp" />
     <ClInclude Include="include\RawParser.hpp" />
     <ClInclude Include="include\ScopeGuard.hpp" />
