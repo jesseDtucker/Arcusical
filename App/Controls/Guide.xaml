@@ -33,7 +33,8 @@
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            <Image Source="{Binding Path=SelectedAlbum.ImagePath}" HorizontalAlignment="Stretch" Grid.Row="1"/>
+            <Rectangle Fill="LightGray" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Row="1"/>
+            <Image Source="{Binding Path=SelectedAlbum.ImagePath}" HorizontalAlignment="Stretch" Grid.Row="1" MaxHeight="500"/>
             <Grid Background="LightGray"  Grid.Row="2">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="auto"/>
