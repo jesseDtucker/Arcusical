@@ -345,6 +345,7 @@
     <Image Include="Assets\Icons\Clock.png" />
     <Image Include="Assets\Icons\Close.png" />
     <Image Include="Assets\Icons\Details.png" />
+    <Image Include="Assets\Icons\fileIcon.png" />
     <Image Include="Assets\Icons\Forward.png" />
     <Image Include="Assets\Icons\Pause.png" />
     <Image Include="Assets\Icons\Play.png" />

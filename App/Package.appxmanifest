@@ -29,10 +29,11 @@
         <uap:Extension Category="windows.fileTypeAssociation">
           <uap:FileTypeAssociation Name="music">
             <uap:DisplayName>Music File</uap:DisplayName>
-            <uap:EditFlags OpenIsSafe="true" />
+            <uap:Logo>Assets\Icons\fileIcon.png</uap:Logo>
             <uap:SupportedFileTypes>
               <uap:FileType ContentType="audio/aac">.m4a</uap:FileType>
               <uap:FileType ContentType="audio/mp3">.mp3</uap:FileType>
+              <uap:FileType ContentType="audio/flac">.flac</uap:FileType>
             </uap:SupportedFileTypes>
           </uap:FileTypeAssociation>
         </uap:Extension>
