@@ -34,6 +34,7 @@ internal:
  private:
   void OnSuspending(Platform::Object ^ sender, Windows::ApplicationModel::SuspendingEventArgs ^ e);
   void OnNavigationFailed(Platform::Object ^ sender, Windows::UI::Xaml::Navigation::NavigationFailedEventArgs ^ e);
+  void SaveSongsToAppFolder(std::vector<Model::Song>& songs, Windows::ApplicationModel::Activation::FileActivatedEventArgs ^ args);
 
   LocalMusicStore::LocalMusicCache m_cache;
   MusicProvider::MusicProvider m_musicProvider;

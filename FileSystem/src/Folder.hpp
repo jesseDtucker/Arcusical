@@ -31,6 +31,7 @@ class Folder final : public IFolder {
 
 #ifdef __cplusplus_winrt
   Folder(Windows::Storage::StorageFolder ^ folder);
+  virtual Windows::Storage::StorageFolder ^ GetRawHandle() override;
 
  private:
   Windows::Storage::StorageFolder ^ m_folder;

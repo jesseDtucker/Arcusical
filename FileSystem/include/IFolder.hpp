@@ -23,6 +23,10 @@ class EXPORT IFolder {
   virtual std::shared_ptr<Util::WorkBuffer<std::shared_ptr<IFile>>> FindFilesWithExtensions(
       std::vector<std::wstring> extensions) = 0;
 
+#ifdef __cplusplus_winrt
+  virtual Windows::Storage::StorageFolder ^ GetRawHandle() = 0;
+#endif
+
   virtual bool operator==(const IFolder& rhs) const = 0;
   virtual bool operator!=(const IFolder& rhs) const = 0;
 };

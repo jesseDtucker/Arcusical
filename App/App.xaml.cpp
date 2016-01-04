@@ -14,12 +14,14 @@
 
 #include "AsyncProcessor.hpp"
 #include "../src/File.hpp"  // Another temp hack. FileSystem library needs a reimagining.
+#include "../src/Folder.hpp"
 #include "Playlist.hpp"
 #include "MusicProvider.hpp"
 #include "../src/Win8Player.hpp"  // This is a hack for the time being. I need something similar to flow engine for resolving dependencies...
 #include "MusicSearcher.hpp"
 #include "Storage.hpp"
 
+using namespace concurrency;
 using namespace Platform;
 using namespace Windows::ApplicationModel;
 using namespace Windows::ApplicationModel::Activation;
@@ -38,6 +40,7 @@ using namespace Windows::UI::Xaml::Navigation;
 using namespace std;
 using namespace Arcusical;
 using namespace Arcusical::LocalMusicStore;
+using namespace Arcusical::Model;
 using namespace Arcusical::MusicProvider;
 using namespace Arcusical::Player;
 using namespace FileSystem;
@@ -145,7 +148,41 @@ void App::OnNavigationFailed(Platform::Object ^ sender, Windows::UI::Xaml::Navig
   throw ref new FailureException("Failed to load Page " + e->SourcePageType.Name);
 }
 
-void App::OnFileActivated(Windows::ApplicationModel::Activation::FileActivatedEventArgs ^ args) {
+void App::SaveSongsToAppFolder(vector<Song>& songs, FileActivatedEventArgs ^ args) {
+  m_backgroundWorker.Append([songs, args]() {
+    for (auto& song : songs) {
+      auto files = song.GetSongFiles();
+      auto songFile = find_if(begin(args->Files), end(args->Files), [&files](auto file) {
+        auto path = wstring(file->Path->Data());
+        return any_of(begin(files), end(files), [&path](const auto& songFile) {
+          return path == songFile.filePath;
+        });
+      });
+      if (songFile != end(args->Files)) {
+        auto storageFile = dynamic_cast<StorageFile^>(*songFile);
+        if (storageFile != nullptr) {
+          auto newPathPrefix = L"music\\" + song.GetAlbumName() + L"_";
+          Storage::RemoveIllegalCharacters(newPathPrefix);
+          auto newPath = ref new String(newPathPrefix.c_str()) + storageFile->Name;
+          try {
+            create_task(storageFile->CopyAsync(Storage::ApplicationFolder().GetRawHandle(), newPath)).get();
+          }
+          catch (std::exception& ex) {
+            ARC_ASSERT("Unexpected exception");
+          }
+          catch (Platform::COMException ^ ex) {
+            ARC_ASSERT("Unexpected exception");
+          }
+          catch (...) {
+            ARC_ASSERT("Unexpected exception");
+          }
+        }
+      }
+    }
+  });
+}
+
+void App::OnFileActivated(FileActivatedEventArgs ^ args) {
   OnLaunched(nullptr);
   m_backgroundWorker.Append([this, args]() {
     for (auto file : args->Files) {
@@ -161,5 +198,6 @@ void App::OnFileActivated(Windows::ApplicationModel::Activation::FileActivatedEv
     auto songs = m_musicProvider.GetSongsFromFiles(files);
     m_playlist->Clear();
     m_playlist->Enqueue(songs, true);
+    SaveSongsToAppFolder(songs, args);
   });
 }

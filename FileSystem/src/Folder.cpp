@@ -128,6 +128,10 @@ bool Folder::operator==(const IFolder& rhs) const {
 
 bool Folder::operator!=(const IFolder& rhs) const { return !(*this == rhs); }
 
+Windows::Storage::StorageFolder ^ Folder::GetRawHandle() {
+  return m_folder;
+}
+
 shared_ptr<Util::WorkBuffer<shared_ptr<IFile>>> Folder::FindFilesWithExtensions(vector<wstring> extensions) {
   using namespace Platform;
   using namespace Windows::Foundation::Collections;
