@@ -228,7 +228,7 @@ vector<Song> MusicProvider::GetSongsFromFiles(const vector<shared_ptr<FileSystem
 SongSelector* MusicProvider::GetSongSelector() { return &m_songSelector; }
 
 void MusicProvider::LoadSongs() {
-  auto songFilesWB = FileSystem::Storage::MusicFolder().FindFilesWithExtensions({L".m4a", L".wav", L".mp3"});
+  auto songFilesWB = FileSystem::Storage::MusicFolder().FindFilesWithExtensions({L".m4a", L".wav", L".mp3", L".flac"});
 
   // and publish what we have in the cache
   {
