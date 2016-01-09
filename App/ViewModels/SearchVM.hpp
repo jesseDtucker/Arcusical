@@ -1,6 +1,7 @@
 #pragma once
 
 #include "CancellationToken.hpp"
+#include "MusicSearcher.hpp"
 #include "PropertyHelper.hpp"
 #include "Subscription.hpp"
 #include "Utility/XamlMacros.hpp"
@@ -40,6 +41,12 @@ namespace ViewModel {
   Player::Playlist& m_playlist;
   Player::IPlayer& m_player;
   Util::BackgroundWorker& m_worker;
+  Util::BackgroundWorker m_searchWorker;
+  std::mutex m_latestLock;
+  MusicProvider::SearchResult m_latestResults;
+  AlbumList ^ m_latestAlbums;
+  SongListVM ^ m_latestSongs;
+  std::atomic_bool areLatestSelected = false;
 };
 }
 }

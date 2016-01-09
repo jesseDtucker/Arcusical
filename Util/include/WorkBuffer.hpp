@@ -157,10 +157,6 @@ WorkBuffer<T>::~WorkBuffer() {
     Complete();
   }
 
-  ARC_ASSERT_MSG(
-      m_pending == 0,
-      "Warning, there is very likely a lifetime error as a WorkBuffer is being destroyed while something is using it!");
-
   while (m_pending != 0) {
     // just spin, this should never happen but nonetheless we must be safe and detect the error, report it (loudly) and
     // then handle it gracefully

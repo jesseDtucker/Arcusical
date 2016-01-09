@@ -29,8 +29,13 @@ SearchControl::SearchControl() {
   InitializeComponent();
   m_animIn = safe_cast<Storyboard ^>(v_root->Resources->Lookup("slideInAnim"));
   m_animOut = safe_cast<Storyboard ^>(v_root->Resources->Lookup("slideOutAnim"));
-  m_searchSelectedSub =
-      EventService<SearchSelectedEvent>::RegisterListener({[this](const auto unused) { ShowResults(); }});
+  m_searchSelectedSub = EventService<SearchSelectedEvent>::RegisterListener({[this](const auto unused) {
+    if (!m_isShown) {
+      ShowResults();
+    } else {
+      HideResults();
+    }
+  }});
 }
 
 void SearchControl::SetActive() {
