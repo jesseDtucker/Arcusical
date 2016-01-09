@@ -12,8 +12,8 @@
 #ifndef BOX_HPP
 #define BOX_HPP
 
-#include <vector>
 #include <memory>
+#include <vector>
 
 #include "BoxTypes.hpp"
 

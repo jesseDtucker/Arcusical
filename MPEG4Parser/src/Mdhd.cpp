@@ -9,9 +9,9 @@
 
 #include "pch.h"
 
-#include "Mdhd.hpp"
-#include "MPEG4_Parser.hpp"
 #include "InvalidValueException.hpp"
+#include "MPEG4_Parser.hpp"
+#include "Mdhd.hpp"
 
 namespace Arcusical {
 namespace MPEG4 {

@@ -1,12 +1,12 @@
 #pragma once
 #ifndef WORK_BUFFER_HPP
 
-#include "boost/optional.hpp"
 #include <chrono>
 #include <deque>
 #include <functional>
 #include <future>
 #include <iterator>
+#include "boost/optional.hpp"
 
 #include "Arc_Assert.hpp"
 #include "MulticastDelegate.hpp"

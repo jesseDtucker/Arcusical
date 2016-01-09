@@ -21,8 +21,7 @@ ref class SongListVM;
 
   void PlaySongsAfterAndIncluding(SongVM ^ song);
 
-internal:
-  SongListControlVM(Player::Playlist& playlist, Util::BackgroundWorker& worker);
+  internal : SongListControlVM(Player::Playlist& playlist, Util::BackgroundWorker& worker);
 
  private:
   Player::Playlist& m_playlist;

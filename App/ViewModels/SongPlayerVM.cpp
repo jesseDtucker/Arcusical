@@ -36,9 +36,8 @@ SongPlayerVM::SongPlayerVM(IPlayer& player, Playlist& playlist, MusicProvider::M
     }
   };
 
-  m_playingSub = m_player.GetPlaying() += [this](bool isPlaying) {
-    DispatchToUI([this, isPlaying]() { IsPlaying = isPlaying; });
-  };
+  m_playingSub = m_player.GetPlaying() +=
+      [this](bool isPlaying) { DispatchToUI([this, isPlaying]() { IsPlaying = isPlaying; }); };
 
   m_songChangedSub = m_player.GetSongChanged() += [this](const boost::optional<Song>& newSong) {
     Song song = newSong ? *newSong : Song();

@@ -6,8 +6,8 @@
 #pragma once
 
 #include "Controls/SongListControl.g.h"
-#include "ViewModels/SongListControlVM.hpp"
 #include "Utility/XamlMacros.hpp"
+#include "ViewModels/SongListControlVM.hpp"
 
 using namespace Windows::UI::Xaml;
 
@@ -16,7 +16,7 @@ namespace Arcusical {
  public:
   SongListControl();
 
-  VM_DECLARATION(ViewModel::SongListControlVM ^ );
+  VM_DECLARATION(ViewModel::SongListControlVM ^);
 
  private:
   void SongDoubleTapped(Platform::Object ^ sender, Windows::UI::Xaml::Input::DoubleTappedRoutedEventArgs ^ e);

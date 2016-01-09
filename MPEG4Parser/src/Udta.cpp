@@ -11,16 +11,16 @@
 
 #include "pch.h"
 
-#include "Udta.hpp"
 #include "MPEG4_Parser.hpp"
+#include "Udta.hpp"
 
 using namespace std;
 
 namespace Arcusical {
 namespace MPEG4 {
 
-Udta::Udta() {};
-Udta::~Udta() {};
+Udta::Udta(){};
+Udta::~Udta(){};
 
 void Udta::PrintBox(ostream& outStream, int depth) {
   std::string tabs = GetTabs(depth);

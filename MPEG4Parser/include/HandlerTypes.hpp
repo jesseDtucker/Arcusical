@@ -10,21 +10,15 @@
 #ifndef HANDLER_TYPES_HPP
 #define HANDLER_TYPES_HPP
 
-#include <unordered_map>
 #include <string>
+#include <unordered_map>
 
 #include "boost\assign.hpp"
 
 namespace Arcusical {
 namespace MPEG4 {
 
-enum class HandlerType {
-  Video,
-  Audio,
-  Hint,
-  MetaData,
-  Unknown
-};
+enum class HandlerType { Video, Audio, Hint, MetaData, Unknown };
 
 const std::unordered_map<std::string, HandlerType> StringToHandlerType =
     boost::assign::map_list_of<std::string, HandlerType>("vide", HandlerType::Video)("soun", HandlerType::Audio)(

@@ -17,8 +17,8 @@ SearchVM::SearchVM(MusicSearcher& searcher, Playlist& playlist, BackgroundWorker
   this->SongListControlVM = ref new ViewModel::SongListControlVM(playlist, worker);
 
   this->SearchTerm = "";
-  m_onSearchTermChangedSub =
-      this->OnSearchTermChanged += [this](Platform::String ^ newValue) { this->StartSearch(newValue); };
+  m_onSearchTermChangedSub = this->OnSearchTermChanged +=
+      [this](Platform::String ^ newValue) { this->StartSearch(newValue); };
 }
 
 void Arcusical::ViewModel::SearchVM::StartSearch(Platform::String ^ searchTerm) {

@@ -10,8 +10,8 @@
 
 #include "pch.h"
 
-#include "MeanBox.hpp"
 #include "MPEG4_Parser.hpp"
+#include "MeanBox.hpp"
 
 namespace Arcusical {
 namespace MPEG4 {

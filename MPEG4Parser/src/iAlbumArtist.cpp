@@ -8,9 +8,9 @@
 
 #include "pch.h"
 
-#include "iAlbumArtist.hpp"
-#include "MPEG4_Parser.hpp"
 #include "DataBox.hpp"
+#include "MPEG4_Parser.hpp"
+#include "iAlbumArtist.hpp"
 
 using namespace std;
 

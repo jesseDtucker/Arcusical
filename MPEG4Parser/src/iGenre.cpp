@@ -11,9 +11,9 @@
 
 #include <codecvt>
 
-#include "iGenre.hpp"
 #include "DataBox.hpp"
 #include "MPEG4_Parser.hpp"
+#include "iGenre.hpp"
 
 using namespace std;
 

@@ -4,9 +4,9 @@
 #include <string>
 #include <vector>
 
+#include "IFolder.hpp"
 #include "Util.hpp"
 #include "WorkBuffer.hpp"
-#include "IFolder.hpp"
 
 namespace FileSystem {
 class Storage;

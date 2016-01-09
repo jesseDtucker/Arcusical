@@ -2,9 +2,9 @@
 #ifndef LOCKED_PTR_HELPER_HPP
 #define LOCKED_PTR_HELPER_HPP
 
+#include <windows.h>
 #include <functional>
 #include <memory>
-#include <windows.h>
 
 #include "LockHelper.hpp"
 

@@ -10,12 +10,12 @@
 #include <vector>
 
 #include "Arc_Assert.hpp"
-#include "boost\type_traits\make_unsigned.hpp"
 #include "CheckedCasts.hpp"
 #include "IFile.hpp"
 #include "IFileReader.hpp"
 #include "Stream.hpp"
 #include "Util.hpp"
+#include "boost\type_traits\make_unsigned.hpp"
 
 #undef min
 #undef max

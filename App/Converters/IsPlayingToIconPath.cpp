@@ -10,7 +10,7 @@ Platform::String ^ IsPlayingToIconPath::PLAY_ICON = "/Assets/Icons/Play.png";
 Platform::Object ^ IsPlayingToIconPath::Convert(Platform::Object ^ value,
                                                 Windows::UI::Xaml::Interop::TypeName targetType,
                                                 Platform::Object ^ parameter, Platform::String ^ language) {
-  auto isPlaying = dynamic_cast<Platform::Box<bool> ^ >(value);
+  auto isPlaying = dynamic_cast<Platform::Box<bool> ^>(value);
   if (isPlaying != nullptr) {
     return isPlaying ? PAUSE_ICON : PLAY_ICON;
   } else {

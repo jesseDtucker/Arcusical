@@ -35,7 +35,7 @@ Windows::Storage::Streams::IBuffer ^ NativeBufferWrapper::WrapBuffer(std::vector
   ComPtr<NativeBufferWrapper> nativeBuffer;
   MakeAndInitialize<NativeBufferWrapper>(&nativeBuffer, wrappedBuffer);
   auto iinspectable = (IInspectable*)reinterpret_cast<IInspectable*>(nativeBuffer.Get());
-  Windows::Storage::Streams::IBuffer ^ buffer = reinterpret_cast<Windows::Storage::Streams::IBuffer ^ >(iinspectable);
+  Windows::Storage::Streams::IBuffer ^ buffer = reinterpret_cast<Windows::Storage::Streams::IBuffer ^>(iinspectable);
   return buffer;
 }
 }

@@ -19,8 +19,7 @@ class ScopeGuard {
 };
 
 template <typename CallbackType>
-ScopeGuard<CallbackType>::ScopeGuard(CallbackType callback)
-    : m_cleanupCall(callback) {}
+ScopeGuard<CallbackType>::ScopeGuard(CallbackType callback) : m_cleanupCall(callback) {}
 
 template <typename CallbackType>
 ScopeGuard<CallbackType>::~ScopeGuard() {

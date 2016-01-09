@@ -37,8 +37,7 @@ class TransformProcessor final : public InputBuffer<Input> {
 };
 
 template <typename Input, typename Output>
-Util::TransformProcessor<Input, Output>::TransformProcessor(ProcessSingle operation)
-    : m_singleOperation(operation) {}
+Util::TransformProcessor<Input, Output>::TransformProcessor(ProcessSingle operation) : m_singleOperation(operation) {}
 
 template <typename Input, typename Output>
 void Util::TransformProcessor<Input, Output>::SetBatchProcessor(ProcessBatch operation) {

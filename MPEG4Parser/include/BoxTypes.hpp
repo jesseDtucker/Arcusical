@@ -10,8 +10,8 @@
 #ifndef BOX_TYPES_H
 #define BOX_TYPES_H
 
-#include <unordered_map>
 #include <string>
+#include <unordered_map>
 
 #include "boost\assign.hpp"
 

@@ -18,8 +18,8 @@ namespace MPEG4 {
 
 class UnknownBox : public DataBox {
  public:
-  UnknownBox() {};
-  virtual ~UnknownBox() {};
+  UnknownBox(){};
+  virtual ~UnknownBox(){};
 
   virtual void PrintBox(std::ostream& outStream, int depth = 0) override;
 };

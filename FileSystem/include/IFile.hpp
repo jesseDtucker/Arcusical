@@ -1,8 +1,8 @@
 #ifndef IFILE_HPP
 #define IFILE_HPP
 
-#include <string>
 #include <memory>
+#include <string>
 #include <vector>
 
 #include "Export.hpp"

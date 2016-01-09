@@ -40,7 +40,7 @@ void GuideVM::Shuffle() {
   if (m_selectedAlbum != nullptr) {
     m_worker.Append([this]() {
       auto albumSongs = *m_selectedAlbum->GetModel()->GetSongs();
-      std::shuffle(begin(albumSongs), end(albumSongs), std::mt19937(std::random_device {}()));
+      std::shuffle(begin(albumSongs), end(albumSongs), std::mt19937(std::random_device{}()));
       m_playlist.Clear();
       m_playlist.Enqueue(albumSongs);
     });

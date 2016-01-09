@@ -19,7 +19,7 @@ namespace MPEG4 {
 class iReleaseDate : public Box {
  public:
   iReleaseDate() {}
-  virtual ~iReleaseDate() {};
+  virtual ~iReleaseDate(){};
 
   virtual void PrintBox(std::ostream& outStream, int depth = 0) override;
 

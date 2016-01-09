@@ -4,14 +4,14 @@
 #define MUSIC_PROVIDER_HPP
 
 #include <atomic>
-#include "boost/optional.hpp"
-#include "boost/uuid/uuid.hpp"
 #include <condition_variable>
 #include <memory>
 #include <mutex>
 #include <set>
 #include <unordered_map>
 #include <vector>
+#include "boost/optional.hpp"
+#include "boost/uuid/uuid.hpp"
 
 #include "AlbumArtLoader.hpp"
 #include "MusicTypes.hpp"

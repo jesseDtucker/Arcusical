@@ -28,8 +28,7 @@ class FilterProcessor final : public InputBuffer<T> {
 };
 
 template <typename T>
-Util::FilterProcessor<T>::FilterProcessor(std::function<bool(const T)> pred)
-    : m_pred(pred) {}
+Util::FilterProcessor<T>::FilterProcessor(std::function<bool(const T)> pred) : m_pred(pred) {}
 
 template <typename T>
 void Util::FilterProcessor<T>::Reset() {

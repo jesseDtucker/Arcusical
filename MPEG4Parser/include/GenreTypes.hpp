@@ -9,8 +9,8 @@
 #ifndef GENRE_TYPES_HPP
 #define GENRE_TYPES_HPP
 
-#include <string>
 #include <stdint.h>
+#include <string>
 #include <unordered_map>
 
 #include "boost\assign.hpp"

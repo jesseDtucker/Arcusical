@@ -3,11 +3,11 @@
 #define ALBUM_ART_LOADER_HPP
 
 #include <atomic>
-#include "boost/functional/hash.hpp"
-#include "boost/uuid/uuid.hpp"
 #include <future>
 #include <string>
 #include <utility>
+#include "boost/functional/hash.hpp"
+#include "boost/uuid/uuid.hpp"
 
 #include "AsyncProcessor.hpp"
 #include "FilterProcessor.hpp"

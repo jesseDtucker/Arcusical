@@ -3,12 +3,12 @@
 #ifndef SONG_HPP
 #define SONG_HPP
 
-#include "boost\optional.hpp"
 #include <memory>
 #include <set>
 #include <string>
 #include <unordered_map>
 #include <unordered_set>
+#include "boost\optional.hpp"
 #include "boost\uuid\uuid.hpp"
 
 #include "Stream.hpp"
@@ -20,22 +20,9 @@ class IFile;
 
 namespace Arcusical {
 namespace Model {
-enum class AudioFormat {
-  AAC,
-  ALAC,
-  FLAC,
-  MP3,
-  WAV,
-  UNKNOWN
-};
+enum class AudioFormat { AAC, ALAC, FLAC, MP3, WAV, UNKNOWN };
 
-enum class ContainerType {
-  MP4,
-  MP3,
-  FLAC,
-  WAV,
-  UNKNOWN
-};
+enum class ContainerType { MP4, MP3, FLAC, WAV, UNKNOWN };
 
 struct SongFile {
   unsigned int bitRate = 0;

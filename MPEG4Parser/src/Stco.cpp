@@ -14,9 +14,9 @@
 
 #include "pch.h"
 
-#include "Stco.hpp"
-#include "MPEG4_Parser.hpp"
 #include "InvalidValueException.hpp"
+#include "MPEG4_Parser.hpp"
+#include "Stco.hpp"
 
 namespace Arcusical {
 namespace MPEG4 {

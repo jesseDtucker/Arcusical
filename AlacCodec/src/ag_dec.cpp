@@ -27,14 +27,14 @@
 */
 
 #include "aglib.h"
-#include "ALACBitUtilities.h"
 #include "ALACAudioTypes.h"
+#include "ALACBitUtilities.h"
 
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#if __GNUC__ &&TARGET_OS_MAC
+#if __GNUC__ && TARGET_OS_MAC
 #if __POWERPC__
 #include <ppc_intrinsics.h>
 #else

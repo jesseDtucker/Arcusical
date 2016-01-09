@@ -36,7 +36,8 @@ constModifier dataType& Get##externalName() constModifier \
 
 #define PROP_SET_AND_GET_EX(dataType, externalName, internalName, constModifier) \
   \
-PROP_GET_EX(dataType, externalName, internalName, constModifier) \
+PROP_GET_EX(dataType, externalName, internalName, constModifier)                 \
+  \
 void Set##externalName(dataType value) \
 {                                      \
     if (internalName != value) {                                                 \
@@ -63,7 +64,8 @@ dataType m_##externalName;                                                      
   \
 internal:                                                                                          \
   \
-Util::MulticastDelegate<void(dataType&)> On##externalName##Changed;                                \
+Util::MulticastDelegate<void(dataType&)>                                                           \
+      On##externalName##Changed;                                                                   \
   \
 public:                                                                                            \
   \

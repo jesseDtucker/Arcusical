@@ -31,8 +31,8 @@ VM_IMPL(WhatIsPlayingVM ^, WhatIsPlaying);
 WhatIsPlaying::WhatIsPlaying() : m_isShown(false) {
   InitializeComponent();
 
-  m_animIn = safe_cast<Storyboard ^ >(v_root->Resources->Lookup("slideInAnim"));
-  m_animOut = safe_cast<Storyboard ^ >(v_root->Resources->Lookup("slideOutAnim"));
+  m_animIn = safe_cast<Storyboard ^>(v_root->Resources->Lookup("slideInAnim"));
+  m_animOut = safe_cast<Storyboard ^>(v_root->Resources->Lookup("slideOutAnim"));
 
   m_whatIsPlayingSelectedEventSub = EventService<WhatIsPlayingSelectedEvent>::RegisterListener({[this](auto unused) {
     if (m_isShown) {

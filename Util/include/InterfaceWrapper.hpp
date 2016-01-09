@@ -59,7 +59,8 @@ namespace Util {
 // Wraps any provided method and a pointer to its implementation
 #define METHOD_WRAPPER(Name)                                            \
   \
-template<typename ReturnType, typename... Params> \
+template<typename ReturnType, typename... Params>                       \
+      \
 class t_##Name \
 {                                                     \
   \
@@ -84,7 +85,8 @@ private:                                                                \
 // using both can cause problems
 #define OPERATOR_WRAPPER(OperatorName, OperatorType)                                      \
   \
-template<typename ReturnType, typename... Params> \
+template<typename ReturnType, typename... Params>                                         \
+      \
 class t_##OperatorName \
 {                                                               \
   \
@@ -115,12 +117,11 @@ class PostAndPreIncrementOperator {
       auto sharedPtr = pimpl.lock();
       ARC_ASSERT_MSG(sharedPtr != nullptr, NULL_PTR_WARNING);
       return ++(*pimpl);
-    } m_postImplCall =
-        [pimpl]() {
-          auto sharePtr = pimpl.lock();
-          ARC_ASSERT_MSG(sharePtr != nullptr, NULL_PTR_WARNING);
-          return (*pimpl)++;
-        }
+    } m_postImplCall = [pimpl]() {
+      auto sharePtr = pimpl.lock();
+      ARC_ASSERT_MSG(sharePtr != nullptr, NULL_PTR_WARNING);
+      return (*pimpl)++;
+    }
   }
 
   ReturnType operator++() { return m_preImplCall(); }
@@ -141,12 +142,11 @@ class PostAndPreDecrementOperator {
       auto sharedPtr = pimpl.lock();
       ARC_ASSERT_MSG(sharedPtr != nullptr, NULL_PTR_WARNING);
       return --(*pimpl);
-    } m_postImplCall =
-        [pimpl]() {
-          auto sharePtr = pimpl.lock();
-          ARC_ASSERT_MSG(sharePtr != nullptr, NULL_PTR_WARNING);
-          return (*pimpl)--;
-        }
+    } m_postImplCall = [pimpl]() {
+      auto sharePtr = pimpl.lock();
+      ARC_ASSERT_MSG(sharePtr != nullptr, NULL_PTR_WARNING);
+      return (*pimpl)--;
+    }
   }
 
   ReturnType operator--() { return m_preImplCall(); }
@@ -160,21 +160,24 @@ class PostAndPreDecrementOperator {
 
 #define DefineMethod(Name, ReturnValue, ...) \
   \
-METHOD_WRAPPER(Name) \
-typedef t_##Name<ReturnValue, __VA_ARGS__> Name
+METHOD_WRAPPER(Name)                         \
+  \
+typedef t_##Name<ReturnValue, __VA_ARGS__>   \
+      Name
 
 // Note: This does not correctly handle overload such as pre and post increment!
 #define DefineOperator(OperatorName, OperatorType, ReturnValue, ...) \
   \
-OPERATOR_WRAPPER(OperatorName, OperatorType) \
-typedef t_##OperatorName<ReturnValue, __VA_ARGS__> OperatorName
+OPERATOR_WRAPPER(OperatorName, OperatorType)                         \
+  \
+typedef t_##OperatorName<ReturnValue, __VA_ARGS__>                   \
+      OperatorName
 
 template <typename... MethodWrappers>
 class InterfaceWrapper : public MethodWrappers... {
  public:
   template <typename Pimpl>
-  InterfaceWrapper(Pimpl pimpl)
-      : MethodWrappers(pimpl)... {}
+  InterfaceWrapper(Pimpl pimpl) : MethodWrappers(pimpl)... {}
 
  private:
 };

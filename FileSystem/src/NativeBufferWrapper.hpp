@@ -9,10 +9,10 @@
 #ifndef NATIVE_BUFFER_HPP
 #define NATIVE_BUFFER_HPP
 
+#include <robuffer.h>
+#include <windows.storage.streams.h>
 #include <wrl.h>
 #include <wrl/implements.h>
-#include <windows.storage.streams.h>
-#include <robuffer.h>
 #include <vector>
 
 namespace FileSystem {
@@ -20,7 +20,6 @@ namespace FileSystem {
 class NativeBufferWrapper : public Microsoft::WRL::RuntimeClass<
                                 Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
                                 ABI::Windows::Storage::Streams::IBuffer, Windows::Storage::Streams::IBufferByteAccess> {
-
  public:
   virtual ~NativeBufferWrapper();
 

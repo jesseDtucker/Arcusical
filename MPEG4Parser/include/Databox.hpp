@@ -9,8 +9,8 @@
 #ifndef DATA_BOX_HPP
 #define DATA_BOX_HPP
 
-#include <vector>
 #include <memory>
+#include <vector>
 
 #include "Box.hpp"
 

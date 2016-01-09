@@ -27,15 +27,15 @@
 */
 
 #include "aglib.h"
+#include "ALACAudioTypes.h"
 #include "ALACBitUtilities.h"
 #include "EndianPortable.h"
-#include "ALACAudioTypes.h"
 
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#if __GNUC__ &&TARGET_OS_MAC
+#if __GNUC__ && TARGET_OS_MAC
 #if __POWERPC__
 #include <ppc_intrinsics.h>
 #else
@@ -165,8 +165,8 @@ static inline int32_t dyn_code_32bit(int32_t maxbits, uint32_t m, uint32_t k, ui
   return didOverflow;
 }
 
-static inline void ALWAYS_INLINE
-dyn_jam_noDeref(unsigned char *out, uint32_t bitPos, uint32_t numBits, uint32_t value) {
+static inline void ALWAYS_INLINE dyn_jam_noDeref(unsigned char *out, uint32_t bitPos, uint32_t numBits,
+                                                 uint32_t value) {
   uint32_t *i = (uint32_t *)(out + (bitPos >> 3));
   uint32_t mask;
   uint32_t curr;
@@ -188,8 +188,8 @@ dyn_jam_noDeref(unsigned char *out, uint32_t bitPos, uint32_t numBits, uint32_t 
   *i = Swap32BtoN(value);
 }
 
-static inline void ALWAYS_INLINE
-dyn_jam_noDeref_large(unsigned char *out, uint32_t bitPos, uint32_t numBits, uint32_t value) {
+static inline void ALWAYS_INLINE dyn_jam_noDeref_large(unsigned char *out, uint32_t bitPos, uint32_t numBits,
+                                                       uint32_t value) {
   uint32_t *i = (uint32_t *)(out + (bitPos >> 3));
   uint32_t w;
   uint32_t curr;

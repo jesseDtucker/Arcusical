@@ -20,7 +20,7 @@ namespace MPEG4 {
 class Pinf : public UnknownBox {
  public:
   Pinf() {}
-  virtual ~Pinf() {};
+  virtual ~Pinf(){};
 };
 
 } /*namespace: MPEG4*/

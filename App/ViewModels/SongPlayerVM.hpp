@@ -43,9 +43,8 @@ namespace ViewModel {
 
   void ChangeTimeTo(double newTime);
 
-internal:
-  SongPlayerVM(Player::IPlayer& player, Player::Playlist& playlist, MusicProvider::MusicProvider& provider,
-               Util::BackgroundWorker& worker);
+  internal : SongPlayerVM(Player::IPlayer& player, Player::Playlist& playlist, MusicProvider::MusicProvider& provider,
+                          Util::BackgroundWorker& worker);
 
  private:
   void UpdateTime(double amountPlayed, double duration);

@@ -33,10 +33,9 @@ void WhatIsPlayingVM::OnPlaylistChanged() {
   allSongs.insert(end(allSongs), begin(recentlyPlayed), end(recentlyPlayed));
   allSongs.insert(end(allSongs), rbegin(upNext), rend(upNext));
 
-  DispatchToUI([
-    this,
-    allSongs = move(allSongs)
-  ]() { this->SongListControlVM->SongList = ref new SongListVM(allSongs, m_playlist, m_player, m_worker); });
+  DispatchToUI([ this, allSongs = move(allSongs) ]() {
+    this->SongListControlVM->SongList = ref new SongListVM(allSongs, m_playlist, m_player, m_worker);
+  });
 }
 
 void WhatIsPlayingVM::OnSongChanged(const boost::optional<Model::Song>& song) {

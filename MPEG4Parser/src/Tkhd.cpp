@@ -9,9 +9,9 @@
 
 #include "pch.h"
 
-#include "Tkhd.hpp"
-#include "MPEG4_Parser.hpp"
 #include "InvalidValueException.hpp"
+#include "MPEG4_Parser.hpp"
+#include "Tkhd.hpp"
 
 using namespace std;
 

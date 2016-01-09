@@ -10,8 +10,8 @@
 
 #include "pch.h"
 
-#include "Trak.hpp"
 #include "MPEG4_Parser.hpp"
+#include "Trak.hpp"
 
 namespace Arcusical {
 namespace MPEG4 {

@@ -186,15 +186,15 @@ vector<AlbumArtLoader::IdPathPair> AlbumArtLoader::EmbededAlbumLoad(const vector
 
   transform(begin(songPathsForAlbums), end(songPathsForAlbums), back_inserter(albumsWithArt),
             [&albumNameLookup](const tuple<AlbumArtLoader::AlbumId, vector<tuple<wstring, ContainerType>>>& songPaths) {
-    auto id = std::get<0>(songPaths);
-    auto nameItr = albumNameLookup.find(id);
-    if (nameItr != end(albumNameLookup)) {
-      auto path = LoadAlbumImage(std::get<1>(songPaths), nameItr->second);
-      return make_pair(id, path);
-    } else {
-      return make_pair(id, wstring());
-    }
-  });
+              auto id = std::get<0>(songPaths);
+              auto nameItr = albumNameLookup.find(id);
+              if (nameItr != end(albumNameLookup)) {
+                auto path = LoadAlbumImage(std::get<1>(songPaths), nameItr->second);
+                return make_pair(id, path);
+              } else {
+                return make_pair(id, wstring());
+              }
+            });
 
   return albumsWithArt;
 }
@@ -270,12 +270,12 @@ std::vector<AlbumArtLoader::IdPathPair> AlbumArtLoader::DelayedAlbumLoad(
   transform(begin(songPathsForAlbums), end(songPathsForAlbums), back_inserter(artPaths),
             [this, &albumNameLookup](
                 const tuple<AlbumArtLoader::AlbumId, vector<tuple<wstring, ContainerType>>>& songPathsForAlbum) {
-    auto id = std::get<0>(songPathsForAlbum);
-    auto albumSongInfo = std::get<1>(songPathsForAlbum);
-    auto albumName = albumNameLookup.at(id);
-    auto imagePath = FindArt(albumName, albumSongInfo, m_imagePaths);
-    return make_pair(id, imagePath);
-  });
+              auto id = std::get<0>(songPathsForAlbum);
+              auto albumSongInfo = std::get<1>(songPathsForAlbum);
+              auto albumName = albumNameLookup.at(id);
+              auto imagePath = FindArt(albumName, albumSongInfo, m_imagePaths);
+              return make_pair(id, imagePath);
+            });
 
   // now make sure to add in the ones that were loaded from embedded
   artPaths.reserve(artPaths.size() + foundArt.size());
@@ -324,22 +324,22 @@ vector<tuple<AlbumArtLoader::AlbumId, vector<tuple<wstring, ContainerType>>>> Ge
   songPathsForAlbums.reserve(albumInfo.size());
   transform(begin(albumInfo), end(albumInfo), back_inserter(songPathsForAlbums),
             [&songs](const tuple<AlbumArtLoader::AlbumId, vector<SongId>>& info) {
-    auto& ids = std::get<1>(info);
-    vector<tuple<wstring, ContainerType>> paths;
-    paths.reserve(ids.size());
-    for (auto& id : ids) {
-      std::wstring songPath = L"";
-      const auto& songItr = songs.find(id);
-      // we have to check if the song still exists. It's possible it was deleted while we were doing
-      // other work.
-      if (songItr != end(songs)) {
-        auto songPaths = GetFilePaths(songItr->second);
-        std::move(begin(songPaths), end(songPaths), back_inserter(paths));
-      }
-    }
+              auto& ids = std::get<1>(info);
+              vector<tuple<wstring, ContainerType>> paths;
+              paths.reserve(ids.size());
+              for (auto& id : ids) {
+                std::wstring songPath = L"";
+                const auto& songItr = songs.find(id);
+                // we have to check if the song still exists. It's possible it was deleted while we were doing
+                // other work.
+                if (songItr != end(songs)) {
+                  auto songPaths = GetFilePaths(songItr->second);
+                  std::move(begin(songPaths), end(songPaths), back_inserter(paths));
+                }
+              }
 
-    return make_tuple(std::get<0>(info), paths);
-  });
+              return make_tuple(std::get<0>(info), paths);
+            });
 
   return songPathsForAlbums;
 }
@@ -426,9 +426,9 @@ wstring FindArt(const wstring& albumName, const vector<tuple<wstring, ContainerT
 
   transform(begin(albumSongInfo), end(albumSongInfo), back_inserter(songPaths),
             [](const tuple<wstring, ContainerType>& info) {
-    auto fullPath = std::get<0>(info);
-    return GetOnlyPathToFile(fullPath);
-  });
+              auto fullPath = std::get<0>(info);
+              return GetOnlyPathToFile(fullPath);
+            });
 
   // now we only really care about searching for the unique folders, no point doing the work twice.
   // However, because of the voting mechanism the number of songs in each location must be maintained
@@ -446,9 +446,9 @@ wstring FindArt(const wstring& albumName, const vector<tuple<wstring, ContainerT
   selections.reserve(uniqueSongPaths.size());
   transform(begin(uniqueSongPaths), end(uniqueSongPaths), back_inserter(selections),
             [&imagePaths, &albumName](const wstring& songPath) {
-    auto imagePath = FindArt(imagePaths, songPath, albumName);
-    return make_pair(songPath, imagePath);
-  });
+              auto imagePath = FindArt(imagePaths, songPath, albumName);
+              return make_pair(songPath, imagePath);
+            });
 
   auto imgPath = VoteOnResult(selections, pathWeights);
   return SaveImageFile(imgPath);
@@ -461,10 +461,10 @@ wstring VoteOnResult(const vector<pair<wstring, wstring>>& selections,
   votes.reserve(selections.size());
   transform(begin(selections), end(selections), back_inserter(votes),
             [&pathWeights](const pair<wstring, wstring>& selection) {
-    ARC_ASSERT(end(pathWeights) != pathWeights.find(selection.first));
-    auto weight = pathWeights.at(selection.first);
-    return make_pair(weight, selection.second);
-  });
+              ARC_ASSERT(end(pathWeights) != pathWeights.find(selection.first));
+              auto weight = pathWeights.at(selection.first);
+              return make_pair(weight, selection.second);
+            });
 
   // finally it is possible that an image was selected twice by two different paths, its votes should be merged together
   unordered_map<wstring, size_t> uniqueVotes;
@@ -534,16 +534,16 @@ wstring SelectCandidate(const wstring& albumName, const vector<wstring>& fullIma
     return make_pair(name, &fullPath);
   });
 
-  vector<vector<wstring>> namesToCheck = {
-      {albumName}, {L"front"}, {L"cover", L"albumart"}, {L"album", L"art"}, {L"inlay"}, {L"back", L"rear"}};
+  vector<vector<wstring>> namesToCheck = {{albumName},        {L"front"}, {L"cover", L"albumart"},
+                                          {L"album", L"art"}, {L"inlay"}, {L"back", L"rear"}};
 
   vector<pair<wstring, const wstring*>> possiblePaths;
   for (auto& keywords : namesToCheck) {
     copy_if(begin(imagePaths), end(imagePaths), back_inserter(possiblePaths),
             [&keywords](const pair<wstring, const wstring*>& title) {
-      return any_of(begin(keywords), end(keywords),
-                    [&title](const wstring& keyword) { return boost::icontains(title.first, keyword); });
-    });
+              return any_of(begin(keywords), end(keywords),
+                            [&title](const wstring& keyword) { return boost::icontains(title.first, keyword); });
+            });
 
     if (possiblePaths.size() > 0) {
       break;

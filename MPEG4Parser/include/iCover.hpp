@@ -10,17 +10,17 @@
 #ifndef ICOVR_HPP
 #define ICOVR_HPP
 
-#include "boost\assign.hpp"
 #include "Box.hpp"
 #include "ImageTypes.hpp"
+#include "boost\assign.hpp"
 
 namespace Arcusical {
 namespace MPEG4 {
 
 class iCover : public Box {
  public:
-  iCover() : m_type(ImageType::UNKNOWN) {};
-  virtual ~iCover() {};
+  iCover() : m_type(ImageType::UNKNOWN){};
+  virtual ~iCover(){};
 
   virtual void PrintBox(std::ostream& outStream, int depth = 0) override;
 

@@ -9,8 +9,8 @@
 
 #include "pch.h"
 
-#include "Minf.hpp"
 #include "MPEG4_Parser.hpp"
+#include "Minf.hpp"
 
 namespace Arcusical {
 namespace MPEG4 {

@@ -1,18 +1,18 @@
 #define NOMINMAX
 
 #include <algorithm>
+#include <cctype>
+#include <codecvt>
+#include <future>
+#include <memory>
+#include <vector>
 #include "boost/algorithm/string/predicate.hpp"
 #include "boost/functional/hash.hpp"
 #include "boost/optional.hpp"
-#include <cctype>
-#include <codecvt>
-#include <memory>
-#include <future>
-#include <vector>
 
+#include "Album.hpp"
 #include "AlbumLoader.hpp"
 #include "Arc_Assert.hpp"
-#include "Album.hpp"
 #include "CheckedCasts.hpp"
 #include "IFile.hpp"
 #include "IFolder.hpp"
@@ -42,13 +42,15 @@ SongCollectionChanges CreateSongCollectionDelta(const boost::optional<SongMergeR
   SongCollectionChanges result;
 
   if (mergeResults) {
-    transform(
-        begin(mergeResults->newSongs), end(mergeResults->newSongs), inserter(result.NewSongs, end(result.NewSongs)),
-        [&songs](const Song & song)->pair<uuid, const Song*> { return {song.GetId(), &songs->at(song.GetId())}; });
-    transform(
-        begin(mergeResults->modifiedSongs), end(mergeResults->modifiedSongs),
-        inserter(result.ModifiedSongs, end(result.NewSongs)),
-        [&songs](const Song & song)->pair<uuid, const Song*> { return {song.GetId(), &songs->at(song.GetId())}; });
+    transform(begin(mergeResults->newSongs), end(mergeResults->newSongs),
+              inserter(result.NewSongs, end(result.NewSongs)), [&songs](const Song& song) -> pair<uuid, const Song*> {
+                return {song.GetId(), &songs->at(song.GetId())};
+              });
+    transform(begin(mergeResults->modifiedSongs), end(mergeResults->modifiedSongs),
+              inserter(result.ModifiedSongs, end(result.NewSongs)),
+              [&songs](const Song& song) -> pair<uuid, const Song*> {
+                return {song.GetId(), &songs->at(song.GetId())};
+              });
   }
 
   result.AllSongs = std::move(songs);
@@ -63,12 +65,14 @@ AlbumCollectionChanges CreateAlbumCollectionDelta(const boost::optional<AlbumMer
   if (mergeResults) {
     transform(begin(mergeResults->newAlbums), end(mergeResults->newAlbums),
               inserter(result.NewAlbums, end(result.NewAlbums)),
-              [&albums](const Album & album)
-                  ->pair<uuid, const Album*> { return {album.GetId(), &albums->at(album.GetId())}; });
+              [&albums](const Album& album) -> pair<uuid, const Album*> {
+                return {album.GetId(), &albums->at(album.GetId())};
+              });
     transform(begin(mergeResults->modifiedAlbums), end(mergeResults->modifiedAlbums),
               inserter(result.ModifiedAlbums, end(result.NewAlbums)),
-              [&albums](const Album & album)
-                  ->pair<uuid, const Album*> { return {album.GetId(), &albums->at(album.GetId())}; });
+              [&albums](const Album& album) -> pair<uuid, const Album*> {
+                return {album.GetId(), &albums->at(album.GetId())};
+              });
   }
 
   result.AllAlbums = std::move(albums);
@@ -127,8 +131,8 @@ MusicProvider::MusicProvider(LocalMusicCache* cache)
       m_albumLoadProgress(LoadProgress::CACHE_LOAD_PENDING),
       m_artLoader(cache) {
   ARC_ASSERT(cache != nullptr);
-  m_artLoadSubscription =
-      m_artLoader.OnArtLoaded += [this](const std::vector<boost::uuids::uuid>& ids) { OnArtLoaded(ids); };
+  m_artLoadSubscription = m_artLoader.OnArtLoaded +=
+      [this](const std::vector<boost::uuids::uuid>& ids) { OnArtLoaded(ids); };
 }
 
 Subscription MusicProvider::SubscribeSongs(SongsChangedCallback callback) {

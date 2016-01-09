@@ -8,21 +8,15 @@
 #ifndef IMAGE_TYPES_HPP
 #define IMAGE_TYPES_HPP
 
-#include <string>
 #include <ostream>
+#include <string>
 #include <unordered_map>
 
 namespace Arcusical {
 namespace MPEG4 {
 
 // TODO: need to add some support for a wider array of image types.
-enum class ImageType {
-  JPEG,
-  PNG,
-  EXIF,
-  BMP,
-  UNKNOWN
-};
+enum class ImageType { JPEG, PNG, EXIF, BMP, UNKNOWN };
 
 const std::unordered_map<ImageType, std::string> ImageTypeToString = {{ImageType::JPEG, "jpg"},
                                                                       {ImageType::PNG, "png"},

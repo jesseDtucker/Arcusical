@@ -229,7 +229,7 @@ void BitBufferWrite(BitBuffer* bits, uint32_t bitValues, uint32_t numBits) {
 }
 
 void BitBufferReset(BitBuffer* bits)
-    // void BitBufferInit( BitBuffer * bits, uint8_t * buffer, uint32_t byteSize )
+// void BitBufferInit( BitBuffer * bits, uint8_t * buffer, uint32_t byteSize )
 {
   bits->cur = bits->end - bits->byteSize;
   bits->bitIndex = 0;

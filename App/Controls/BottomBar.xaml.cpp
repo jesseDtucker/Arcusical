@@ -8,8 +8,8 @@
 
 #include <cmath>
 
-#include "Events/EventService.hpp"
 #include "Events/AlbumSelectedEvent.hpp"
+#include "Events/EventService.hpp"
 #include "Events/SearchSelectedEvent.hpp"
 #include "Events/WhatIsPlayingSelectedEvent.hpp"
 
@@ -35,12 +35,12 @@ const double MIN_JUMP = 1.0;
 BottomBar::BottomBar() {
   InitializeComponent();
 
-  v_slider->ValueChanged += ref new Primitives::RangeBaseValueChangedEventHandler([this](
-      Object ^ sender, Primitives::RangeBaseValueChangedEventArgs ^ e) {
-    if (abs(e->NewValue - e->OldValue) > MIN_JUMP) {
-      VM->ChangeTimeTo(e->NewValue);
-    }
-  });
+  v_slider->ValueChanged += ref new Primitives::RangeBaseValueChangedEventHandler(
+      [this](Object ^ sender, Primitives::RangeBaseValueChangedEventArgs ^ e) {
+        if (abs(e->NewValue - e->OldValue) > MIN_JUMP) {
+          VM->ChangeTimeTo(e->NewValue);
+        }
+      });
 }
 
 void Arcusical::BottomBar::AlbumSelected(Platform::Object ^ sender, Windows::UI::Xaml::RoutedEventArgs ^ e) {

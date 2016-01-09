@@ -13,7 +13,7 @@ namespace Arcusical {
 [Windows::Foundation::Metadata::WebHostHidden] public ref class WhatIsPlaying sealed {
  public:
   WhatIsPlaying();
-  VM_DECLARATION(ViewModel::WhatIsPlayingVM ^ );
+  VM_DECLARATION(ViewModel::WhatIsPlayingVM ^);
 
   void Show();
   void Hide();

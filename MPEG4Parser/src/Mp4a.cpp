@@ -10,8 +10,8 @@
 
 #include "pch.h"
 
-#include "Mp4a.hpp"
 #include "MPEG4_Parser.hpp"
+#include "Mp4a.hpp"
 #include "Stream.hpp"
 
 namespace Arcusical {

@@ -1,14 +1,14 @@
 ﻿#include "WebCrawler.hpp"
 
+#include <ppltasks.h>
 #include <algorithm>
 #include <codecvt>
-#include <ppltasks.h>
 #include <regex>
 
 #include "Arc_Assert.hpp"
 #include "CachedCrawl.pb.h"
-#include "IFolder.hpp"
 #include "IFile.hpp"
+#include "IFolder.hpp"
 #include "Storage.hpp"
 
 #include <iostream>
@@ -166,7 +166,8 @@ unordered_set<wstring> Crawler::CrawlFrom(wstring addr, int saveFrequency /* = 5
         FilterLinks(links, allUrls, m_linkFilter);
 
         OutputDebugStringA((string("Added ") + to_string(links.size()) + string(" more links to search. There are ") +
-                            to_string(uncheckedUrls.size()) + string(" links remaining\n")).c_str());
+                            to_string(uncheckedUrls.size()) + string(" links remaining\n"))
+                               .c_str());
 
         for (auto& link : links) {
           uncheckedUrls.insert(link);
@@ -180,19 +181,16 @@ unordered_set<wstring> Crawler::CrawlFrom(wstring addr, int saveFrequency /* = 5
         if (counter % saveFrequency == 0) {
           SaveToCache(addr, checkedUrls, uncheckedUrls, allUrls);
         }
-      }
-      catch (Platform::COMException ^ ex) {
+      } catch (Platform::COMException ^ ex) {
         OutputDebugStringW((L"Failed to connect to : " + nextUrl).c_str());
         OutputDebugStringW(ex->Message->Data());
       }
     }
 
     return allUrls;
-  }
-  catch (Platform::COMException ^ ex) {
+  } catch (Platform::COMException ^ ex) {
     ARC_FAIL(ex->Message->Data());
-  }
-  catch (...) {
+  } catch (...) {
     ARC_FAIL("oops...");
   }
 

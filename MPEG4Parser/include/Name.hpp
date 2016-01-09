@@ -11,8 +11,8 @@
 #ifndef NAME_HPP
 #define NAME_HPP
 
-#include "Box.hpp"
 #include <string>
+#include "Box.hpp"
 
 namespace Arcusical {
 namespace MPEG4 {

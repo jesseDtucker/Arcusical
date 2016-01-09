@@ -6,8 +6,8 @@
 #include <type_traits>
 #include <vector>
 
-#include "RawParser.hpp"
 #include "PropertyHelper.hpp"
+#include "RawParser.hpp"
 #include "Util.hpp"
 
 namespace Util {

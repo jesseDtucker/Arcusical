@@ -30,10 +30,10 @@ void SongListControl::SongDoubleTapped(Platform::Object ^ sender,
                                        Windows::UI::Xaml::Input::DoubleTappedRoutedEventArgs ^ e) {
   ARC_ASSERT(VM != nullptr);
 
-  auto uiElement = dynamic_cast<FrameworkElement ^ >(sender);
+  auto uiElement = dynamic_cast<FrameworkElement ^>(sender);
   ARC_ASSERT(uiElement != nullptr);
   if (uiElement != nullptr) {
-    auto song = dynamic_cast<SongVM ^ >(uiElement->DataContext);
+    auto song = dynamic_cast<SongVM ^>(uiElement->DataContext);
     ARC_ASSERT(song != nullptr);
     if (song != nullptr) {
       VM->PlaySongsAfterAndIncluding(song);

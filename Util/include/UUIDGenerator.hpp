@@ -1,7 +1,7 @@
 #pragma once
 
-#include "boost/uuid/uuid.hpp"
 #include <random>
+#include "boost/uuid/uuid.hpp"
 
 namespace Util {
 // Simple UUID generator that uses the standard library. Needed because the boost UUID

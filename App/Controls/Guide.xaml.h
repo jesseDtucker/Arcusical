@@ -13,7 +13,7 @@ namespace Arcusical {
 [Windows::Foundation::Metadata::WebHostHidden] public ref class Guide sealed {
  public:
   Guide();
-  VM_DECLARATION(ViewModel::GuideVM ^ );
+  VM_DECLARATION(ViewModel::GuideVM ^);
 
  private:
   void Play_Clicked(Platform::Object ^ sender, Windows::UI::Xaml::RoutedEventArgs ^ e);

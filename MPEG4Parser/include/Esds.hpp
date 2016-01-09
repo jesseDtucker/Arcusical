@@ -19,13 +19,7 @@
 namespace Arcusical {
 namespace MPEG4 {
 
-enum class ES_Tag : char {
-  UNKNOWN,
-  ES_DESC,
-  DECODER_CONFIG,
-  DECODER_INFO,
-  SL_CONFIG_DESC
-};
+enum class ES_Tag : char { UNKNOWN, ES_DESC, DECODER_CONFIG, DECODER_INFO, SL_CONFIG_DESC };
 
 #pragma region Tag Definitions
 

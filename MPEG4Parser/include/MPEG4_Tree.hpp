@@ -10,8 +10,8 @@
 #ifndef MPEG4_TREE_H
 #define MPEG4_TREE_H
 
-#include <vector>
 #include <memory>
+#include <vector>
 
 #include "Box.hpp"
 

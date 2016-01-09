@@ -13,119 +13,120 @@
 
 namespace Util {
 
-  template<typename Output>
-  class AccumlatingWorkBuffer final : public WorkBuffer<Output> {
-  public:
-    AccumlatingWorkBuffer(int count);
-    void Complete() override;
-  private:
-    std::atomic_int m_count;
-  };
+template <typename Output>
+class AccumlatingWorkBuffer final : public WorkBuffer<Output> {
+ public:
+  AccumlatingWorkBuffer(int count);
+  void Complete() override;
 
-  template <typename Input, typename Output>
-  class ParallelProcessor final : public InputBuffer<Input> {
-    typedef AsyncProcessor<Input, Output> Worker;
-  public:
-    typedef typename Worker::ProcessSingle WorkFunc;
+ private:
+  std::atomic_int m_count;
+};
 
-    ParallelProcessor(WorkFunc workFunc, int numWorkers = 2);
-    ~ParallelProcessor() = default;
+template <typename Input, typename Output>
+class ParallelProcessor final : public InputBuffer<Input> {
+  typedef AsyncProcessor<Input, Output> Worker;
 
-    ParallelProcessor(const ParallelProcessor&) = delete;
-    ParallelProcessor(ParallelProcessor&&) = delete;
-    ParallelProcessor& operator=(const ParallelProcessor&) = delete;
-    ParallelProcessor& operator=(ParallelProcessor&&) = delete;
+ public:
+  typedef typename Worker::ProcessSingle WorkFunc;
 
-    void Append(const Input& value) override;
-    void Append(Input&& value) override;
-    void Append(std::vector<Input>&& values) override;
-    void Complete() override;
-    void Reset() override;
+  ParallelProcessor(WorkFunc workFunc, int numWorkers = 2);
+  ~ParallelProcessor() = default;
 
-    void Start();
-    OutputBuffer<Output>& ResultsBuffer();
+  ParallelProcessor(const ParallelProcessor&) = delete;
+  ParallelProcessor(ParallelProcessor&&) = delete;
+  ParallelProcessor& operator=(const ParallelProcessor&) = delete;
+  ParallelProcessor& operator=(ParallelProcessor&&) = delete;
 
-  private:
-    Worker& GetNextWorker();
+  void Append(const Input& value) override;
+  void Append(Input&& value) override;
+  void Append(std::vector<Input>&& values) override;
+  void Complete() override;
+  void Reset() override;
 
-    std::vector<Worker> m_workers;
-    std::atomic_int m_itemCounter;
-    AccumlatingWorkBuffer<Output> m_workBuffer;
-  };
+  void Start();
+  OutputBuffer<Output>& ResultsBuffer();
 
-  template <typename Input, typename Output>
-  ParallelProcessor<Input, Output>::ParallelProcessor(WorkFunc workFunc, int numWorkers /* = 2 */)
+ private:
+  Worker& GetNextWorker();
+
+  std::vector<Worker> m_workers;
+  std::atomic_int m_itemCounter;
+  AccumlatingWorkBuffer<Output> m_workBuffer;
+};
+
+template <typename Input, typename Output>
+ParallelProcessor<Input, Output>::ParallelProcessor(WorkFunc workFunc, int numWorkers /* = 2 */)
     : m_itemCounter(0), m_workBuffer(numWorkers) {
-    ARC_ASSERT(numWorkers > 0);
-    m_workers.resize(numWorkers);
-    for (auto& worker : m_workers) {
-      worker.SetProcessor(workFunc);
-      worker.Connect(&m_workBuffer);
-    }
+  ARC_ASSERT(numWorkers > 0);
+  m_workers.resize(numWorkers);
+  for (auto& worker : m_workers) {
+    worker.SetProcessor(workFunc);
+    worker.Connect(&m_workBuffer);
   }
+}
 
-  template <typename Input, typename Output>
-  typename ParallelProcessor<Input, Output>::Worker& ParallelProcessor<Input, Output>::GetNextWorker() {
-    // work is distributed evenly amongst the workers
-    // Note: the itemCounter is incremented on access!
-    int itemNumber = m_itemCounter++;
-    return m_workers[itemNumber % m_workers.size()];
+template <typename Input, typename Output>
+typename ParallelProcessor<Input, Output>::Worker& ParallelProcessor<Input, Output>::GetNextWorker() {
+  // work is distributed evenly amongst the workers
+  // Note: the itemCounter is incremented on access!
+  int itemNumber = m_itemCounter++;
+  return m_workers[itemNumber % m_workers.size()];
+}
+
+template <typename Input, typename Output>
+void ParallelProcessor<Input, Output>::Append(const Input& input) {
+  GetNextWorker().Append(input);
+}
+
+template <typename Input, typename Output>
+void ParallelProcessor<Input, Output>::Append(Input&& input) {
+  GetNextWorker().Append(std::move(input));
+}
+
+template <typename Input, typename Output>
+void ParallelProcessor<Input, Output>::Append(std::vector<Input>&& inputs) {
+  for (auto&& input : inputs) {
+    Append(std::move(input));
   }
+}
 
-  template <typename Input, typename Output>
-  void ParallelProcessor<Input, Output>::Append(const Input& input) {
-    GetNextWorker().Append(input);
+template <typename Input, typename Output>
+void ParallelProcessor<Input, Output>::Complete() {
+  for (auto& worker : m_workers) {
+    worker.Complete();
   }
+}
 
-  template <typename Input, typename Output>
-  void ParallelProcessor<Input, Output>::Append(Input&& input) {
-    GetNextWorker().Append(std::move(input));
+template <typename Input, typename Output>
+void ParallelProcessor<Input, Output>::Reset() {
+  for (auto& worker : m_workers) {
+    worker.Reset();
   }
+}
 
-  template <typename Input, typename Output>
-  void ParallelProcessor<Input, Output>::Append(std::vector<Input>&& inputs) {
-    for (auto&& input : inputs) {
-      Append(std::move(input));
-    }
+template <typename Input, typename Output>
+void ParallelProcessor<Input, Output>::Start() {
+  for (auto& worker : m_workers) {
+    worker.Start();
   }
+}
 
-  template <typename Input, typename Output>
-  void ParallelProcessor<Input, Output>::Complete() {
-    for (auto& worker : m_workers) {
-      worker.Complete();
-    }
+template <typename Input, typename Output>
+OutputBuffer<Output>& ParallelProcessor<Input, Output>::ResultsBuffer() {
+  return m_workBuffer;
+}
+
+template <typename Output>
+AccumlatingWorkBuffer<Output>::AccumlatingWorkBuffer(int count) : m_count(count) {}
+
+template <typename Output>
+void AccumlatingWorkBuffer<Output>::Complete() {
+  m_count--;
+  if (m_count <= 0) {
+    WorkBuffer<Output>::Complete();
   }
-
-  template <typename Input, typename Output>
-  void ParallelProcessor<Input, Output>::Reset() {
-    for (auto& worker : m_workers) {
-      worker.Reset();
-    }
-  }
-
-  template <typename Input, typename Output>
-  void ParallelProcessor<Input, Output>::Start() {
-    for (auto& worker : m_workers) {
-      worker.Start();
-    }
-  }
-
-  template <typename Input, typename Output>
-  OutputBuffer<Output>& ParallelProcessor<Input, Output>::ResultsBuffer() {
-    return m_workBuffer;
-  }
-
-  template<typename Output>
-  AccumlatingWorkBuffer<Output>::AccumlatingWorkBuffer(int count)
-  : m_count(count){ }
-
-  template<typename Output>
-  void AccumlatingWorkBuffer<Output>::Complete() {
-    m_count--;
-    if(m_count <= 0) {
-      WorkBuffer<Output>::Complete();
-    }
-  }
+}
 }
 
 #endif

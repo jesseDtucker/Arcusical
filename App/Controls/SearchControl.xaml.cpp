@@ -7,8 +7,8 @@
 
 #include "Events/EventService.hpp"
 #include "Events/SearchSelectedEvent.hpp"
-#include "Utility/KeyboardUtil.hpp"
 #include "SearchControl.xaml.h"
+#include "Utility/KeyboardUtil.hpp"
 
 using namespace Platform;
 using namespace Windows::Foundation;
@@ -32,8 +32,8 @@ VM_IMPL(SearchVM ^, SearchControl);
 
 SearchControl::SearchControl() {
   InitializeComponent();
-  m_animIn = safe_cast<Storyboard ^ >(v_root->Resources->Lookup("slideInAnim"));
-  m_animOut = safe_cast<Storyboard ^ >(v_root->Resources->Lookup("slideOutAnim"));
+  m_animIn = safe_cast<Storyboard ^>(v_root->Resources->Lookup("slideInAnim"));
+  m_animOut = safe_cast<Storyboard ^>(v_root->Resources->Lookup("slideOutAnim"));
   m_searchSelectedSub =
       EventService<SearchSelectedEvent>::RegisterListener({[this](const auto unused) { ShowResults(); }});
 }

@@ -4,8 +4,8 @@
 #define ALBUM_HPP
 
 #include <memory>
-#include <string>
 #include <set>
+#include <string>
 #include <vector>
 
 #include "boost\uuid\uuid.hpp"

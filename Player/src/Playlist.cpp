@@ -42,8 +42,7 @@ void Playlist::PlayNext() {
         auto newEnd = copy_n(begin(m_RecentlyPlayed), MAX_HISTORY_SIZE / 2, begin(m_RecentlyPlayed));
         m_RecentlyPlayed.resize(distance(begin(m_RecentlyPlayed), newEnd));
       }
-    }
-    catch (Util::NoSongFileAvailable&) {
+    } catch (Util::NoSongFileAvailable&) {
       // in this case we are just going to try again if there is more in our current queue
       // we won't bother using the default 'find more songs' behavior in the case of an error
       if (!m_SongQueue.empty()) {

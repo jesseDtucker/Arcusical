@@ -2,8 +2,8 @@
 #ifndef SONG_LOADER_HPP
 #define SONG_LOADER_HPP
 
-#include "boost/uuid/uuid.hpp"
 #include <memory>
+#include "boost/uuid/uuid.hpp"
 
 #include "MusicTypes.hpp"
 

@@ -34,8 +34,8 @@ property type VM \
 
 #define VM_IMPL(type, targetClass)                         \
   \
-type targetClass##::VM::get() \
-{                         \
+type targetClass## ::VM::get() \
+{                        \
     if (m_viewModel != this->DataContext) {                \
       m_viewModel = dynamic_cast<type>(this->DataContext); \
     }                                                      \
@@ -43,8 +43,8 @@ type targetClass##::VM::get() \
   \
 }                                                     \
   \
-void targetClass##::VM::set(type vm) \
-{                  \
+void targetClass## ::VM::set(type vm) \
+{                 \
     ARC_ASSERT(Arcusical::HasThreadAccess());              \
     m_viewModel = vm;                                      \
     this->DataContext = m_viewModel;                       \

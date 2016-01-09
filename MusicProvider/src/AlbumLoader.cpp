@@ -1,9 +1,9 @@
 #include <algorithm>
+#include <string>
+#include <unordered_map>
 #include "boost/algorithm/string/predicate.hpp"
 #include "boost/functional/hash.hpp"
 #include "boost/uuid/uuid.hpp"
-#include <string>
-#include <unordered_map>
 
 #include "AlbumLoader.hpp"
 #include "Arc_Assert.hpp"
@@ -155,8 +155,9 @@ AlbumLookupByAlbumName CreateAlbumLookup(const AlbumCollection& albums) {
   result.reserve(albums.size());
 
   transform(begin(albums), end(albums), inserter(result, end(result)),
-            [](const AlbumCollection::value_type & album)
-                ->pair<wstring, const Album*> { return {album.second.GetTitle(), &album.second}; });
+            [](const AlbumCollection::value_type& album) -> pair<wstring, const Album*> {
+              return {album.second.GetTitle(), &album.second};
+            });
 
   return result;
 }
@@ -207,14 +208,19 @@ vector<pair<uuid, const Album*>> DetermineMissingSongs(const AlbumCollection& ex
   for (auto& album : existingAlbums) {
     auto ids = album.second.GetSongIds();
     transform(begin(ids), end(ids), back_inserter(allAlbumSongIds),
-              [&album](const uuid & id)->pair<uuid, const Album*> { return {id, &album.second}; });
+              [&album](const uuid& id) -> pair<uuid, const Album*> {
+                return {id, &album.second};
+              });
   }
 
   transform(begin(songs), end(songs), back_inserter(allSongIds),
-            [](const SongCollection::value_type & song)->pair<uuid, const Album*> { return {song.first, nullptr}; });
+            [](const SongCollection::value_type& song) -> pair<uuid, const Album*> {
+              return {song.first, nullptr};
+            });
 
-  auto sortPred = [](const pair<uuid, const Album*>& a,
-                     const pair<uuid, const Album*>& b) { return a.first < b.first; };
+  auto sortPred = [](const pair<uuid, const Album*>& a, const pair<uuid, const Album*>& b) {
+    return a.first < b.first;
+  };
 
   sort(begin(allAlbumSongIds), end(allAlbumSongIds), sortPred);
   sort(begin(allSongIds), end(allSongIds), sortPred);
@@ -295,8 +301,9 @@ wstring SelectMostCommonAlbumArtist(const vector<const Song*>& songs) {
     }
   }
 
-  auto m = max_element(begin(counter), end(counter), [](const countMap::value_type& a,
-                                                        const countMap::value_type& b) { return a.second < b.second; });
+  auto m = max_element(begin(counter), end(counter), [](const countMap::value_type& a, const countMap::value_type& b) {
+    return a.second < b.second;
+  });
 
   return m->first;
 }

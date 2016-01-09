@@ -10,8 +10,8 @@
 #include "pch.h"
 
 #include "Alac.hpp"
-#include "MPEG4_Parser.hpp"
 #include "InvalidValueException.hpp"
+#include "MPEG4_Parser.hpp"
 #include "Stream.hpp"
 
 using namespace std;

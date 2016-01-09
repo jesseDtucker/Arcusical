@@ -9,14 +9,14 @@
 
 #include "pch.h"
 
-#include "Stsd.hpp"
 #include "MPEG4_Parser.hpp"
+#include "Stsd.hpp"
 
 namespace Arcusical {
 namespace MPEG4 {
 
-Stsd::Stsd() {};
-Stsd::~Stsd() {};
+Stsd::Stsd(){};
+Stsd::~Stsd(){};
 
 void Stsd::ReadContents(Util::Stream& stream) {
   // first 4 bytes appear to be reserved. Standard and test file

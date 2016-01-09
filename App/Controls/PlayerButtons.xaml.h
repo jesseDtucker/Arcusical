@@ -3,8 +3,8 @@
 #include <memory>
 
 #include "Controls\PlayerButtons.g.h"
-#include "ViewModels\SongPlayerVM.hpp"
 #include "Utility\XamlMacros.hpp"
+#include "ViewModels\SongPlayerVM.hpp"
 
 namespace Arcusical {
 namespace Player {
@@ -19,7 +19,7 @@ class SongSelectedEvent;
  public:
   PlayerButtons();
 
-  VM_DECLARATION(ViewModel::SongPlayerVM ^ );
+  VM_DECLARATION(ViewModel::SongPlayerVM ^);
 
  private:
   // control input callbacks

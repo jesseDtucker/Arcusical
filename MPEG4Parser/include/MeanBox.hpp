@@ -11,8 +11,8 @@
 #ifndef MEAN_HPP
 #define MEAN_HPP
 
-#include "Box.hpp"
 #include <string>
+#include "Box.hpp"
 
 namespace Arcusical {
 namespace MPEG4 {

@@ -2,13 +2,13 @@
 #ifndef SEARCH_HPP
 #define SEARCH_HPP
 
+#include "CancellationToken.hpp"
 #include "PropertyHelper.hpp"
+#include "Subscription.hpp"
+#include "Utility/XamlMacros.hpp"
 #include "ViewModels/AlbumListControlVM.hpp"
 #include "ViewModels/SearchVM.hpp"
 #include "ViewModels/SongListControlVM.hpp"
-#include "Subscription.hpp"
-#include "Utility/XamlMacros.hpp"
-#include "CancellationToken.hpp"
 
 namespace Arcusical {
 namespace MusicProvider {
@@ -30,9 +30,8 @@ namespace ViewModel {
 
   void SelectCurrent();
 
-internal:
-  SearchVM(MusicProvider::MusicSearcher& searcher, Player::Playlist& playlist, Util::BackgroundWorker& worker,
-           Player::IPlayer& player);
+  internal : SearchVM(MusicProvider::MusicSearcher& searcher, Player::Playlist& playlist,
+                      Util::BackgroundWorker& worker, Player::IPlayer& player);
 
  private:
   void StartSearch(Platform::String ^ searchTerm);

@@ -9,9 +9,9 @@
 
 #include "pch.h"
 
-#include "iCover.hpp"
-#include "MPEG4_Parser.hpp"
 #include "DataBox.hpp"
+#include "MPEG4_Parser.hpp"
+#include "iCover.hpp"
 
 using namespace std;
 

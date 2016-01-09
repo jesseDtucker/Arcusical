@@ -17,7 +17,7 @@ namespace ViewModel {
 SongListVM::SongListVM(const std::vector<Model::Song>& songs, Playlist& playlist, IPlayer& player,
                        BackgroundWorker& worker) {
   auto future = Arcusical::DispatchToUI([this, &songs, &player, &playlist, &worker]() {
-    List = ref new Platform::Collections::Vector<SongVM ^ >();
+    List = ref new Platform::Collections::Vector<SongVM ^>();
 
     bool isAlternate = false;
 

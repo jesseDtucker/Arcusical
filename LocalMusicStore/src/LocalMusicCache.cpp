@@ -1,22 +1,22 @@
 #include "LocalMusicCache.hpp"
 
 #include <codecvt>
-#include "boost\uuid\uuid_io.hpp"
 #include "boost\uuid\string_generator.hpp"
+#include "boost\uuid\uuid_io.hpp"
 
 #include "Album.hpp"
 #include "Arc_Assert.hpp"
-#include "IFolder.hpp"
-#include "IFile.hpp"
 #include "IAlbumToSongMapper.hpp"
+#include "IFile.hpp"
+#include "IFolder.hpp"
 #include "LockHelper.hpp"
 #include "LockedPtrHelper.hpp"
-#include "Storage.hpp"
 #include "Song.hpp"
+#include "Storage.hpp"
 
-#include "CachedSong.pb.h"
 #include "CachedAlbum.pb.h"
 #include "CachedAlbumList.pb.h"
+#include "CachedSong.pb.h"
 #include "CachedSongList.pb.h"
 
 using namespace std;

@@ -1,6 +1,6 @@
-#include <functional>
-#include <wrl\module.h>
 #include <Mferror.h>
+#include <wrl\module.h>
+#include <functional>
 #include "mfapi.h"
 
 #include "ALACBitUtilities.h"
@@ -60,9 +60,8 @@ ALACMFTDecoder::ALACMFTDecoder()
   StartEventLoop();
   m_processor.Connect(&m_outputBuffer);
   m_onResultsReadySub = m_outputBuffer.ItemAvailable += [this]() { this->NotifyOutput(); };
-  m_processor.SetProcessor([this](const Microsoft::WRL::ComPtr<IMFSample> &buffer) {
-    return this->DecodeBuffer(buffer);
-  });
+  m_processor.SetProcessor(
+      [this](const Microsoft::WRL::ComPtr<IMFSample> &buffer) { return this->DecodeBuffer(buffer); });
 }
 
 ALACMFTDecoder::~ALACMFTDecoder() {
@@ -329,8 +328,7 @@ HRESULT ALACMFTDecoder::SetInputType(DWORD dwInputStreamID,
 
     ParseALACBox();
     m_decoder.Init(mediaInfo.cookieBlob + 52, mediaInfo.cookieBlobSize - 52);
-  }
-  catch (Platform::Exception ^ ex) {
+  } catch (Platform::Exception ^ ex) {
     ARC_FAIL("Something went wrong!");
     hr = MF_E_INVALIDMEDIATYPE;
   }
@@ -657,8 +655,7 @@ HRESULT ALACMFTDecoder::CreateOutputType(Microsoft::WRL::ComPtr<IMFMediaType> &s
     GUID iCantRemembeWhatThisis = {0x494bbcf7, 0xb031, 0x4e38, 0x97, 0xc4, 0xd5, 0x42, 0x2d, 0xd6, 0x18, 0xdc};
     hr = spOutputType->SetUINT32(iCantRemembeWhatThisis, TRUE);
     ARC_ThrowIfFailed(hr);
-  }
-  catch (Platform::Exception ^ ex) {
+  } catch (Platform::Exception ^ ex) {
     ARC_FAIL("Something went wrong!");
   }
 

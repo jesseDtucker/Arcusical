@@ -18,14 +18,14 @@
 #include "Arc_Assert.hpp"
 
 #include "IPlayer.hpp"
-#include "Playlist.hpp"
 #include "MusicProvider.hpp"
 #include "MusicSearcher.hpp"
+#include "Playlist.hpp"
 
 // VM definitions. XAML compiler chokes if they are not included in either pch or a xaml
 // implementation.
-#include "ViewModels/AlbumVM.hpp"
 #include "ViewModels/AlbumListControlVM.hpp"
+#include "ViewModels/AlbumVM.hpp"
 #include "ViewModels/GuideVM.hpp"
 #include "ViewModels/SearchVM.hpp"
 #include "ViewModels/SongListControlVM.hpp"
@@ -34,6 +34,6 @@
 #include "ViewModels/VolumeSilderVM.hpp"
 #include "ViewModels/WhatIsPlayingVM.hpp"
 
+#include "Converters/AlternateConverter.hpp"
 #include "Converters/IsPlayingToIconPath.hpp"
 #include "Converters/SongListSizeToVisiblity.hpp"
-#include "Converters/AlternateConverter.hpp"

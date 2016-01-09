@@ -10,8 +10,8 @@
 #include "App.g.h"
 
 #include "AsyncProcessor.hpp"
-#include "LocalMusicCache.hpp"
 #include "IPlayer.hpp"
+#include "LocalMusicCache.hpp"
 #include "MusicProvider.hpp"
 #include "MusicSearcher.hpp"
 #include "Playlist.hpp"
@@ -26,8 +26,7 @@ ref class App sealed {
   virtual void OnLaunched(Windows::ApplicationModel::Activation::LaunchActivatedEventArgs ^ e) override;
   virtual void OnFileActivated(Windows::ApplicationModel::Activation::FileActivatedEventArgs ^ args) override;
 
-internal:
-  App();
+  internal : App();
 
   void SetupApplication();
 

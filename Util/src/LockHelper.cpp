@@ -82,13 +82,11 @@ void Util::SlimRWLock::UnlockExclusive() {
   ReleaseSRWLockExclusive(&m_lock);
 }
 
-Util::WriteLock::WriteLock(SlimRWLock* lock)
-    : ScopeGuard([lock]() { lock->UnlockExclusive(); }) {
+Util::WriteLock::WriteLock(SlimRWLock* lock) : ScopeGuard([lock]() { lock->UnlockExclusive(); }) {
   lock->LockExclusive();
 }
 
-Util::WriteLock::WriteLock(SRWLOCK* lock)
-    : ScopeGuard([lock]() { ReleaseSRWLockExclusive(lock); }) {
+Util::WriteLock::WriteLock(SRWLOCK* lock) : ScopeGuard([lock]() { ReleaseSRWLockExclusive(lock); }) {
   AcquireSRWLockExclusive(lock);
 }
 
