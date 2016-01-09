@@ -2,8 +2,8 @@
 #ifndef IPLAYER_HPP
 #define IPLAYER_HPP
 
-#include <memory>
 #include "boost/optional.hpp"
+#include <memory>
 
 #include "MulticastDelegate.hpp"
 #include "PropertyHelper.hpp"

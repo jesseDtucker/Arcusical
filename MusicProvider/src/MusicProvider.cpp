@@ -1,14 +1,14 @@
 #define NOMINMAX
 
+#include "boost/algorithm/string/predicate.hpp"
+#include "boost/functional/hash.hpp"
+#include "boost/optional.hpp"
 #include <algorithm>
 #include <cctype>
 #include <codecvt>
 #include <future>
 #include <memory>
 #include <vector>
-#include "boost/algorithm/string/predicate.hpp"
-#include "boost/functional/hash.hpp"
-#include "boost/optional.hpp"
 
 #include "Album.hpp"
 #include "AlbumLoader.hpp"

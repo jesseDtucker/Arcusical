@@ -2,10 +2,10 @@
 #ifndef MUSIC_TYPES_HPP
 #define MUSIC_TYPES_HPP
 
-#include <memory>
-#include <unordered_map>
 #include "boost\functional\hash.hpp"
 #include "boost\uuid\uuid.hpp"
+#include <memory>
+#include <unordered_map>
 
 #include "Album.hpp"
 #include "Song.hpp"

@@ -10,10 +10,10 @@
 #define NATIVE_BUFFER_HPP
 
 #include <robuffer.h>
+#include <vector>
 #include <windows.storage.streams.h>
 #include <wrl.h>
 #include <wrl/implements.h>
-#include <vector>
 
 namespace FileSystem {
 

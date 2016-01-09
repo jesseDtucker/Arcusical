@@ -1,10 +1,10 @@
 #pragma once
 #ifndef IALBUM_TO_SONG_MAPPER
 
+#include "boost\uuid\uuid.hpp"
 #include <memory>
 #include <set>
 #include <unordered_map>
-#include "boost\uuid\uuid.hpp"
 
 #include "MusicTypes.hpp"
 

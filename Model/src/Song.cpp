@@ -1,8 +1,8 @@
+#include "boost/algorithm/string/predicate.hpp"
+#include "boost/exception/all.hpp"
 #include <algorithm>
 #include <limits>
 #include <numeric>
-#include "boost/algorithm/string/predicate.hpp"
-#include "boost/exception/all.hpp"
 
 #include "Arc_Assert.hpp"
 #include "Exceptions.hpp"

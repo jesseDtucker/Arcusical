@@ -3,6 +3,8 @@
 #ifndef MUSIC_PROVIDER_HPP
 #define MUSIC_PROVIDER_HPP
 
+#include "boost/optional.hpp"
+#include "boost/uuid/uuid.hpp"
 #include <atomic>
 #include <condition_variable>
 #include <memory>
@@ -10,8 +12,6 @@
 #include <set>
 #include <unordered_map>
 #include <vector>
-#include "boost/optional.hpp"
-#include "boost/uuid/uuid.hpp"
 
 #include "AlbumArtLoader.hpp"
 #include "MusicTypes.hpp"

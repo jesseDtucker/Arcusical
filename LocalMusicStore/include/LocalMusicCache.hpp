@@ -1,18 +1,18 @@
 #ifndef LOCAL_MUSIC_CACHE_HPP
 #define LOCAL_MUSIC_CACHE_HPP
 
-#include <windows.h>
 #include <atomic>
 #include <condition_variable>
 #include <future>
 #include <memory>
 #include <mutex>
 #include <unordered_map>
+#include <windows.h>
 
+#include "boost\uuid\uuid.hpp"
 #include "IAlbumToSongMapper.hpp"
 #include "LockHelper.hpp"
 #include "MusicTypes.hpp"
-#include "boost\uuid\uuid.hpp"
 
 namespace Arcusical {
 namespace Model {

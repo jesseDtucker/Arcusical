@@ -1,6 +1,6 @@
 #include <Mferror.h>
-#include <wrl\module.h>
 #include <functional>
+#include <wrl\module.h>
 #include "mfapi.h"
 
 #include "ALACBitUtilities.h"

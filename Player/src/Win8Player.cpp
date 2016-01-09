@@ -1,7 +1,7 @@
 #include <AudioSessionTypes.h>
-#include <ppltasks.h>
 #include <cmath>
 #include <future>
+#include <ppltasks.h>
 
 #include "Arc_Assert.hpp"
 #include "AsyncProcessor.hpp"

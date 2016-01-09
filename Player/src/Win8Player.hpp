@@ -4,9 +4,9 @@
 
 #include <Mfmediaengine.h>
 #include <atlcomcli.h>
+#include <atomic>
 #include <mfapi.h>
 #include <wrl/client.h>
-#include <atomic>
 
 #include "AsyncProcessor.hpp"
 #include "IPlayer.hpp"

@@ -1,8 +1,8 @@
 #include "Folder.hpp"
 
+#include <algorithm>
 #include <collection.h>
 #include <ppltasks.h>
-#include <algorithm>
 
 #include "Arc_Assert.hpp"
 #include "File.hpp"

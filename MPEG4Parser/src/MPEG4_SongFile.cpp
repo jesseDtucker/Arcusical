@@ -9,8 +9,8 @@
 
 #include "pch.h"
 
-#include "MPEG4_SongFile.hpp"
 #include "boost\type_traits\make_unsigned.hpp"
+#include "MPEG4_SongFile.hpp"
 
 namespace Arcusical {
 namespace MPEG4 {

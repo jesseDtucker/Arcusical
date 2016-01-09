@@ -1,8 +1,8 @@
 ﻿#include "WebCrawler.hpp"
 
-#include <ppltasks.h>
 #include <algorithm>
 #include <codecvt>
+#include <ppltasks.h>
 #include <regex>
 
 #include "Arc_Assert.hpp"

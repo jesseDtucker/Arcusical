@@ -3,13 +3,13 @@
 #ifndef SONG_HPP
 #define SONG_HPP
 
+#include "boost\optional.hpp"
+#include "boost\uuid\uuid.hpp"
 #include <memory>
 #include <set>
 #include <string>
 #include <unordered_map>
 #include <unordered_set>
-#include "boost\optional.hpp"
-#include "boost\uuid\uuid.hpp"
 
 #include "Stream.hpp"
 #include "Util.hpp"

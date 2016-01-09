@@ -1,8 +1,8 @@
 #include "MusicSearcher.hpp"
 
+#include "boost/algorithm/string/predicate.hpp"
 #include <algorithm>
 #include <numeric>
-#include "boost/algorithm/string/predicate.hpp"
 
 #include "Arc_Assert.hpp"
 #include "LocalMusicCache.hpp"

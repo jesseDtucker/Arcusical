@@ -10,9 +10,9 @@
 #ifndef ICOVR_HPP
 #define ICOVR_HPP
 
+#include "boost\assign.hpp"
 #include "Box.hpp"
 #include "ImageTypes.hpp"
-#include "boost\assign.hpp"
 
 namespace Arcusical {
 namespace MPEG4 {

@@ -1,7 +1,7 @@
 #include "File.hpp"
 
-#include <ppltasks.h>
 #include <limits>
+#include <ppltasks.h>
 
 #include "Arc_Assert.hpp"
 #include "CheckedCasts.hpp"

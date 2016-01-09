@@ -1,9 +1,9 @@
-#include <algorithm>
-#include <string>
-#include <unordered_map>
 #include "boost/algorithm/string/predicate.hpp"
 #include "boost/functional/hash.hpp"
 #include "boost/uuid/uuid.hpp"
+#include <algorithm>
+#include <string>
+#include <unordered_map>
 
 #include "AlbumLoader.hpp"
 #include "Arc_Assert.hpp"

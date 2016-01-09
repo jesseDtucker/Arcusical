@@ -2,11 +2,11 @@
 #ifndef LOCK_HELPER_HPP
 #define LOCK_HELPER_HPP
 
-#include <windows.h>
+#include "boost/optional.hpp"
 #include <functional>
 #include <future>
 #include <unordered_set>
-#include "boost/optional.hpp"
+#include <windows.h>
 
 #include "ScopeGuard.hpp"
 

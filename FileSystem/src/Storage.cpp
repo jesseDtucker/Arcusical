@@ -1,13 +1,13 @@
 ﻿// FileSystem.cpp : Defines the exported functions for the DLL application.
 //
 
-#include <ppltasks.h>
+#include "boost/algorithm/string/predicate.hpp"
 #include <algorithm>
 #include <future>
+#include <ppltasks.h>
 #include <string>
 #include <unordered_map>
 #include <unordered_set>
-#include "boost/algorithm/string/predicate.hpp"
 
 #include "Arc_Assert.hpp"
 #include "File.hpp"

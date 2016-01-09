@@ -6,11 +6,11 @@
 
 #include "SongLoader.hpp"
 
-#include <ppltasks.h>
 #include <algorithm>
 #include <cctype>
 #include <codecvt>
 #include <functional>
+#include <ppltasks.h>
 #include <random>
 #include <string>
 #include <unordered_map>

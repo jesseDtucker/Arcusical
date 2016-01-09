@@ -10,9 +10,9 @@
 #ifndef MPEG4_PARSER_H
 #define MPEG4_PARSER_H
 
+#include "boost/detail/endian.hpp"
 #include "MPEG4_SongFile.hpp"
 #include "MPEG4_Tree.hpp"
-#include "boost/detail/endian.hpp"
 
 namespace Util {
 class Stream;
