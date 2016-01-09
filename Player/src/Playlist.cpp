@@ -1,3 +1,5 @@
+#include "Playlist.hpp"
+
 #include <algorithm>
 #include <string>
 
@@ -5,7 +7,6 @@
 #include "Exceptions.hpp"
 #include "IPlayer.hpp"
 #include "MusicProvider.hpp"
-#include "Playlist.hpp"
 #include "Song.hpp"
 
 using namespace std;

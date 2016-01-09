@@ -1,7 +1,8 @@
 #include "pch.h"
 
-#include "MPEG4_Parser.hpp"
 #include "Minf.hpp"
+
+#include "MPEG4_Parser.hpp"
 
 /*
 *	Author: Jesse Tucker

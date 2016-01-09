@@ -1,4 +1,3 @@
-
 IGNORE = [
   "boost",
   "protobuf",
@@ -120,22 +119,47 @@ def cleanupHeaderFile(contents)
   return stripExtraLines(["#pragma once\n\n"] + withoutHeaderGuards)
 end
 
+def headerFileName(path)
+  fileName = File.basename(path, ".cpp")
+  fileName + ".hpp"
+end
+
+def cleanupImplFile(contents, path)
+  headerFile = headerFileName(path)
+  #pch always comes first
+  pch = contents.select { |line|
+    line.include?("#include \"pch.h\"")
+  }
+  associatedHeader = contents.select { |line|
+    line.include?(headerFile) && line.include?("#include")
+  }
+  everythingElse = contents.select { |line|
+    !pch.include?(line) && !associatedHeader.include?(line)
+  }
+
+  stripExtraLines(pch) + stripExtraLines(associatedHeader) + stripExtraLines(everythingElse)
+end
+
 # now do some seperate of the includes to make sure there is some whitespace where desired
 allCodeFiles.each { |path|
   path.chomp!
   contents = []
   File.open(path, "r") { |f|
     contents = f.readlines
+    if(path.end_with?("cpp"))
+      contents = cleanupImplFile(contents, path)
+    end
     includes = getIncludes(contents)
     everythingElse = getEverythingElse(contents)
     includesWithLineBreaks = [];
     prevLine = "";
+    headerFile = headerFileName(path)
     includes.each { |line|
       if (isLibraryHeader?(prevLine) && !isLibraryHeader?(line))
         includesWithLineBreaks.push("\n")
       end
       includesWithLineBreaks.push(line)
-      if (line.include?("pch.h"))
+      if ((line.include?("pch.h") || line.include?(headerFile)) && line.include?("#include"))
         includesWithLineBreaks.push("\n")
       end
       prevLine = line

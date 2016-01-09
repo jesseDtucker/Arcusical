@@ -1,8 +1,9 @@
+#include "Album.hpp"
+
 #include <algorithm>
 #include <functional>
 #include <unordered_map>
 
-#include "Album.hpp"
 #include "Arc_Assert.hpp"
 #include "DefaultAlbumArt.hpp"
 #include "IAlbumToSongMapper.hpp"

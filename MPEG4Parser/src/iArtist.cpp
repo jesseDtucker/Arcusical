@@ -1,8 +1,9 @@
 #include "pch.h"
 
+#include "iArtist.hpp"
+
 #include "DataBox.hpp"
 #include "MPEG4_Parser.hpp"
-#include "iArtist.hpp"
 
 /*
 *	Author: Jesse Tucker

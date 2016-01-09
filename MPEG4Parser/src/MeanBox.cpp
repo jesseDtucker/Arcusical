@@ -1,7 +1,8 @@
 #include "pch.h"
 
-#include "MPEG4_Parser.hpp"
 #include "MeanBox.hpp"
+
+#include "MPEG4_Parser.hpp"
 
 /*
 *	Author: Jesse Tucker

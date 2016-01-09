@@ -1,3 +1,5 @@
+#include "Storage.hpp"
+
 #include "boost/algorithm/string/predicate.hpp"
 #include <algorithm>
 #include <future>
@@ -10,7 +12,6 @@
 #include "File.hpp"
 #include "FileReader.hpp"
 #include "Folder.hpp"
-#include "Storage.hpp"
 
 using namespace concurrency;
 using namespace FileSystem;

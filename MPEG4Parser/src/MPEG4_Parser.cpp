@@ -1,9 +1,10 @@
 #include "pch.h"
 
+#include "MPEG4_Parser.hpp"
+
 #include "Arc_Assert.hpp"
 #include "BoxFactory.hpp"
 #include "Ftyp.hpp"
-#include "MPEG4_Parser.hpp"
 #include "Stream.hpp"
 
 /*

@@ -1,3 +1,5 @@
+#include "Win8Player.hpp"
+
 #include <AudioSessionTypes.h>
 #include <cmath>
 #include <future>
@@ -8,7 +10,6 @@
 #include "IFile.hpp"
 #include "Song.hpp"
 #include "Storage.hpp"
-#include "Win8Player.hpp"
 
 using namespace ATL;
 using namespace Windows::Media;

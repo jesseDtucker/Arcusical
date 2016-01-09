@@ -1,7 +1,7 @@
+#include "DefaultAlbumArt.hpp"
+
 #include <future>
 #include <random>
-
-#include "DefaultAlbumArt.hpp"
 
 using namespace std;
 

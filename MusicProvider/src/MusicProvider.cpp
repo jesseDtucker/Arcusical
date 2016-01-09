@@ -1,3 +1,5 @@
+#include "MusicProvider.hpp"
+
 #include "boost/algorithm/string/predicate.hpp"
 #include "boost/functional/hash.hpp"
 #include "boost/optional.hpp"
@@ -15,7 +17,6 @@
 #include "IFile.hpp"
 #include "IFolder.hpp"
 #include "LocalMusicCache.hpp"
-#include "MusicProvider.hpp"
 #include "Song.hpp"
 #include "SongLoader.hpp"
 #include "Storage.hpp"

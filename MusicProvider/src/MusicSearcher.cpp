@@ -1,4 +1,5 @@
 #include "MusicSearcher.hpp"
+
 #include "boost/algorithm/string/predicate.hpp"
 #include <algorithm>
 #include <numeric>

@@ -1,8 +1,8 @@
 #include "pch.h"
 
-#include "boost\type_traits\make_unsigned.hpp"
-
 #include "MPEG4_SongFile.hpp"
+
+#include "boost\type_traits\make_unsigned.hpp"
 
 /*
 *	Author: Jesse Tucker

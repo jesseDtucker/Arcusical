@@ -1,10 +1,11 @@
 #include "pch.h"
 
+#include "iGenre.hpp"
+
 #include <codecvt>
 
 #include "DataBox.hpp"
 #include "MPEG4_Parser.hpp"
-#include "iGenre.hpp"
 
 /*
 *	Author: Jesse Tucker

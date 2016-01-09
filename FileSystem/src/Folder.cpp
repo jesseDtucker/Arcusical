@@ -1,4 +1,5 @@
 #include "Folder.hpp"
+
 #include <algorithm>
 #include <collection.h>
 #include <ppltasks.h>

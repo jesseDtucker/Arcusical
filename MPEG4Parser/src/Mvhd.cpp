@@ -1,8 +1,9 @@
 #include "pch.h"
 
+#include "Mvhd.hpp"
+
 #include "InvalidValueException.hpp"
 #include "MPEG4_Parser.hpp"
-#include "Mvhd.hpp"
 
 /*
 *	Author: Jesse Tucker

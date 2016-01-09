@@ -1,4 +1,5 @@
 #include "ViewModels/GuideVM.hpp"
+
 #include <algorithm>
 #include <random>
 

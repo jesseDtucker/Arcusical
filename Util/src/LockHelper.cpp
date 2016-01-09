@@ -1,4 +1,5 @@
 #include "LockHelper.hpp"
+
 #include "Arc_Assert.hpp"
 
 using namespace std;

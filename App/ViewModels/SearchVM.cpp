@@ -1,7 +1,8 @@
 #include "pch.h"
 
-#include "AlbumListControlVM.hpp"
 #include "SearchVM.hpp"
+
+#include "AlbumListControlVM.hpp"
 #include "SongListControlVM.hpp"
 
 using namespace std;

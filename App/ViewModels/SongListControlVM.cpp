@@ -1,5 +1,7 @@
 #include "pch.h"
 
+#include "SongListControlVM.hpp"
+
 #include <algorithm>
 #include <random>
 #include <vector>
@@ -8,7 +10,6 @@
 #include "Events/AlbumSelectedEvent.hpp"
 #include "Events/EventService.hpp"
 #include "Playlist.hpp"
-#include "SongListControlVM.hpp"
 #include "SongListVM.hpp"
 
 using namespace std;

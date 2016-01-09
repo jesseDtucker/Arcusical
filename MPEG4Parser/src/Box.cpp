@@ -1,9 +1,10 @@
 #include "pch.h"
 
+#include "Box.hpp"
+
 #include <typeinfo>
 
 #include "Arc_Assert.hpp"
-#include "Box.hpp"
 #include "IncompatibleBoxTypeException.hpp"
 #include "MPEG4_Parser.hpp"
 #include "Stream.hpp"

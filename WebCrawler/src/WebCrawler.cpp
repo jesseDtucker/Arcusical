@@ -1,3 +1,5 @@
+#include "WebCrawler.hpp"
+
 #include <algorithm>
 #include <codecvt>
 #include <iostream>
@@ -9,7 +11,6 @@
 #include "IFile.hpp"
 #include "IFolder.hpp"
 #include "Storage.hpp"
-#include "WebCrawler.hpp"
 
 using namespace concurrency;
 using namespace Platform;

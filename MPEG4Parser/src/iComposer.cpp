@@ -1,8 +1,9 @@
 #include "pch.h"
 
+#include "iComposer.hpp"
+
 #include "DataBox.hpp"
 #include "MPEG4_Parser.hpp"
-#include "iComposer.hpp"
 
 /*
 *	Author: Jesse Tucker

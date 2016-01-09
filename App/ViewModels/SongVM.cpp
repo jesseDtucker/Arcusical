@@ -1,5 +1,7 @@
 #include "pch.h"
 
+#include "SongVM.hpp"
+
 #include <future>
 #include <string>
 #include <unordered_map>
@@ -7,7 +9,6 @@
 #include "IPlayer.hpp"
 #include "Playlist.hpp"
 #include "Song.hpp"
-#include "SongVM.hpp"
 #include "Utility/DispatcherHelper.hpp"
 
 using namespace std;

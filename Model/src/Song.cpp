@@ -1,3 +1,5 @@
+#include "Song.hpp"
+
 #include "boost/algorithm/string/predicate.hpp"
 #include "boost/exception/all.hpp"
 #include <algorithm>
@@ -8,7 +10,6 @@
 #include "Exceptions.hpp"
 #include "IFile.hpp"
 #include "IFileReader.hpp"
-#include "Song.hpp"
 #include "Storage.hpp"
 
 #undef max

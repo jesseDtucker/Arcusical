@@ -1,8 +1,9 @@
 #include "pch.h"
 
+#include "iReleaseDate.hpp"
+
 #include "DataBox.hpp"
 #include "MPEG4_Parser.hpp"
-#include "iReleaseDate.hpp"
 
 /*
 *	Author: Jesse Tucker

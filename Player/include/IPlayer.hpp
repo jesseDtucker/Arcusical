@@ -5,12 +5,9 @@
 
 #include "MulticastDelegate.hpp"
 #include "PropertyHelper.hpp"
+#include "Song.hpp"
 
 namespace Arcusical {
-namespace Model {
-class Song;
-}
-
 namespace Player {
 class IPlayer {
  public:

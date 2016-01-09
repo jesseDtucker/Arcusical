@@ -1,4 +1,5 @@
 #include "NativeBufferWrapper.hpp"
+
 #include "CheckedCasts.hpp"
 
 namespace FileSystem {

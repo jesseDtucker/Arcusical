@@ -1,3 +1,5 @@
+#include "AlbumLoader.hpp"
+
 #include "boost/algorithm/string/predicate.hpp"
 #include "boost/functional/hash.hpp"
 #include "boost/uuid/uuid.hpp"
@@ -5,7 +7,6 @@
 #include <string>
 #include <unordered_map>
 
-#include "AlbumLoader.hpp"
 #include "Arc_Assert.hpp"
 #include "MusicTypes.hpp"
 #include "UUIDGenerator.hpp"

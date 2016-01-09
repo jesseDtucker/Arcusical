@@ -1,5 +1,6 @@
-#include "Arc_Assert.hpp"
 #include "Subscription.hpp"
+
+#include "Arc_Assert.hpp"
 
 namespace Util {
 Subscription::Subscription(UnsubscribeCallback unsubscribeCallback)

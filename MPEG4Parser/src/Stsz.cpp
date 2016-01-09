@@ -1,8 +1,9 @@
 #include "pch.h"
 
+#include "Stsz.hpp"
+
 #include "InvalidValueException.hpp"
 #include "MPEG4_Parser.hpp"
-#include "Stsz.hpp"
 
 /*
 *	Author: Jesse Tucker

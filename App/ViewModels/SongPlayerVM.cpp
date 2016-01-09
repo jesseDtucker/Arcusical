@@ -1,12 +1,13 @@
 #include "pch.h"
 
+#include "SongPlayerVM.hpp"
+
 #include <future>
 
 #include "Arc_Assert.hpp"
 #include "IPlayer.hpp"
 #include "Playlist.hpp"
 #include "Song.hpp"
-#include "SongPlayerVM.hpp"
 
 using namespace std;
 using namespace Arcusical::Model;

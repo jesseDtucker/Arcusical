@@ -1,6 +1,6 @@
-#include <String>
-
 #include "Stream.hpp"
+
+#include <String>
 
 namespace Util {
 std::string Stream::ReadString(unsigned int count) {

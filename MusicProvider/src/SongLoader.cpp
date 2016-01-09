@@ -1,3 +1,5 @@
+#include "SongLoader.hpp"
+
 #include <algorithm>
 #include <cctype>
 #include <codecvt>
@@ -19,7 +21,6 @@
 #include "MPEG4_Parser.hpp"
 #include "ParallelProcessor.hpp"
 #include "Song.hpp"
-#include "SongLoader.hpp"
 #include "Storage.hpp"
 #include "UUIDGenerator.hpp"
 

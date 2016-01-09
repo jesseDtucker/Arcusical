@@ -1,3 +1,5 @@
+#include "AlbumArtLoader.hpp"
+
 #include "boost/algorithm/string/predicate.hpp"
 #include <functional>
 #include <numeric>
@@ -6,7 +8,6 @@
 #include <unordered_map>
 #include <utility>
 
-#include "AlbumArtLoader.hpp"
 #include "DefaultAlbumArt.hpp"
 #include "FilterProcessor.hpp"
 #include "IFile.hpp"

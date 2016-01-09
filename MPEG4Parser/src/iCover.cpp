@@ -1,8 +1,9 @@
 #include "pch.h"
 
+#include "iCover.hpp"
+
 #include "DataBox.hpp"
 #include "MPEG4_Parser.hpp"
-#include "iCover.hpp"
 
 /*
 *	Author: Jesse Tucker

@@ -1,9 +1,10 @@
+#include "ALACMFTDecoder.hpp"
+
 #include <Mferror.h>
 #include <functional>
 #include <wrl\module.h>
 
 #include "ALACBitUtilities.h"
-#include "ALACMFTDecoder.hpp"
 #include "Arc_Assert.hpp"
 #include "InMemoryStream.hpp"
 #include "MPEG4_Parser.hpp"

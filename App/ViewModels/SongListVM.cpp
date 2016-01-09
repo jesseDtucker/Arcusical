@@ -1,11 +1,12 @@
 #include "pch.h"
 
+#include "ViewModels/SongListVM.hpp"
+
 #include <future>
 #include <vector>
 
 #include "Arc_Assert.hpp"
 #include "Song.hpp"
-#include "ViewModels/SongListVM.hpp"
 #include "ViewModels/SongVM.hpp"
 
 using namespace Arcusical::Player;

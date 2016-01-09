@@ -1,8 +1,9 @@
 #include "pch.h"
 
+#include "iTrackNumber.hpp"
+
 #include "DataBox.hpp"
 #include "MPEG4_Parser.hpp"
-#include "iTrackNumber.hpp"
 
 /*
 *	Author: Jesse Tucker

@@ -1,9 +1,10 @@
 #include "pch.h"
 
+#include "AlbumVM.hpp"
+
 #include <future>
 
 #include "Album.hpp"
-#include "AlbumVM.hpp"
 #include "Playlist.hpp"
 
 using namespace Windows::UI::Xaml::Data;

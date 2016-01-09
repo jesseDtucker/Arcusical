@@ -1,6 +1,7 @@
 #include "pch.h"
 
 #include "Events/AlbumSelectedEvent.hpp"
+
 #include "ViewModels/AlbumVM.hpp"
 
 namespace Arcusical {
