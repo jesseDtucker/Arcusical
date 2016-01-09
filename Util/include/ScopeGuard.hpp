@@ -1,5 +1,5 @@
 #pragma once
-#ifndef SCOPE_GUARD_HPP
+
 
 namespace Util {
 template <typename CallbackType>
@@ -26,5 +26,3 @@ ScopeGuard<CallbackType>::~ScopeGuard() {
   m_cleanupCall();
 }
 }
-
-#endif

@@ -1,6 +1,5 @@
 #pragma once
-#ifndef ALBUM_SELECTED_EVENT_HPP
-#define ALBUM_SELECTED_EVENT_HPP
+
 
 namespace Arcusical {
 namespace ViewModel {
@@ -18,5 +17,3 @@ class AlbumSelectedEvent final {
 };
 }
 }
-
-#endif

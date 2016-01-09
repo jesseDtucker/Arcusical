@@ -1,9 +1,5 @@
-﻿//
-// Guide.xaml.cpp
-// Implementation of the Guide class
-//
-
 #include "pch.h"
+
 #include "Guide.xaml.h"
 
 using namespace Arcusical;

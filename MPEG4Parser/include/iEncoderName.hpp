@@ -1,3 +1,6 @@
+#pragma once
+
+#include "Box.hpp"
 /*
 *	Author: Jesse Tucker
 *	Date: January 13th 2013
@@ -6,10 +9,6 @@
 *	information also contained within this box, likely version numbers...
 */
 
-#ifndef IENCODERNAME_HPP
-#define IENCODERNAME_HPP
-
-#include "Box.hpp"
 
 namespace Arcusical {
 namespace MPEG4 {
@@ -32,5 +31,3 @@ class iEncoderName : public Box {
 
 } /*namespace: MPEG4*/
 } /*namespace: Arcusical*/
-
-#endif

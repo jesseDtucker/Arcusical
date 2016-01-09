@@ -1,3 +1,6 @@
+#pragma once
+
+#include "ContainerBox.hpp"
 /*
 *	Author: Jesse Tucker
 *	Date: December 31th 2012
@@ -8,10 +11,6 @@
 *	This box is a container for a variety of other atoms that define the apple atoms
 */
 
-#ifndef ILST_HPP
-#define ILST_HPP
-
-#include "ContainerBox.hpp"
 
 namespace Arcusical {
 namespace MPEG4 {
@@ -26,5 +25,3 @@ class Ilst : public ContainerBox {
 
 } /*namespace: MPEG4*/
 } /*namespace: Arcusical*/
-
-#endif

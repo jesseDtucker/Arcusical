@@ -1,3 +1,7 @@
+#pragma once
+
+#include "Box.hpp"
+#include "GenreTypes.hpp"
 /*
 *	Author: Jesse Tucker
 *	Date: January 1st 2012
@@ -7,11 +11,6 @@
 *	and genre is determined by its mapping to the ID3 genres. However the actual coded value is one larger.
 */
 
-#ifndef IGENRE_HPP
-#define IGENRE_HPP
-
-#include "Box.hpp"
-#include "GenreTypes.hpp"
 
 namespace Arcusical {
 namespace MPEG4 {
@@ -36,5 +35,3 @@ class iGenre : public Box {
 
 } /*Arcusical*/
 } /*MPEG4*/
-
-#endif

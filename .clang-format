@@ -12,8 +12,8 @@ AllowAllParametersOfDeclarationOnNextLine: true
 AllowShortBlocksOnASingleLine: false
 AllowShortCaseLabelsOnASingleLine: false
 AllowShortFunctionsOnASingleLine: All
-AllowShortIfStatementsOnASingleLine: true
-AllowShortLoopsOnASingleLine: true
+AllowShortIfStatementsOnASingleLine: false
+AllowShortLoopsOnASingleLine: false
 AlwaysBreakAfterDefinitionReturnType: None
 AlwaysBreakBeforeMultilineStrings: true
 AlwaysBreakTemplateDeclarations: true
@@ -46,10 +46,12 @@ DisableFormat:   false
 ExperimentalAutoDetectBinPacking: false
 ForEachMacros:   [ foreach, Q_FOREACH, BOOST_FOREACH ]
 IncludeCategories:
-  - Regex:           '^(<.*|"boost.*\.h)'
+  - Regex:           '^"pch.h"'
     Priority:        1
-  - Regex:           '.*'
+  - Regex:           '^(<.*|"boost.*\.h)'
     Priority:        2
+  - Regex:           '.*'
+    Priority:        3
 IndentCaseLabels: true
 IndentWidth:     2
 IndentWrappedFunctionNames: false

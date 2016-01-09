@@ -1,3 +1,8 @@
+#pragma once
+
+#include "boost\assign.hpp"
+#include <string>
+#include <unordered_map>
 /*
 *	Author: Jesse Tucker
 *	Date: December 16th 2012
@@ -7,13 +12,6 @@
 *	can be extended this may not be an exhaustive list.
 */
 
-#ifndef BOX_TYPES_H
-#define BOX_TYPES_H
-
-#include <string>
-#include <unordered_map>
-
-#include "boost\assign.hpp"
 
 namespace Arcusical {
 namespace MPEG4 {
@@ -117,5 +115,3 @@ const std::unordered_map<BoxType, std::string> BoxTypeToString = boost::assign::
 
 } /*namespace: MPEG4*/
 } /*namespace: Arcusical*/
-
-#endif /*!Box_TYPES_H*/

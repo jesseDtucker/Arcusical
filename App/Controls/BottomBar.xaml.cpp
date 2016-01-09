@@ -1,13 +1,8 @@
-﻿//
-// TopBar.xaml.cpp
-// Implementation of the TopBar class
-//
-
 #include "pch.h"
-#include "BottomBar.xaml.h"
 
 #include <cmath>
 
+#include "BottomBar.xaml.h"
 #include "Events/AlbumSelectedEvent.hpp"
 #include "Events/EventService.hpp"
 #include "Events/SearchSelectedEvent.hpp"

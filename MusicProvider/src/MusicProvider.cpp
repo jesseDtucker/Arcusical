@@ -1,5 +1,3 @@
-#define NOMINMAX
-
 #include "boost/algorithm/string/predicate.hpp"
 #include "boost/functional/hash.hpp"
 #include "boost/optional.hpp"

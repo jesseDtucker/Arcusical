@@ -1,5 +1,4 @@
-#ifndef MULTICAST_DELEGATE_HPP
-#define MULTICAST_DELEGATE_HPP
+#pragma once
 
 #include <memory>
 #include <unordered_set>
@@ -54,5 +53,3 @@ void MulticastDelegate<T>::operator-=(const Delegate<T>& rhs) {
   m_delegates.erase(rhs);
 }
 }
-
-#endif

@@ -1,3 +1,6 @@
+#pragma once
+
+#include "Box.hpp"
 /*
 *	Author: Jesse Tucker
 *	Date: January 19th 2013
@@ -7,10 +10,6 @@
 *	It contains no data that is unique to itself.
 */
 
-#ifndef CONTAINER_BOX_HPP
-#define CONTAINER_BOX_HPP
-
-#include "Box.hpp"
 
 namespace Arcusical {
 namespace MPEG4 {
@@ -29,5 +28,3 @@ class ContainerBox : public Box {
 
 } /*namespace: MPEG4*/
 } /*namespace: Arcusical*/
-
-#endif  // !CONTAINER_BOX_HPP

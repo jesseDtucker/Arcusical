@@ -1,11 +1,14 @@
 #include "LocalMusicCache.hpp"
-
 #include "boost\uuid\string_generator.hpp"
 #include "boost\uuid\uuid_io.hpp"
 #include <codecvt>
 
 #include "Album.hpp"
 #include "Arc_Assert.hpp"
+#include "CachedAlbum.pb.h"
+#include "CachedAlbumList.pb.h"
+#include "CachedSong.pb.h"
+#include "CachedSongList.pb.h"
 #include "IAlbumToSongMapper.hpp"
 #include "IFile.hpp"
 #include "IFolder.hpp"
@@ -13,12 +16,6 @@
 #include "LockedPtrHelper.hpp"
 #include "Song.hpp"
 #include "Storage.hpp"
-
-#include "CachedAlbum.pb.h"
-#include "CachedAlbumList.pb.h"
-#include "CachedSong.pb.h"
-#include "CachedSongList.pb.h"
-
 using namespace std;
 using namespace FileSystem;
 using namespace Arcusical;

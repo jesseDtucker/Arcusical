@@ -1,13 +1,7 @@
-﻿//
-// MainPage.xaml.h
-// Declaration of the MainPage class.
-//
-
 #pragma once
 
-#include "Pages/MainPage.g.h"
-
 #include "AsyncProcessor.hpp"
+#include "Pages/MainPage.g.h"
 #include "Subscription.hpp"
 #include "ViewModels/AlbumListControlVM.hpp"
 #include "ViewModels/GuideVM.hpp"
@@ -17,14 +11,14 @@
 #include "ViewModels/VolumeSilderVM.hpp"
 
 namespace Arcusical {
-namespace MusicProvider {
-class MusicSearcher;
-class MusicProvider;
-}
-namespace Player {
-class IPlayer;
-class Playlist;
-}
+  namespace MusicProvider {
+  class MusicSearcher;
+  class MusicProvider;
+  }
+  namespace Player {
+  class IPlayer;
+  class Playlist;
+  }
 }
 
 namespace Arcusical {

@@ -1,3 +1,8 @@
+#include "pch.h"
+
+#include "DataBox.hpp"
+#include "MPEG4_Parser.hpp"
+#include "iPurchaseDate.hpp"
 /*
 *	File: iPurchaseDate.hpp
 *	Author: Jesse Tucker
@@ -5,12 +10,6 @@
 *
 *	Description: This box is an itunes non-standard box that contains a std::string with the purchase date.
 */
-
-#include "pch.h"
-
-#include "DataBox.hpp"
-#include "MPEG4_Parser.hpp"
-#include "iPurchaseDate.hpp"
 
 using namespace std;
 

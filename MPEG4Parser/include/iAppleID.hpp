@@ -1,3 +1,6 @@
+#pragma once
+
+#include "Box.hpp"
 /*
 *	File: iAppleID.hpp
 *	Author: Jesse Tucker
@@ -8,10 +11,6 @@
 *	not appear to update if person changes their ID unless the person edits the metadata after the change.
 */
 
-#ifndef IAPPLE_ID_HPP
-#define IAPPLE_ID_HPP
-
-#include "Box.hpp"
 
 namespace Arcusical {
 namespace MPEG4 {
@@ -34,5 +33,3 @@ class iAppleID : public Box {
 
 } /*namespace: MPEG4*/
 } /*namespace: Arcusical*/
-
-#endif

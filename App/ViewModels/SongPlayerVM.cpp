@@ -7,7 +7,6 @@
 #include "Playlist.hpp"
 #include "Song.hpp"
 #include "SongPlayerVM.hpp"
-
 using namespace std;
 using namespace Arcusical::Model;
 using namespace Arcusical::Player;

@@ -3,7 +3,6 @@
 #include "AlbumListControlVM.hpp"
 #include "SearchVM.hpp"
 #include "SongListControlVM.hpp"
-
 using namespace std;
 
 using namespace Arcusical::MusicProvider;

@@ -1,3 +1,7 @@
+#include "pch.h"
+
+#include "ContainerBox.hpp"
+#include "MPEG4_Parser.hpp"
 /*
 *	Author: Jesse Tucker
 *	Date: January 19th 2013
@@ -6,11 +10,6 @@
 *	Description: A special type of box that contains other boxes, and ONLY other boxes.
 *	It contains no data that is unique to itself.
 */
-
-#include "pch.h"
-
-#include "ContainerBox.hpp"
-#include "MPEG4_Parser.hpp"
 
 namespace Arcusical {
 namespace MPEG4 {

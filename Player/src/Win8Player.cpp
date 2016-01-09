@@ -9,7 +9,6 @@
 #include "Song.hpp"
 #include "Storage.hpp"
 #include "Win8Player.hpp"
-
 using namespace ATL;
 using namespace Windows::Media;
 using namespace Microsoft::WRL;
@@ -216,7 +215,8 @@ ULONG MediaEngineNotify::Release() {
 
 HRESULT MediaEngineNotify::QueryInterface(_In_ REFIID riid, _Out_ LPVOID* ppvObj) {
   // Always set out parameter to NULL, validating it first.
-  if (NULL == ppvObj) return E_INVALIDARG;
+  if (NULL == ppvObj)
+    return E_INVALIDARG;
   *ppvObj = NULL;
 
   // not sure what the riid is for IMFMediaEngineNotify is so I'm not checking it atm

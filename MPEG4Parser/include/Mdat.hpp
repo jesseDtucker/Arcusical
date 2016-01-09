@@ -1,3 +1,6 @@
+#pragma once
+
+#include "DataBox.hpp"
 /*
 *	Author: Jesse Tucker
 *	Date: January 3rd 2013
@@ -7,10 +10,6 @@
 *	media type.
 */
 
-#ifndef MDAT_HPP
-#define MDAT_HPP
-
-#include "DataBox.hpp"
 
 namespace Arcusical {
 namespace MPEG4 {
@@ -26,5 +25,3 @@ class Mdat : public Box {
 
 } /*namespace: MPEG4*/
 } /*namespace: Arcusical*/
-
-#endif

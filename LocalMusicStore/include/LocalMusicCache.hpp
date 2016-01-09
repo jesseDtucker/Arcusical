@@ -1,6 +1,6 @@
-#ifndef LOCAL_MUSIC_CACHE_HPP
-#define LOCAL_MUSIC_CACHE_HPP
+#pragma once
 
+#include "boost\uuid\uuid.hpp"
 #include <atomic>
 #include <condition_variable>
 #include <future>
@@ -9,7 +9,6 @@
 #include <unordered_map>
 #include <windows.h>
 
-#include "boost\uuid\uuid.hpp"
 #include "IAlbumToSongMapper.hpp"
 #include "LockHelper.hpp"
 #include "MusicTypes.hpp"
@@ -77,5 +76,3 @@ class LocalMusicCache final : public Model::IAlbumToSongMapper {
 };
 }
 }
-
-#endif

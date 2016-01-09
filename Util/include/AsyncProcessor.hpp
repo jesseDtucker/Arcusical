@@ -1,6 +1,4 @@
 #pragma once
-#ifndef ASYNC_PROCESSOR_HPP
-#define ASYNC_PROCESSOR_HPP
 
 #include <algorithm>
 #include <functional>
@@ -228,5 +226,3 @@ void Util::AsyncProcessor<Input, Output>::Append(const Input& value) {
 
 typedef Util::AsyncProcessor<std::function<void()>, void> BackgroundWorker;
 }
-
-#endif

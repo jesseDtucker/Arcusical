@@ -1,3 +1,6 @@
+#pragma once
+
+#include "UnknownBox.hpp"
 /*
 *	Author: Jesse Tucker
 *	Date: January 1st 2013
@@ -5,10 +8,6 @@
 *	however no hard data exists. This is treated as a specialized unknown box
 */
 
-#ifndef ICPIL_HPP
-#define ICPIL_HPP
-
-#include "UnknownBox.hpp"
 
 namespace Arcusical {
 namespace MPEG4 {
@@ -21,5 +20,3 @@ class iCpil : public UnknownBox {
 
 } /*namespace: MPEG4*/
 } /*namespace: Arcusical*/
-
-#endif

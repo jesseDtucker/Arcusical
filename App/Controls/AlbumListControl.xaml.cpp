@@ -1,8 +1,3 @@
-﻿//
-// AlbumListControl.xaml.cpp
-// Implementation of the AlbumListControl class
-//
-
 #include "pch.h"
 
 #include <algorithm>

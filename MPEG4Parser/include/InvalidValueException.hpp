@@ -1,3 +1,6 @@
+#pragma once
+
+#include "BoxParsingException.hpp"
 /*
 *	Author: Jesse Tucker
 *	Date: December 24th 2012
@@ -7,10 +10,6 @@
 *	from a box is not allowed
 */
 
-#include "BoxParsingException.hpp"
-
-#ifndef INVALID_VALUE_EXCEPTION_HPP
-#define INVALID_VALUE_EXCEPTION_HPP
 
 namespace Arcusical {
 namespace MPEG4 {
@@ -22,5 +21,3 @@ class InvalidValueException : public BoxParsingException {
 
 } /*Arcusical*/
 } /*MPEG4*/
-
-#endif

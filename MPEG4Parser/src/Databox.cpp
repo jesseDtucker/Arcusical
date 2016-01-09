@@ -1,11 +1,3 @@
-/*
-*	Author: Jesse Tucker
-*	Date: December 31st 2012
-*	Name: BoxFactory.hpp
-*
-*	Description: Defines a general purpose box that contains nothing but raw data.
-*/
-
 #include "pch.h"
 
 #include <memory>
@@ -13,6 +5,13 @@
 #include "DataBox.hpp"
 #include "IncompatibleBoxTypeException.hpp"
 #include "MPEG4_Parser.hpp"
+/*
+*	Author: Jesse Tucker
+*	Date: December 31st 2012
+*	Name: BoxFactory.hpp
+*
+*	Description: Defines a general purpose box that contains nothing but raw data.
+*/
 
 using namespace std;
 

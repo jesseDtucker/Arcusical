@@ -1,6 +1,4 @@
 #pragma once
-#ifndef WHAT_IS_PLAYING_VM_HPP
-#define WHAT_IS_PLAYING_VM_HPP
 
 #include <memory>
 
@@ -35,5 +33,3 @@ namespace ViewModel {
 };
 }
 }
-
-#endif

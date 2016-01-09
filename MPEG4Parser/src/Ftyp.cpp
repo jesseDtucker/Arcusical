@@ -1,3 +1,8 @@
+#include "pch.h"
+
+#include "Ftyp.hpp"
+#include "IncompatibleBoxTypeException.hpp"
+#include "MPEG4_Parser.hpp"
 /*
 *	Author: Jesse Tucker
 *	Date: December 23rd 2012
@@ -5,13 +10,6 @@
 *
 *	Description: Defines the ftyp box. Definition found in ISO 14496-12 standard, page 5.
 */
-
-#include "pch.h"
-
-#include "Ftyp.hpp"
-#include "MPEG4_Parser.hpp"
-
-#include "IncompatibleBoxTypeException.hpp"
 
 using namespace std;
 

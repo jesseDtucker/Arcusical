@@ -1,5 +1,4 @@
-#ifndef XAML_MACROS_HPP
-#define XAML_MACROS_HPP
+#pragma once
 
 #include "Arc_Assert.hpp"
 #include "DispatcherHelper.hpp"
@@ -50,5 +49,3 @@ void targetClass## ::VM::set(type vm) \
     this->DataContext = m_viewModel;                       \
   \
 }
-
-#endif

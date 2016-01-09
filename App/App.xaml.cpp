@@ -1,11 +1,4 @@
-﻿//
-// App.xaml.cpp
-// Implementation of the App class.
-//
-
-#include "pch.h"
-
-#include "Pages/MainPage.xaml.h"
+﻿#include "pch.h"
 
 #include <condition_variable>
 #include <future>
@@ -17,6 +10,7 @@
 #include "AsyncProcessor.hpp"
 #include "MusicProvider.hpp"
 #include "MusicSearcher.hpp"
+#include "Pages/MainPage.xaml.h"
 #include "Playlist.hpp"
 #include "Storage.hpp"
 

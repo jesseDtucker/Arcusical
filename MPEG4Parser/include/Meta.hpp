@@ -1,3 +1,6 @@
+#pragma once
+
+#include "Box.hpp"
 /*
 *	Author: Jesse Tucker
 *	Date: December 30th 2012
@@ -7,10 +10,6 @@
 *	of the ISO 14496-12 standard. This box is a container for various types of metadata.
 */
 
-#ifndef META_HPP
-#define META_HPP
-
-#include "Box.hpp"
 
 namespace Arcusical {
 namespace MPEG4 {
@@ -33,5 +32,3 @@ class Meta : public Box {
 
 } /*namespace: MPEG4*/
 } /*namespace: Arcusical*/
-
-#endif

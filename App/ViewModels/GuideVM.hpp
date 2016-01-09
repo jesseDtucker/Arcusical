@@ -1,6 +1,4 @@
 #pragma once
-#ifndef GUIDE_VM_HPP
-#define GUIDE_VM_HPP
 
 #include <memory>
 
@@ -33,5 +31,3 @@ namespace ViewModel {
 };
 }
 }
-
-#endif

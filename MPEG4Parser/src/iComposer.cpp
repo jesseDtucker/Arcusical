@@ -1,15 +1,14 @@
+#include "pch.h"
+
+#include "DataBox.hpp"
+#include "MPEG4_Parser.hpp"
+#include "iComposer.hpp"
 /*
 *	Author: Jesse Tucker
 *	Date: January 13th 2013
 *	Description: Itunes specific box. No publicly available documentation. Contains
 *	the name of the Composer.
 */
-
-#include "pch.h"
-
-#include "DataBox.hpp"
-#include "MPEG4_Parser.hpp"
-#include "iComposer.hpp"
 
 using namespace std;
 

@@ -1,6 +1,4 @@
 #pragma once
-#ifndef FILTER_PROCESSOR_HPP
-#define FILTER_PROCESSOR_HPP
 
 #include <algorithm>
 
@@ -112,5 +110,3 @@ void Util::FilterProcessor<T>::ConnectMatchingBuffer(InputBuffer<T>* matchingBuf
   m_matchingBuffer = matchingBuffer;
 }
 }
-
-#endif

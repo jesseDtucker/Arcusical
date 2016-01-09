@@ -1,3 +1,8 @@
+#include "pch.h"
+
+#include "DataBox.hpp"
+#include "MPEG4_Parser.hpp"
+#include "iDiskNumber.hpp"
 /*
 *	Author: Jesse Tucker
 *	Date: January 1st 2012
@@ -6,12 +11,6 @@
 *	Description: Itunes specific box. Contiains information on the disk number. Includes both the number
 *	for this disk and the disk number for the album. ie: track x of y.
 */
-
-#include "pch.h"
-
-#include "DataBox.hpp"
-#include "MPEG4_Parser.hpp"
-#include "iDiskNumber.hpp"
 
 using namespace std;
 

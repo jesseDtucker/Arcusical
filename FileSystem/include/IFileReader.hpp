@@ -1,5 +1,4 @@
 #pragma once
-#ifndef FILE_READER_HPP
 
 #include <condition_variable>
 #include <memory>
@@ -29,5 +28,3 @@ class EXPORT IFileReader : public Util::Stream {
   virtual void Advance(unsigned int count) = 0;
 };
 }
-
-#endif

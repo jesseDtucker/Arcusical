@@ -1,6 +1,5 @@
 #pragma once
-#ifndef IS_PLAYING_TO_ICON_PATH_HPP
-#define IS_PLAYING_TO_ICON_PATH_HPP
+
 
 namespace Arcusical {
 namespace Converters {
@@ -18,5 +17,3 @@ ref class IsPlayingToIconPath sealed : public Windows::UI::Xaml::Data::IValueCon
 };
 }
 }
-
-#endif

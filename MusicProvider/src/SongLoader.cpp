@@ -1,17 +1,10 @@
-#define PARSER_VERSOBE 0
-
-#if PARSER_VERSOBE
-#include <sstream>
-#endif
-
-#include "SongLoader.hpp"
-
 #include <algorithm>
 #include <cctype>
 #include <codecvt>
 #include <functional>
 #include <ppltasks.h>
 #include <random>
+#include <sstream>
 #include <string>
 #include <unordered_map>
 #include <unordered_set>
@@ -26,8 +19,13 @@
 #include "MPEG4_Parser.hpp"
 #include "ParallelProcessor.hpp"
 #include "Song.hpp"
+#include "SongLoader.hpp"
 #include "Storage.hpp"
 #include "UUIDGenerator.hpp"
+#define PARSER_VERSOBE 0
+
+#if PARSER_VERSOBE
+#endif
 
 using namespace Arcusical;
 using namespace Arcusical::Model;

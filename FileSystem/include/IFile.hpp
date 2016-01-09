@@ -1,5 +1,4 @@
-#ifndef IFILE_HPP
-#define IFILE_HPP
+#pragma once
 
 #include <memory>
 #include <string>
@@ -30,5 +29,3 @@ class EXPORT IFile {
 #endif
 };
 }
-
-#endif

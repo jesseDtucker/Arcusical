@@ -1,5 +1,4 @@
-#ifndef SONG_VM_HPP
-#define SONG_VM_HPP
+#pragma once
 
 #include <memory>
 
@@ -67,5 +66,3 @@ ref struct SongStreamVM sealed {
 
 } /* ViewModel */
 } /* Arcusical */
-
-#endif

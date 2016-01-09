@@ -1,6 +1,4 @@
 #pragma once
-#ifndef SEARCH_HPP
-#define SEARCH_HPP
 
 #include "CancellationToken.hpp"
 #include "PropertyHelper.hpp"
@@ -45,5 +43,3 @@ namespace ViewModel {
 };
 }
 }
-
-#endif

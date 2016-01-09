@@ -1,3 +1,8 @@
+#include "pch.h"
+
+#include "InvalidValueException.hpp"
+#include "MPEG4_Parser.hpp"
+#include "Stsc.hpp"
 /*
 *	Author: Jesse Tucker
 *	Date: December 30th 2012
@@ -7,12 +12,6 @@
 *	ISO 14496-12 standard. It is the Sample to chunk box.
 *	It defines the number of samples in each chunk.
 */
-
-#include "pch.h"
-
-#include "InvalidValueException.hpp"
-#include "MPEG4_Parser.hpp"
-#include "Stsc.hpp"
 
 namespace Arcusical {
 namespace MPEG4 {

@@ -1,3 +1,6 @@
+#pragma once
+
+#include "Box.hpp"
 /*
 *	Author: Jesse Tucker
 *	Date: December 30th 2012
@@ -7,10 +10,6 @@
 *	Contains information describing the mediums sample information.
 */
 
-#ifndef STSD_HPP
-#define STSD_HPP
-
-#include "Box.hpp"
 
 namespace Arcusical {
 namespace MPEG4 {
@@ -28,5 +27,3 @@ class Stsd : public Box {
 
 } /*namespace: MPEG4*/
 } /*namespace: Arcusical*/
-
-#endif  // !BOX_H

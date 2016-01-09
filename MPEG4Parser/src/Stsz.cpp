@@ -1,3 +1,8 @@
+#include "pch.h"
+
+#include "InvalidValueException.hpp"
+#include "MPEG4_Parser.hpp"
+#include "Stsz.hpp"
 /*
 *	Author: Jesse Tucker
 *	Date: December 30th 2012
@@ -7,12 +12,6 @@
 *	This box is defined on page 39 of the ISO 14496-12 standard. This contains
 *	either a value or a table of values that define the sample sizes.
 */
-
-#include "pch.h"
-
-#include "InvalidValueException.hpp"
-#include "MPEG4_Parser.hpp"
-#include "Stsz.hpp"
 
 namespace Arcusical {
 namespace MPEG4 {

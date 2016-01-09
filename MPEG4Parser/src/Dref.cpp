@@ -1,3 +1,8 @@
+#include "pch.h"
+
+#include "Dref.hpp"
+#include "InvalidValueException.hpp"
+#include "MPEG4_Parser.hpp"
 /*
 *	Author: Jesse Tucker
 *	Date: December 29th 2012
@@ -8,12 +13,6 @@
 *	Url box and the Urn box. Essentially this is just a container, just with somewhat different
 *	parsing rules. See standard for specifics.
 */
-
-#include "pch.h"
-
-#include "Dref.hpp"
-#include "InvalidValueException.hpp"
-#include "MPEG4_Parser.hpp"
 
 using namespace std;
 

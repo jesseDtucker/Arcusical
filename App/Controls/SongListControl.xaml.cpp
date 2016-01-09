@@ -1,8 +1,3 @@
-﻿//
-// SongListControl.xaml.cpp
-// Implementation of the SongListControl class
-//
-
 #include "pch.h"
 
 #include "SongListControl.xaml.h"

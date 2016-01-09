@@ -17,7 +17,6 @@
 #include "MPEG4_Parser.hpp"
 #include "MusicTypes.hpp"
 #include "Storage.hpp"
-
 using std::accumulate;
 using std::any_of;
 using std::begin;

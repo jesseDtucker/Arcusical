@@ -1,7 +1,6 @@
 #include "pch.h"
 
 #include "AlbumListControlVM.hpp"
-
 using namespace Platform::Collections;
 using namespace std;
 using namespace Windows::Foundation::Collections;

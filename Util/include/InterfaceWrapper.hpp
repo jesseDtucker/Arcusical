@@ -1,8 +1,7 @@
 #pragma once
-#ifndef INTERFACE_WRAPPER_HPP
-#define INTERFACE_WRAPPER_HPP
 
 #include <functional>
+
 #include "Arc_Assert.hpp"
 
 //////////////////////////////////////////////////////////////////////////
@@ -182,5 +181,3 @@ class InterfaceWrapper : public MethodWrappers... {
  private:
 };
 }
-
-#endif

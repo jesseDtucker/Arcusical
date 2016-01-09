@@ -1,5 +1,4 @@
-#ifndef SONG_LIST_CONTROL_VM_HPP
-#define SONG_LIST_CONTROL_VM_HPP
+#pragma once
 
 #include "AsyncProcessor.hpp"
 #include "Subscription.hpp"
@@ -29,5 +28,3 @@ ref class SongListVM;
 };
 }
 }
-
-#endif

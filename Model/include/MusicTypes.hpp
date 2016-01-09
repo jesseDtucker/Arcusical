@@ -1,6 +1,4 @@
 #pragma once
-#ifndef MUSIC_TYPES_HPP
-#define MUSIC_TYPES_HPP
 
 #include "boost\functional\hash.hpp"
 #include "boost\uuid\uuid.hpp"
@@ -54,5 +52,3 @@ struct AlbumCollectionChanges {
 
 } /* MusicProvider */
 } /* Arcusical */
-
-#endif

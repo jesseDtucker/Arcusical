@@ -1,7 +1,6 @@
 #include "pch.h"
 
 #include "AlternateConverter.hpp"
-
 using namespace Arcusical::Converters;
 using namespace Windows::UI::Xaml::Media;
 using namespace Windows::UI;

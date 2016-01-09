@@ -1,6 +1,4 @@
 #pragma once
-#ifndef PARALLEL_PROCESSOR_HPP
-#define PARALLEL_PROCESSOR_HPP
 
 #include <future>
 #include <queue>
@@ -128,5 +126,3 @@ void AccumlatingWorkBuffer<Output>::Complete() {
   }
 }
 }
-
-#endif

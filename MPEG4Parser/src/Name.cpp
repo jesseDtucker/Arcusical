@@ -1,3 +1,7 @@
+#include "pch.h"
+
+#include "MPEG4_Parser.hpp"
+#include "Name.hpp"
 /*
 *	Author: Jesse Tucker
 *	Date: December 31st 2012
@@ -7,11 +11,6 @@
 *	This is the name used to identify the data contained within this atom. No idea why custom atoms
 *	weren't used here...
 */
-
-#include "pch.h"
-
-#include "MPEG4_Parser.hpp"
-#include "Name.hpp"
 
 namespace Arcusical {
 namespace MPEG4 {

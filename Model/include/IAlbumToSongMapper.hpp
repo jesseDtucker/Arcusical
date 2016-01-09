@@ -1,5 +1,4 @@
 #pragma once
-#ifndef IALBUM_TO_SONG_MAPPER
 
 #include "boost\uuid\uuid.hpp"
 #include <memory>
@@ -21,5 +20,3 @@ class IAlbumToSongMapper {
 };
 }
 }
-
-#endif

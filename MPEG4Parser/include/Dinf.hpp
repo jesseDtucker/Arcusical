@@ -1,3 +1,6 @@
+#pragma once
+
+#include "ContainerBox.hpp"
 /*
 *	Author: Jesse Tucker
 *	Date: December 29th 2012
@@ -8,10 +11,6 @@
 *	it contains hold information on the location of media information in a track.
 */
 
-#ifndef DINF_HPP
-#define DINF_HPP
-
-#include "ContainerBox.hpp"
 
 namespace Arcusical {
 namespace MPEG4 {
@@ -26,5 +25,3 @@ class Dinf : public ContainerBox {
 
 } /*namespace: MPEG4*/
 } /*namespace: Arcusical*/
-
-#endif

@@ -1,3 +1,6 @@
+#pragma once
+
+#include "UnknownBox.hpp"
 /*
 *	Author: Jesse Tucker
 *	Date: January 1st 2013
@@ -7,10 +10,6 @@
 *	I believe this box is called a flavour box...
 */
 
-#ifndef IFLVR_HPP
-#define IFLVR_HPP
-
-#include "UnknownBox.hpp"
 
 namespace Arcusical {
 namespace MPEG4 {
@@ -23,5 +22,3 @@ class iFlvr : public UnknownBox {
 
 } /*namespace: MPEG4*/
 } /*namespace: Arcusical*/
-
-#endif

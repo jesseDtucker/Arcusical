@@ -1,3 +1,7 @@
+#pragma once
+
+#include "Box.hpp"
+#include "HandlerTypes.hpp"
 /*
 *	Author: Jesse Tucker
 *	Date: December 29th 2012
@@ -7,11 +11,6 @@
 *	The HDLR is a handler reference box.
 */
 
-#ifndef HDLR_HPP
-#define HDLR_HPP
-
-#include "Box.hpp"
-#include "HandlerTypes.hpp"
 
 namespace Arcusical {
 namespace MPEG4 {
@@ -39,5 +38,3 @@ class Hdlr : public Box {
 
 } /*namespace: MPEG4*/
 } /*namespace: Arcusical*/
-
-#endif

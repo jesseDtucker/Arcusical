@@ -1,3 +1,6 @@
+#pragma once
+
+#include "Box.hpp"
 /*
 *	Author: Jesse Tucker
 *	Date: January 1st 2012
@@ -7,10 +10,6 @@
 *	for this disk and the disk number for the album. ie: track x of y.
 */
 
-#ifndef IDISK_NUMBER_HPP
-#define IDISK_NUMBER_HPP
-
-#include "Box.hpp"
 
 namespace Arcusical {
 namespace MPEG4 {
@@ -35,5 +34,3 @@ class iDiskNumber : public Box {
 
 } /*Arcusical*/
 } /*MPEG4*/
-
-#endif

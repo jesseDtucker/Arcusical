@@ -1,6 +1,4 @@
 #pragma once
-#ifndef STREAM_HPP
-#define STREAM_HPP
 
 #include <stdint.h>
 #include <type_traits>
@@ -133,5 +131,3 @@ void Stream::ReadRawBytes(unsigned int count, T& destination) {
 
 #pragma endregion
 }
-
-#endif

@@ -1,6 +1,4 @@
 #pragma once
-#ifndef CANCELLATION_TOKEN_HPP
-#define CANCELLATION_TOKEN_HPP
 
 #include <atomic>
 #include <memory>
@@ -20,5 +18,3 @@ class CancellationToken final {
 
 typedef std::shared_ptr<CancellationToken> CancellationTokenRef;
 }
-
-#endif

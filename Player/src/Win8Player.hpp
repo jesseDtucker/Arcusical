@@ -1,6 +1,4 @@
 #pragma once
-#ifndef WIN_8_PLAYER
-#define WIN_8_PLAYER
 
 #include <Mfmediaengine.h>
 #include <atlcomcli.h>
@@ -75,5 +73,3 @@ class Win8Player final : public IPlayer {
 };
 }
 }
-
-#endif

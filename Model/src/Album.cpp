@@ -6,7 +6,6 @@
 #include "Arc_Assert.hpp"
 #include "DefaultAlbumArt.hpp"
 #include "IAlbumToSongMapper.hpp"
-
 using namespace std;
 
 namespace Arcusical {

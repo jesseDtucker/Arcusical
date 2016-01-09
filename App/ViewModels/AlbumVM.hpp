@@ -1,5 +1,4 @@
-#ifndef ALBUM_VM_HPP
-#define ALBUM_VM_HPP
+#pragma once
 
 #include <memory>
 
@@ -50,5 +49,3 @@ namespace ViewModel {
 };
 }
 }
-
-#endif

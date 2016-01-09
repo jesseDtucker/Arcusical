@@ -1,3 +1,7 @@
+#include "pch.h"
+
+#include "MPEG4_Parser.hpp"
+#include "Mdia.hpp"
 /*
 *	Author: Jesse Tucker
 *	Date: December 29th 2012
@@ -6,11 +10,6 @@
 *	Description: Media box. A container for other boxes. Defined on page 20 of
 *	the ISO 14496-12 standard.
 */
-
-#include "pch.h"
-
-#include "MPEG4_Parser.hpp"
-#include "Mdia.hpp"
 
 namespace Arcusical {
 namespace MPEG4 {

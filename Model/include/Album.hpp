@@ -1,17 +1,14 @@
 #pragma once
 
-#ifndef ALBUM_HPP
-#define ALBUM_HPP
-
+#include "boost\uuid\uuid.hpp"
 #include <memory>
 #include <set>
 #include <string>
 #include <vector>
 
-#include "boost\uuid\uuid.hpp"
-
 #include "Song.hpp"
 #include "Util.hpp"
+
 
 namespace Arcusical {
 namespace Model {
@@ -40,5 +37,3 @@ class Album final {
 };
 }
 }
-
-#endif

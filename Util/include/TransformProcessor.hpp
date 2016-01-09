@@ -1,6 +1,4 @@
 #pragma once
-#ifndef TRANSFORM_PROCESSOR_HPP
-#define TRANSFORM_PROCESSOR_HPP
 
 #include <algorithm>
 
@@ -94,5 +92,3 @@ void Util::TransformProcessor<Input, Output>::ConnectBuffer(InputBuffer<Output>*
   m_outputBuffer = outputBuffer;
 }
 }
-
-#endif

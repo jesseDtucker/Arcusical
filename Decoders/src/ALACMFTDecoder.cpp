@@ -1,7 +1,6 @@
 #include <Mferror.h>
 #include <functional>
 #include <wrl\module.h>
-#include "mfapi.h"
 
 #include "ALACBitUtilities.h"
 #include "ALACMFTDecoder.hpp"
@@ -9,7 +8,7 @@
 #include "InMemoryStream.hpp"
 #include "MPEG4_Parser.hpp"
 #include "ScopeGuard.hpp"
-
+#include "mfapi.h"
 using namespace Microsoft::WRL;
 
 #define VERBOSE 1

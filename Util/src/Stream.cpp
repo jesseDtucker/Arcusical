@@ -1,7 +1,6 @@
 #include <String>
 
 #include "Stream.hpp"
-
 namespace Util {
 std::string Stream::ReadString(unsigned int count) {
   std::string value;

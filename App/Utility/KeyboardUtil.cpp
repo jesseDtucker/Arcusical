@@ -1,7 +1,6 @@
 #include "pch.h"
 
 #include "KeyboardUtil.hpp"
-
 bool IsInRange(int value, int lower, int upper) { return value >= lower && value <= upper; }
 
 bool Arcusical::IsAlphaNumeric(Windows::System::VirtualKey key) {

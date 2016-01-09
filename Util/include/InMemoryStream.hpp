@@ -1,6 +1,4 @@
 #pragma once
-#ifndef IN_MEMORY_STREAM_HPP
-#define IN_MEMORY_STREAM_HPP
 
 #include "Stream.hpp"
 
@@ -28,5 +26,3 @@ class InMemoryStream final : public Stream {
   bool m_ownsData;
 };
 }
-
-#endif

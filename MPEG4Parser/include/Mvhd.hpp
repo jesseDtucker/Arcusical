@@ -1,3 +1,6 @@
+#pragma once
+
+#include "Box.hpp"
 /*
 *	Author: Jesse Tucker
 *	Date: December 27th 2012
@@ -7,10 +10,6 @@
 *	ISO 14496-12. Contains media independant meta data.
 */
 
-#ifndef MVHD_H
-#define MVHD_H
-
-#include "Box.hpp"
 
 namespace Arcusical {
 namespace MPEG4 {
@@ -49,5 +48,3 @@ class Mvhd : public Box {
 
 } /*namespace: MPEG4*/
 } /*namespace: Arcusical*/
-
-#endif

@@ -1,3 +1,6 @@
+#pragma once
+
+#include "Box.hpp"
 /*
 *	Author: Jesse Tucker
 *	Date: December 29th 2012
@@ -9,10 +12,6 @@
 *	in this box
 */
 
-#ifndef URL_HPP
-#define URL_HPP
-
-#include "Box.hpp"
 
 namespace Arcusical {
 namespace MPEG4 {
@@ -37,5 +36,3 @@ class Url : public Box {
 
 } /*namespace: MPEG4*/
 } /*namespace: Arcusical*/
-
-#endif

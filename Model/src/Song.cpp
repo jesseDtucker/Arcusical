@@ -10,7 +10,6 @@
 #include "IFileReader.hpp"
 #include "Song.hpp"
 #include "Storage.hpp"
-
 #undef max
 #undef min
 

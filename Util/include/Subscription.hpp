@@ -1,5 +1,4 @@
-#ifndef SUBSCRIPTION_HPP
-#define SUBSCRIPTION_HPP
+#pragma once
 
 #include <memory>
 
@@ -29,5 +28,3 @@ class Subscription final {
   UnsubscribeCallback m_unsubscribeCallback;
 };
 }
-
-#endif

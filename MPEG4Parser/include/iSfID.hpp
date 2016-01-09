@@ -1,3 +1,6 @@
+#pragma once
+
+#include "UnknownBox.hpp"
 /*
 *	Author: Jesse Tucker
 *	Date: January 1st 2013
@@ -7,10 +10,6 @@
 *	will be treated as unknown.
 */
 
-#ifndef ISFID_HPP
-#define ISFID_HPP
-
-#include "UnknownBox.hpp"
 
 namespace Arcusical {
 namespace MPEG4 {
@@ -23,5 +22,3 @@ class iSfID : public UnknownBox {
 
 } /*namespace: MPEG4*/
 } /*namespace: Arcusical*/
-
-#endif

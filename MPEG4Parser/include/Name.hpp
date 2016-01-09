@@ -1,3 +1,8 @@
+#pragma once
+
+#include <string>
+
+#include "Box.hpp"
 /*
 *	Author: Jesse Tucker
 *	Date: December 31st 2012
@@ -8,11 +13,6 @@
 *	weren't used here...
 */
 
-#ifndef NAME_HPP
-#define NAME_HPP
-
-#include <string>
-#include "Box.hpp"
 
 namespace Arcusical {
 namespace MPEG4 {
@@ -35,5 +35,3 @@ class Name : public Box {
 
 } /*MPEG4*/
 } /*Arcusical*/
-
-#endif

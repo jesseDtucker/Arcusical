@@ -1,3 +1,6 @@
+#pragma once
+
+#include "Box.hpp"
 /*
 *	Author: Jesse Tucker
 *	Date: December 28th 2012
@@ -7,10 +10,6 @@
 *	the details of a single track. Please see ISO 14496-12 page 18-19 for details.
 */
 
-#ifndef TKHD_HPP
-#define TKHD_HPP
-
-#include "Box.hpp"
 
 namespace Arcusical {
 namespace MPEG4 {
@@ -55,5 +54,3 @@ class Tkhd : public Box {
 
 } /*namespace: MPEG4*/
 } /*namespace: Arcusical*/
-
-#endif

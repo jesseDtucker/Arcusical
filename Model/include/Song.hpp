@@ -1,8 +1,5 @@
 #pragma once
 
-#ifndef SONG_HPP
-#define SONG_HPP
-
 #include "boost\optional.hpp"
 #include "boost\uuid\uuid.hpp"
 #include <memory>
@@ -13,6 +10,7 @@
 
 #include "Stream.hpp"
 #include "Util.hpp"
+
 
 namespace FileSystem {
 class IFile;
@@ -77,5 +75,3 @@ class Song final {
 };
 }
 }
-
-#endif

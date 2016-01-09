@@ -1,12 +1,10 @@
 #pragma once
 
-#ifndef MUSIC_SEARCHER_HPP
-#define MUSIC_SEARCHER_HPP
-
 #include <future>
 #include <vector>
 
 #include "CancellationToken.hpp"
+
 
 namespace Arcusical {
 namespace LocalMusicStore {
@@ -37,5 +35,3 @@ class MusicSearcher final {
 };
 } /* Music Provider */
 } /* Arcusical */
-
-#endif

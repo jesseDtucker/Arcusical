@@ -1,3 +1,6 @@
+#include "pch.h"
+
+#include "UnknownBox.hpp"
 /*
 *	Author: Jesse Tucker
 *	Date: December 27th 2012
@@ -5,10 +8,6 @@
 *
 *	Description: Defines a box of an unknown type
 */
-
-#include "pch.h"
-
-#include "UnknownBox.hpp"
 
 namespace Arcusical {
 namespace MPEG4 {

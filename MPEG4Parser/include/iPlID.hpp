@@ -1,3 +1,6 @@
+#pragma once
+
+#include "UnknownBox.hpp"
 /*
 *	Author: Jesse Tucker
 *	Date: January 1st 2013
@@ -6,10 +9,6 @@
 *	to be of internal use to the itunes store.
 */
 
-#ifndef IPLID_HPP
-#define IPLID_HPP
-
-#include "UnknownBox.hpp"
 
 namespace Arcusical {
 namespace MPEG4 {
@@ -22,5 +21,3 @@ class iPlID : public UnknownBox {
 
 } /*namespace: MPEG4*/
 } /*namespace: Arcusical*/
-
-#endif

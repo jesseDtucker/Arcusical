@@ -1,6 +1,4 @@
 #pragma once
-#ifndef SONG_PLAYER_VM_HPP
-#define SONG_PLAYER_VM_HPP
 
 #include "AsyncProcessor.hpp"
 #include "PropertyHelper.hpp"
@@ -61,5 +59,3 @@ namespace ViewModel {
 };
 }
 }
-
-#endif

@@ -1,3 +1,9 @@
+#pragma once
+
+#include <memory>
+#include <vector>
+
+#include "BoxTypes.hpp"
 /*
 *	Author: Jesse Tucker
 *	Date: December 16th 2012
@@ -9,13 +15,6 @@
 *	The box is defined on page 4.
 */
 
-#ifndef BOX_HPP
-#define BOX_HPP
-
-#include <memory>
-#include <vector>
-
-#include "BoxTypes.hpp"
 
 namespace Util {
 class Stream;
@@ -78,5 +77,3 @@ class Box {
 
 } /*namespace: MPEG4*/
 } /*namespace: Arcusical*/
-
-#endif  // !BOX_H

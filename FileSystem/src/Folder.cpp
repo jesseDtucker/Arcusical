@@ -1,5 +1,4 @@
 #include "Folder.hpp"
-
 #include <algorithm>
 #include <collection.h>
 #include <ppltasks.h>
@@ -7,7 +6,6 @@
 #include "Arc_Assert.hpp"
 #include "File.hpp"
 #include "Storage.hpp"
-
 using namespace concurrency;
 using namespace std;
 

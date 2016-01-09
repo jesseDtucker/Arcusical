@@ -1,6 +1,4 @@
 #pragma once
-#ifndef ALBUM_ART_LOADER_HPP
-#define ALBUM_ART_LOADER_HPP
 
 #include "boost/functional/hash.hpp"
 #include "boost/uuid/uuid.hpp"
@@ -58,5 +56,3 @@ class AlbumArtLoader final {
 };
 }
 }
-
-#endif

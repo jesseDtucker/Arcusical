@@ -1,7 +1,6 @@
-﻿#include "WebCrawler.hpp"
-
 #include <algorithm>
 #include <codecvt>
+#include <iostream>
 #include <ppltasks.h>
 #include <regex>
 
@@ -10,10 +9,9 @@
 #include "IFile.hpp"
 #include "IFolder.hpp"
 #include "Storage.hpp"
+﻿ #include "WebCrawler.hpp"
 
-#include <iostream>
-
-using namespace concurrency;
+    using namespace concurrency;
 using namespace Platform;
 using namespace Windows::Foundation;
 using namespace Windows::Web::Http;

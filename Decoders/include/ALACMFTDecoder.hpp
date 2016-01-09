@@ -1,6 +1,4 @@
 #pragma once
-#ifndef ALAC_DECODER_HPP
-#define ALAC_DECODER_HPP
 
 #include <Mfidl.h>
 #include <mftransform.h>
@@ -153,5 +151,3 @@ class EXPORT ALACMFTDecoder WrlSealed
                                                                                      // this makes the logic much easier
   std::future<void> m_eventQueueTask;
 };
-
-#endif

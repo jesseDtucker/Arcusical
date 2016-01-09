@@ -1,3 +1,9 @@
+#include "pch.h"
+
+#include "Alac.hpp"
+#include "InvalidValueException.hpp"
+#include "MPEG4_Parser.hpp"
+#include "Stream.hpp"
 /*
 *	Author: Jesse Tucker
 *	Date: January 11th 2013
@@ -6,13 +12,6 @@
 *	Description: Defines the box used to contain information needed for decoding ALAC
 *	data.
 */
-
-#include "pch.h"
-
-#include "Alac.hpp"
-#include "InvalidValueException.hpp"
-#include "MPEG4_Parser.hpp"
-#include "Stream.hpp"
 
 using namespace std;
 

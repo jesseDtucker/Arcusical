@@ -1,6 +1,4 @@
 #pragma once
-#ifndef SONG_LOADER_HPP
-#define SONG_LOADER_HPP
 
 #include "boost/uuid/uuid.hpp"
 #include <memory>
@@ -31,5 +29,3 @@ SongMergeResult FindDeletedSongs(const Model::SongCollection& existingSongs,
                                  const std::vector<std::shared_ptr<FileSystem::IFile>>& files);
 }
 }
-
-#endif

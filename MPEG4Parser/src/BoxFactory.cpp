@@ -1,18 +1,8 @@
-/*
-*	Author: Jesse Tucker
-*	Date: December 27th 2012
-*	Name: BoxFactory.hpp
-*
-*	Description: Creates Boxes based upon type.
-*/
-
 #include "pch.h"
 
-#include "BoxFactory.hpp"
-
-#pragma region Box Definition Includes
 #include "Alac.hpp"
 #include "Box.hpp"
+#include "BoxFactory.hpp"
 #include "Cprt.hpp"
 #include "Dinf.hpp"
 #include "Dref.hpp"
@@ -45,6 +35,7 @@
 #include "Trak.hpp"
 #include "Udta.hpp"
 #include "UnknownBox.hpp"
+#include "UnknownBoxTypeException.hpp"
 #include "Url.hpp"
 #include "Xtra.hpp"
 #include "iAkID.hpp"
@@ -73,9 +64,16 @@
 #include "iTmpo.hpp"
 #include "iTrackNumber.hpp"
 #include "iXid.hpp"
-#pragma endregion
+/*
+*	Author: Jesse Tucker
+*	Date: December 27th 2012
+*	Name: BoxFactory.hpp
+*
+*	Description: Creates Boxes based upon type.
+*/
 
-#include "UnknownBoxTypeException.hpp"
+#pragma region Box Definition Includes
+#pragma endregion
 
 using namespace std;
 

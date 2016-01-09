@@ -1,5 +1,4 @@
 #pragma once
-#ifndef EVENT_SERVICE_HPP
 
 #include <memory>
 #include <set>
@@ -39,5 +38,3 @@ void EventService<Event>::BroadcastEvent(const Event& event) {
 }
 }
 }
-
-#endif

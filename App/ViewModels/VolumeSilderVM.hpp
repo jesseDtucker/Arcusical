@@ -1,6 +1,4 @@
 #pragma once
-#ifndef VOLUME_SLIDER_HPP
-#define VOLUME_SLIDER_HPP
 
 #include "PropertyHelper.hpp"
 #include "Subscription.hpp"
@@ -30,5 +28,3 @@ namespace ViewModel {
 };
 }
 }
-
-#endif

@@ -1,3 +1,6 @@
+#pragma once
+
+#include "Box.hpp"
 /*
 *	Author: Jesse Tucker
 *	Date: December 30th 2012
@@ -8,10 +11,6 @@
 *	map.
 */
 
-#ifndef STTS_HPP
-#define STTS_HPP
-
-#include "Box.hpp"
 
 namespace Arcusical {
 namespace MPEG4 {
@@ -43,5 +42,3 @@ class Stts : public Box {
 
 } /*namespace: MPEG4*/
 } /*namespace: Arcusical*/
-
-#endif

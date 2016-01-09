@@ -1,5 +1,4 @@
-#ifndef SONG_LIST_VM_HPP
-#define SONG_LIST_VM_HPP
+#pragma once
 
 #include <collection.h>
 #include <vector>
@@ -32,5 +31,3 @@ namespace ViewModel {
 };
 }
 }
-
-#endif

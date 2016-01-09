@@ -1,8 +1,5 @@
 #pragma once
 
-#ifndef MUSIC_PROVIDER_HPP
-#define MUSIC_PROVIDER_HPP
-
 #include "boost/optional.hpp"
 #include "boost/uuid/uuid.hpp"
 #include <atomic>
@@ -19,6 +16,7 @@
 #include "SongSelector.hpp"
 #include "Storage.hpp"
 #include "WorkBuffer.hpp"
+
 
 namespace Arcusical {
 namespace LocalMusicStore {
@@ -77,5 +75,3 @@ class MusicProvider final {
 };
 }
 }
-
-#endif

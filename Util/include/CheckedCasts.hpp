@@ -1,11 +1,12 @@
-/************************************************************************/
-/* Provides some wrappers on common casting operations that include asserts
-/************************************************************************/
+#pragma once
 
 #include <limits>
 #include <type_traits>
 
 #include "Arc_Assert.hpp"
+/************************************************************************/
+/* Provides some wrappers on common casting operations that include asserts
+/************************************************************************/
 
 #ifdef max
 #undef max

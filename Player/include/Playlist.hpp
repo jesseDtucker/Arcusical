@@ -1,6 +1,4 @@
 #pragma once
-#ifndef PLAYLIST_HPP
-#define PLAYLIST_HPP
 
 #include <future>
 #include <memory>
@@ -73,5 +71,3 @@ void Playlist::Enqueue(const T& collection, bool startPlayback) {
 }
 }
 }
-
-#endif

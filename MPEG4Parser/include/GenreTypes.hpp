@@ -1,3 +1,9 @@
+#pragma once
+
+#include "boost\assign.hpp"
+#include <stdint.h>
+#include <string>
+#include <unordered_map>
 /*
 *	Author: Jesse Tucker
 *	File: GenreTypes.hpp
@@ -6,14 +12,6 @@
 *	value referenced by ID3.
 */
 
-#ifndef GENRE_TYPES_HPP
-#define GENRE_TYPES_HPP
-
-#include <stdint.h>
-#include <string>
-#include <unordered_map>
-
-#include "boost\assign.hpp"
 
 namespace Arcusical {
 namespace MPEG4 {
@@ -264,5 +262,3 @@ std::ostream& operator<<(std::ostream& outStream, GenreType type);
 
 } /*MPEG4*/
 } /*Arcusical*/
-
-#endif

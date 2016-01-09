@@ -1,7 +1,4 @@
-#ifndef UTIL_HPP
-#define UTIL_HPP
+#pragma once
 
 #include "Export.hpp"
 #include "PropertyHelper.hpp"
-
-#endif

@@ -1,3 +1,6 @@
+#pragma once
+
+#include "Box.hpp"
 /*
 *	Author: Jesse Tucker
 *	Date: December 30th 2012
@@ -8,10 +11,6 @@
 *	It defines the number of samples in each chunk.
 */
 
-#ifndef STSC_HPP
-#define STSC_HPP
-
-#include "Box.hpp"
 
 namespace Arcusical {
 namespace MPEG4 {
@@ -44,5 +43,3 @@ class Stsc : public Box {
 
 } /*namespace: MPEG4*/
 } /*namespace: Arcusical*/
-
-#endif

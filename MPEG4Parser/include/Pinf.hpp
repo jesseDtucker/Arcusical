@@ -1,3 +1,6 @@
+#pragma once
+
+#include "UnknownBox.hpp"
 /*
 *	Author: Jesse Tucker
 *	Date: December 30th 2012
@@ -8,10 +11,6 @@
 *	who purchased the media. Pinf = Purchase Info???
 */
 
-#ifndef PINF_HPP
-#define PINF_HPP
-
-#include "UnknownBox.hpp"
 
 namespace Arcusical {
 namespace MPEG4 {
@@ -25,5 +24,3 @@ class Pinf : public UnknownBox {
 
 } /*namespace: MPEG4*/
 } /*namespace: Arcusical*/
-
-#endif

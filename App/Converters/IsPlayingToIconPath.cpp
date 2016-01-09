@@ -1,7 +1,6 @@
 #include "pch.h"
 
 #include "Converters/IsPlayingToIconPath.hpp"
-
 namespace Arcusical {
 namespace Converters {
 Platform::String ^ IsPlayingToIconPath::PAUSE_ICON = "/Assets/Icons/Pause.png";

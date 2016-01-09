@@ -1,5 +1,4 @@
 #pragma once
-#ifndef WORK_BUFFER_HPP
 
 #include "boost/optional.hpp"
 #include <chrono>
@@ -360,5 +359,3 @@ boost::optional<T> WorkBuffer<T>::GetNextNoWait() {
   return result;
 }
 }
-
-#endif

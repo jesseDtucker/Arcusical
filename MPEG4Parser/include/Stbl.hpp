@@ -1,3 +1,6 @@
+#pragma once
+
+#include "ContainerBox.hpp"
 /*
 *	Author: Jesse Tucker
 *	Date: Dec. 29th 2012
@@ -7,10 +10,6 @@
 *	sample location, etc. Please see standard for details.
 */
 
-#ifndef STBL_HPP
-#define STBL_HPP
-
-#include "ContainerBox.hpp"
 
 namespace Arcusical {
 namespace MPEG4 {
@@ -25,5 +24,3 @@ class Stbl : public ContainerBox {
 
 } /*namespace: MPEG4*/
 } /*namespace: Arcusical*/
-
-#endif

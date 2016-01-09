@@ -1,21 +1,20 @@
 #pragma once
-#ifndef FILE_READER_HPP
 
-#undef min
-
+#include "boost\type_traits\make_unsigned.hpp"
 #include <algorithm>
 #include <condition_variable>
 #include <memory>
 #include <mutex>
 #include <vector>
 
-#include "boost\type_traits\make_unsigned.hpp"
 #include "Arc_Assert.hpp"
 #include "CheckedCasts.hpp"
 #include "IFile.hpp"
 #include "IFileReader.hpp"
 #include "Stream.hpp"
 #include "Util.hpp"
+
+#undef min
 
 #undef min
 #undef max
@@ -205,5 +204,3 @@ void FileReader<IFilePtr>::EnsureBytesAvailable(unsigned int count /* = 0 */) {
   }
 }
 }
-
-#endif

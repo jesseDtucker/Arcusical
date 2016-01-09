@@ -1,6 +1,4 @@
 #pragma once
-#ifndef IPLAYER_HPP
-#define IPLAYER_HPP
 
 #include "boost/optional.hpp"
 #include <memory>
@@ -48,5 +46,3 @@ class IPlayer {
 };
 }
 }
-
-#endif

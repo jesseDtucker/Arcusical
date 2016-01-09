@@ -1,3 +1,7 @@
+#include "pch.h"
+
+#include "MPEG4_Parser.hpp"
+#include "Udta.hpp"
 /*
 *	Author: Jesse Tucker
 *	Date: December 30th 2012
@@ -8,11 +12,6 @@
 *	specific to the presentation of the media. This includes values such as title,
 *	artist and copyright notices.
 */
-
-#include "pch.h"
-
-#include "MPEG4_Parser.hpp"
-#include "Udta.hpp"
 
 using namespace std;
 

@@ -1,5 +1,4 @@
-#ifndef IFOLDER_HPP
-#define IFOLDER_HPP
+#pragma once
 
 #include <memory>
 #include <vector>
@@ -27,5 +26,3 @@ class EXPORT IFolder {
   virtual bool operator!=(const IFolder& rhs) const = 0;
 };
 }
-
-#endif

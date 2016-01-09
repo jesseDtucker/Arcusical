@@ -1,3 +1,6 @@
+#pragma once
+
+#include "Box.hpp"
 /*
 *	Author: Jesse Tucker
 *	Date: December 30th 2012
@@ -8,10 +11,6 @@
 *	either a value or a table of values that define the sample sizes.
 */
 
-#ifndef STSZ_HPP
-#define STSZ_HPP
-
-#include "Box.hpp"
 
 namespace Arcusical {
 namespace MPEG4 {
@@ -40,5 +39,3 @@ class Stsz : public Box {
 
 } /*namespace: MPEG4*/
 } /*namespace: Arcusical*/
-
-#endif

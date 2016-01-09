@@ -1,11 +1,10 @@
 #pragma once
 
-#ifndef ALBUM_LIST_CONTROL_VM_HPP
-#define ALBUM_LIST_CONTROL_VM_HPP
-
 #include "AsyncProcessor.hpp"
 #include "PropertyHelper.hpp"
 #include "Utility/XamlMacros.hpp"
+#include "ViewModels/AlbumVM.hpp"
+
 
 namespace Arcusical {
 namespace ViewModel {
@@ -35,5 +34,3 @@ typedef Windows::Foundation::Collections::IObservableVector<AlbumVM ^> AlbumList
 };
 }
 }
-
-#endif

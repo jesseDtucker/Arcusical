@@ -1,3 +1,6 @@
+#pragma once
+
+#include "Box.hpp"
 /*
 *	Author: Jesse Tucker
 *	Date: December 29th 2012
@@ -8,10 +11,6 @@
 *	presentation of the sound data.
 */
 
-#ifndef SMHD_HPP
-#define SMHD_HPP
-
-#include "Box.hpp"
 
 namespace Arcusical {
 namespace MPEG4 {
@@ -36,5 +35,3 @@ class Smhd : public Box {
 
 } /*namespace: MPEG4*/
 } /*namespace: Arcusical*/
-
-#endif

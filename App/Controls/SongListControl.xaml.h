@@ -1,8 +1,3 @@
-﻿//
-// SongListControl.xaml.h
-// Declaration of the SongListControl class
-//
-
 #pragma once
 
 #include "Controls/SongListControl.g.h"

@@ -1,11 +1,3 @@
-/*
-*	Author: Jesse Tucker
-*	Date: December 16th 2012
-*	Name: MPEG4_Parser.cpp
-*
-*	Description: Please see header for details
-*/
-
 #include "pch.h"
 
 #include "Arc_Assert.hpp"
@@ -13,6 +5,13 @@
 #include "Ftyp.hpp"
 #include "MPEG4_Parser.hpp"
 #include "Stream.hpp"
+/*
+*	Author: Jesse Tucker
+*	Date: December 16th 2012
+*	Name: MPEG4_Parser.cpp
+*
+*	Description: Please see header for details
+*/
 
 using namespace std;
 

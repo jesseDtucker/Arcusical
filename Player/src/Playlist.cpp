@@ -7,7 +7,6 @@
 #include "MusicProvider.hpp"
 #include "Playlist.hpp"
 #include "Song.hpp"
-
 using namespace std;
 using namespace Arcusical::MusicProvider;
 

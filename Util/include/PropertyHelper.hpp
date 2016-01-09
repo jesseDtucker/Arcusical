@@ -1,5 +1,4 @@
-#ifndef PROPERTY_HELPER_HPP
-#define PROPERTY_HELPER_HPP
+#pragma once
 
 #include "MulticastDelegate.hpp"
 #include "Subscription.hpp"
@@ -82,5 +81,3 @@ property dataType externalName \
     }                                                                                              \
   \
 }
-
-#endif

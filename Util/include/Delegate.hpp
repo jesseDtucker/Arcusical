@@ -1,5 +1,4 @@
-#ifndef DELEGATE_HPP
-#define DELEGATE_HPP
+#pragma once
 
 #include <functional>
 #include <memory>
@@ -89,5 +88,3 @@ struct hash<Util::Delegate<T>> {
   }
 };
 }
-
-#endif

@@ -1,3 +1,9 @@
+#pragma once
+
+#include <memory>
+#include <vector>
+
+#include "Box.hpp"
 /*
 *	Author: Jesse Tucker
 *	Date: December 16th 2012
@@ -7,13 +13,6 @@
 *	ISO 14496-12 standard for details on the boxes and the file format.
 */
 
-#ifndef MPEG4_TREE_H
-#define MPEG4_TREE_H
-
-#include <memory>
-#include <vector>
-
-#include "Box.hpp"
 
 namespace Arcusical {
 namespace MPEG4 {
@@ -46,5 +45,3 @@ class MPEG4_Tree final {
 
 } /*namespace: MPEG4*/
 } /*namespace: Arcusical*/
-
-#endif /* !MPEG4_TREE_H*/

@@ -1,10 +1,8 @@
 #pragma once
 
-#ifndef SONG_SELECTOR_HPP
-#define SONG_SELECTOR_HPP
-
 #include <functional>
 #include <vector>
+
 
 namespace Arcusical {
 namespace LocalMusicStore {
@@ -35,5 +33,3 @@ class SongSelector final {
 };
 }
 }
-
-#endif

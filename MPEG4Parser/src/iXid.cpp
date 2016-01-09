@@ -1,3 +1,8 @@
+#include "pch.h"
+
+#include "DataBox.hpp"
+#include "MPEG4_Parser.hpp"
+#include "iXid.hpp"
 /*
 *	File: iXid.hpp
 *	Author: Jesse Tucker
@@ -7,12 +12,6 @@
 *	any piece of media purchased through the itunes store. The idea is that this code can be used to
 *	identify media that has had its filename/metadata modified.
 */
-
-#include "pch.h"
-
-#include "DataBox.hpp"
-#include "MPEG4_Parser.hpp"
-#include "iXid.hpp"
 
 using namespace std;
 

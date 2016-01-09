@@ -1,3 +1,7 @@
+#include "pch.h"
+
+#include "MPEG4_Parser.hpp"
+#include "Stsd.hpp"
 /*
 *	Author: Jesse Tucker
 *	Date: December 30th 2012
@@ -6,11 +10,6 @@
 *	Description: Sample Description Box. stsd box, defined in ISO 14496-12 page 28.
 *	Contains information describing the mediums sample information.
 */
-
-#include "pch.h"
-
-#include "MPEG4_Parser.hpp"
-#include "Stsd.hpp"
 
 namespace Arcusical {
 namespace MPEG4 {

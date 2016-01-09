@@ -1,14 +1,4 @@
-/*
-*	Author: Jesse Tucker
-*	Date: Feb 24th 2013
-*
-*	Description:
-*	This class wraps the MPEG4_Tree and provides a simple way of accessing and writing its information.
-*	TODO::JT: implement means of writing information, currently only works as a reader
-*/
-
-#ifndef MPEG4_SONG_FILE_HPP
-#define MPEG4_SONG_FILE_HPP
+#pragma once
 
 #include <memory>
 #include <string>
@@ -17,6 +7,7 @@
 #include "Box.hpp"
 #include "Esds.hpp"
 #include "ImageTypes.hpp"
+#include "MPEG4_Tree.hpp"
 #include "Mdat.hpp"
 #include "Mp4a.hpp"
 #include "Mvhd.hpp"
@@ -30,8 +21,15 @@
 #include "iName.hpp"
 #include "iReleaseDate.hpp"
 #include "iTrackNumber.hpp"
+/*
+*	Author: Jesse Tucker
+*	Date: Feb 24th 2013
+*
+*	Description:
+*	This class wraps the MPEG4_Tree and provides a simple way of accessing and writing its information.
+*	TODO::JT: implement means of writing information, currently only works as a reader
+*/
 
-#include "MPEG4_Tree.hpp"
 
 namespace Arcusical {
 namespace MPEG4 {
@@ -170,5 +168,3 @@ class MPEG4_SongFile {
 
 } /*namespace: MPEG4*/
 } /*namespace: Arcusical*/
-
-#endif

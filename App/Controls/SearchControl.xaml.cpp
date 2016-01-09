@@ -1,8 +1,3 @@
-﻿//
-// SearchResultsControl.xaml.cpp
-// Implementation of the SearchResultsControl class
-//
-
 #include "pch.h"
 
 #include "Events/EventService.hpp"

@@ -1,3 +1,8 @@
+#include "pch.h"
+
+#include "DataBox.hpp"
+#include "MPEG4_Parser.hpp"
+#include "iCover.hpp"
 /*
 *	Author: Jesse Tucker
 *	Date: January 1st 2013
@@ -6,12 +11,6 @@
 *	Description: Itunes non-standard box, contains the album artwork. This is the raw image file
 *	that has been directly encoded with the song.
 */
-
-#include "pch.h"
-
-#include "DataBox.hpp"
-#include "MPEG4_Parser.hpp"
-#include "iCover.hpp"
 
 using namespace std;
 

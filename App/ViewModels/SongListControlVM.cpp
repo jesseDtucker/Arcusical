@@ -4,14 +4,12 @@
 #include <random>
 #include <vector>
 
-#include "SongListControlVM.hpp"
-
 #include "Arc_Assert.hpp"
 #include "Events/AlbumSelectedEvent.hpp"
 #include "Events/EventService.hpp"
 #include "Playlist.hpp"
+#include "SongListControlVM.hpp"
 #include "SongListVM.hpp"
-
 using namespace std;
 using namespace Windows::UI::Xaml::Data;
 

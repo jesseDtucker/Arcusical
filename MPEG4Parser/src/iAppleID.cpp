@@ -1,3 +1,8 @@
+#include "pch.h"
+
+#include "DataBox.hpp"
+#include "MPEG4_Parser.hpp"
+#include "iAppleID.hpp"
 /*
 *	File: iAppleID.hpp
 *	Author: Jesse Tucker
@@ -7,12 +12,6 @@
 *	who purchased the music. Note: appears to be the apple id of the person at time of purchase, apple does
 *	not appear to update if person changes their ID unless the meta data of the file is edited after the change.
 */
-
-#include "pch.h"
-
-#include "DataBox.hpp"
-#include "MPEG4_Parser.hpp"
-#include "iAppleID.hpp"
 
 using namespace std;
 

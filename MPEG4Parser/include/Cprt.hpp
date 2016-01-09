@@ -1,3 +1,6 @@
+#pragma once
+
+#include "UnknownBox.hpp"
 /*
 *	File: Cprt.hpp
 *	Author: Jesse Tucker
@@ -20,10 +23,6 @@
 *	however no hard data exists. This is treated as a specialized unknown box
 */
 
-#ifndef CPRT_HPP
-#define CPRT_HPP
-
-#include "UnknownBox.hpp"
 
 namespace Arcusical {
 namespace MPEG4 {
@@ -36,5 +35,3 @@ class Cprt : public UnknownBox {
 
 } /*namespace: MPEG4*/
 } /*namespace: Arcusical*/
-
-#endif

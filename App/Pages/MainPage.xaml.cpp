@@ -1,10 +1,4 @@
-﻿//
-// MainPage.xaml.cpp
-// Implementation of the MainPage class.
-//
-
 #include "pch.h"
-#include "MainPage.xaml.h"
 
 #include "CheckedCasts.hpp"
 #include "Controls/AlbumListControl.xaml.h"
@@ -18,6 +12,7 @@
 #include "Events/EventService.hpp"
 #include "IFile.hpp"
 #include "IPlayer.hpp"
+#include "MainPage.xaml.h"
 #include "Playlist.hpp"
 #include "Storage.hpp"
 #include "Utility/KeyboardUtil.hpp"

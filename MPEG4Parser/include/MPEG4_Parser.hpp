@@ -1,3 +1,9 @@
+#pragma once
+
+#include "boost/detail/endian.hpp"
+
+#include "MPEG4_SongFile.hpp"
+#include "MPEG4_Tree.hpp"
 /*
 *	Author: Jesse Tucker
 *	Date: December 16th 2012
@@ -7,12 +13,6 @@
 *	represents the MPEG4 file.
 */
 
-#ifndef MPEG4_PARSER_H
-#define MPEG4_PARSER_H
-
-#include "boost/detail/endian.hpp"
-#include "MPEG4_SongFile.hpp"
-#include "MPEG4_Tree.hpp"
 
 namespace Util {
 class Stream;
@@ -80,5 +80,3 @@ class MPEG4_Parser final {
 
 } /*namespace: MPEG4*/
 } /*namespace: Arcusical*/
-
-#endif /*!MPEG4_PARSER_H*/

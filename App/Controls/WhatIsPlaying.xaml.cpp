@@ -1,14 +1,8 @@
-﻿//
-// WhatIsPlaying.xaml.cpp
-// Implementation of the WhatIsPlaying class
-//
-
 #include "pch.h"
-
-#include "WhatIsPlaying.xaml.h"
 
 #include "Events/EventService.hpp"
 #include "Events/WhatIsPlayingSelectedEvent.hpp"
+#include "WhatIsPlaying.xaml.h"
 
 using namespace Arcusical;
 using namespace Arcusical::Events;

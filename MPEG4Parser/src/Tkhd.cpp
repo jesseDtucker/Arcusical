@@ -1,3 +1,8 @@
+#include "pch.h"
+
+#include "InvalidValueException.hpp"
+#include "MPEG4_Parser.hpp"
+#include "Tkhd.hpp"
 /*
 *	Author: Jesse Tucker
 *	Date: December 28th 2012
@@ -6,12 +11,6 @@
 *	Description: The TKHD box contains is a track header box and contains
 *	the details of a single track. Please see ISO 14496-12 page 18-19 for details.
 */
-
-#include "pch.h"
-
-#include "InvalidValueException.hpp"
-#include "MPEG4_Parser.hpp"
-#include "Tkhd.hpp"
 
 using namespace std;
 

@@ -1,5 +1,4 @@
 #include "File.hpp"
-
 #include <limits>
 #include <ppltasks.h>
 
@@ -8,7 +7,6 @@
 #include "Folder.hpp"
 #include "NativeBufferWrapper.hpp"
 #include "StorageExceptions.hpp"
-
 using namespace std;
 using namespace concurrency;
 

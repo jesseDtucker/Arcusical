@@ -1,3 +1,6 @@
+#include "pch.h"
+
+#include "HandlerTypes.hpp"
 /*
 *	Author: Jesse Tucker
 *	Date: December 29th 2012
@@ -6,10 +9,6 @@
 *	Description: Defines the types of handles that can be encountered
 *	in an MPEG4 container.
 */
-
-#include "pch.h"
-
-#include "HandlerTypes.hpp"
 
 namespace Arcusical {
 namespace MPEG4 {

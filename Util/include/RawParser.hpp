@@ -1,6 +1,4 @@
 #pragma once
-#ifndef RAW_PARSER_HPP
-#define RAW_PARSER_HPP
 
 #include "boost/detail/endian.hpp"
 #include <string>
@@ -44,5 +42,3 @@ T_Number ReadInteger(T_Data rawData) {
 
 #pragma warning(pop)
 }
-
-#endif

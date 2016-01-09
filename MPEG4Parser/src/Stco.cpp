@@ -1,3 +1,8 @@
+#include "pch.h"
+
+#include "InvalidValueException.hpp"
+#include "MPEG4_Parser.hpp"
+#include "Stco.hpp"
 /*
 *	Author: Jesse Tucker
 *	Date: December 30th 2012
@@ -11,12 +16,6 @@
 *	This defines the offset table that gives the index of each chunk
 *	in the containing file.
 */
-
-#include "pch.h"
-
-#include "InvalidValueException.hpp"
-#include "MPEG4_Parser.hpp"
-#include "Stco.hpp"
 
 namespace Arcusical {
 namespace MPEG4 {

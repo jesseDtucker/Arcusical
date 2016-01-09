@@ -1,7 +1,5 @@
 #include "LockHelper.hpp"
-
 #include "Arc_Assert.hpp"
-
 using namespace std;
 
 Util::SlimRWLock::SlimRWLock() { InitializeSRWLock(&m_lock); }

@@ -9,7 +9,6 @@
 #include "Arc_Assert.hpp"
 #include "MusicTypes.hpp"
 #include "UUIDGenerator.hpp"
-
 using std::locale;
 using std::pair;
 using std::unordered_map;

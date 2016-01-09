@@ -1,3 +1,6 @@
+#include "pch.h"
+
+#include "GenreTypes.hpp"
 /*
 *	Author: Jesse Tucker
 *	File: GenreTypes.hpp
@@ -5,10 +8,6 @@
 *	defined as ID3 genres, however the value itunes encodes appear to be exactly 1 more than the
 *	value referenced by ID3.
 */
-
-#include "pch.h"
-
-#include "GenreTypes.hpp"
 
 namespace Arcusical {
 namespace MPEG4 {

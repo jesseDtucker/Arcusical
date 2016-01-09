@@ -1,3 +1,7 @@
+#include "pch.h"
+
+#include "FreeBox.hpp"
+#include "Stream.hpp"
 /*
 *	Author: Jesse Tucker
 *	Date: December 27th 2012
@@ -5,11 +9,6 @@
 *
 *	Description: Defines a free box. This is a box that acts as a spacer and simply takes up space
 */
-
-#include "pch.h"
-
-#include "FreeBox.hpp"
-#include "Stream.hpp"
 
 using namespace std;
 

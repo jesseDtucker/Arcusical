@@ -1,3 +1,8 @@
+#include "pch.h"
+
+#include "DataBox.hpp"
+#include "MPEG4_Parser.hpp"
+#include "iAlbum.hpp"
 /*
 *	Author: Jesse Tucker
 *	Date: January 1st 2012
@@ -5,12 +10,6 @@
 *
 *	Description: Itunes specific box. Contains the album name
 */
-
-#include "pch.h"
-
-#include "DataBox.hpp"
-#include "MPEG4_Parser.hpp"
-#include "iAlbum.hpp"
 
 using namespace std;
 

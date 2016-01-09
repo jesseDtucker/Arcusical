@@ -1,5 +1,4 @@
-#ifndef FOLDER_HPP
-#define FOLDER_HPP
+#pragma once
 
 #include <string>
 #include <vector>
@@ -39,5 +38,3 @@ class Folder final : public IFolder {
   friend Storage;  // so the static folders ( ie. music library) can be instantiated
 };
 }
-
-#endif

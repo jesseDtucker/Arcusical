@@ -1,10 +1,8 @@
 #include "ViewModels/GuideVM.hpp"
-
 #include <algorithm>
 #include <random>
 
 #include "Playlist.hpp"
-
 using namespace Arcusical;
 using namespace Arcusical::ViewModel;
 

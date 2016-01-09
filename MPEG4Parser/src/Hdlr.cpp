@@ -1,3 +1,7 @@
+#include "pch.h"
+
+#include "Hdlr.hpp"
+#include "MPEG4_Parser.hpp"
 /*
 *	Author: Jesse Tucker
 *	Date: December 29th 2012
@@ -6,11 +10,6 @@
 *	Description: Defines the HDLR box. Definition found in ISO 14496-12 standard, page 22.
 *	The HDLR is a handler reference box. It
 */
-
-#include "pch.h"
-
-#include "Hdlr.hpp"
-#include "MPEG4_Parser.hpp"
 
 using namespace std;
 

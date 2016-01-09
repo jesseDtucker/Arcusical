@@ -1,15 +1,10 @@
-﻿//
-// SongPlayer.xaml.cpp
-// Implementation of the SongPlayer class
-//
-
 #include "pch.h"
-#include "PlayerButtons.xaml.h"
 
 #include "Arc_Assert.hpp"
 #include "Events/EventService.hpp"
 #include "Events/SongSelectedEvent.hpp"
 #include "IPlayer.hpp"
+#include "PlayerButtons.xaml.h"
 #include "ViewModels/SongVM.hpp"
 
 using namespace Platform;

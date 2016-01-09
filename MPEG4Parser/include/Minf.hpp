@@ -1,3 +1,6 @@
+#pragma once
+
+#include "ContainerBox.hpp"
 /*
 *	Author: Jesse Tucker
 *	Date: December 16th 2012
@@ -7,10 +10,6 @@
 *	An minf box is a Media information box. It is simply a container for other boxes.
 */
 
-#ifndef MINF_HPP
-#define MINF_HPP
-
-#include "ContainerBox.hpp"
 
 namespace Arcusical {
 namespace MPEG4 {
@@ -25,5 +24,3 @@ class Minf : public ContainerBox {
 
 } /*namespace: MPEG4*/
 } /*namespace: Arcusical*/
-
-#endif /*!BOX_FTYP_H*/

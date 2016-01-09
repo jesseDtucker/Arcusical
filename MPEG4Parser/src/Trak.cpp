@@ -1,3 +1,7 @@
+#include "pch.h"
+
+#include "MPEG4_Parser.hpp"
+#include "Trak.hpp"
 /*
 *	Author: Jesse Tucker
 *	Date: December 28th 2012
@@ -7,11 +11,6 @@
 *	details please see ISO 14496-12 page 17-18. The Trak box is simply a container
 *	for other boxes.
 */
-
-#include "pch.h"
-
-#include "MPEG4_Parser.hpp"
-#include "Trak.hpp"
 
 namespace Arcusical {
 namespace MPEG4 {
