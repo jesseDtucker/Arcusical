@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Box.hpp"
+
 /*
 *	Author: Jesse Tucker
 *	Date: January 10th 2013
@@ -9,7 +10,6 @@
 *	Description: Defines the box used to contain information needed for decoding ALAC
 *	data.
 */
-
 
 namespace Arcusical {
 namespace MPEG4 {

@@ -46,8 +46,11 @@ IGNORE.each { |ignore|
 }
 
 def getIncludes(contents)
-  contents.select { |line|
-    line.start_with?("#include")
+  contents = contents.select { |line|
+    line.include?("#include")
+  }
+  contents.map { |line|
+    line.match(/#include.*/)[0] + "\n"
   }
 end
 
@@ -70,7 +73,7 @@ end
 
 def getEverythingElse(contents)
   everythingElse = contents.select { |line|
-    !line.start_with?("#include")
+    !line.include?("#include") && !line.include?("#pragma once")
   }
   stripExtraLines(everythingElse)
 end
@@ -85,9 +88,9 @@ allCodeFiles.each { |path|
     everythingElse = getEverythingElse(contents)
     contents = includes + ["\n"] + everythingElse
   }
-  File.open(path, "w") { |f|
-    f.write(contents.join)
-  }
+  #File.open(path, "w") { |f|
+    #f.write(contents.join)
+  #}
 }
 
 allCodeFiles.each { |path|
@@ -137,11 +140,11 @@ allCodeFiles.each { |path|
       end
       prevLine = line
     }
-    contents = includesWithLineBreaks + everythingElse
+    contents = stripExtraLines(includesWithLineBreaks) + ["\n"] + stripExtraLines(everythingElse)
     if(path.end_with?("hpp") || path.end_with?("h"))
       contents = cleanupHeaderFile(contents)
     end
-    contents
+    stripExtraLines(contents) + ["\n"]
   }
   File.open(path, "w") { |f|
     f.write(contents.join)

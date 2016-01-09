@@ -9,6 +9,7 @@
 #include "Song.hpp"
 #include "SongVM.hpp"
 #include "Utility/DispatcherHelper.hpp"
+
 using namespace std;
 using namespace Windows::UI::Xaml::Data;
 

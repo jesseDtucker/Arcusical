@@ -4,6 +4,7 @@
 #include <vector>
 
 #include "Box.hpp"
+
 /*
 *	Author: Jesse Tucker
 *	Date: December 16th 2012
@@ -12,7 +13,6 @@
 *	Description: Defines the tree of data contained in an MPEG4 container. Please see the
 *	ISO 14496-12 standard for details on the boxes and the file format.
 */
-
 
 namespace Arcusical {
 namespace MPEG4 {

@@ -9,9 +9,9 @@
 #include "IFile.hpp"
 #include "IFolder.hpp"
 #include "Storage.hpp"
-﻿ #include "WebCrawler.hpp"
+#include "WebCrawler.hpp"
 
-    using namespace concurrency;
+using namespace concurrency;
 using namespace Platform;
 using namespace Windows::Foundation;
 using namespace Windows::Web::Http;

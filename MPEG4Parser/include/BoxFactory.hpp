@@ -3,6 +3,7 @@
 #include <memory>
 
 #include "Box.hpp"
+
 /*
 *	Author: Jesse Tucker
 *	Date: December 27th 2012
@@ -10,7 +11,6 @@
 *
 *	Description: Creates Boxes based upon type.
 */
-
 
 namespace Arcusical {
 namespace MPEG4 {

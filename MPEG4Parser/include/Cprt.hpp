@@ -1,6 +1,7 @@
 #pragma once
 
 #include "UnknownBox.hpp"
+
 /*
 *	File: Cprt.hpp
 *	Author: Jesse Tucker
@@ -22,7 +23,6 @@
 *	Description: Itunes specific box. No publicly available documentation. Some suggest it is a 'compilation' box
 *	however no hard data exists. This is treated as a specialized unknown box
 */
-
 
 namespace Arcusical {
 namespace MPEG4 {

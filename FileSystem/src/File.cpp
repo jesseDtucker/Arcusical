@@ -7,6 +7,7 @@
 #include "Folder.hpp"
 #include "NativeBufferWrapper.hpp"
 #include "StorageExceptions.hpp"
+
 using namespace std;
 using namespace concurrency;
 

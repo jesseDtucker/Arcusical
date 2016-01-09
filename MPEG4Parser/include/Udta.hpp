@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ContainerBox.hpp"
+
 /*
 *	Author: Jesse Tucker
 *	Date: December 30th 2012
@@ -11,7 +12,6 @@
 *	specific to the presentation of the media. This includes values such as title,
 *	artist and copyright notices.
 */
-
 
 namespace Arcusical {
 namespace MPEG4 {

@@ -3,7 +3,6 @@
 #include <functional>
 #include <vector>
 
-
 namespace Arcusical {
 namespace LocalMusicStore {
 class LocalMusicCache;

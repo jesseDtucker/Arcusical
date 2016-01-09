@@ -4,11 +4,11 @@
 #include "ViewModels\VolumeSilderVM.hpp"
 
 namespace Arcusical {
-  [Windows::Foundation::Metadata::WebHostHidden] public ref class VolumeSilder sealed {
-   public:
-    VolumeSilder();
+[Windows::Foundation::Metadata::WebHostHidden] public ref class VolumeSilder sealed {
+ public:
+  VolumeSilder();
 
-   private:
-    ViewModel::VolumeSliderVM ^ m_vm;
-  };
+ private:
+  ViewModel::VolumeSliderVM ^ m_vm;
+};
 }

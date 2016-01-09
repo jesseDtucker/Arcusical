@@ -11,14 +11,14 @@
 #include "ViewModels/VolumeSilderVM.hpp"
 
 namespace Arcusical {
-  namespace MusicProvider {
-  class MusicSearcher;
-  class MusicProvider;
-  }
-  namespace Player {
-  class IPlayer;
-  class Playlist;
-  }
+namespace MusicProvider {
+class MusicSearcher;
+class MusicProvider;
+}
+namespace Player {
+class IPlayer;
+class Playlist;
+}
 }
 
 namespace Arcusical {

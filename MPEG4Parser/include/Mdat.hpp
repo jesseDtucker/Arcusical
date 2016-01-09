@@ -1,6 +1,7 @@
 #pragma once
 
 #include "DataBox.hpp"
+
 /*
 *	Author: Jesse Tucker
 *	Date: January 3rd 2013
@@ -9,7 +10,6 @@
 *	Description: This file contains the raw media data. The contents of this data will be specific to the
 *	media type.
 */
-
 
 namespace Arcusical {
 namespace MPEG4 {

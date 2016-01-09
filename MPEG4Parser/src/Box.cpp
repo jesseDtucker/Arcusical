@@ -7,6 +7,7 @@
 #include "IncompatibleBoxTypeException.hpp"
 #include "MPEG4_Parser.hpp"
 #include "Stream.hpp"
+
 /*
 *	Author: Jesse Tucker
 *	Date: December 23rd 2012

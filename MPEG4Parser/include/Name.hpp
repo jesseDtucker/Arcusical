@@ -3,6 +3,7 @@
 #include <string>
 
 #include "Box.hpp"
+
 /*
 *	Author: Jesse Tucker
 *	Date: December 31st 2012
@@ -12,7 +13,6 @@
 *	This is the name used to identify the data contained within this atom. No idea why custom atoms
 *	weren't used here...
 */
-
 
 namespace Arcusical {
 namespace MPEG4 {

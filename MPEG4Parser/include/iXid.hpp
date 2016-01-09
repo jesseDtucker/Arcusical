@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Box.hpp"
+
 /*
 *	File: iXid.hpp
 *	Author: Jesse Tucker
@@ -10,7 +11,6 @@
 *	any piece of media purchased through the itunes store. The idea is that this code can be used to
 *	identify media that has had its filename/metadata modified.
 */
-
 
 namespace Arcusical {
 namespace MPEG4 {

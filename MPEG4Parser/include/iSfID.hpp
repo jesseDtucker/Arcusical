@@ -1,6 +1,7 @@
 #pragma once
 
 #include "UnknownBox.hpp"
+
 /*
 *	Author: Jesse Tucker
 *	Date: January 1st 2013
@@ -9,7 +10,6 @@
 *	on the values however source cannot be verified and this item has no value and so
 *	will be treated as unknown.
 */
-
 
 namespace Arcusical {
 namespace MPEG4 {

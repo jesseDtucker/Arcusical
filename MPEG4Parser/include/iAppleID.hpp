@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Box.hpp"
+
 /*
 *	File: iAppleID.hpp
 *	Author: Jesse Tucker
@@ -10,7 +11,6 @@
 *	who purchased the music. Note: appears to be the apple id of the person at time of purchase, apple does
 *	not appear to update if person changes their ID unless the person edits the metadata after the change.
 */
-
 
 namespace Arcusical {
 namespace MPEG4 {

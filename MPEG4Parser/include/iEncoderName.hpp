@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Box.hpp"
+
 /*
 *	Author: Jesse Tucker
 *	Date: January 13th 2013
@@ -8,7 +9,6 @@
 *	the name of the encoder used to create this file. However there is some unknown
 *	information also contained within this box, likely version numbers...
 */
-
 
 namespace Arcusical {
 namespace MPEG4 {

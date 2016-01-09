@@ -1,6 +1,7 @@
 #include "pch.h"
 
 #include "Imagetypes.hpp"
+
 /*
 *	Author: Jesse Tucker
 *	Date: January 5th 2013

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "UnknownBox.hpp"
+
 /*
 *	Author: Jesse Tucker
 *	Date: January 1st 2013
@@ -8,7 +9,6 @@
 *	gapless playback however all sources state the flag is an 8 bit boolean. Oberservation however
 *	shows that there are many more bytes in the data (approx. 9). Treating as unknown for now.
 */
-
 
 namespace Arcusical {
 namespace MPEG4 {

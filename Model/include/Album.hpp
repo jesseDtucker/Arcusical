@@ -9,7 +9,6 @@
 #include "Song.hpp"
 #include "Util.hpp"
 
-
 namespace Arcusical {
 namespace Model {
 class IAlbumToSongMapper;

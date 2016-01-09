@@ -2,6 +2,7 @@
 #include <random>
 
 #include "DefaultAlbumArt.hpp"
+
 using namespace std;
 
 static const vector<wstring> DEFAULT_IMAGES = {L"ms-appx:///Assets/DefaultAlbumBackgrounds/default_black.png",

@@ -2,6 +2,7 @@
 
 #include "IPlayer.hpp"
 #include "ViewModels/VolumeSilderVM.hpp"
+
 using namespace Arcusical::Player;
 using namespace Arcusical::ViewModel;
 

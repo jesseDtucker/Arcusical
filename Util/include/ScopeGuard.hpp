@@ -1,6 +1,5 @@
 #pragma once
 
-
 namespace Util {
 template <typename CallbackType>
 class ScopeGuard {

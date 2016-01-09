@@ -4,6 +4,7 @@
 
 #include "MPEG4_SongFile.hpp"
 #include "MPEG4_Tree.hpp"
+
 /*
 *	Author: Jesse Tucker
 *	Date: December 16th 2012
@@ -12,7 +13,6 @@
 *	Description: Parses an input stream to create an MPEG4_Tree that
 *	represents the MPEG4 file.
 */
-
 
 namespace Util {
 class Stream;

@@ -1,4 +1,5 @@
 #include "MusicTypes.hpp"
+
 Arcusical::Model::SongCollectionChanges::SongCollectionChanges(SongCollectionChanges&& other) {
   this->AllSongs = std::move(other.AllSongs);
   this->NewSongs = std::move(other.NewSongs);

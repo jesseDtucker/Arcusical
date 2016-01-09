@@ -3,6 +3,7 @@
 #include "boost\assign.hpp"
 #include <string>
 #include <unordered_map>
+
 /*
 *	Author: Jesse Tucker
 *	Date: December 29th 2012
@@ -11,7 +12,6 @@
 *	Description: Defines the types of handles that can be encountered
 *	in an MPEG4 container.
 */
-
 
 namespace Arcusical {
 namespace MPEG4 {

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ContainerBox.hpp"
+
 /*
 *	Author: Jesse Tucker
 *	Date: Dec. 29th 2012
@@ -9,7 +10,6 @@
 *	boxes that contain information on the sample description, sample size,
 *	sample location, etc. Please see standard for details.
 */
-
 
 namespace Arcusical {
 namespace MPEG4 {

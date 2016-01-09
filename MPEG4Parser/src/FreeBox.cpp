@@ -2,6 +2,7 @@
 
 #include "FreeBox.hpp"
 #include "Stream.hpp"
+
 /*
 *	Author: Jesse Tucker
 *	Date: December 27th 2012

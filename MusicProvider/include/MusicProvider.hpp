@@ -17,7 +17,6 @@
 #include "Storage.hpp"
 #include "WorkBuffer.hpp"
 
-
 namespace Arcusical {
 namespace LocalMusicStore {
 class LocalMusicCache;

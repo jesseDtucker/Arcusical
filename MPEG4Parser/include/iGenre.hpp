@@ -2,6 +2,7 @@
 
 #include "Box.hpp"
 #include "GenreTypes.hpp"
+
 /*
 *	Author: Jesse Tucker
 *	Date: January 1st 2012
@@ -10,7 +11,6 @@
 *	Description: Itunes specific box. Contains a code that determines the genre. Code is 16 bits
 *	and genre is determined by its mapping to the ID3 genres. However the actual coded value is one larger.
 */
-
 
 namespace Arcusical {
 namespace MPEG4 {

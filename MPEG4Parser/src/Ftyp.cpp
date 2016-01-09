@@ -3,6 +3,7 @@
 #include "Ftyp.hpp"
 #include "IncompatibleBoxTypeException.hpp"
 #include "MPEG4_Parser.hpp"
+
 /*
 *	Author: Jesse Tucker
 *	Date: December 23rd 2012

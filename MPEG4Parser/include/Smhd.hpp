@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Box.hpp"
+
 /*
 *	Author: Jesse Tucker
 *	Date: December 29th 2012
@@ -10,7 +11,6 @@
 *	Sound Media Header box, contains information pertaining to the general
 *	presentation of the sound data.
 */
-
 
 namespace Arcusical {
 namespace MPEG4 {

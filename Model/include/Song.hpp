@@ -11,7 +11,6 @@
 #include "Stream.hpp"
 #include "Util.hpp"
 
-
 namespace FileSystem {
 class IFile;
 }

@@ -5,7 +5,6 @@
 #include "Utility/XamlMacros.hpp"
 #include "ViewModels/AlbumVM.hpp"
 
-
 namespace Arcusical {
 namespace ViewModel {
 

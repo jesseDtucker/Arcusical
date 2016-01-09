@@ -3,6 +3,7 @@
 #include <vector>
 
 #include "DataBox.hpp"
+
 /*
 *	Author: Jesse Tucker
 *	Date: December 27th 2012
@@ -10,7 +11,6 @@
 *
 *	Description: Defines a box of an unknown type
 */
-
 
 namespace Arcusical {
 namespace MPEG4 {

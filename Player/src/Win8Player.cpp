@@ -9,6 +9,7 @@
 #include "Song.hpp"
 #include "Storage.hpp"
 #include "Win8Player.hpp"
+
 using namespace ATL;
 using namespace Windows::Media;
 using namespace Microsoft::WRL;

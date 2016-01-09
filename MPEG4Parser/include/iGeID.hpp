@@ -1,6 +1,7 @@
 #pragma once
 
 #include "UnknownBox.hpp"
+
 /*
 *	Author: Jesse Tucker
 *	Date: January 1st 2013
@@ -8,7 +9,6 @@
 *	being a genre ID. No specifics on the mapping of this number to a genre, assumed
 *	to be of internal use to itunes.
 */
-
 
 namespace Arcusical {
 namespace MPEG4 {

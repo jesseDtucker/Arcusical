@@ -3,6 +3,7 @@
 #include "Arc_Assert.hpp"
 #include "Converters/SongListSizeToVisiblity.hpp"
 #include "ViewModels/SongListVM.hpp"
+
 using namespace Windows::UI::Xaml;
 
 using namespace Arcusical::ViewModel;

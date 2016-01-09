@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Box.hpp"
+
 /*
 *	Author: Jesse Tucker
 *	Date: December 29th 2012
@@ -11,7 +12,6 @@
 *	if the track is contained within the same file then no url std::string will be present
 *	in this box
 */
-
 
 namespace Arcusical {
 namespace MPEG4 {

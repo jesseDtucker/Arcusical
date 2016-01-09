@@ -3,6 +3,7 @@
 #include <random>
 
 #include "Playlist.hpp"
+
 using namespace Arcusical;
 using namespace Arcusical::ViewModel;
 

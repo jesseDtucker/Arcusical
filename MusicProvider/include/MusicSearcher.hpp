@@ -5,7 +5,6 @@
 
 #include "CancellationToken.hpp"
 
-
 namespace Arcusical {
 namespace LocalMusicStore {
 class LocalMusicCache;

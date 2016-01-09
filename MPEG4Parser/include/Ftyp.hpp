@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Box.hpp"
+
 /*
 *	Author: Jesse Tucker
 *	Date: December 16th 2012
@@ -8,7 +9,6 @@
 *
 *	Description: Defines the ftyp box. Definition found in ISO 14496-12 standard, page 5.
 */
-
 
 namespace Arcusical {
 namespace MPEG4 {

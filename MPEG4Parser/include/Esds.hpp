@@ -4,6 +4,7 @@
 #include <unordered_map>
 
 #include "Box.hpp"
+
 /*
 *	Author: Jesse Tucker
 *	Date: December 30th 2012
@@ -12,7 +13,6 @@
 *	Description: box contained within the Mp4a box. Contains information
 *	regarding the encoding.
 */
-
 
 namespace Arcusical {
 namespace MPEG4 {

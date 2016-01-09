@@ -3,6 +3,7 @@
 #include <future>
 
 #include "DispatcherHelper.hpp"
+
 namespace Arcusical {
 std::future<void> DispatchToUI(std::function<void()> func) {
   auto promise = std::make_shared<std::promise<void>>();

@@ -3,6 +3,7 @@
 #include "boost\assign.hpp"
 #include <string>
 #include <unordered_map>
+
 /*
 *	Author: Jesse Tucker
 *	Date: December 16th 2012
@@ -11,7 +12,6 @@
 *	Description: Defines the types of boxes that can be found in an MPEG4 Container. As the container
 *	can be extended this may not be an exhaustive list.
 */
-
 
 namespace Arcusical {
 namespace MPEG4 {

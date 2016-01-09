@@ -3,12 +3,12 @@
 #include <ostream>
 #include <string>
 #include <unordered_map>
+
 /*
 *	Author: Jesse Tucker
 *	Date: January 5th 2013
 *	Description: Covers enumeration and std::string conversion/printing utilities for image type enums
 */
-
 
 namespace Arcusical {
 namespace MPEG4 {

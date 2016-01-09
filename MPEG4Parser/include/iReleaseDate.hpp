@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Box.hpp"
+
 /*
 *	Author: Jesse Tucker
 *	Date: December 30th 2012
@@ -10,7 +11,6 @@
 *	Note: online sources indicate this field may not always be identical format, sometimes it may only
 *	be the year.
 */
-
 
 namespace Arcusical {
 namespace MPEG4 {

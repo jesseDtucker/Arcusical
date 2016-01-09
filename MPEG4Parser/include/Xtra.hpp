@@ -1,6 +1,7 @@
 #pragma once
 
 #include "UnknownBox.hpp"
+
 /*
 *	Author: Jesse Tucker
 *	Date: January 13th 2013
@@ -9,7 +10,6 @@
 *	however little data exists. Examination of binary shows a large amount of plain test.
 *	Unsure of the value of this box so for now it is being marked as unknown
 */
-
 
 namespace Arcusical {
 namespace MPEG4 {

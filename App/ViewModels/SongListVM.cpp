@@ -7,6 +7,7 @@
 #include "Song.hpp"
 #include "ViewModels/SongListVM.hpp"
 #include "ViewModels/SongVM.hpp"
+
 using namespace Arcusical::Player;
 using namespace Util;
 

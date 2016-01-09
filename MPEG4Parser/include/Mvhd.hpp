@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Box.hpp"
+
 /*
 *	Author: Jesse Tucker
 *	Date: December 27th 2012
@@ -9,7 +10,6 @@
 *	Description: Movie Header Box definition as defined on page 16 of
 *	ISO 14496-12. Contains media independant meta data.
 */
-
 
 namespace Arcusical {
 namespace MPEG4 {

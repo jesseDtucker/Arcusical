@@ -4,6 +4,7 @@
 #include <stdint.h>
 #include <string>
 #include <unordered_map>
+
 /*
 *	Author: Jesse Tucker
 *	File: GenreTypes.hpp
@@ -11,7 +12,6 @@
 *	defined as ID3 genres, however the value itunes encodes appear to be exactly 1 more than the
 *	value referenced by ID3.
 */
-
 
 namespace Arcusical {
 namespace MPEG4 {

@@ -1,6 +1,5 @@
 #pragma once
 
-
 namespace Arcusical {
 namespace ViewModel {
 ref class AlbumVM;

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Box.hpp"
+
 /*
 *	Author: Jesse Tucker
 *	Date: December 28th 2012
@@ -9,7 +10,6 @@
 *	Description: The TKHD box contains is a track header box and contains
 *	the details of a single track. Please see ISO 14496-12 page 18-19 for details.
 */
-
 
 namespace Arcusical {
 namespace MPEG4 {

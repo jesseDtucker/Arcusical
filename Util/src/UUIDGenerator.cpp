@@ -1,5 +1,6 @@
 #include "UUIDGenerator.hpp"
 #include <algorithm>
+
 using namespace std;
 using namespace boost::uuids;
 

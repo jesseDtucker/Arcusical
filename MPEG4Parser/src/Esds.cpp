@@ -5,6 +5,7 @@
 #include "Arc_Assert.hpp"
 #include "Esds.hpp"
 #include "MPEG4_Parser.hpp"
+
 /*
 *	Author: Jesse Tucker
 *	Date: December 30th 2012

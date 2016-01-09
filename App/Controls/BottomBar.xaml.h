@@ -4,15 +4,15 @@
 #include "ViewModels/SongPlayerVM.hpp"
 
 namespace Arcusical {
-  [Windows::Foundation::Metadata::WebHostHidden] public ref class BottomBar sealed {
-   public:
-    BottomBar();
+[Windows::Foundation::Metadata::WebHostHidden] public ref class BottomBar sealed {
+ public:
+  BottomBar();
 
-    VM_DECLARATION(ViewModel::SongPlayerVM ^);
+  VM_DECLARATION(ViewModel::SongPlayerVM ^);
 
-   private:
-    void AlbumSelected(Platform::Object ^ sender, Windows::UI::Xaml::RoutedEventArgs ^ e);
-    void SearchClicked(Platform::Object ^ sender, Windows::UI::Xaml::RoutedEventArgs ^ e);
-    void WhatIsPlayingClicked(Platform::Object ^ sender, Windows::UI::Xaml::RoutedEventArgs ^ e);
-  };
+ private:
+  void AlbumSelected(Platform::Object ^ sender, Windows::UI::Xaml::RoutedEventArgs ^ e);
+  void SearchClicked(Platform::Object ^ sender, Windows::UI::Xaml::RoutedEventArgs ^ e);
+  void WhatIsPlayingClicked(Platform::Object ^ sender, Windows::UI::Xaml::RoutedEventArgs ^ e);
+};
 }

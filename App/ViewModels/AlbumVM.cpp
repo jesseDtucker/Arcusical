@@ -5,6 +5,7 @@
 #include "Album.hpp"
 #include "AlbumVM.hpp"
 #include "Playlist.hpp"
+
 using namespace Windows::UI::Xaml::Data;
 
 using namespace std;

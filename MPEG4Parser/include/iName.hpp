@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Box.hpp"
+
 /*
 *	Author: Jesse Tucker
 *	Date: December 29th 2012
@@ -8,7 +9,6 @@
 *
 *	Description: Itunes specific box. Contains the title of the song
 */
-
 
 namespace Arcusical {
 namespace MPEG4 {

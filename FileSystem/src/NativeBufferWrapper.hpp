@@ -5,6 +5,7 @@
 #include <windows.storage.streams.h>
 #include <wrl.h>
 #include <wrl/implements.h>
+
 /*
 *	Date: January 20th 2013
 *	Author: Unknown

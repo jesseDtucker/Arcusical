@@ -10,6 +10,7 @@
 #include "Playlist.hpp"
 #include "SongListControlVM.hpp"
 #include "SongListVM.hpp"
+
 using namespace std;
 using namespace Windows::UI::Xaml::Data;
 

@@ -1,4 +1,4 @@
-﻿#include "boost/algorithm/string/predicate.hpp"
+#include "boost/algorithm/string/predicate.hpp"
 #include <algorithm>
 #include <future>
 #include <ppltasks.h>

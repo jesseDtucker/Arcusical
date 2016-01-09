@@ -1,6 +1,7 @@
 #include "pch.h"
 
 #include "GenreTypes.hpp"
+
 /*
 *	Author: Jesse Tucker
 *	File: GenreTypes.hpp

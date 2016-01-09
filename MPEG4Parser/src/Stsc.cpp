@@ -3,6 +3,7 @@
 #include "InvalidValueException.hpp"
 #include "MPEG4_Parser.hpp"
 #include "Stsc.hpp"
+
 /*
 *	Author: Jesse Tucker
 *	Date: December 30th 2012

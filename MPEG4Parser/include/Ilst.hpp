@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ContainerBox.hpp"
+
 /*
 *	Author: Jesse Tucker
 *	Date: December 31th 2012
@@ -10,7 +11,6 @@
 *	available. Implementation derived from various online sources and observation of file structure.
 *	This box is a container for a variety of other atoms that define the apple atoms
 */
-
 
 namespace Arcusical {
 namespace MPEG4 {

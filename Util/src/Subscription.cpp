@@ -1,5 +1,6 @@
 #include "Arc_Assert.hpp"
 #include "Subscription.hpp"
+
 namespace Util {
 Subscription::Subscription(UnsubscribeCallback unsubscribeCallback)
     : m_unsubscribeCallback(unsubscribeCallback), m_isSubscribed(true) {}

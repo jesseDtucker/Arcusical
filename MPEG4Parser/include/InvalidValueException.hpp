@@ -1,6 +1,7 @@
 #pragma once
 
 #include "BoxParsingException.hpp"
+
 /*
 *	Author: Jesse Tucker
 *	Date: December 24th 2012
@@ -9,7 +10,6 @@
 *	Description: Exception that is to be thrown when a value read
 *	from a box is not allowed
 */
-
 
 namespace Arcusical {
 namespace MPEG4 {

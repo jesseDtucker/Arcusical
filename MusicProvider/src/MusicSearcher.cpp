@@ -5,6 +5,7 @@
 
 #include "Arc_Assert.hpp"
 #include "LocalMusicCache.hpp"
+
 // the number of characters before searches in the middle of names will be considered
 static const int MIN_FOR_MIDDLE_SEARCH = 3;
 

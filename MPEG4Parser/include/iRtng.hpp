@@ -1,6 +1,7 @@
 #pragma once
 
 #include "UnknownBox.hpp"
+
 /*
 *	Author: Jesse Tucker
 *	Date: January 1st 2013
@@ -8,7 +9,6 @@
 *	a value indicating the rating of the song. However as observed data and online references
 *	disagree on exact values this box is being treated as an unknown.
 */
-
 
 namespace Arcusical {
 namespace MPEG4 {

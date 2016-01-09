@@ -1,6 +1,7 @@
 #pragma once
 
 #include "UnknownBox.hpp"
+
 /*
 *	Author: Jesse Tucker
 *	Date: December 30th 2012
@@ -10,7 +11,6 @@
 *	information on its contents. Appears to be related to the account of the person
 *	who purchased the media. Pinf = Purchase Info???
 */
-
 
 namespace Arcusical {
 namespace MPEG4 {

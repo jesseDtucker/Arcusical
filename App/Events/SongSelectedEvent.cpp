@@ -1,6 +1,7 @@
 #include "pch.h"
 
 #include "Events/SongSelectedEvent.hpp"
+
 namespace Arcusical {
 namespace Events {
 SongSelectedEvent::SongSelectedEvent(ViewModel::SongVM ^ selectedSong) : m_selectedSong(selectedSong) {}
