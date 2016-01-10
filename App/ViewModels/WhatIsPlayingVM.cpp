@@ -16,7 +16,6 @@ WhatIsPlayingVM::WhatIsPlayingVM(Playlist& playlist, IPlayer& player, Background
                                  MusicProvider::MusicProvider& musicProvider)
     : m_playlist(playlist), m_worker(worker), m_player(player), m_musicProvider(musicProvider) {
   this->SongListControlVM = ref new ViewModel::SongListControlVM(playlist, worker);
-  this->SongListControlVM->EnableSkipTo = true;
   m_playlistChangedSub = playlist.PlaylistChanged += [this]() { this->OnPlaylistChanged(); };
   m_songPlayingChangedSub = player.GetSongChanged() += [this](auto song) { this->OnSongChanged(song); };
 }

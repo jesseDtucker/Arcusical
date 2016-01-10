@@ -77,7 +77,8 @@ void Playlist::PlayPrevious(double goToStartThreshold /* = 5.0 */) {
   }
 }
 
-void Playlist::SkipTo(const Song& song) {
+bool Playlist::SkipTo(const Song& song) {
+  bool skippedToSong = false;
   std::lock_guard<std::recursive_mutex> lock(m_syncLock);
   // we need to find the song. Skipping can go forward or backwards so first create a complete list and then find the
   // song in that.
@@ -90,6 +91,7 @@ void Playlist::SkipTo(const Song& song) {
   auto songToSkipTo =
       find_if(begin(allSongs), end(allSongs), [&song](const Song* songPtr) { return song == *songPtr; });
   if (songToSkipTo != end(allSongs)) {
+    skippedToSong = true;
     // excellent, we have something to skip to.
     vector<Song> newSongQueue = {};
     newSongQueue.reserve(distance(songToSkipTo, end(allSongs)));
@@ -109,6 +111,7 @@ void Playlist::SkipTo(const Song& song) {
 
     PlaylistChanged();
   }
+  return skippedToSong;
 }
 
 bool Playlist::TryStartPlayback() {

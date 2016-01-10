@@ -17,7 +17,6 @@ ref class SongListVM;
   NOTIFY_PROPERTY_CHANGED_IMPL;
 
   PROP_SET_AND_GET_WINRT(SongListVM ^, SongList);
-  PROP_SET_AND_GET_WINRT(Platform::Boolean, EnableSkipTo);
   void PlaySongsAfterAndIncluding(SongVM ^ song);
 
   internal : SongListControlVM(Player::Playlist& playlist, Util::BackgroundWorker& worker);
