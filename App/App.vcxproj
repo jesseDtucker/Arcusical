@@ -214,7 +214,7 @@
       <DependentUpon>Controls\WhatIsPlaying.xaml</DependentUpon>
     </ClInclude>
     <ClInclude Include="Converters\AlternateConverter.hpp" />
-    <ClInclude Include="Converters\IsPlayingToIconPath.hpp" />
+    <ClInclude Include="Converters\IsPlayingConverters.hpp" />
     <ClInclude Include="Converters\SongListSizeToVisiblity.hpp" />
     <ClInclude Include="Events\AlbumSelectedEvent.hpp" />
     <ClInclude Include="Events\EventService.hpp" />
@@ -299,7 +299,7 @@
       <DependentUpon>Controls\WhatIsPlaying.xaml</DependentUpon>
     </ClCompile>
     <ClCompile Include="Converters\AlternateConverter.cpp" />
-    <ClCompile Include="Converters\IsPlayingToIconPath.cpp" />
+    <ClCompile Include="Converters\IsPlayingConverters.cpp" />
     <ClCompile Include="Converters\SongListSizeToVisiblity.cpp" />
     <ClCompile Include="Events\AlbumSelectedEvent.cpp" />
     <ClCompile Include="Events\SongSelectedEvent.cpp" />

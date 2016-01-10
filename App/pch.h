@@ -6,7 +6,7 @@
 #include "App.xaml.h"
 #include "Arc_Assert.hpp"
 #include "Converters/AlternateConverter.hpp"
-#include "Converters/IsPlayingToIconPath.hpp"
+#include "Converters/IsPlayingConverters.hpp"
 #include "Converters/SongListSizeToVisiblity.hpp"
 #include "IPlayer.hpp"
 #include "MusicProvider.hpp"

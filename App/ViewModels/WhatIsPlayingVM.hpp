@@ -30,6 +30,7 @@ namespace ViewModel {
   MusicProvider::MusicProvider& m_musicProvider;
   Util::Subscription m_playlistChangedSub;
   Util::Subscription m_songPlayingChangedSub;
+  std::vector<Model::Song> m_songList;
 };
 }
 }

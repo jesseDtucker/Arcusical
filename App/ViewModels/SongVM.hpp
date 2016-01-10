@@ -44,6 +44,7 @@ ref struct SongStreamVM sealed {
   PROP_SET_AND_GET_WINRT(Platform::String ^, LengthStr);
   PROP_SET_AND_GET_WINRT(unsigned long long, Length);
   PROP_SET_AND_GET_WINRT(AudioFormat, Format);
+  PROP_SET_AND_GET_WINRT(Platform::Boolean, IsPlaying);
 
   // used in lists only
   PROP_SET_AND_GET_WINRT(Platform::Boolean, IsAlternate);

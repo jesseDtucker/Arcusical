@@ -21,12 +21,13 @@
                           Margin="3, 9, 3, 9">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="60"/>
+                            <ColumnDefinition Width="auto"/>
                         </Grid.ColumnDefinitions>
                         <TextBlock Text="{Binding Title}" VerticalAlignment="Center" Margin="5" FontSize="16"
-                               Foreground="Black" Grid.Column="0" TextTrimming="CharacterEllipsis"/>
+                                   Foreground="Black" Grid.Column="0" TextTrimming="CharacterEllipsis"
+                                   FontWeight="{Binding Path=IsPlaying, Converter={StaticResource IsPlayingFontConverter}}"/>
                         <TextBlock Text="{Binding LengthStr}" VerticalAlignment="Center" Margin="5, 5, 25, 5" FontSize="16"
-                               Foreground="Black" Grid.Column="1"/>
+                                   Foreground="Black" Grid.Column="1" FontWeight="{Binding Path=IsPlaying, Converter={StaticResource IsPlayingFontConverter}}"/>
                     </Grid>
                 </Grid>
             </DataTemplate>

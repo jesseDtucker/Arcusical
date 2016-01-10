@@ -33,6 +33,7 @@ class Playlist final {
   void PlayNext();
   void PlayPrevious(double goToStartThreshold =
                         5.0);  // if the song is beyond the threshold (in seconds) then just go to the start of the song
+  void SkipTo(const Model::Song& song);
 
   void Clear();
 

@@ -28,6 +28,8 @@ namespace ViewModel {
                         Util::BackgroundWorker& worker);
 
  private:
+  Util::Subscription m_playerSubscription;
+  ViewModel::SongVM ^ m_currentSong;
 };
 }
 }

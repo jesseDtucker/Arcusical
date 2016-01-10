@@ -122,7 +122,13 @@ void Win8Player::SetSong(const Model::Song& song) {
   }
 }
 
-Model::Song* Win8Player::GetCurrentSong() { return &*m_currentSong; }
+Model::Song* Win8Player::GetCurrentSong() {
+  if (m_currentSong) {
+    return &*m_currentSong;
+  } else {
+    return nullptr;
+  }
+}
 
 double Win8Player::GetCurrentTime() const { return m_mediaEngine->GetCurrentTime(); }
 

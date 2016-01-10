@@ -27,7 +27,7 @@ static unordered_map<Model::AudioFormat, ViewModel::AudioFormat> FORMAT_MAPPING 
     {Model::AudioFormat::MP3, ViewModel::AudioFormat::MP3}};
 
 SongVM::SongVM(const Model::Song& song, Playlist& playlist, IPlayer& player, BackgroundWorker& worker)
-    : m_song(song), m_playlist(playlist), m_player(player), m_IsAlternate(false), m_worker(worker) {
+    : m_song(song), m_playlist(playlist), m_player(player), m_IsAlternate(false), m_worker(worker), m_IsPlaying(false) {
   auto title = m_song.GetTitle();
 
   m_Title = ref new Platform::String(title.c_str());
