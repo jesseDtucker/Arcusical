@@ -7,6 +7,8 @@ I built this player so that I would have an app that made it really simple to li
 
 The player is still a work in progress 
 
+Gource visualization of progress as of Jan. 2016: https://www.youtube.com/watch?v=0uxvnzp8Cyg
+
 ## Build
 
 Requires Visual Studio 2015.
