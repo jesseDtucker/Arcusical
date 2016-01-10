@@ -12,6 +12,7 @@
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Converters/Converters.xaml"/>
                 <ResourceDictionary Source="/Styles/ButtonStyles.xaml"/>
                 <ResourceDictionary Source="/Styles/SongProgressBar.xaml"/>
                 <ResourceDictionary>
@@ -41,7 +42,7 @@
             </Grid.RowDefinitions>
             <Rectangle Fill="{StaticResource shadowBrushHorizontal}" HorizontalAlignment="Stretch" Grid.Row="1"/>
             <Slider HorizontalAlignment="Stretch" Grid.Row="2" VerticalAlignment="Bottom"
-                    Value="{Binding Path=AmountPlayed, Mode=TwoWay}" Maximum="{Binding Length}"
+                    Value="0" Maximum="{Binding Length}" ThumbToolTipValueConverter="{StaticResource PlayProgressConverter}"
                     Height="10" Style="{StaticResource SongProgressBar}"
                     x:Name="v_slider"/>
             <Grid Grid.Row="3" Background="#1976d2">
@@ -63,15 +64,18 @@
                         <ColumnDefinition Width="auto"/>
                         <ColumnDefinition Width="auto"/>
                         <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="auto"/>
                     </Grid.ColumnDefinitions>
-                    <Button Style="{StaticResource ClearButtonStyle}" Margin="1" Click="WhatIsPlayingClicked" Grid.Column="0">
+                    <TextBlock Text="{Binding ProgressString}" Grid.Column="0" VerticalAlignment="Center" FontWeight="Light"
+                               Foreground="White"/>
+                    <Button Style="{StaticResource ClearButtonStyle}" Margin="1" Click="WhatIsPlayingClicked" Grid.Column="1">
                         <Image Source="/Assets/Icons/WhatIsNext.png"/>
                     </Button>
-                    <Button Style="{StaticResource ClearButtonStyle}" Margin="10" Click="SearchClicked" Grid.Column="1">
+                    <Button Style="{StaticResource ClearButtonStyle}" Margin="10" Click="SearchClicked" Grid.Column="2">
                         <Image Source="/Assets/Icons/SearchIcon.png"/>
                     </Button>
                     <local:VolumeSilder VerticalAlignment="Stretch" Margin="15,15,25,15"
-                                        DataContext="{Binding VolumeVM}" Grid.Column="2"/>
+                                        DataContext="{Binding VolumeVM}" Grid.Column="3"/>
                 </Grid>
             </Grid>
         </Grid>

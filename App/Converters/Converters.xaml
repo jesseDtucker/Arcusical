@@ -7,4 +7,5 @@
     <converters:SongListSizeToVisibility x:Key="SongListVisibilityConverter"/>
     <converters:AlternateConverter x:Key="AlternateSongConverter"/>
     <converters:IsPlayingToFontWeight x:Key="IsPlayingFontConverter"/>
+    <converters:PlayProgressTooltipConverter x:Key="PlayProgressConverter"/>
 </ResourceDictionary>

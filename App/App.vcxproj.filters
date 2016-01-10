@@ -111,6 +111,12 @@
     <ClCompile Include="Converters\IsPlayingConverters.cpp">
       <Filter>Converters</Filter>
     </ClCompile>
+    <ClCompile Include="Converters\PlayProgressTooltipConverter.cpp">
+      <Filter>Converters</Filter>
+    </ClCompile>
+    <ClCompile Include="Utility\TextUtility.cpp">
+      <Filter>Utility</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -186,6 +192,12 @@
     <ClInclude Include="Controls\WhatIsPlaying.xaml.h" />
     <ClInclude Include="Converters\IsPlayingConverters.hpp">
       <Filter>Converters</Filter>
+    </ClInclude>
+    <ClInclude Include="Converters\PlayProgressTooltipConverter.hpp">
+      <Filter>Converters</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility\TextUtility.hpp">
+      <Filter>Utility</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

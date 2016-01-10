@@ -33,6 +33,7 @@ namespace ViewModel {
   PROP_SET_AND_GET_WINRT(Platform::Boolean, IsPlaying);
   PROP_SET_AND_GET_WINRT(ViewModel::VolumeSliderVM ^, VolumeVM);
   PROP_SET_AND_GET_WINRT(ViewModel::AlbumVM ^, Album);
+  PROP_SET_AND_GET_WINRT(Platform::String ^, ProgressString);
 
   void Play();
   void Pause();

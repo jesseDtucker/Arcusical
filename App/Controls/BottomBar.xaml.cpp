@@ -23,19 +23,35 @@ using namespace Windows::UI::Xaml::Input;
 using namespace Windows::UI::Xaml::Media;
 using namespace Windows::UI::Xaml::Navigation;
 
-VM_IMPL(SongPlayerVM ^, BottomBar);
-
 const double MIN_JUMP = 1.0;
 
-BottomBar::BottomBar() {
+BottomBar::BottomBar() : m_isScrubbing(false) {
   InitializeComponent();
 
-  v_slider->ValueChanged += ref new Primitives::RangeBaseValueChangedEventHandler(
-      [this](Object ^ sender, Primitives::RangeBaseValueChangedEventArgs ^ e) {
-        if (abs(e->NewValue - e->OldValue) > MIN_JUMP) {
-          VM->ChangeTimeTo(e->NewValue);
-        }
-      });
+  v_slider->AddHandler(UIElement::PointerPressedEvent,
+                       ref new PointerEventHandler(this, &BottomBar::OnSliderPointerDown), true);
+  v_slider->AddHandler(UIElement::PointerReleasedEvent,
+                       ref new PointerEventHandler(this, &BottomBar::OnSliderPointerReleased), true);
+}
+
+SongPlayerVM ^ BottomBar::VM::get() {
+  if (m_viewModel != this->DataContext) {
+    m_viewModel = dynamic_cast<SongPlayerVM ^>(this->DataContext);
+  }
+  return m_viewModel;
+}
+
+void BottomBar::VM::set(SongPlayerVM ^ vm) {
+  ARC_ASSERT(Arcusical::HasThreadAccess());
+  m_viewModel = vm;
+  this->DataContext = m_viewModel;
+  if (m_viewModel != nullptr) {
+    m_amountPlayedSub = m_viewModel->OnAmountPlayedChanged += [this](double newAmount) {
+      if (!m_isScrubbing) {
+        v_slider->Value = newAmount;
+      }
+    };
+  }
 }
 
 void Arcusical::BottomBar::AlbumSelected(Platform::Object ^ sender, Windows::UI::Xaml::RoutedEventArgs ^ e) {
@@ -50,4 +66,19 @@ void Arcusical::BottomBar::SearchClicked(Platform::Object ^ sender, Windows::UI:
 
 void Arcusical::BottomBar::WhatIsPlayingClicked(Platform::Object ^ sender, Windows::UI::Xaml::RoutedEventArgs ^ e) {
   EventService<WhatIsPlayingSelectedEvent>::BroadcastEvent({});
+}
+
+void Arcusical::BottomBar::OnSliderPointerDown(Platform::Object ^ sender,
+                                               Windows::UI::Xaml::Input::PointerRoutedEventArgs ^ e) {
+  if (e->GetCurrentPoint(this)->Properties->IsLeftButtonPressed) {
+    m_isScrubbing = true;
+  }
+}
+
+void Arcusical::BottomBar::OnSliderPointerReleased(Platform::Object ^ sender,
+                                                   Windows::UI::Xaml::Input::PointerRoutedEventArgs ^ e) {
+  if (m_isScrubbing) {
+    m_isScrubbing = false;
+    VM->ChangeTimeTo(v_slider->Value);
+  }
 }

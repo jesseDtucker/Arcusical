@@ -14,5 +14,11 @@ namespace Arcusical {
   void AlbumSelected(Platform::Object ^ sender, Windows::UI::Xaml::RoutedEventArgs ^ e);
   void SearchClicked(Platform::Object ^ sender, Windows::UI::Xaml::RoutedEventArgs ^ e);
   void WhatIsPlayingClicked(Platform::Object ^ sender, Windows::UI::Xaml::RoutedEventArgs ^ e);
+
+  void OnSliderPointerDown(Platform::Object ^ sender, Windows::UI::Xaml::Input::PointerRoutedEventArgs ^ e);
+  void OnSliderPointerReleased(Platform::Object ^ sender, Windows::UI::Xaml::Input::PointerRoutedEventArgs ^ e);
+
+  bool m_isScrubbing;
+  Util::Subscription m_amountPlayedSub;
 };
 }
