@@ -16,7 +16,7 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
-    <Grid x:Name="v_root" Background="{StaticResource neutralBGBrush}">
+    <Grid x:Name="v_root">
         <Grid.Resources>
             <Storyboard x:Name="slideInAnim">
                 <DoubleAnimation To="0" Storyboard.TargetName="offset" Storyboard.TargetProperty="X"
@@ -47,7 +47,7 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Rectangle Fill="{StaticResource shadowBrush}" Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
-        <Grid Grid.Column="1">
+        <Grid Grid.Column="1" Background="{StaticResource neutralBGBrush}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="*"/>

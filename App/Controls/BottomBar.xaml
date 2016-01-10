@@ -14,6 +14,16 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/Styles/ButtonStyles.xaml"/>
                 <ResourceDictionary Source="/Styles/SongProgressBar.xaml"/>
+                <ResourceDictionary>
+                    <LinearGradientBrush x:Name="shadowBrushVertical" StartPoint="1,0" EndPoint="0,0">
+                        <GradientStop Color="Black" Offset="-0.7"/>
+                        <GradientStop Color="#00000000" Offset="0.81"/>
+                    </LinearGradientBrush>
+                    <LinearGradientBrush x:Name="shadowBrushHorizontal" StartPoint="0,1" EndPoint="0,0">
+                        <GradientStop Color="Black" Offset="-0.7"/>
+                        <GradientStop Color="#00000000" Offset="0.81"/>
+                    </LinearGradientBrush>
+                </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
@@ -24,14 +34,17 @@
         </Grid.ColumnDefinitions>
         <Grid Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
             <Grid.RowDefinitions>
-                <RowDefinition Height="50*"/> <!-- Progress Bar -->
-                <RowDefinition Height="50*"/> <!-- Main Body, ie. info, buttons, etc -->
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="8"/> <!-- Shadow -->
+                <RowDefinition Height="auto"/> <!-- Progress Bar -->
+                <RowDefinition Height="60"/> <!-- Main Body, ie. info, buttons, etc -->
             </Grid.RowDefinitions>
-            <Slider HorizontalAlignment="Stretch" Grid.Row="0" VerticalAlignment="Bottom"
+            <Rectangle Fill="{StaticResource shadowBrushHorizontal}" HorizontalAlignment="Stretch" Grid.Row="1"/>
+            <Slider HorizontalAlignment="Stretch" Grid.Row="2" VerticalAlignment="Bottom"
                     Value="{Binding Path=AmountPlayed, Mode=TwoWay}" Maximum="{Binding Length}"
                     Height="10" Style="{StaticResource SongProgressBar}"
                     x:Name="v_slider"/>
-            <Grid Grid.Row="1" Background="#1976d2">
+            <Grid Grid.Row="3" Background="#1976d2">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="auto"/>
@@ -58,12 +71,33 @@
                         <Image Source="/Assets/Icons/SearchIcon.png"/>
                     </Button>
                     <local:VolumeSilder VerticalAlignment="Stretch" Margin="15,15,25,15"
-                                    DataContext="{Binding VolumeVM}" Grid.Column="2"/>
+                                        DataContext="{Binding VolumeVM}" Grid.Column="2"/>
                 </Grid>
             </Grid>
         </Grid>
-        <Button BorderThickness="0" Padding="0" Grid.Column="1" Click="AlbumSelected">
-            <Image Source="{Binding Album.ImagePath}" HorizontalAlignment="Stretch"/>
+        <Button BorderThickness="0" Padding="0" Grid.Column="1" Click="AlbumSelected" Margin="0,0,-5,0" Background="#00000000">
+            <Button.RenderTransform>
+                <TranslateTransform X="-5" Y="4"/>
+            </Button.RenderTransform>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="4"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="4"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Rectangle Grid.Row="1" Fill="{StaticResource shadowBrushVertical}" Opacity="0.65"/>
+                <Rectangle Grid.Column="1" Fill="{StaticResource shadowBrushHorizontal}" Opacity="0.65"/>
+                <Image Source="/Assets/Misc/CornerGradient.png" Opacity="0.65">
+                    <Image.RenderTransform>
+                        <CompositeTransform ScaleX="-1" ScaleY="-1" TranslateX="4" TranslateY="4"/>
+                    </Image.RenderTransform>
+                </Image>
+                <Image Source="{Binding Album.ImagePath}" HorizontalAlignment="Stretch"
+                       Grid.Row="1" Grid.Column="1"/>
+            </Grid>
         </Button>
     </Grid>
 </UserControl>
