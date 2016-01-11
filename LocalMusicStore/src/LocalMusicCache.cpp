@@ -66,6 +66,7 @@ static const unordered_map<ContainerType, Container> MODEL_CONTAINER_TO_CACHE = 
 LocalMusicCache::LocalMusicCache() {
   m_songLoadFuture = async(std::launch::async, [this]() { this->LoadSongs(); });
   m_albumLoadFuture = async(std::launch::async, [this]() { this->LoadAlbums(); });
+  m_saveWorker.Start();
 }
 
 SongCollectionLockedPtr LocalMusicCache::GetLocalSongs() const {
@@ -202,55 +203,61 @@ void LocalMusicCache::LoadSongs() {
 }
 
 void LocalMusicCache::SaveAlbums() const {
-  CachedAlbumList cachedAlbums;
+  m_saveWorker.Append([this]() {
+    CachedAlbumList cachedAlbums;
+    m_albumLoadFuture.wait();
 
-  decltype(m_localAlbums) localAlbums;
+    decltype(m_localAlbums) localAlbums;
 
-  {
-    WriteLock albumGuard(&m_albumsEditLock);
-    localAlbums = m_localAlbums;
-  }
+    {
+      WriteLock albumGuard(&m_albumsEditLock);
+      localAlbums = m_localAlbums;
+    }
 
-  for (auto& album : localAlbums) {
-    auto cachedAlbum = cachedAlbums.add_albums();
-    FillInCachedAlbumFromModel(*cachedAlbum, album.second);
-  }
+    for (auto& album : localAlbums) {
+      auto cachedAlbum = cachedAlbums.add_albums();
+      FillInCachedAlbumFromModel(*cachedAlbum, album.second);
+    }
 
-  // ensure we actually have contents to write to file
-  if (cachedAlbums.ByteSize() > 0) {
-    vector<unsigned char> buffer(cachedAlbums.ByteSize());
-    auto result = cachedAlbums.SerializeToArray(buffer.data(), buffer.size());
-    ARC_ASSERT_MSG(result, "Failed to serialize album list!");
+    // ensure we actually have contents to write to file
+    if (cachedAlbums.ByteSize() > 0) {
+      vector<unsigned char> buffer(cachedAlbums.ByteSize());
+      auto result = cachedAlbums.SerializeToArray(buffer.data(), buffer.size());
+      ARC_ASSERT_MSG(result, "Failed to serialize album list!");
 
-    auto albumCacheFile = Storage::ApplicationFolder().CreateNewFile(LocalMusicCache::ALBUM_CACHE_FILE);
-    albumCacheFile->WriteToFile(buffer);
-  }
+      auto albumCacheFile = Storage::ApplicationFolder().CreateNewFile(LocalMusicCache::ALBUM_CACHE_FILE);
+      albumCacheFile->WriteToFile(buffer);
+    }
+  });
 }
 
 void LocalMusicCache::SaveSongs() const {
-  CachedSongList cachedSongs;
+  m_saveWorker.Append([this]() {
+    m_songLoadFuture.wait();
+    CachedSongList cachedSongs;
 
-  decltype(m_localSongs) localSongs;
+    decltype(m_localSongs) localSongs;
 
-  {
-    WriteLock songsGuard(&m_songsEditLock);
-    localSongs = m_localSongs;
-  }
+    {
+      WriteLock songsGuard(&m_songsEditLock);
+      localSongs = m_localSongs;
+    }
 
-  for (auto& song : localSongs) {
-    auto cachedSong = cachedSongs.add_songs();
-    FillInCachedSongFromModel(*cachedSong, song.second);
-  }
+    for (auto& song : localSongs) {
+      auto cachedSong = cachedSongs.add_songs();
+      FillInCachedSongFromModel(*cachedSong, song.second);
+    }
 
-  // ensure we actually have contents to write to file
-  if (cachedSongs.ByteSize() > 0) {
-    vector<unsigned char> buffer(cachedSongs.ByteSize());
-    auto result = cachedSongs.SerializeToArray(buffer.data(), buffer.size());
-    ARC_ASSERT_MSG(result, "Failed to serialize song list!");
+    // ensure we actually have contents to write to file
+    if (cachedSongs.ByteSize() > 0) {
+      vector<unsigned char> buffer(cachedSongs.ByteSize());
+      auto result = cachedSongs.SerializeToArray(buffer.data(), buffer.size());
+      ARC_ASSERT_MSG(result, "Failed to serialize song list!");
 
-    auto songCacheFile = Storage::ApplicationFolder().CreateNewFile(SONG_CACHE_FILE);
-    songCacheFile->WriteToFile(buffer);
-  }
+      auto songCacheFile = Storage::ApplicationFolder().CreateNewFile(SONG_CACHE_FILE);
+      songCacheFile->WriteToFile(buffer);
+    }
+  });
 }
 
 void FillInCachedAlbumFromModel(CachedAlbum& cachedAlbum, Album& modelAlbum) {

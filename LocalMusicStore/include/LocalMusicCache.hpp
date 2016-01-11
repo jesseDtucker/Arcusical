@@ -9,6 +9,7 @@
 #include <unordered_map>
 #include <windows.h>
 
+#include "AsyncProcessor.hpp"
 #include "IAlbumToSongMapper.hpp"
 #include "LockHelper.hpp"
 #include "MusicTypes.hpp"
@@ -55,8 +56,9 @@ class LocalMusicCache final : public Model::IAlbumToSongMapper {
   Model::AlbumCollection m_localAlbums;
   Model::SongCollection m_localSongs;
 
-  std::future<void> m_songLoadFuture;
-  std::future<void> m_albumLoadFuture;
+  mutable Util::BackgroundWorker m_saveWorker;
+  mutable std::future<void> m_songLoadFuture;
+  mutable std::future<void> m_albumLoadFuture;
 
   // TODO::JT replace these with the futures
   bool m_areSongsLoaded = false;
