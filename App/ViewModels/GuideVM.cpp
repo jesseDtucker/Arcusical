@@ -17,10 +17,16 @@ void GuideVM::SelectedAlbum::set(AlbumVM ^ selectedAlbum) {
   } else {
     m_selectedAlbum->SetFrom(*selectedAlbum->GetModel());
   }
-  auto songListVM = ref new ViewModel::SongListControlVM(m_playlist, m_worker);
-  songListVM->SongList = selectedAlbum->Songs;
-  this->SongListControlVM = songListVM;
 
+  m_worker.Append([this, selectedAlbum]() {
+    // getting the songs can be an expensive operation. Best not handled on the UI thread
+    auto songListVM = ref new ViewModel::SongListControlVM(m_playlist, m_worker);
+    auto songs = selectedAlbum->Songs;
+    DispatchToUI([this, songListVM, songs]() {
+      songListVM->SongList = songs;
+      this->SongListControlVM = songListVM;
+    });
+  });
   DispatchToUI([this]() { OnPropertyChanged("SelectedAlbum"); });
 }
 
