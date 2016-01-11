@@ -1,3 +1,9 @@
+#include "pch.h"
+
+#include "Stbl.hpp"
+
+#include "MPEG4_Parser.hpp"
+
 /*
 *	Author: Jesse Tucker
 *	Date: Dec. 29th 2012
@@ -6,11 +12,6 @@
 *	boxes that contain information on the sample description, sample size,
 *	sample location, etc. Please see standard for details.
 */
-
-#include "pch.h"
-
-#include "Stbl.hpp"
-#include "MPEG4_Parser.hpp"
 
 namespace Arcusical {
 namespace MPEG4 {

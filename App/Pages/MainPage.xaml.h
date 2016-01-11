@@ -1,20 +1,14 @@
-﻿//
-// MainPage.xaml.h
-// Declaration of the MainPage class.
-//
-
 #pragma once
 
-#include "Pages/MainPage.g.h"
-
 #include "AsyncProcessor.hpp"
+#include "Pages/MainPage.g.h"
+#include "Subscription.hpp"
 #include "ViewModels/AlbumListControlVM.hpp"
 #include "ViewModels/GuideVM.hpp"
 #include "ViewModels/SearchVM.hpp"
 #include "ViewModels/SongListControlVM.hpp"
-#include "ViewModels/VolumeSilderVM.hpp"
 #include "ViewModels/SongPlayerVM.hpp"
-#include "Subscription.hpp"
+#include "ViewModels/VolumeSilderVM.hpp"
 
 namespace Arcusical {
 namespace MusicProvider {
@@ -35,9 +29,9 @@ public
 ref class MainPage sealed {
  public:
   MainPage();
-internal:
-  void SetDependencies(MusicProvider::MusicSearcher* musicSearcher, MusicProvider::MusicProvider* musicProvider,
-                       Player::IPlayer* player, Player::Playlist* playlist, Util::BackgroundWorker* worker);
+  internal : void SetDependencies(MusicProvider::MusicSearcher* musicSearcher,
+                                  MusicProvider::MusicProvider* musicProvider, Player::IPlayer* player,
+                                  Player::Playlist* playlist, Util::BackgroundWorker* worker);
 
  private:
   void SetupTransportControls(Player::IPlayer* player);

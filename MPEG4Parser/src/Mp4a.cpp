@@ -1,3 +1,10 @@
+#include "pch.h"
+
+#include "Mp4a.hpp"
+
+#include "MPEG4_Parser.hpp"
+#include "Stream.hpp"
+
 /*
 *	Author: Jesse Tucker
 *	Date: December 30th 2012
@@ -7,12 +14,6 @@
 *	of the audio as it is specific to the Mp4a atom. This atom usually contains
 *	information for tracks encoded in either AAC or MP3.
 */
-
-#include "pch.h"
-
-#include "Mp4a.hpp"
-#include "MPEG4_Parser.hpp"
-#include "Stream.hpp"
 
 namespace Arcusical {
 namespace MPEG4 {

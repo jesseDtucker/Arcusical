@@ -1,3 +1,9 @@
+#include "pch.h"
+
+#include "Stsd.hpp"
+
+#include "MPEG4_Parser.hpp"
+
 /*
 *	Author: Jesse Tucker
 *	Date: December 30th 2012
@@ -7,16 +13,11 @@
 *	Contains information describing the mediums sample information.
 */
 
-#include "pch.h"
-
-#include "Stsd.hpp"
-#include "MPEG4_Parser.hpp"
-
 namespace Arcusical {
 namespace MPEG4 {
 
-Stsd::Stsd() {};
-Stsd::~Stsd() {};
+Stsd::Stsd(){};
+Stsd::~Stsd(){};
 
 void Stsd::ReadContents(Util::Stream& stream) {
   // first 4 bytes appear to be reserved. Standard and test file

@@ -1,6 +1,4 @@
 #pragma once
-#ifndef ASYNC_PROCESSOR_HPP
-#define ASYNC_PROCESSOR_HPP
 
 #include <algorithm>
 #include <functional>
@@ -88,8 +86,7 @@ template <typename Input, typename Output>
 Util::AsyncProcessor<Input, Output>::~AsyncProcessor() {
   try {
     Stop();
-  }
-  catch (Concurrency::invalid_operation& ex) {
+  } catch (Concurrency::invalid_operation& ex) {
     OutputDebugStringA(ex.what());
     ARC_FAIL(
         "Likely attempted to destroy an async processor on the UI thread, behaviour beyond this point is "
@@ -229,5 +226,3 @@ void Util::AsyncProcessor<Input, Output>::Append(const Input& value) {
 
 typedef Util::AsyncProcessor<std::function<void()>, void> BackgroundWorker;
 }
-
-#endif

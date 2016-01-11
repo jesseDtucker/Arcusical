@@ -1,3 +1,12 @@
+#include "pch.h"
+
+#include "iGenre.hpp"
+
+#include <codecvt>
+
+#include "DataBox.hpp"
+#include "MPEG4_Parser.hpp"
+
 /*
 *	Author: Jesse Tucker
 *	Date: January 1st 2012
@@ -6,14 +15,6 @@
 *	Description: Itunes specific box. Contains a code that determines the genre. Code is 16 bits
 *	and genre is determined by its mapping to the ID3 genres. However the actual coded value is one larger.
 */
-
-#include "pch.h"
-
-#include <codecvt>
-
-#include "iGenre.hpp"
-#include "DataBox.hpp"
-#include "MPEG4_Parser.hpp"
 
 using namespace std;
 

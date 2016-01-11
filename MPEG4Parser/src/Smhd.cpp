@@ -1,3 +1,9 @@
+#include "pch.h"
+
+#include "Smhd.hpp"
+
+#include "MPEG4_Parser.hpp"
+
 /*
 *	Author: Jesse Tucker
 *	Date: December 29th 2012
@@ -7,11 +13,6 @@
 *	Sound Media Header box, contains information pertaining to the general
 *	presentation of the sound data.
 */
-
-#include "pch.h"
-
-#include "Smhd.hpp"
-#include "MPEG4_Parser.hpp"
 
 namespace Arcusical {
 namespace MPEG4 {

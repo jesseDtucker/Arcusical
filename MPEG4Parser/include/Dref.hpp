@@ -1,3 +1,7 @@
+#pragma once
+
+#include "Box.hpp"
+
 /*
 *	Author: Jesse Tucker
 *	Date: December 29th 2012
@@ -8,11 +12,6 @@
 *	Url box and the Urn box. Essentially this is just a container, just with somewhat different
 *	parsing rules. See standard for specifics.
 */
-
-#ifndef DREF_HPP
-#define DREF_HPP
-
-#include "Box.hpp"
 
 namespace Arcusical {
 namespace MPEG4 {
@@ -37,5 +36,3 @@ class Dref : public Box {
 
 } /*namespace: MPEG4*/
 } /*namespace: Arcusical*/
-
-#endif

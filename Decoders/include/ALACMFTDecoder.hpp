@@ -1,6 +1,4 @@
 #pragma once
-#ifndef ALAC_DECODER_HPP
-#define ALAC_DECODER_HPP
 
 #include <Mfidl.h>
 #include <mftransform.h>
@@ -8,8 +6,8 @@
 #include <wrl\client.h>
 #include <wrl\implements.h>
 
-#include "Alac.hpp"
 #include "ALACDecoder.h"
+#include "Alac.hpp"
 #include "AsyncProcessor.hpp"
 #include "Export.hpp"
 #include "Stsd.hpp"
@@ -32,8 +30,7 @@ class EXPORT ALACMFTDecoder WrlSealed
           ABI::Windows::Media::IMediaExtension, IMFTransform, IMFMediaEventGenerator, IMFShutdown> {
   InspectableClass(L"ALACDecoder.ALACDecoder", BaseTrust)
 
- public:
-  ALACMFTDecoder();
+      public : ALACMFTDecoder();
   virtual ~ALACMFTDecoder();
 
   // IMediaExtension
@@ -154,5 +151,3 @@ class EXPORT ALACMFTDecoder WrlSealed
                                                                                      // this makes the logic much easier
   std::future<void> m_eventQueueTask;
 };
-
-#endif

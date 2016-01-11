@@ -1,16 +1,20 @@
 #include "pch.h"
 
+#include "SongPlayerVM.hpp"
+
+#include <cmath>
 #include <future>
 
 #include "Arc_Assert.hpp"
 #include "IPlayer.hpp"
 #include "Playlist.hpp"
 #include "Song.hpp"
-#include "SongPlayerVM.hpp"
+#include "Utility/TextUtility.hpp"
 
 using namespace std;
 using namespace Arcusical::Model;
 using namespace Arcusical::Player;
+using namespace Platform;
 
 namespace Arcusical {
 namespace ViewModel {
@@ -36,9 +40,8 @@ SongPlayerVM::SongPlayerVM(IPlayer& player, Playlist& playlist, MusicProvider::M
     }
   };
 
-  m_playingSub = m_player.GetPlaying() += [this](bool isPlaying) {
-    DispatchToUI([this, isPlaying]() { IsPlaying = isPlaying; });
-  };
+  m_playingSub = m_player.GetPlaying() +=
+      [this](bool isPlaying) { DispatchToUI([this, isPlaying]() { IsPlaying = isPlaying; }); };
 
   m_songChangedSub = m_player.GetSongChanged() += [this](const boost::optional<Song>& newSong) {
     Song song = newSong ? *newSong : Song();
@@ -75,9 +78,13 @@ void SongPlayerVM::Next() {
 }
 
 void SongPlayerVM::UpdateTime(double amountPlayed, double duration) {
-  Length = duration;
-  AmountPlayed = amountPlayed;
-  AmoutRemaining = duration - amountPlayed;
+  if (!isnan(amountPlayed) && !isnan(duration)) {
+    Length = duration;
+    AmountPlayed = amountPlayed;
+    AmoutRemaining = duration - amountPlayed;
+    ProgressString =
+        ref new String((SecondsToString((int)(amountPlayed)) + L"/" + SecondsToString((int)(duration))).c_str());
+  }
 }
 
 void SongPlayerVM::ChangeTimeTo(double newTime) { m_player.SetCurrentTime(newTime); }

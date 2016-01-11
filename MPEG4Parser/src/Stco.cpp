@@ -1,3 +1,10 @@
+#include "pch.h"
+
+#include "Stco.hpp"
+
+#include "InvalidValueException.hpp"
+#include "MPEG4_Parser.hpp"
+
 /*
 *	Author: Jesse Tucker
 *	Date: December 30th 2012
@@ -12,12 +19,6 @@
 *	in the containing file.
 */
 
-#include "pch.h"
-
-#include "Stco.hpp"
-#include "MPEG4_Parser.hpp"
-#include "InvalidValueException.hpp"
-
 namespace Arcusical {
 namespace MPEG4 {
 
@@ -29,7 +30,6 @@ void Stco::ReadContents(Util::Stream& stream) {
   m_version = stream.ReadInteger<uint32_t>();
 
   uint32_t numEntries = stream.ReadInteger<uint32_t>();
-
   m_entries.reserve(numEntries);
 
   // times 2 because we have just read in 2 32 bit numbers

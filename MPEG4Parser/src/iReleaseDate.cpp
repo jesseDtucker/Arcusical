@@ -1,3 +1,10 @@
+#include "pch.h"
+
+#include "iReleaseDate.hpp"
+
+#include "DataBox.hpp"
+#include "MPEG4_Parser.hpp"
+
 /*
 *	Author: Jesse Tucker
 *	Date: December 30th 2012
@@ -7,12 +14,6 @@
 *	Note: online sources indicate this field may not always be identical format, sometimes it may only
 *	be the year.
 */
-
-#include "pch.h"
-
-#include "iReleaseDate.hpp"
-#include "MPEG4_Parser.hpp"
-#include "DataBox.hpp"
 
 using namespace std;
 

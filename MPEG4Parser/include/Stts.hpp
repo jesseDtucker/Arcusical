@@ -1,3 +1,7 @@
+#pragma once
+
+#include "Box.hpp"
+
 /*
 *	Author: Jesse Tucker
 *	Date: December 30th 2012
@@ -7,11 +11,6 @@
 *	This is the Decoding Time to Sample Box. It contains information on the time to sample
 *	map.
 */
-
-#ifndef STTS_HPP
-#define STTS_HPP
-
-#include "Box.hpp"
 
 namespace Arcusical {
 namespace MPEG4 {
@@ -43,5 +42,3 @@ class Stts : public Box {
 
 } /*namespace: MPEG4*/
 } /*namespace: Arcusical*/
-
-#endif

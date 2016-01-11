@@ -1,3 +1,7 @@
+#pragma once
+
+#include "Box.hpp"
+
 /*
 *	Author: Jesse Tucker
 *	Date: December 29th 2012
@@ -6,11 +10,6 @@
 *	Description: Media header box. Declares information specific to the media
 *	in a single track. Defined on page 21 of the ISO 14496-12 standard.
 */
-
-#ifndef MDHD_HPP
-#define MDHD_HPP
-
-#include "Box.hpp"
 
 namespace Arcusical {
 namespace MPEG4 {
@@ -42,5 +41,3 @@ class Mdhd : public Box {
 
 } /*namespace: MPEG4*/
 } /*namespace: Arcusical*/
-
-#endif

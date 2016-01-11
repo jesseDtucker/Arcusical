@@ -1,8 +1,8 @@
 #include "MusicSearcher.hpp"
 
+#include "boost/algorithm/string/predicate.hpp"
 #include <algorithm>
 #include <numeric>
-#include "boost/algorithm/string/predicate.hpp"
 
 #include "Arc_Assert.hpp"
 #include "LocalMusicCache.hpp"
@@ -24,7 +24,13 @@ if(result.CancellationToken->IsCanceled()) \
   \
 }
 
-Arcusical::MusicProvider::SearchResult::SearchResult(Util::CancellationTokenRef token) : CancellationToken(token) {}
+SearchResult::SearchResult(Util::CancellationTokenRef token) : CancellationToken(token) {}
+
+bool SearchResult::operator==(const SearchResult& rhs) const {
+  return this->Songs == rhs.Songs && this->Albums == rhs.Albums;
+}
+
+bool SearchResult::operator!=(const SearchResult& rhs) const { return !(*this == rhs); }
 
 MusicSearcher::MusicSearcher(LocalMusicCache* musicCache) {
   ARC_ASSERT(musicCache != nullptr);

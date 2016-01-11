@@ -1,13 +1,12 @@
-#ifndef ALBUM_VM_HPP
-#define ALBUM_VM_HPP
+#pragma once
 
 #include <memory>
 
 #include "AsyncProcessor.hpp"
 #include "PropertyHelper.hpp"
-#include "ViewModels/SongListVM.hpp"
 #include "Utility/DispatcherHelper.hpp"
 #include "Utility/XamlMacros.hpp"
+#include "ViewModels/SongListVM.hpp"
 
 namespace Arcusical {
 namespace Model {
@@ -32,10 +31,10 @@ namespace ViewModel {
 
   property SongListVM ^ Songs { SongListVM ^ get(); }
 
-  void Play();
-internal:
-  AlbumVM(const Model::Album& album, Player::Playlist& playlist, Player::IPlayer& player,
-          Util::BackgroundWorker& worker);
+      void
+      Play();
+  internal : AlbumVM(const Model::Album& album, Player::Playlist& playlist, Player::IPlayer& player,
+                     Util::BackgroundWorker& worker);
   AlbumVM(const AlbumVM ^ albumVM);
   void SetFrom(const Model::Album& album);  // intended for use with live/progressive updates
 
@@ -50,5 +49,3 @@ internal:
 };
 }
 }
-
-#endif

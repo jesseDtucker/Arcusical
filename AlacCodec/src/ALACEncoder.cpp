@@ -36,8 +36,8 @@
 #include "dplib.h"
 #include "matrixlib.h"
 
-#include "ALACBitUtilities.h"
 #include "ALACAudioTypes.h"
+#include "ALACBitUtilities.h"
 #include "EndianPortable.h"
 
 // Note: in C you can't typecast to a 2-dimensional array pointer but that's what we need when
@@ -78,14 +78,15 @@ static void AddFiller(BitBuffer *bits, int32_t numBytes);
                                 index 5 value = (map & (0x7ul << (5 * 3))) >> (5 * 3)
                                 index 7 value = (map & (0x7ul << (7 * 3))) >> (7 * 3)
 */
-static const uint32_t sChannelMaps[kALACMaxChannels] = {ID_SCE, ID_CPE, (ID_CPE << 3) | (ID_SCE),
-                                                        (ID_SCE << 9) | (ID_CPE << 3) | (ID_SCE),
-                                                        (ID_CPE << 9) | (ID_CPE << 3) | (ID_SCE),
-                                                        (ID_SCE << 15) | (ID_CPE << 9) | (ID_CPE << 3) | (ID_SCE),
-                                                        (ID_SCE << 18) | (ID_SCE << 15) | (ID_CPE << 9) |
-                                                            (ID_CPE << 3) | (ID_SCE),
-                                                        (ID_SCE << 21) | (ID_CPE << 15) | (ID_CPE << 9) |
-                                                            (ID_CPE << 3) | (ID_SCE)};
+static const uint32_t sChannelMaps[kALACMaxChannels] = {
+    ID_SCE,
+    ID_CPE,
+    (ID_CPE << 3) | (ID_SCE),
+    (ID_SCE << 9) | (ID_CPE << 3) | (ID_SCE),
+    (ID_CPE << 9) | (ID_CPE << 3) | (ID_SCE),
+    (ID_SCE << 15) | (ID_CPE << 9) | (ID_CPE << 3) | (ID_SCE),
+    (ID_SCE << 18) | (ID_SCE << 15) | (ID_CPE << 9) | (ID_CPE << 3) | (ID_SCE),
+    (ID_SCE << 21) | (ID_CPE << 15) | (ID_CPE << 9) | (ID_CPE << 3) | (ID_SCE)};
 
 static const uint32_t sSupportediPodSampleRates[] = {8000, 11025, 12000, 16000, 22050, 24000, 32000, 44100, 48000};
 

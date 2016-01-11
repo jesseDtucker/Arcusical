@@ -1,3 +1,7 @@
+#pragma once
+
+#include "Box.hpp"
+
 /*
 *	Author: Jesse Tucker
 *	Date: December 29th 2012
@@ -5,11 +9,6 @@
 *
 *	Description: Itunes specific box. Contains the artist of the song
 */
-
-#ifndef IART_HPP
-#define IART_HPP
-
-#include "Box.hpp"
 
 namespace Arcusical {
 namespace MPEG4 {
@@ -32,5 +31,3 @@ class iArtist : public Box {
 
 } /*namespace: MPEG4*/
 } /*namespace: Arcusical*/
-
-#endif

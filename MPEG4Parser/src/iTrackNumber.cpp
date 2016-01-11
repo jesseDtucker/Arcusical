@@ -1,3 +1,10 @@
+#include "pch.h"
+
+#include "iTrackNumber.hpp"
+
+#include "DataBox.hpp"
+#include "MPEG4_Parser.hpp"
+
 /*
 *	Author: Jesse Tucker
 *	Date: January 1st 2012
@@ -6,12 +13,6 @@
 *	Description: Itunes specific box. Contiains information on the track number. Includes both the number
 *	for this track and the track number for the album. ie: track x of y.
 */
-
-#include "pch.h"
-
-#include "iTrackNumber.hpp"
-#include "DataBox.hpp"
-#include "MPEG4_Parser.hpp"
 
 using namespace std;
 

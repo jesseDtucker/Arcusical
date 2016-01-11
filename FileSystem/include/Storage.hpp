@@ -1,7 +1,7 @@
-﻿#ifndef FILE_SYSTEM_HPP
-#define FILE_SYSTEM_HPP
+#pragma once
 
 #include <memory>
+#include <string>
 
 #include "Export.hpp"
 
@@ -31,12 +31,10 @@ class EXPORT Storage final {
   static bool CheckForIllegalCharacters(const std::wstring& filePath);
   static void RemoveIllegalCharacters(std::wstring& filePath, wchar_t replacementCharacter = '_');
 
-  static void RegisterStorageItem(Windows::Storage::IStorageItem^ storageItem);
+  static void RegisterStorageItem(Windows::Storage::IStorageItem ^ storageItem);
 
  private:
   static IFolder* s_musicFolder;
   static IFolder* s_applicationFolder;
 };
 }
-
-#endif

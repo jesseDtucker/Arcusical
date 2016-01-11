@@ -1,3 +1,7 @@
+#pragma once
+
+#include "Box.hpp"
+
 /*
 *	Author: Jesse Tucker
 *	Date: January 1st 2012
@@ -6,11 +10,6 @@
 *	Description: Itunes specific box. Contiains information on the track number. Includes both the number
 *	for this track and the track number for the album. ie: track x of y.
 */
-
-#ifndef ITRACK_NUMBER_HPP
-#define ITRACK_NUMBER_HPP
-
-#include "Box.hpp"
 
 namespace Arcusical {
 namespace MPEG4 {
@@ -35,5 +34,3 @@ class iTrackNumber : public Box {
 
 } /*Arcusical*/
 } /*MPEG4*/
-
-#endif

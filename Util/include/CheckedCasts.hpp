@@ -1,11 +1,13 @@
-/************************************************************************/
-/* Provides some wrappers on common casting operations that include asserts
-/************************************************************************/
+#pragma once
 
 #include <limits>
 #include <type_traits>
 
 #include "Arc_Assert.hpp"
+
+/************************************************************************/
+/* Provides some wrappers on common casting operations that include asserts
+/************************************************************************/
 
 #ifdef max
 #undef max
@@ -24,7 +26,7 @@ SafeIntCast(Larger num) {
 }
 
 template <typename Smaller, typename Larger>
-typename std::enable_if<std::is_signed<Larger>::value&& std::is_unsigned<Smaller>::value, Smaller>::type SafeIntCast(
+typename std::enable_if<std::is_signed<Larger>::value && std::is_unsigned<Smaller>::value, Smaller>::type SafeIntCast(
     Larger num) {
   static_assert(std::is_integral<Smaller>::value, "Cannot cast ints if the value is not integral!");
   static_assert(std::is_integral<Larger>::value, "Cannot cast ints if the value is not integral!");

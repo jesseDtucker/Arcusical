@@ -1,3 +1,11 @@
+#pragma once
+
+#include <robuffer.h>
+#include <vector>
+#include <windows.storage.streams.h>
+#include <wrl.h>
+#include <wrl/implements.h>
+
 /*
 *	Date: January 20th 2013
 *	Author: Unknown
@@ -5,22 +13,12 @@
 *	This is a winRT component that implements the IBuffer interface to allow for easy
 *	reading of files from winRT APIs to a native format (vector<char> in this case).
 */
-#pragma once
-#ifndef NATIVE_BUFFER_HPP
-#define NATIVE_BUFFER_HPP
-
-#include <wrl.h>
-#include <wrl/implements.h>
-#include <windows.storage.streams.h>
-#include <robuffer.h>
-#include <vector>
 
 namespace FileSystem {
 
 class NativeBufferWrapper : public Microsoft::WRL::RuntimeClass<
                                 Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
                                 ABI::Windows::Storage::Streams::IBuffer, Windows::Storage::Streams::IBufferByteAccess> {
-
  public:
   virtual ~NativeBufferWrapper();
 
@@ -36,5 +34,3 @@ class NativeBufferWrapper : public Microsoft::WRL::RuntimeClass<
   std::vector<unsigned char>* m_buffer;
 };
 }
-
-#endif

@@ -1,9 +1,5 @@
-﻿//
-// VolumeSilder.xaml.cpp
-// Implementation of the VolumeSilder class
-//
-
 #include "pch.h"
+
 #include "VolumeSilder.xaml.h"
 
 using namespace Arcusical;

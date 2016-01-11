@@ -1,12 +1,11 @@
-#ifndef SONG_VM_HPP
-#define SONG_VM_HPP
+#pragma once
 
 #include <memory>
 
 #include "AsyncProcessor.hpp"
+#include "PropertyHelper.hpp"
 #include "Song.hpp"
 #include "Stream.hpp"
-#include "PropertyHelper.hpp"
 #include "Utility/XamlMacros.hpp"
 
 namespace Arcusical {
@@ -22,13 +21,7 @@ namespace ViewModel {
 // TODO::JT is this needed?
 // This enum is expected to match the enum in the song model
 public
-enum class AudioFormat {
-  UNKNOWN,
-  AAC,
-  ALAC,
-  FLAC,
-  MP3
-};
+enum class AudioFormat { UNKNOWN, AAC, ALAC, FLAC, MP3 };
 
 public
 ref struct SongStreamVM sealed {
@@ -37,8 +30,7 @@ ref struct SongStreamVM sealed {
   property unsigned int BitRate;
   property unsigned int SampleSize;
   property unsigned int ChannelCount;
-internal:
-  std::shared_ptr<Util::Stream> Stream;
+  internal : std::shared_ptr<Util::Stream> Stream;
 };
 
 [Windows::UI::Xaml::Data::Bindable] public ref class SongVM sealed : INotifyPropertyChanged_t {
@@ -52,6 +44,7 @@ internal:
   PROP_SET_AND_GET_WINRT(Platform::String ^, LengthStr);
   PROP_SET_AND_GET_WINRT(unsigned long long, Length);
   PROP_SET_AND_GET_WINRT(AudioFormat, Format);
+  PROP_SET_AND_GET_WINRT(Platform::Boolean, IsPlaying);
 
   // used in lists only
   PROP_SET_AND_GET_WINRT(Platform::Boolean, IsAlternate);
@@ -61,8 +54,8 @@ internal:
   void Play();
   void Pause();
 
-internal:
-  SongVM(const Model::Song& song, Player::Playlist& playlist, Player::IPlayer& player, Util::BackgroundWorker& worker);
+  internal : SongVM(const Model::Song& song, Player::Playlist& playlist, Player::IPlayer& player,
+                    Util::BackgroundWorker& worker);
   Model::Song* GetModel();
 
  private:
@@ -74,5 +67,3 @@ internal:
 
 } /* ViewModel */
 } /* Arcusical */
-
-#endif

@@ -1,3 +1,27 @@
+#pragma once
+
+#include <memory>
+#include <string>
+
+#include "Alac.hpp"
+#include "Box.hpp"
+#include "Esds.hpp"
+#include "ImageTypes.hpp"
+#include "MPEG4_Tree.hpp"
+#include "Mdat.hpp"
+#include "Mp4a.hpp"
+#include "Mvhd.hpp"
+#include "iAlbum.hpp"
+#include "iAlbumArtist.hpp"
+#include "iArtist.hpp"
+#include "iComposer.hpp"
+#include "iCover.hpp"
+#include "iDiskNumber.hpp"
+#include "iGenre.hpp"
+#include "iName.hpp"
+#include "iReleaseDate.hpp"
+#include "iTrackNumber.hpp"
+
 /*
 *	Author: Jesse Tucker
 *	Date: Feb 24th 2013
@@ -7,40 +31,10 @@
 *	TODO::JT: implement means of writing information, currently only works as a reader
 */
 
-#ifndef MPEG4_SONG_FILE_HPP
-#define MPEG4_SONG_FILE_HPP
-
-#include <memory>
-#include <string>
-
-#include "Alac.hpp"
-#include "Box.hpp"
-#include "Mvhd.hpp"
-#include "Mp4a.hpp"
-#include "Esds.hpp"
-#include "ImageTypes.hpp"
-#include "iName.hpp"
-#include "iArtist.hpp"
-#include "iAlbumArtist.hpp"
-#include "iAlbum.hpp"
-#include "iGenre.hpp"
-#include "iTrackNumber.hpp"
-#include "iDiskNumber.hpp"
-#include "iReleaseDate.hpp"
-#include "iCover.hpp"
-#include "iComposer.hpp"
-#include "Mdat.hpp"
-
-#include "MPEG4_Tree.hpp"
-
 namespace Arcusical {
 namespace MPEG4 {
 
-enum class Encoding {
-  ALAC,
-  AAC,
-  UNKNOWN
-};
+enum class Encoding { ALAC, AAC, UNKNOWN };
 
 class MPEG4_SongFile {
  public:
@@ -174,5 +168,3 @@ class MPEG4_SongFile {
 
 } /*namespace: MPEG4*/
 } /*namespace: Arcusical*/
-
-#endif

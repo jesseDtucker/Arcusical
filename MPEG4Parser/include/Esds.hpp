@@ -1,3 +1,10 @@
+#pragma once
+
+#include "boost\assign.hpp"
+#include <unordered_map>
+
+#include "Box.hpp"
+
 /*
 *	Author: Jesse Tucker
 *	Date: December 30th 2012
@@ -7,25 +14,10 @@
 *	regarding the encoding.
 */
 
-#ifndef ESDS_HPP
-#define ESDS_HPP
-
-#include <unordered_map>
-
-#include "Box.hpp"
-
-#include "boost\assign.hpp"
-
 namespace Arcusical {
 namespace MPEG4 {
 
-enum class ES_Tag : char {
-  UNKNOWN,
-  ES_DESC,
-  DECODER_CONFIG,
-  DECODER_INFO,
-  SL_CONFIG_DESC
-};
+enum class ES_Tag : char { UNKNOWN, ES_DESC, DECODER_CONFIG, DECODER_INFO, SL_CONFIG_DESC };
 
 #pragma region Tag Definitions
 
@@ -124,5 +116,3 @@ class Esds : public Box {
 
 } /*namespace: MPEG4*/
 } /*namespace: Arcusical*/
-
-#endif

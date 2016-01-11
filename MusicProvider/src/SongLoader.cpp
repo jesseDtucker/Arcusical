@@ -1,9 +1,3 @@
-#define PARSER_VERSOBE 0
-
-#if PARSER_VERSOBE
-#include <sstream>
-#endif
-
 #include "SongLoader.hpp"
 
 #include <algorithm>
@@ -12,6 +6,7 @@
 #include <functional>
 #include <ppltasks.h>
 #include <random>
+#include <sstream>
 #include <string>
 #include <unordered_map>
 #include <unordered_set>
@@ -20,14 +15,19 @@
 #include "Album.hpp"
 #include "Arc_Assert.hpp"
 #include "IAlbumToSongMapper.hpp"
-#include "IFileReader.hpp"
 #include "IFile.hpp"
+#include "IFileReader.hpp"
 #include "IFolder.hpp"
 #include "MPEG4_Parser.hpp"
 #include "ParallelProcessor.hpp"
 #include "Song.hpp"
 #include "Storage.hpp"
 #include "UUIDGenerator.hpp"
+
+#define PARSER_VERSOBE 0
+
+#if PARSER_VERSOBE
+#endif
 
 using namespace Arcusical;
 using namespace Arcusical::Model;
@@ -50,11 +50,12 @@ static Util::UUIDGenerator s_idGenerator;
 static const unsigned long long MIN_LENGTH = 5;  // minimum length of a song for it to be considered a song
 
 static const unordered_map<MPEG4::Encoding, AudioFormat> MPEG4_TO_MODEL_MAPPING = {
-    {MPEG4::Encoding::AAC, AudioFormat::AAC}, {MPEG4::Encoding::ALAC, AudioFormat::ALAC},
+    {MPEG4::Encoding::AAC, AudioFormat::AAC},
+    {MPEG4::Encoding::ALAC, AudioFormat::ALAC},
     {MPEG4::Encoding::UNKNOWN, AudioFormat::UNKNOWN}};
 
 static const unordered_map<wstring, function<Song(const IFile&)>> FILE_EX_TO_LOADER = {
-    {L"m4a", LoadMpeg4Song}, {L"mp3", LoadMP3}, {L"wav", LoadWav}, {L"flac", LoadFlac} };
+    {L"m4a", LoadMpeg4Song}, {L"mp3", LoadMP3}, {L"wav", LoadWav}, {L"flac", LoadFlac}};
 
 Song LoadSong(const IFile& file) {
   Song result;
@@ -203,7 +204,8 @@ vector<Song> LoadSongs(vector<IFile*> files) {
   SYSTEM_INFO sysInfo;
   GetSystemInfo(&sysInfo);
 
-  ParallelProcessor<IFile*, Song> parellelProcessor([](const IFile* file) { return LoadSong(*file); }, sysInfo.dwNumberOfProcessors / 2);
+  ParallelProcessor<IFile*, Song> parellelProcessor([](const IFile* file) { return LoadSong(*file); },
+                                                    sysInfo.dwNumberOfProcessors / 2);
   parellelProcessor.Append(std::move(files));
   parellelProcessor.Start();
   parellelProcessor.Complete();
@@ -439,16 +441,20 @@ vector<pair<wstring, const Song*>> DetermineMissingFiles(const SongCollection& e
     auto& formats = songPair.second.GetFiles();
     for (auto& songFiles : formats) {
       transform(begin(songFiles.second), end(songFiles.second), back_inserter(expectedPaths),
-                [&songPair](const SongFile & songFile)
-                    ->pair<wstring, const Song*> { return {songFile.filePath, &songPair.second}; });
+                [&songPair](const SongFile& songFile) -> pair<wstring, const Song*> {
+                  return {songFile.filePath, &songPair.second};
+                });
     }
   }
 
   transform(begin(files), end(files), back_inserter(actualPaths),
-            [](const shared_ptr<IFile> & file)->pair<wstring, const Song*> { return {file->GetFullPath(), nullptr}; });
+            [](const shared_ptr<IFile>& file) -> pair<wstring, const Song*> {
+              return {file->GetFullPath(), nullptr};
+            });
 
-  auto sortPred = [](const pair<wstring, const Song*> a,
-                     const pair<wstring, const Song*>& b) { return a.first < b.first; };
+  auto sortPred = [](const pair<wstring, const Song*> a, const pair<wstring, const Song*>& b) {
+    return a.first < b.first;
+  };
 
   sort(begin(expectedPaths), end(expectedPaths), sortPred);
   sort(begin(actualPaths), end(actualPaths), sortPred);

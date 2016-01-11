@@ -1,8 +1,3 @@
-﻿//
-// VolumeSilder.xaml.h
-// Declaration of the VolumeSilder class
-//
-
 #pragma once
 
 #include "Controls\VolumeSilder.g.h"

@@ -1,5 +1,4 @@
 #pragma once
-#ifndef STORAGE_EXCEPTIONS_HPP
 
 #include <stdexcept>
 
@@ -9,5 +8,3 @@ class ReadTooLongException : public std::runtime_error {
   ReadTooLongException(std::string msg) : std::runtime_error(msg) {}
 };
 }
-
-#endif

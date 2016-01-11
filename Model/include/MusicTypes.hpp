@@ -1,14 +1,12 @@
 #pragma once
-#ifndef MUSIC_TYPES_HPP
-#define MUSIC_TYPES_HPP
 
 #include "boost\functional\hash.hpp"
 #include "boost\uuid\uuid.hpp"
 #include <memory>
 #include <unordered_map>
 
-#include "Song.hpp"
 #include "Album.hpp"
+#include "Song.hpp"
 
 namespace Arcusical {
 namespace Model {
@@ -24,12 +22,7 @@ typedef std::unordered_map<boost::uuids::uuid, const Arcusical::Model::Song*, bo
 typedef std::unordered_map<boost::uuids::uuid, const Arcusical::Model::Album*, boost::hash<boost::uuids::uuid>>
     AlbumPtrCollection;
 
-enum class LoadProgress {
-  CACHE_LOAD_PENDING,
-  CACHE_LOAD_COMPLETE,
-  DISK_LOAD_IN_PROGRESS,
-  DISK_LOAD_COMPLETE
-};
+enum class LoadProgress { CACHE_LOAD_PENDING, CACHE_LOAD_COMPLETE, DISK_LOAD_IN_PROGRESS, DISK_LOAD_COMPLETE };
 
 struct SongCollectionChanges {
   SongCollectionChanges() = default;
@@ -59,5 +52,3 @@ struct AlbumCollectionChanges {
 
 } /* MusicProvider */
 } /* Arcusical */
-
-#endif

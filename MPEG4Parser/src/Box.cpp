@@ -1,3 +1,14 @@
+#include "pch.h"
+
+#include "Box.hpp"
+
+#include <typeinfo>
+
+#include "Arc_Assert.hpp"
+#include "IncompatibleBoxTypeException.hpp"
+#include "MPEG4_Parser.hpp"
+#include "Stream.hpp"
+
 /*
 *	Author: Jesse Tucker
 *	Date: December 23rd 2012
@@ -8,16 +19,6 @@
 *	a type, and zero or more children. For more details please see the ISO 14496-12 standard.
 *	The box is defined on page 4.
 */
-
-#include "pch.h"
-
-#include <typeinfo>
-
-#include "Arc_Assert.hpp"
-#include "Box.hpp"
-#include "IncompatibleBoxTypeException.hpp"
-#include "MPEG4_Parser.hpp"
-#include "Stream.hpp"
 
 using namespace std;
 

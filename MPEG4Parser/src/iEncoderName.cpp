@@ -1,3 +1,9 @@
+#include "pch.h"
+
+#include "DataBox.hpp"
+#include "MPEG4_Parser.hpp"
+#include "iEncodername.hpp"
+
 /*
 *	Author: Jesse Tucker
 *	Date: January 13th 2013
@@ -5,12 +11,6 @@
 *	the name of the encoder used to create this file. However there is some unknown
 *	information also contained within this box, likely version numbers...
 */
-
-#include "pch.h"
-
-#include "iEncodername.hpp"
-#include "MPEG4_Parser.hpp"
-#include "DataBox.hpp"
 
 using namespace std;
 

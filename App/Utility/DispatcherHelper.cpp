@@ -1,8 +1,8 @@
 #include "pch.h"
 
-#include <future>
-
 #include "DispatcherHelper.hpp"
+
+#include <future>
 
 namespace Arcusical {
 std::future<void> DispatchToUI(std::function<void()> func) {

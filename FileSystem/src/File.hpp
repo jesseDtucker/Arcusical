@@ -1,5 +1,4 @@
-#ifndef FILE_HPP
-#define FILE_HPP
+#pragma once
 
 #include <string>
 #include <vector>
@@ -34,5 +33,3 @@ class File final : public IFile {
   Windows::Storage::StorageFile ^ m_file;
 };
 }
-
-#endif

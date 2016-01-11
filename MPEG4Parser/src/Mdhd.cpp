@@ -1,3 +1,10 @@
+#include "pch.h"
+
+#include "Mdhd.hpp"
+
+#include "InvalidValueException.hpp"
+#include "MPEG4_Parser.hpp"
+
 /*
 *	Author: Jesse Tucker
 *	Date: December 29th 2012
@@ -6,12 +13,6 @@
 *	Description: Media header box. Declares information specific to the media
 *	in a single track. Defined on page 21 of the ISO 14496-12 standard.
 */
-
-#include "pch.h"
-
-#include "Mdhd.hpp"
-#include "MPEG4_Parser.hpp"
-#include "InvalidValueException.hpp"
 
 namespace Arcusical {
 namespace MPEG4 {

@@ -1,3 +1,7 @@
+#include "pch.h"
+
+#include "Mdat.hpp"
+
 /*
 *	Author: Jesse Tucker
 *	Date: January 19th 2013
@@ -6,10 +10,6 @@
 *	Description: This file contains the raw media data. The contents of this data will be specific to the
 *	media type.
 */
-
-#include "pch.h"
-
-#include "Mdat.hpp"
 
 namespace Arcusical {
 namespace MPEG4 {

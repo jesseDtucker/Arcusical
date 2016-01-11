@@ -1,3 +1,9 @@
+#pragma once
+
+#include <memory>
+
+#include "Box.hpp"
+
 /*
 *	Author: Jesse Tucker
 *	Date: December 27th 2012
@@ -5,13 +11,6 @@
 *
 *	Description: Creates Boxes based upon type.
 */
-
-#ifndef BOX_FACTORY_HPP
-#define BOX_FACTORY_HPP
-
-#include <memory>
-
-#include "Box.hpp"
 
 namespace Arcusical {
 namespace MPEG4 {
@@ -23,5 +22,3 @@ class BoxFactory final {
 
 } /*MPEG4*/
 } /*Arcusical*/
-
-#endif

@@ -1,8 +1,7 @@
-﻿// FileSystem.cpp : Defines the exported functions for the DLL application.
-//
+#include "Storage.hpp"
 
-#include <algorithm>
 #include "boost/algorithm/string/predicate.hpp"
+#include <algorithm>
 #include <future>
 #include <ppltasks.h>
 #include <string>
@@ -13,7 +12,6 @@
 #include "File.hpp"
 #include "FileReader.hpp"
 #include "Folder.hpp"
-#include "Storage.hpp"
 
 using namespace concurrency;
 using namespace FileSystem;
@@ -27,7 +25,7 @@ IFolder* Storage::s_applicationFolder = nullptr;
 
 static mutex s_loadingLock;
 static mutex s_lookupLock;
-static unordered_map<wstring, StorageFile^> s_registeredFiles;
+static unordered_map<wstring, StorageFile ^> s_registeredFiles;
 static const unordered_set<wchar_t> ILLEGAL_CHARACTERS = {'?', '<', '>', ':', '*', '|', '^', '/'};
 
 #ifdef __cplusplus_winrt
@@ -65,8 +63,7 @@ shared_ptr<IFile> LookupRegisteredFile(const wstring& filePath) {
   auto registeredFile = s_registeredFiles.find(filePath);
   if (registeredFile != end(s_registeredFiles)) {
     return make_shared<File>(registeredFile->second);
-  }
-  else {
+  } else {
     return nullptr;
   }
 }
@@ -108,8 +105,7 @@ shared_ptr<IFile> Storage::LoadFileFromPath(wstring filePath) {
       auto winRTfile = create_task(StorageFile::GetFileFromPathAsync(ref new String(filePath.c_str()))).get();
       file = make_shared<File>(winRTfile);
     }
-  }
-  catch (Exception ^ ex) {
+  } catch (Exception ^ ex) {
     ARC_FAIL(wstring(ex->Message->Data()).c_str());
   }
 
@@ -134,10 +130,10 @@ void Storage::RemoveIllegalCharacters(wstring& filePath, wchar_t replacementChar
   }
 }
 
-void Storage::RegisterStorageItem(Windows::Storage::IStorageItem^ storageItem) {
+void Storage::RegisterStorageItem(Windows::Storage::IStorageItem ^ storageItem) {
   unique_lock<mutex> lockguard(s_lookupLock);
   auto path = wstring(storageItem->Path->Data());
-  auto storageFile = dynamic_cast<StorageFile^>(storageItem);
+  auto storageFile = dynamic_cast<StorageFile ^>(storageItem);
   ARC_ASSERT_MSG(storageFile != nullptr, "Only supporting file registration for now. Folders not yet supported");
   s_registeredFiles[path] = storageFile;
 }
@@ -155,8 +151,7 @@ bool Storage::IsFile(wstring filePath) {
         auto res = create_task(StorageFile::GetFileFromPathAsync(ref new String(filePath.c_str()))).get();
         result = true;
       }
-    }
-    catch (COMException ^ ex) {
+    } catch (COMException ^ ex) {
       // files that do not exist are not files
       ARC_ASSERT_MSG(ex->HResult == HRESULT_FROM_WIN32(ERROR_FILE_NOT_FOUND), "unexpected HRESULT!");
     }
@@ -170,8 +165,7 @@ bool Storage::IsFolder(wstring filePath) {
   try {
     auto res = create_task(::StorageFolder::GetFolderFromPathAsync(ref new String(filePath.c_str()))).get();
     result = true;
-  }
-  catch (COMException ^ ex) {
+  } catch (COMException ^ ex) {
     ARC_ASSERT_MSG(ex->HResult == E_INVALIDARG, "unexpected HRESULT!");
   }
 

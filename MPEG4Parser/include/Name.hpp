@@ -1,3 +1,9 @@
+#pragma once
+
+#include <string>
+
+#include "Box.hpp"
+
 /*
 *	Author: Jesse Tucker
 *	Date: December 31st 2012
@@ -7,12 +13,6 @@
 *	This is the name used to identify the data contained within this atom. No idea why custom atoms
 *	weren't used here...
 */
-
-#ifndef NAME_HPP
-#define NAME_HPP
-
-#include "Box.hpp"
-#include <string>
 
 namespace Arcusical {
 namespace MPEG4 {
@@ -35,5 +35,3 @@ class Name : public Box {
 
 } /*MPEG4*/
 } /*Arcusical*/
-
-#endif

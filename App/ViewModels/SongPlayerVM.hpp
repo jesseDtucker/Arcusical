@@ -1,6 +1,4 @@
 #pragma once
-#ifndef SONG_PLAYER_VM_HPP
-#define SONG_PLAYER_VM_HPP
 
 #include "AsyncProcessor.hpp"
 #include "PropertyHelper.hpp"
@@ -35,6 +33,7 @@ namespace ViewModel {
   PROP_SET_AND_GET_WINRT(Platform::Boolean, IsPlaying);
   PROP_SET_AND_GET_WINRT(ViewModel::VolumeSliderVM ^, VolumeVM);
   PROP_SET_AND_GET_WINRT(ViewModel::AlbumVM ^, Album);
+  PROP_SET_AND_GET_WINRT(Platform::String ^, ProgressString);
 
   void Play();
   void Pause();
@@ -43,9 +42,8 @@ namespace ViewModel {
 
   void ChangeTimeTo(double newTime);
 
-internal:
-  SongPlayerVM(Player::IPlayer& player, Player::Playlist& playlist, MusicProvider::MusicProvider& provider,
-               Util::BackgroundWorker& worker);
+  internal : SongPlayerVM(Player::IPlayer& player, Player::Playlist& playlist, MusicProvider::MusicProvider& provider,
+                          Util::BackgroundWorker& worker);
 
  private:
   void UpdateTime(double amountPlayed, double duration);
@@ -62,5 +60,3 @@ internal:
 };
 }
 }
-
-#endif

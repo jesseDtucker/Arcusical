@@ -27,8 +27,8 @@
 
 #include "ALACDecoder.h"
 
-#include "dplib.h"
 #include "aglib.h"
+#include "dplib.h"
 #include "matrixlib.h"
 
 #include "ALACBitUtilities.h"

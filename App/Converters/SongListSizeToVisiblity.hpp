@@ -1,6 +1,4 @@
 #pragma once
-#ifndef SONG_LIST_SIZE_TO_VISIBILITY_HPP
-#define SONG_LIST_SIZE_TO_VISIBILITY_HPP
 
 namespace Arcusical {
 namespace Converters {
@@ -14,5 +12,3 @@ ref class SongListSizeToVisibility sealed : public Windows::UI::Xaml::Data::IVal
 };
 }
 }
-
-#endif

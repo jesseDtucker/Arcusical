@@ -1,6 +1,4 @@
 #pragma once
-#ifndef TRANSFORM_PROCESSOR_HPP
-#define TRANSFORM_PROCESSOR_HPP
 
 #include <algorithm>
 
@@ -37,8 +35,7 @@ class TransformProcessor final : public InputBuffer<Input> {
 };
 
 template <typename Input, typename Output>
-Util::TransformProcessor<Input, Output>::TransformProcessor(ProcessSingle operation)
-    : m_singleOperation(operation) {}
+Util::TransformProcessor<Input, Output>::TransformProcessor(ProcessSingle operation) : m_singleOperation(operation) {}
 
 template <typename Input, typename Output>
 void Util::TransformProcessor<Input, Output>::SetBatchProcessor(ProcessBatch operation) {
@@ -95,5 +92,3 @@ void Util::TransformProcessor<Input, Output>::ConnectBuffer(InputBuffer<Output>*
   m_outputBuffer = outputBuffer;
 }
 }
-
-#endif

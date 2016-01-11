@@ -58,9 +58,7 @@
 extern "C" {
 #endif
 
-enum {
-  ALAC_noErr = 0
-};
+enum { ALAC_noErr = 0 };
 
 typedef enum {
   ID_SCE = 0, /* Single Channel Element   */

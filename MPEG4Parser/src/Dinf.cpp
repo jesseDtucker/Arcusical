@@ -1,3 +1,9 @@
+#include "pch.h"
+
+#include "Dinf.hpp"
+
+#include "MPEG4_Parser.hpp"
+
 /*
 *	Author: Jesse Tucker
 *	Date: December 29th 2012
@@ -7,11 +13,6 @@
 *	The DINF box is the Data Information Box and is a container for other boxes. The boxes
 *	it contains hold information on the location of media information in a track.
 */
-
-#include "pch.h"
-
-#include "Dinf.hpp"
-#include "MPEG4_Parser.hpp"
 
 using namespace std;
 

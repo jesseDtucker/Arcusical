@@ -1,3 +1,9 @@
+#include "pch.h"
+
+#include "MeanBox.hpp"
+
+#include "MPEG4_Parser.hpp"
+
 /*
 *	Author: Jesse Tucker
 *	Date: December 31st 2012
@@ -7,11 +13,6 @@
 *	No official specification available. Appears to be just a std::string in reverse DNS order. Unsure
 *	of specific use...
 */
-
-#include "pch.h"
-
-#include "MeanBox.hpp"
-#include "MPEG4_Parser.hpp"
 
 namespace Arcusical {
 namespace MPEG4 {

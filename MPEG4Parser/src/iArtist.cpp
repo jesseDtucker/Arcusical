@@ -1,3 +1,10 @@
+#include "pch.h"
+
+#include "iArtist.hpp"
+
+#include "DataBox.hpp"
+#include "MPEG4_Parser.hpp"
+
 /*
 *	Author: Jesse Tucker
 *	Date: December 29th 2012
@@ -5,12 +12,6 @@
 *
 *	Description: Itunes specific box. Contains the artist of the song
 */
-
-#include "pch.h"
-
-#include "iArtist.hpp"
-#include "MPEG4_Parser.hpp"
-#include "DataBox.hpp"
 
 using namespace std;
 

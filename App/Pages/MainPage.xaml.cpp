@@ -1,23 +1,18 @@
-﻿//
-// MainPage.xaml.cpp
-// Implementation of the MainPage class.
-//
-
 #include "pch.h"
-#include "MainPage.xaml.h"
 
-#include "IFile.hpp"
-#include "IPlayer.hpp"
 #include "CheckedCasts.hpp"
 #include "Controls/AlbumListControl.xaml.h"
 #include "Controls/BottomBar.xaml.h"
 #include "Controls/Guide.xaml.h"
-#include "Controls/SongListControl.xaml.h"
-#include "Controls/SearchControl.xaml.h"
 #include "Controls/PlayerButtons.xaml.h"
+#include "Controls/SearchControl.xaml.h"
+#include "Controls/SongListControl.xaml.h"
 #include "Controls/WhatIsPlaying.xaml.h"
 #include "Events/AlbumSelectedEvent.hpp"
 #include "Events/EventService.hpp"
+#include "IFile.hpp"
+#include "IPlayer.hpp"
+#include "MainPage.xaml.h"
 #include "Playlist.hpp"
 #include "Storage.hpp"
 #include "Utility/KeyboardUtil.hpp"
@@ -67,9 +62,9 @@ void MainPage::SetupTransportControls(IPlayer* player) {
   try {
     auto mediaControl = SystemMediaTransportControls::GetForCurrentView();
 
-    mediaControl->ButtonPressed += ref new TypedEventHandler<
-        SystemMediaTransportControls ^, SystemMediaTransportControlsButtonPressedEventArgs ^ >(
-        this, &MainPage::OnTransportControlButtonPressed);
+    mediaControl->ButtonPressed +=
+        ref new TypedEventHandler<SystemMediaTransportControls ^, SystemMediaTransportControlsButtonPressedEventArgs ^>(
+            this, &MainPage::OnTransportControlButtonPressed);
 
     mediaControl->IsPauseEnabled = true;
     mediaControl->IsPlayEnabled = true;
@@ -126,8 +121,7 @@ void MainPage::SetupTransportControls(IPlayer* player) {
       });
       displayUpdater->Update();
     };
-  }
-  catch (Platform::COMException ^ ex) {
+  } catch (Platform::COMException ^ ex) {
     ARC_FAIL("Failed to setup transport controls!");
   }
 }
@@ -188,7 +182,7 @@ void Arcusical::MainPage::SetDependencies(MusicSearcher* musicSearcher, MusicPro
     v_whatIsPlaying->VM = m_whatIsPlayingVM;
 
     auto wnd = Windows::ApplicationModel::Core::CoreApplication::MainView->CoreWindow;
-    wnd->KeyDown += ref new TypedEventHandler<CoreWindow ^, KeyEventArgs ^ >(this, &MainPage::KeyPressed);
+    wnd->KeyDown += ref new TypedEventHandler<CoreWindow ^, KeyEventArgs ^>(this, &MainPage::KeyPressed);
   });
   vmLoads.wait();
 

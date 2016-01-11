@@ -1,3 +1,7 @@
+#pragma once
+
+#include "ContainerBox.hpp"
+
 /*
 *	Author: Jesse Tucker
 *	Date: December 28th 2012
@@ -7,11 +11,6 @@
 *	details please see ISO 14496-12 page 17-18. The Trak box is simply a container
 *	for other boxes.
 */
-
-#ifndef TRAK_HPP
-#define TRAK_HPP
-
-#include "ContainerBox.hpp"
 
 namespace Arcusical {
 namespace MPEG4 {
@@ -26,5 +25,3 @@ class Trak : public ContainerBox {
 
 } /*namespace: MPEG4*/
 } /*namespace: Arcusical*/
-
-#endif

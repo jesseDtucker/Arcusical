@@ -1,3 +1,7 @@
+#include "pch.h"
+
+#include "MPEG4_Tree.hpp"
+
 /*
 *	Author: Jesse Tucker
 *	Date: December 22nd 2012
@@ -5,10 +9,6 @@
 *
 *	Description: Please see header for details
 */
-
-#include "pch.h"
-
-#include "MPEG4_Tree.hpp"
 
 using namespace std;
 

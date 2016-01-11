@@ -1,8 +1,8 @@
-#include "windows.h"
+#include "InMemoryStream.hpp"
 
 #include "Arc_Assert.hpp"
-#include "InMemoryStream.hpp"
 #include "CheckedCasts.hpp"
+#include "windows.h"
 
 namespace Util {
 InMemoryStream::InMemoryStream(unsigned char* data, size_t length, bool createLocalCopy /* = false */)

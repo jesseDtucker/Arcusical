@@ -1,3 +1,9 @@
+#include "pch.h"
+
+#include "Meta.hpp"
+
+#include "MPEG4_Parser.hpp"
+
 /*
 *	Author: Jesse Tucker
 *	Date: December 30th 2012
@@ -6,11 +12,6 @@
 *	Description: The Meta box is within the user data box. It is defined on page 56
 *	of the ISO 14496-12 standard. This box is a container for various types of metadata.
 */
-
-#include "pch.h"
-
-#include "Meta.hpp"
-#include "MPEG4_Parser.hpp"
 
 namespace Arcusical {
 namespace MPEG4 {

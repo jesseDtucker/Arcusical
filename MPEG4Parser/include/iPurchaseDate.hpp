@@ -1,3 +1,7 @@
+#pragma once
+
+#include "Box.hpp"
+
 /*
 *	File: iPurchaseDate.hpp
 *	Author: Jesse Tucker
@@ -5,11 +9,6 @@
 *
 *	Description: This box is an itunes non-standard box that contains a std::string with the purchase date.
 */
-
-#ifndef IPURCHASE_DATE_HPP
-#define IPURCHASE_DATE_HPP
-
-#include "Box.hpp"
 
 namespace Arcusical {
 namespace MPEG4 {
@@ -32,5 +31,3 @@ class iPurchaseDate : public Box {
 
 } /*namespace: MPEG4*/
 } /*namespace: Arcusical*/
-
-#endif

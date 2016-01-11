@@ -58,10 +58,7 @@ enum {
   kALAC_MemFullError = -108
 };
 
-enum {
-  kALACFormatAppleLossless = 'alac',
-  kALACFormatLinearPCM = 'lpcm'
-};
+enum { kALACFormatAppleLossless = 'alac', kALACFormatLinearPCM = 'lpcm' };
 
 enum {
   kALACMaxChannels = 8,
@@ -165,9 +162,7 @@ typedef struct ALACSpecificConfig {
 } ALACSpecificConfig;
 
 // The AudioChannelLayout atom type is not exposed yet so define it here
-enum {
-  AudioChannelLayoutAID = 'chan'
-};
+enum { AudioChannelLayoutAID = 'chan' };
 
 #if PRAGMA_STRUCT_ALIGN
 #pragma options align = reset

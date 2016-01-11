@@ -1,3 +1,7 @@
+#pragma once
+
+#include "Box.hpp"
+
 /*
 *	Author: Jesse Tucker
 *	Date: January 1st 2012
@@ -5,11 +9,6 @@
 *
 *	Description: Itunes specific box. Contains the album artist
 */
-
-#ifndef IALBUM_ARTIST_HPP
-#define IALBUM_ARTIST_HPP
-
-#include "Box.hpp"
 
 namespace Arcusical {
 namespace MPEG4 {
@@ -32,5 +31,3 @@ class iAlbumArtist : public Box {
 
 } /*namespace: MPEG4*/
 } /*namespace: Arcusical*/
-
-#endif

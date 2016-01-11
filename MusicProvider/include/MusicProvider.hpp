@@ -1,11 +1,8 @@
 #pragma once
 
-#ifndef MUSIC_PROVIDER_HPP
-#define MUSIC_PROVIDER_HPP
-
-#include <atomic>
 #include "boost/optional.hpp"
 #include "boost/uuid/uuid.hpp"
+#include <atomic>
 #include <condition_variable>
 #include <memory>
 #include <mutex>
@@ -66,7 +63,6 @@ class MusicProvider final {
   Util::Subscription m_artLoadSubscription;
   AlbumArtLoader m_artLoader;
 
-  // TODO::JT refine loading process
   std::future<void> m_songsLoadingFuture;
   std::future<void> m_albumsLoadingFuture;
   bool m_hasSongLoadingBegun = false;
@@ -77,5 +73,3 @@ class MusicProvider final {
 };
 }
 }
-
-#endif

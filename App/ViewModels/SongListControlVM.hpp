@@ -1,5 +1,4 @@
-#ifndef SONG_LIST_CONTROL_VM_HPP
-#define SONG_LIST_CONTROL_VM_HPP
+#pragma once
 
 #include "AsyncProcessor.hpp"
 #include "Subscription.hpp"
@@ -18,11 +17,9 @@ ref class SongListVM;
   NOTIFY_PROPERTY_CHANGED_IMPL;
 
   PROP_SET_AND_GET_WINRT(SongListVM ^, SongList);
-
   void PlaySongsAfterAndIncluding(SongVM ^ song);
 
-internal:
-  SongListControlVM(Player::Playlist& playlist, Util::BackgroundWorker& worker);
+  internal : SongListControlVM(Player::Playlist& playlist, Util::BackgroundWorker& worker);
 
  private:
   Player::Playlist& m_playlist;
@@ -30,5 +27,3 @@ internal:
 };
 }
 }
-
-#endif

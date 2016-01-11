@@ -4,9 +4,9 @@
 #include <ppltasks.h>
 
 #include "Arc_Assert.hpp"
+#include "CheckedCasts.hpp"
 #include "Folder.hpp"
 #include "NativeBufferWrapper.hpp"
-#include "CheckedCasts.hpp"
 #include "StorageExceptions.hpp"
 
 using namespace std;
@@ -43,8 +43,7 @@ void File::WriteToFile(std::vector<unsigned char>& data) {
     auto buffer = NativeBufferWrapper::WrapBuffer(&data);
     auto task = create_task(Windows::Storage::FileIO::WriteBufferAsync(m_file, buffer));
     task.wait();
-  }
-  catch (Platform::COMException ^ ex) {
+  } catch (Platform::COMException ^ ex) {
     ARC_FAIL("Unhandled Exception!");
   }
 }
@@ -105,10 +104,10 @@ std::vector<unsigned char> File::GetThumbnail(bool allowIcon) const {
 
       auto inStream = thumbnailStream->GetInputStreamAt(0);
       create_task(inStream->ReadAsync(nativeBuffer, Util::SafeIntCast<unsigned int, decltype(length)>(length),
-                                      Windows::Storage::Streams::InputStreamOptions::None)).wait();
+                                      Windows::Storage::Streams::InputStreamOptions::None))
+          .wait();
     }
-  }
-  catch (Platform::COMException ^ ex) {
+  } catch (Platform::COMException ^ ex) {
     ARC_FAIL("Unhandled exception!");
   }
 

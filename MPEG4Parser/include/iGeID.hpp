@@ -1,3 +1,7 @@
+#pragma once
+
+#include "UnknownBox.hpp"
+
 /*
 *	Author: Jesse Tucker
 *	Date: January 1st 2013
@@ -5,11 +9,6 @@
 *	being a genre ID. No specifics on the mapping of this number to a genre, assumed
 *	to be of internal use to itunes.
 */
-
-#ifndef IGEID_HPP
-#define IGEID_HPP
-
-#include "UnknownBox.hpp"
 
 namespace Arcusical {
 namespace MPEG4 {
@@ -22,5 +21,3 @@ class iGeID : public UnknownBox {
 
 } /*namespace: MPEG4*/
 } /*namespace: Arcusical*/
-
-#endif

@@ -1,18 +1,13 @@
 #pragma once
-#ifndef IPLAYER_HPP
-#define IPLAYER_HPP
 
 #include "boost/optional.hpp"
 #include <memory>
 
 #include "MulticastDelegate.hpp"
 #include "PropertyHelper.hpp"
+#include "Song.hpp"
 
 namespace Arcusical {
-namespace Model {
-class Song;
-}
-
 namespace Player {
 class IPlayer {
  public:
@@ -48,5 +43,3 @@ class IPlayer {
 };
 }
 }
-
-#endif

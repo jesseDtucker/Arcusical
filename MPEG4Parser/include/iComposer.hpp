@@ -1,14 +1,13 @@
+#pragma once
+
+#include "Box.hpp"
+
 /*
 *	Author: Jesse Tucker
 *	Date: January 13th 2013
 *	Description: Itunes specific box. No publicly available documentation. Contains
 *	the name of the Composer.
 */
-
-#ifndef ICOMPOSER_HPP
-#define ICOMPOSER_HPP
-
-#include "Box.hpp"
 
 namespace Arcusical {
 namespace MPEG4 {
@@ -31,5 +30,3 @@ class iComposer : public Box {
 
 } /*namespace: MPEG4*/
 } /*namespace: Arcusical*/
-
-#endif

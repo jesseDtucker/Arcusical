@@ -54,9 +54,6 @@
     <ClCompile Include="Converters\AlternateConverter.cpp">
       <Filter>Converters</Filter>
     </ClCompile>
-    <ClCompile Include="Converters\IsPlayingToIconPath.cpp">
-      <Filter>Converters</Filter>
-    </ClCompile>
     <ClCompile Include="Converters\SongListSizeToVisiblity.cpp">
       <Filter>Converters</Filter>
     </ClCompile>
@@ -111,14 +108,20 @@
       <Filter>ViewModels</Filter>
     </ClCompile>
     <ClCompile Include="Controls\WhatIsPlaying.xaml.cpp" />
+    <ClCompile Include="Converters\IsPlayingConverters.cpp">
+      <Filter>Converters</Filter>
+    </ClCompile>
+    <ClCompile Include="Converters\PlayProgressTooltipConverter.cpp">
+      <Filter>Converters</Filter>
+    </ClCompile>
+    <ClCompile Include="Utility\TextUtility.cpp">
+      <Filter>Utility</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
     <ClInclude Include="App.xaml.h" />
     <ClInclude Include="Converters\AlternateConverter.hpp">
-      <Filter>Converters</Filter>
-    </ClInclude>
-    <ClInclude Include="Converters\IsPlayingToIconPath.hpp">
       <Filter>Converters</Filter>
     </ClInclude>
     <ClInclude Include="Converters\SongListSizeToVisiblity.hpp">
@@ -187,6 +190,15 @@
       <Filter>ViewModels</Filter>
     </ClInclude>
     <ClInclude Include="Controls\WhatIsPlaying.xaml.h" />
+    <ClInclude Include="Converters\IsPlayingConverters.hpp">
+      <Filter>Converters</Filter>
+    </ClInclude>
+    <ClInclude Include="Converters\PlayProgressTooltipConverter.hpp">
+      <Filter>Converters</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility\TextUtility.hpp">
+      <Filter>Utility</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Page Include="Controls\AlbumListControl.xaml">

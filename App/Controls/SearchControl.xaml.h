@@ -1,13 +1,8 @@
-﻿//
-// SearchControl.xaml.h
-// Declaration of the SearchControl class
-//
-
 #pragma once
 
 #include "Controls\SearchControl.g.h"
-#include "ViewModels\SearchVM.hpp"
 #include "Utility\XamlMacros.hpp"
+#include "ViewModels\SearchVM.hpp"
 
 namespace Arcusical {
 [Windows::Foundation::Metadata::WebHostHidden] public ref class SearchControl sealed {
@@ -19,7 +14,7 @@ namespace Arcusical {
   void ShowResults();
   void HideResults();
 
-  VM_DECLARATION(ViewModel::SearchVM ^ );
+  VM_DECLARATION(ViewModel::SearchVM ^);
 
  private:
   void BackClicked(Platform::Object ^ sender, Windows::UI::Xaml::RoutedEventArgs ^ e);

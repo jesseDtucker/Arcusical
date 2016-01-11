@@ -1,6 +1,4 @@
 #pragma once
-#ifndef WHAT_IS_PLAYING_VM_HPP
-#define WHAT_IS_PLAYING_VM_HPP
 
 #include <memory>
 
@@ -19,9 +17,8 @@ namespace ViewModel {
   PROP_SET_AND_GET_WINRT(ViewModel::SongListControlVM ^, SongListControlVM);
   PROP_SET_AND_GET_WINRT(ViewModel::AlbumVM ^, ActiveAlbum);
   PROP_SET_AND_GET_WINRT(Platform::String ^, HeaderTitle);
-internal:
-  WhatIsPlayingVM(Player::Playlist& playlist, Player::IPlayer& player, Util::BackgroundWorker& worker,
-                  MusicProvider::MusicProvider& musicProvider);
+  internal : WhatIsPlayingVM(Player::Playlist& playlist, Player::IPlayer& player, Util::BackgroundWorker& worker,
+                             MusicProvider::MusicProvider& musicProvider);
 
  private:
   void OnPlaylistChanged();
@@ -33,8 +30,7 @@ internal:
   MusicProvider::MusicProvider& m_musicProvider;
   Util::Subscription m_playlistChangedSub;
   Util::Subscription m_songPlayingChangedSub;
+  std::vector<Model::Song> m_songList;
 };
 }
 }
-
-#endif

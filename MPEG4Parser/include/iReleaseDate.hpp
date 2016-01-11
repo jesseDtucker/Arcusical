@@ -1,3 +1,7 @@
+#pragma once
+
+#include "Box.hpp"
+
 /*
 *	Author: Jesse Tucker
 *	Date: December 30th 2012
@@ -8,18 +12,13 @@
 *	be the year.
 */
 
-#ifndef IRELEASE_DATE_HPP
-#define IRELEASE_DATE_HPP
-
-#include "Box.hpp"
-
 namespace Arcusical {
 namespace MPEG4 {
 
 class iReleaseDate : public Box {
  public:
   iReleaseDate() {}
-  virtual ~iReleaseDate() {};
+  virtual ~iReleaseDate(){};
 
   virtual void PrintBox(std::ostream& outStream, int depth = 0) override;
 
@@ -34,5 +33,3 @@ class iReleaseDate : public Box {
 
 } /*namespace: MPEG4*/
 } /*namespace: Arcusical*/
-
-#endif

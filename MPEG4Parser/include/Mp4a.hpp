@@ -1,3 +1,7 @@
+#pragma once
+
+#include "Box.hpp"
+
 /*
 *	Author: Jesse Tucker
 *	Date: December 30th 2012
@@ -7,11 +11,6 @@
 *	of the audio as it is specific to the Mp4a atom. This atom usually contains
 *	information for tracks encoded in either AAC or MP3.
 */
-
-#ifndef MP4A_HPP
-#define MP4A_HPP
-
-#include "Box.hpp"
 
 namespace Arcusical {
 namespace MPEG4 {
@@ -40,5 +39,3 @@ class Mp4a : public Box {
 
 } /*namespace: MPEG4*/
 } /*namespace: Arcusical*/
-
-#endif

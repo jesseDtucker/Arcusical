@@ -1,3 +1,9 @@
+#include "pch.h"
+
+#include "Moov.hpp"
+
+#include "MPEG4_Parser.hpp"
+
 /*
 *	Author: Jesse Tucker
 *	Date: December 27th 2012
@@ -6,11 +12,6 @@
 *	Description: The MOOV box contains all the metadata for the media. Please see
 *	ISO 14496-12 page 16 for details.
 */
-
-#include "pch.h"
-
-#include "Moov.hpp"
-#include "MPEG4_Parser.hpp"
 
 namespace Arcusical {
 namespace MPEG4 {

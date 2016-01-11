@@ -1,24 +1,18 @@
-﻿//
-// App.xaml.cpp
-// Implementation of the App class.
-//
-
 #include "pch.h"
-
-#include "Pages/MainPage.xaml.h"
 
 #include <condition_variable>
 #include <future>
 #include <memory>
 #include <mutex>
 
-#include "AsyncProcessor.hpp"
 #include "../src/File.hpp"  // Another temp hack. FileSystem library needs a reimagining.
-#include "../src/Folder.hpp"
-#include "Playlist.hpp"
-#include "MusicProvider.hpp"
 #include "../src/Win8Player.hpp"  // This is a hack for the time being. I need something similar to flow engine for resolving dependencies...
+#include "AsyncProcessor.hpp"
+#include "../src/Folder.hpp"
+#include "MusicProvider.hpp"
 #include "MusicSearcher.hpp"
+#include "Pages/MainPage.xaml.h"
+#include "Playlist.hpp"
 #include "Storage.hpp"
 
 using namespace concurrency;
@@ -70,7 +64,6 @@ void App::SetupApplication() {
 /// </summary>
 /// <param name="e">Details about the launch request and process.</param>
 void App::OnLaunched(Windows::ApplicationModel::Activation::LaunchActivatedEventArgs ^ e) {
-
 #if _DEBUG
   // Show graphics profiling information while debugging.
   if (IsDebuggerPresent()) {
@@ -79,7 +72,7 @@ void App::OnLaunched(Windows::ApplicationModel::Activation::LaunchActivatedEvent
   }
 #endif
 
-  auto rootFrame = dynamic_cast<Frame ^ >(Window::Current->Content);
+  auto rootFrame = dynamic_cast<Frame ^>(Window::Current->Content);
   auto args = (e != nullptr) ? e->Arguments : "";
 
   // Do not repeat app initialization when the Window already has content,
@@ -102,7 +95,7 @@ void App::OnLaunched(Windows::ApplicationModel::Activation::LaunchActivatedEvent
       rootFrame->Navigate(TypeName(MainPage::typeid), args);
     }
 
-    MainPage ^ mainPage = dynamic_cast<MainPage ^ >(rootFrame->Content);
+    MainPage ^ mainPage = dynamic_cast<MainPage ^>(rootFrame->Content);
     ARC_ASSERT(mainPage != nullptr);
     m_backgroundWorker.Start();
     m_backgroundWorker.Append([mainPage, this]() {
@@ -191,7 +184,7 @@ void App::OnFileActivated(FileActivatedEventArgs ^ args) {
 
     vector<shared_ptr<FileSystem::IFile> > files;
     transform(begin(args->Files), end(args->Files), back_inserter(files), [](auto storageItem) {
-      auto storageFile = dynamic_cast<StorageFile ^ >(storageItem);  // Should be safe for now.
+      auto storageFile = dynamic_cast<StorageFile ^>(storageItem);  // Should be safe for now.
       ARC_ASSERT(storageFile != nullptr);  // TODO::JT remove this assert and sort out the filesystem library.
       return make_shared<FileSystem::File>(storageFile);
     });

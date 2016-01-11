@@ -1,9 +1,11 @@
 ﻿<ResourceDictionary
-	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
-	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-	xmlns:local="using:Arcusical"
-	xmlns:converters="using:Arcusical.Converters">
-	<converters:IsPlayingToIconPath x:Key="IconConverter"/>
-	<converters:SongListSizeToVisibility x:Key="SongListVisibilityConverter"/>
-	<converters:AlternateConverter x:Key="AlternateSongConverter"/>
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Arcusical"
+    xmlns:converters="using:Arcusical.Converters">
+    <converters:IsPlayingToIconPath x:Key="IconConverter"/>
+    <converters:SongListSizeToVisibility x:Key="SongListVisibilityConverter"/>
+    <converters:AlternateConverter x:Key="AlternateSongConverter"/>
+    <converters:IsPlayingToFontWeight x:Key="IsPlayingFontConverter"/>
+    <converters:PlayProgressTooltipConverter x:Key="PlayProgressConverter"/>
 </ResourceDictionary>

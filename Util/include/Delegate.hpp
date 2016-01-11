@@ -1,5 +1,4 @@
-#ifndef DELEGATE_HPP
-#define DELEGATE_HPP
+#pragma once
 
 #include <functional>
 #include <memory>
@@ -48,8 +47,7 @@ void Delegate<T>::operator()(Args&&... args) const {
 };
 
 template <typename T>
-Delegate<T>::Delegate(const std::function<T>& callback)
-    : m_callback(std::make_shared<std::function<T>>(callback)) {}
+Delegate<T>::Delegate(const std::function<T>& callback) : m_callback(std::make_shared<std::function<T>>(callback)) {}
 
 template <typename T>
 bool Delegate<T>::operator==(const Delegate<T>& rhs) const {
@@ -90,5 +88,3 @@ struct hash<Util::Delegate<T>> {
   }
 };
 }
-
-#endif

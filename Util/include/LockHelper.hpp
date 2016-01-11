@@ -1,12 +1,10 @@
 #pragma once
-#ifndef LOCK_HELPER_HPP
-#define LOCK_HELPER_HPP
 
 #include "boost/optional.hpp"
 #include <functional>
 #include <future>
-#include <windows.h>
 #include <unordered_set>
+#include <windows.h>
 
 #include "ScopeGuard.hpp"
 
@@ -43,5 +41,3 @@ class WriteLock final : public ScopeGuard<std::function<void()> > {
   virtual ~WriteLock();
 };
 }
-
-#endif

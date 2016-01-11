@@ -1,3 +1,7 @@
+#pragma once
+
+#include "UnknownBox.hpp"
+
 /*
 *	Author: Jesse Tucker
 *	Date: December 30th 2012
@@ -7,11 +11,6 @@
 *	No idea what data is contained in here...
 */
 
-#ifndef SBTD_HPP
-#define SBTD_HPP
-
-#include "UnknownBox.hpp"
-
 namespace Arcusical {
 namespace MPEG4 {
 
@@ -19,10 +18,8 @@ namespace MPEG4 {
 class Sbtd : public UnknownBox {
  public:
   Sbtd() {}
-  virtual ~Sbtd() {};
+  virtual ~Sbtd(){};
 };
 
 } /*namespace: MPEG4*/
 } /*namespace: Arcusical*/
-
-#endif

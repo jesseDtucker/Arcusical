@@ -1,3 +1,10 @@
+#include "pch.h"
+
+#include "Stts.hpp"
+
+#include "InvalidValueException.hpp"
+#include "MPEG4_Parser.hpp"
+
 /*
 *	Author: Jesse Tucker
 *	Date: December 30th 2012
@@ -7,12 +14,6 @@
 *	This is the Decoding Time to Sample Box. It contains information on the time to sample
 *	map.
 */
-
-#include "pch.h"
-
-#include "Stts.hpp"
-#include "MPEG4_Parser.hpp"
-#include "InvalidValueException.hpp"
 
 namespace Arcusical {
 namespace MPEG4 {

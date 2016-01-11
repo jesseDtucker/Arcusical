@@ -1,3 +1,7 @@
+#pragma once
+
+#include "UnknownBox.hpp"
+
 /*
 *	Author: Jesse Tucker
 *	Date: January 1st 2013
@@ -5,11 +9,6 @@
 *	being the account code for the account that purchased the media. No interest in this
 *	value so it is treated as unknown.
 */
-
-#ifndef IAKID_HPP
-#define IAKID_HPP
-
-#include "UnknownBox.hpp"
 
 namespace Arcusical {
 namespace MPEG4 {
@@ -22,5 +21,3 @@ class iAkID : public UnknownBox {
 
 } /*namespace: MPEG4*/
 } /*namespace: Arcusical*/
-
-#endif

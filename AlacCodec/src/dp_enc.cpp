@@ -35,11 +35,10 @@
 #define ALWAYS_INLINE
 #endif
 
-#if TARGET_CPU_PPC&&(__MWERKS__ >= 0x3200)
+#if TARGET_CPU_PPC && (__MWERKS__ >= 0x3200)
 // align loops to a 16 byte boundary to make the G5 happy
 #pragma function_align 16
-#define LOOP_ALIGN \
-  asm { align 16 }
+#define LOOP_ALIGN asm { align 16}
 #else
 #define LOOP_ALIGN
 #endif
@@ -63,7 +62,7 @@ void copy_coefs(int16_t* srcCoefs, int16_t* dstCoefs, int32_t numPairs) {
 static inline int32_t ALWAYS_INLINE sign_of_int(int32_t i) {
   int32_t negishift;
 
-  negishift = ((uint32_t) - i) >> 31;
+  negishift = ((uint32_t)-i) >> 31;
   return negishift | (i >> 31);
 }
 

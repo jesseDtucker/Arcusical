@@ -1,3 +1,7 @@
+#pragma once
+
+#include "ContainerBox.hpp"
+
 /*
 *	Author: Jesse Tucker
 *	Date: December 30th 2012
@@ -8,11 +12,6 @@
 *	specific to the presentation of the media. This includes values such as title,
 *	artist and copyright notices.
 */
-
-#ifndef UDTA_HPP
-#define UDTA_HPP
-
-#include "ContainerBox.hpp"
 
 namespace Arcusical {
 namespace MPEG4 {
@@ -27,5 +26,3 @@ class Udta : public ContainerBox {
 
 } /*namespace: MPEG4*/
 } /*namespace: Arcusical*/
-
-#endif

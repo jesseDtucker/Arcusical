@@ -1,3 +1,10 @@
+#pragma once
+
+#include "boost\assign.hpp"
+
+#include "Box.hpp"
+#include "ImageTypes.hpp"
+
 /*
 *	Author: Jesse Tucker
 *	Date: January 1st 2013
@@ -7,20 +14,13 @@
 *	that has been directly encoded with the song.
 */
 
-#ifndef ICOVR_HPP
-#define ICOVR_HPP
-
-#include "boost\assign.hpp"
-#include "Box.hpp"
-#include "ImageTypes.hpp"
-
 namespace Arcusical {
 namespace MPEG4 {
 
 class iCover : public Box {
  public:
-  iCover() : m_type(ImageType::UNKNOWN) {};
-  virtual ~iCover() {};
+  iCover() : m_type(ImageType::UNKNOWN){};
+  virtual ~iCover(){};
 
   virtual void PrintBox(std::ostream& outStream, int depth = 0) override;
 
@@ -45,5 +45,3 @@ class iCover : public Box {
 
 } /*namespace: MPEG4*/
 } /*namespace: Arcusical*/
-
-#endif

@@ -1,8 +1,5 @@
 #pragma once
 
-#ifndef MUSIC_SEARCHER_HPP
-#define MUSIC_SEARCHER_HPP
-
 #include <future>
 #include <vector>
 
@@ -22,6 +19,9 @@ namespace Arcusical {
 namespace MusicProvider {
 struct SearchResult {
   SearchResult(Util::CancellationTokenRef token);
+  bool operator==(const SearchResult& rhs) const;
+  bool operator!=(const SearchResult& rhs) const;
+
   std::vector<Model::Song> Songs;
   std::vector<Model::Album> Albums;
   Util::CancellationTokenRef CancellationToken = nullptr;
@@ -37,5 +37,3 @@ class MusicSearcher final {
 };
 } /* Music Provider */
 } /* Arcusical */
-
-#endif

@@ -1,3 +1,10 @@
+#include "pch.h"
+
+#include "Mvhd.hpp"
+
+#include "InvalidValueException.hpp"
+#include "MPEG4_Parser.hpp"
+
 /*
 *	Author: Jesse Tucker
 *	Date: December 27th 2012
@@ -6,12 +13,6 @@
 *	Description: Movie Header Box definition as defined on page 16 of
 *	ISO 14496-12. Contains media independant meta data.
 */
-
-#include "pch.h"
-
-#include "MPEG4_Parser.hpp"
-#include "Mvhd.hpp"
-#include "InvalidValueException.hpp"
 
 namespace Arcusical {
 namespace MPEG4 {

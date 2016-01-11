@@ -1,3 +1,12 @@
+#include "pch.h"
+
+#include "Esds.hpp"
+
+#include <limits>
+
+#include "Arc_Assert.hpp"
+#include "MPEG4_Parser.hpp"
+
 /*
 *	Author: Jesse Tucker
 *	Date: December 30th 2012
@@ -6,14 +15,6 @@
 *	Description: box contained within the Mp4a box. Contains information
 *	regarding the encoding.
 */
-
-#include "pch.h"
-
-#include <limits>
-
-#include "Arc_Assert.hpp"
-#include "Esds.hpp"
-#include "MPEG4_Parser.hpp"
 
 using namespace std;
 

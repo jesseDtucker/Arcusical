@@ -18,7 +18,7 @@ AlternateConverter::AlternateConverter() {
 Platform::Object ^ AlternateConverter::Convert(Platform::Object ^ value,
                                                Windows::UI::Xaml::Interop::TypeName targetType,
                                                Platform::Object ^ parameter, Platform::String ^ language) {
-  auto val = dynamic_cast<Platform::Box<bool> ^ >(value);
+  auto val = dynamic_cast<Platform::Box<bool> ^>(value);
   ARC_ASSERT(val != nullptr);
   return val ? m_alternateBrush : m_normalBrush;
 }

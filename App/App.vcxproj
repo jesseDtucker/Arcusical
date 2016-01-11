@@ -214,7 +214,8 @@
       <DependentUpon>Controls\WhatIsPlaying.xaml</DependentUpon>
     </ClInclude>
     <ClInclude Include="Converters\AlternateConverter.hpp" />
-    <ClInclude Include="Converters\IsPlayingToIconPath.hpp" />
+    <ClInclude Include="Converters\IsPlayingConverters.hpp" />
+    <ClInclude Include="Converters\PlayProgressTooltipConverter.hpp" />
     <ClInclude Include="Converters\SongListSizeToVisiblity.hpp" />
     <ClInclude Include="Events\AlbumSelectedEvent.hpp" />
     <ClInclude Include="Events\EventService.hpp" />
@@ -230,6 +231,7 @@
     </ClInclude>
     <ClInclude Include="Utility\DispatcherHelper.hpp" />
     <ClInclude Include="Utility\KeyboardUtil.hpp" />
+    <ClInclude Include="Utility\TextUtility.hpp" />
     <ClInclude Include="Utility\XamlMacros.hpp" />
     <ClInclude Include="ViewModels\AlbumListControlVM.hpp" />
     <ClInclude Include="ViewModels\AlbumVM.hpp" />
@@ -299,7 +301,8 @@
       <DependentUpon>Controls\WhatIsPlaying.xaml</DependentUpon>
     </ClCompile>
     <ClCompile Include="Converters\AlternateConverter.cpp" />
-    <ClCompile Include="Converters\IsPlayingToIconPath.cpp" />
+    <ClCompile Include="Converters\IsPlayingConverters.cpp" />
+    <ClCompile Include="Converters\PlayProgressTooltipConverter.cpp" />
     <ClCompile Include="Converters\SongListSizeToVisiblity.cpp" />
     <ClCompile Include="Events\AlbumSelectedEvent.cpp" />
     <ClCompile Include="Events\SongSelectedEvent.cpp" />
@@ -316,6 +319,7 @@
     </ClCompile>
     <ClCompile Include="Utility\DispatcherHelper.cpp" />
     <ClCompile Include="Utility\KeyboardUtil.cpp" />
+    <ClCompile Include="Utility\TextUtility.cpp" />
     <ClCompile Include="ViewModels\AlbumListControlVM.cpp" />
     <ClCompile Include="ViewModels\AlbumVM.cpp" />
     <ClCompile Include="ViewModels\GuideVM.cpp" />

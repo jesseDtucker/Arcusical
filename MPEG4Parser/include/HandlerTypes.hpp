@@ -1,3 +1,9 @@
+#pragma once
+
+#include "boost\assign.hpp"
+#include <string>
+#include <unordered_map>
+
 /*
 *	Author: Jesse Tucker
 *	Date: December 29th 2012
@@ -7,24 +13,10 @@
 *	in an MPEG4 container.
 */
 
-#ifndef HANDLER_TYPES_HPP
-#define HANDLER_TYPES_HPP
-
-#include <unordered_map>
-#include <string>
-
-#include "boost\assign.hpp"
-
 namespace Arcusical {
 namespace MPEG4 {
 
-enum class HandlerType {
-  Video,
-  Audio,
-  Hint,
-  MetaData,
-  Unknown
-};
+enum class HandlerType { Video, Audio, Hint, MetaData, Unknown };
 
 const std::unordered_map<std::string, HandlerType> StringToHandlerType =
     boost::assign::map_list_of<std::string, HandlerType>("vide", HandlerType::Video)("soun", HandlerType::Audio)(
@@ -38,5 +30,3 @@ std::ostream& operator<<(std::ostream& outStream, HandlerType type);
 
 } /*namespace: MPEG4*/
 } /*namespace: Arcusical*/
-
-#endif

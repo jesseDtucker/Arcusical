@@ -1,12 +1,10 @@
 #pragma once
-#ifndef WIN_8_PLAYER
-#define WIN_8_PLAYER
 
-#include <atomic>
-#include <atlcomcli.h>
-#include <wrl/client.h>
-#include <mfapi.h>
 #include <Mfmediaengine.h>
+#include <atlcomcli.h>
+#include <atomic>
+#include <mfapi.h>
+#include <wrl/client.h>
 
 #include "AsyncProcessor.hpp"
 #include "IPlayer.hpp"
@@ -75,5 +73,3 @@ class Win8Player final : public IPlayer {
 };
 }
 }
-
-#endif

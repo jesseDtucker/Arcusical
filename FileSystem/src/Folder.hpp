@@ -1,12 +1,11 @@
-#ifndef FOLDER_HPP
-#define FOLDER_HPP
+#pragma once
 
 #include <string>
 #include <vector>
 
+#include "IFolder.hpp"
 #include "Util.hpp"
 #include "WorkBuffer.hpp"
-#include "IFolder.hpp"
 
 namespace FileSystem {
 class Storage;
@@ -40,5 +39,3 @@ class Folder final : public IFolder {
   friend Storage;  // so the static folders ( ie. music library) can be instantiated
 };
 }
-
-#endif

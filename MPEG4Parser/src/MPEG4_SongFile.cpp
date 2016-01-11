@@ -1,3 +1,9 @@
+#include "pch.h"
+
+#include "MPEG4_SongFile.hpp"
+
+#include "boost\type_traits\make_unsigned.hpp"
+
 /*
 *	Author: Jesse Tucker
 *	Date: Feb 24th 2013
@@ -6,11 +12,6 @@
 *	This class wraps the MPEG4_Tree and provides a simple way of accessing and writing its information.
 *	TODO::JT: implement means of writing information, currently only works as a reader
 */
-
-#include "pch.h"
-
-#include "boost\type_traits\make_unsigned.hpp"
-#include "MPEG4_SongFile.hpp"
 
 namespace Arcusical {
 namespace MPEG4 {

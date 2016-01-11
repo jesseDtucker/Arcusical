@@ -1,3 +1,5 @@
+#include "Win8Player.hpp"
+
 #include <AudioSessionTypes.h>
 #include <cmath>
 #include <future>
@@ -8,7 +10,6 @@
 #include "IFile.hpp"
 #include "Song.hpp"
 #include "Storage.hpp"
-#include "Win8Player.hpp"
 
 using namespace ATL;
 using namespace Windows::Media;
@@ -121,7 +122,13 @@ void Win8Player::SetSong(const Model::Song& song) {
   }
 }
 
-Model::Song* Win8Player::GetCurrentSong() { return &*m_currentSong; }
+Model::Song* Win8Player::GetCurrentSong() {
+  if (m_currentSong) {
+    return &*m_currentSong;
+  } else {
+    return nullptr;
+  }
+}
 
 double Win8Player::GetCurrentTime() const { return m_mediaEngine->GetCurrentTime(); }
 
@@ -216,7 +223,8 @@ ULONG MediaEngineNotify::Release() {
 
 HRESULT MediaEngineNotify::QueryInterface(_In_ REFIID riid, _Out_ LPVOID* ppvObj) {
   // Always set out parameter to NULL, validating it first.
-  if (NULL == ppvObj) return E_INVALIDARG;
+  if (NULL == ppvObj)
+    return E_INVALIDARG;
   *ppvObj = NULL;
 
   // not sure what the riid is for IMFMediaEngineNotify is so I'm not checking it atm

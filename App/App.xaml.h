@@ -1,17 +1,11 @@
-﻿//
-// App.xaml.h
-// Declaration of the App class.
-//
-
 #pragma once
 
 #include <memory>
 
 #include "App.g.h"
-
 #include "AsyncProcessor.hpp"
-#include "LocalMusicCache.hpp"
 #include "IPlayer.hpp"
+#include "LocalMusicCache.hpp"
 #include "MusicProvider.hpp"
 #include "MusicSearcher.hpp"
 #include "Playlist.hpp"
@@ -19,15 +13,14 @@
 
 namespace Arcusical {
 /// <summary>
-/// Provides application-specific behavior to supplement the default Application class.
+/// Provides application-specific behavior to supplement the default Application class
 /// </summary>
 ref class App sealed {
  protected:
   virtual void OnLaunched(Windows::ApplicationModel::Activation::LaunchActivatedEventArgs ^ e) override;
   virtual void OnFileActivated(Windows::ApplicationModel::Activation::FileActivatedEventArgs ^ args) override;
 
-internal:
-  App();
+  internal : App();
 
   void SetupApplication();
 

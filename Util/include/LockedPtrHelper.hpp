@@ -1,6 +1,4 @@
 #pragma once
-#ifndef LOCKED_PTR_HELPER_HPP
-#define LOCKED_PTR_HELPER_HPP
 
 #include <functional>
 #include <memory>
@@ -20,5 +18,3 @@ std::unique_ptr<T, std::function<void(T*)>> CreateReadLockedPointer(Util::SlimRW
 
   return nullptr;
 }
-
-#endif

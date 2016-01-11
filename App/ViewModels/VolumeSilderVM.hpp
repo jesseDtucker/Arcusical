@@ -1,9 +1,7 @@
 #pragma once
-#ifndef VOLUME_SLIDER_HPP
-#define VOLUME_SLIDER_HPP
 
-#include "Subscription.hpp"
 #include "PropertyHelper.hpp"
+#include "Subscription.hpp"
 #include "Utility/XamlMacros.hpp"
 
 namespace Arcusical {
@@ -23,13 +21,10 @@ namespace ViewModel {
     void set(double val);
   }
 
-internal:
-  VolumeSliderVM(Player::IPlayer& player);
+  internal : VolumeSliderVM(Player::IPlayer& player);
 
  private:
   Player::IPlayer& m_player;
 };
 }
 }
-
-#endif

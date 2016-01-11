@@ -1,13 +1,11 @@
 #pragma once
-#ifndef STREAM_HPP
-#define STREAM_HPP
 
 #include <stdint.h>
 #include <type_traits>
 #include <vector>
 
-#include "RawParser.hpp"
 #include "PropertyHelper.hpp"
+#include "RawParser.hpp"
 #include "Util.hpp"
 
 namespace Util {
@@ -133,5 +131,3 @@ void Stream::ReadRawBytes(unsigned int count, T& destination) {
 
 #pragma endregion
 }
-
-#endif

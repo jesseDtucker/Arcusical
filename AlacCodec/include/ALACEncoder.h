@@ -39,14 +39,10 @@ class ALACEncoder {
                          unsigned char* theReadBuffer, unsigned char* theWriteBuffer, int32_t* ioNumBytes);
   virtual int32_t Finish();
 
-  void SetFastMode(bool fast) {
-    mFastMode = fast;
-  };
+  void SetFastMode(bool fast) { mFastMode = fast; };
 
   // this must be called *before* InitializeEncoder()
-  void SetFrameSize(uint32_t frameSize) {
-    mFrameSize = frameSize;
-  };
+  void SetFrameSize(uint32_t frameSize) { mFrameSize = frameSize; };
 
   void GetConfig(ALACSpecificConfig& config);
   uint32_t GetMagicCookieSize(uint32_t inNumChannels);

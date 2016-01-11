@@ -1,3 +1,9 @@
+#pragma once
+
+#include <string>
+
+#include "Box.hpp"
+
 /*
 *	Author: Jesse Tucker
 *	Date: December 31st 2012
@@ -7,12 +13,6 @@
 *	No official specification available. Appears to be just a std::string in reverse DNS order. Unsure
 *	of specific use...
 */
-
-#ifndef MEAN_HPP
-#define MEAN_HPP
-
-#include "Box.hpp"
-#include <string>
 
 namespace Arcusical {
 namespace MPEG4 {
@@ -35,5 +35,3 @@ class MeanBox : public Box {
 
 } /*MPEG4*/
 } /*Arcusical*/
-
-#endif

@@ -1,9 +1,7 @@
 #pragma once
-#ifndef RAW_PARSER_HPP
-#define RAW_PARSER_HPP
 
-#include <string>
 #include "boost/detail/endian.hpp"
+#include <string>
 
 namespace Util {
 template <typename T_Number, typename T_Data>
@@ -44,5 +42,3 @@ T_Number ReadInteger(T_Data rawData) {
 
 #pragma warning(pop)
 }
-
-#endif

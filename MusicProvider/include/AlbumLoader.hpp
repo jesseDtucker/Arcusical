@@ -1,6 +1,4 @@
 #pragma once
-#ifndef ALBUM_LOADER_HPP
-#define ALBUM_LOADER_HPP
 
 #include <vector>
 
@@ -30,5 +28,3 @@ AlbumMergeResult MergeAlbums(const Model::AlbumCollection& existingAlbums, const
 AlbumMergeResult FindDeletedAlbums(const Model::AlbumCollection& existingAlbums, const Model::SongCollection& songs);
 }
 }
-
-#endif

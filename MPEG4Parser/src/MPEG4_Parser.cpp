@@ -1,3 +1,12 @@
+#include "pch.h"
+
+#include "MPEG4_Parser.hpp"
+
+#include "Arc_Assert.hpp"
+#include "BoxFactory.hpp"
+#include "Ftyp.hpp"
+#include "Stream.hpp"
+
 /*
 *	Author: Jesse Tucker
 *	Date: December 16th 2012
@@ -5,14 +14,6 @@
 *
 *	Description: Please see header for details
 */
-
-#include "pch.h"
-
-#include "Arc_Assert.hpp"
-#include "BoxFactory.hpp"
-#include "Ftyp.hpp"
-#include "MPEG4_Parser.hpp"
-#include "Stream.hpp"
 
 using namespace std;
 

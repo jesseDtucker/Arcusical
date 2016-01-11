@@ -17,10 +17,16 @@ void GuideVM::SelectedAlbum::set(AlbumVM ^ selectedAlbum) {
   } else {
     m_selectedAlbum->SetFrom(*selectedAlbum->GetModel());
   }
-  auto songListVM = ref new ViewModel::SongListControlVM(m_playlist, m_worker);
-  songListVM->SongList = selectedAlbum->Songs;
-  this->SongListControlVM = songListVM;
 
+  m_worker.Append([this, selectedAlbum]() {
+    // getting the songs can be an expensive operation. Best not handled on the UI thread
+    auto songListVM = ref new ViewModel::SongListControlVM(m_playlist, m_worker);
+    auto songs = selectedAlbum->Songs;
+    DispatchToUI([this, songListVM, songs]() {
+      songListVM->SongList = songs;
+      this->SongListControlVM = songListVM;
+    });
+  });
   DispatchToUI([this]() { OnPropertyChanged("SelectedAlbum"); });
 }
 
@@ -40,7 +46,7 @@ void GuideVM::Shuffle() {
   if (m_selectedAlbum != nullptr) {
     m_worker.Append([this]() {
       auto albumSongs = *m_selectedAlbum->GetModel()->GetSongs();
-      std::shuffle(begin(albumSongs), end(albumSongs), std::mt19937(std::random_device {}()));
+      std::shuffle(begin(albumSongs), end(albumSongs), std::mt19937(std::random_device{}()));
       m_playlist.Clear();
       m_playlist.Enqueue(albumSongs);
     });

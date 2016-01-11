@@ -1,14 +1,13 @@
 #pragma once
-#ifndef SEARCH_HPP
-#define SEARCH_HPP
 
+#include "CancellationToken.hpp"
+#include "MusicSearcher.hpp"
 #include "PropertyHelper.hpp"
+#include "Subscription.hpp"
+#include "Utility/XamlMacros.hpp"
 #include "ViewModels/AlbumListControlVM.hpp"
 #include "ViewModels/SearchVM.hpp"
 #include "ViewModels/SongListControlVM.hpp"
-#include "Subscription.hpp"
-#include "Utility/XamlMacros.hpp"
-#include "CancellationToken.hpp"
 
 namespace Arcusical {
 namespace MusicProvider {
@@ -30,9 +29,8 @@ namespace ViewModel {
 
   void SelectCurrent();
 
-internal:
-  SearchVM(MusicProvider::MusicSearcher& searcher, Player::Playlist& playlist, Util::BackgroundWorker& worker,
-           Player::IPlayer& player);
+  internal : SearchVM(MusicProvider::MusicSearcher& searcher, Player::Playlist& playlist,
+                      Util::BackgroundWorker& worker, Player::IPlayer& player);
 
  private:
   void StartSearch(Platform::String ^ searchTerm);
@@ -43,8 +41,12 @@ internal:
   Player::Playlist& m_playlist;
   Player::IPlayer& m_player;
   Util::BackgroundWorker& m_worker;
+  Util::BackgroundWorker m_searchWorker;
+  std::mutex m_latestLock;
+  MusicProvider::SearchResult m_latestResults;
+  AlbumList ^ m_latestAlbums;
+  SongListVM ^ m_latestSongs;
+  std::atomic_bool areLatestSelected = false;
 };
 }
 }
-
-#endif

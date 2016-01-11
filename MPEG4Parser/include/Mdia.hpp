@@ -1,3 +1,7 @@
+#pragma once
+
+#include "ContainerBox.hpp"
+
 /*
 *	Author: Jesse Tucker
 *	Date: December 29th 2012
@@ -6,11 +10,6 @@
 *	Description: Media box. A container for other boxes. Defined on page 20 of
 *	the ISO 14496-12 standard.
 */
-
-#ifndef MDIA_HPP
-#define MDIA_HPP
-
-#include "ContainerBox.hpp"
 
 namespace Arcusical {
 namespace MPEG4 {
@@ -25,5 +24,3 @@ class Mdia : public ContainerBox {
 
 } /*namespace: MPEG4*/
 } /*namespace: Arcusical*/
-
-#endif

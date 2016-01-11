@@ -1,5 +1,4 @@
-#ifndef SERVICE_HPP
-#define SERVICE_HPP
+#pragma once
 
 #include <memory>
 #include <unordered_map>
@@ -85,5 +84,3 @@ void ServiceResolver<T>::DeregisterUrn(const std::string& urn) {
 
 } /* Service Model */
 } /* Arcusical */
-
-#endif

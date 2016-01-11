@@ -1,6 +1,4 @@
 #pragma once
-#ifndef GUIDE_VM_HPP
-#define GUIDE_VM_HPP
 
 #include <memory>
 
@@ -19,14 +17,12 @@ namespace ViewModel {
 
   property ViewModel::AlbumVM ^ SelectedAlbum {
     ViewModel::AlbumVM ^ get();
-    void set(ViewModel::AlbumVM ^ );
-  }
-  PROP_SET_AND_GET_WINRT(ViewModel::SongListControlVM ^, SongListControlVM);
+    void set(ViewModel::AlbumVM ^);
+  } PROP_SET_AND_GET_WINRT(ViewModel::SongListControlVM ^, SongListControlVM);
 
   void PlayAll();
   void Shuffle();
-internal:
-  GuideVM(Player::Playlist& playlist, Util::BackgroundWorker& worker);
+  internal : GuideVM(Player::Playlist& playlist, Util::BackgroundWorker& worker);
 
  private:
   ViewModel::AlbumVM ^ m_selectedAlbum;
@@ -35,5 +31,3 @@ internal:
 };
 }
 }
-
-#endif

@@ -1,12 +1,12 @@
+#include "pch.h"
+
+#include "Imagetypes.hpp"
+
 /*
 *	Author: Jesse Tucker
 *	Date: January 5th 2013
 *	Description: Covers enumeration and std::string conversion/printing utilities for image type enums
 */
-
-#include "pch.h"
-
-#include "Imagetypes.hpp"
 
 namespace Arcusical {
 namespace MPEG4 {

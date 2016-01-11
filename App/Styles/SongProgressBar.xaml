@@ -22,7 +22,7 @@
 								<Setter Property="Template">
 									<Setter.Value>
 										<ControlTemplate TargetType="Thumb">
-											<Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}"/>
+											<Border BorderBrush="White" BorderThickness="{TemplateBinding BorderThickness}" Background="White"/>
 										</ControlTemplate>
 									</Setter.Value>
 								</Setter>
@@ -145,7 +145,7 @@
 								<TickBar x:Name="TopTickBar" Grid.ColumnSpan="3" Fill="{ThemeResource SliderTickmarkOutsideBackgroundThemeBrush}" Height="{ThemeResource SliderOutsideTickBarThemeHeight}" Margin="0,0,0,2" Visibility="Collapsed" VerticalAlignment="Bottom"/>
 								<TickBar x:Name="HorizontalInlineTickBar" Grid.ColumnSpan="3" Fill="{ThemeResource SliderTickMarkInlineBackgroundThemeBrush}" Height="{ThemeResource SliderTrackThemeHeight}" Visibility="Collapsed"/>
 								<TickBar x:Name="BottomTickBar" Grid.ColumnSpan="3" Fill="{ThemeResource SliderTickmarkOutsideBackgroundThemeBrush}" Height="{ThemeResource SliderOutsideTickBarThemeHeight}" Margin="0,2,0,0" Visibility="Collapsed" VerticalAlignment="Top"/>
-								<Thumb x:Name="HorizontalThumb" AutomationProperties.AccessibilityView="Raw" Background="{ThemeResource SliderThumbBackgroundThemeBrush}" Grid.Column="1" DataContext="{TemplateBinding Value}" Height="{TemplateBinding Height}" Style="{StaticResource SliderThumbStyle}" Width="{ThemeResource SliderTrackThemeHeight}"/>
+								<Thumb x:Name="HorizontalThumb" AutomationProperties.AccessibilityView="Raw" Background="{ThemeResource SliderThumbBackgroundThemeBrush}" Grid.Column="1" DataContext="{TemplateBinding Value}" Height="{TemplateBinding Height}" Style="{StaticResource SliderThumbStyle}" Width="10"/>
 								<Rectangle x:Name="HorizontalBorder" Grid.ColumnSpan="3" Stroke="{TemplateBinding BorderBrush}" StrokeThickness="{TemplateBinding BorderThickness}"/>
 								<Rectangle x:Name="FocusVisualWhiteHorizontal" Grid.ColumnSpan="3" IsHitTestVisible="False" Opacity="0" Grid.RowSpan="3" StrokeDashOffset="1.5" StrokeEndLineCap="Square" Stroke="{ThemeResource FocusVisualWhiteStrokeThemeBrush}" StrokeDashArray="1,1"/>
 								<Rectangle x:Name="FocusVisualBlackHorizontal" Grid.ColumnSpan="3" IsHitTestVisible="False" Opacity="0" Grid.RowSpan="3" StrokeDashOffset="0.5" StrokeEndLineCap="Square" Stroke="{ThemeResource FocusVisualBlackStrokeThemeBrush}" StrokeDashArray="1,1"/>

@@ -1,3 +1,10 @@
+#pragma once
+
+#include <memory>
+#include <vector>
+
+#include "Box.hpp"
+
 /*
 *	Author: Jesse Tucker
 *	Date: December 31st 2012
@@ -5,14 +12,6 @@
 *
 *	Description: Defines a general purpose box that contains nothing but raw data.
 */
-
-#ifndef DATA_BOX_HPP
-#define DATA_BOX_HPP
-
-#include <vector>
-#include <memory>
-
-#include "Box.hpp"
 
 namespace Arcusical {
 namespace MPEG4 {
@@ -33,5 +32,3 @@ class DataBox : public Box {
 
 } /*MPEG4*/
 } /*Arcusical*/
-
-#endif

@@ -1,8 +1,5 @@
 #pragma once
 
-#ifndef SONG_SELECTOR_HPP
-#define SONG_SELECTOR_HPP
-
 #include <functional>
 #include <vector>
 
@@ -35,5 +32,3 @@ class SongSelector final {
 };
 }
 }
-
-#endif

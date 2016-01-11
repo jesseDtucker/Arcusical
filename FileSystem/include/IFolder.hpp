@@ -1,11 +1,10 @@
-#ifndef IFOLDER_HPP
-#define IFOLDER_HPP
+#pragma once
 
 #include <memory>
 #include <vector>
 
-#include "IFile.hpp"
 #include "Export.hpp"
+#include "IFile.hpp"
 #include "WorkBuffer.hpp"
 
 namespace FileSystem {
@@ -31,5 +30,3 @@ class EXPORT IFolder {
   virtual bool operator!=(const IFolder& rhs) const = 0;
 };
 }
-
-#endif

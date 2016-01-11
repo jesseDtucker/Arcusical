@@ -1,3 +1,10 @@
+#pragma once
+
+#include <memory>
+#include <vector>
+
+#include "BoxTypes.hpp"
+
 /*
 *	Author: Jesse Tucker
 *	Date: December 16th 2012
@@ -8,14 +15,6 @@
 *	a type, and zero or more children. For more details please see the ISO 14496-12 standard.
 *	The box is defined on page 4.
 */
-
-#ifndef BOX_HPP
-#define BOX_HPP
-
-#include <vector>
-#include <memory>
-
-#include "BoxTypes.hpp"
 
 namespace Util {
 class Stream;
@@ -78,5 +77,3 @@ class Box {
 
 } /*namespace: MPEG4*/
 } /*namespace: Arcusical*/
-
-#endif  // !BOX_H

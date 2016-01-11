@@ -1,6 +1,4 @@
 #pragma once
-#ifndef ALTERNATE_CONVERTER_HPP
-#define ALTERNATE_CONVERTER_HPP
 
 namespace Arcusical {
 namespace Converters {
@@ -20,5 +18,3 @@ ref class AlternateConverter sealed : public Windows::UI::Xaml::Data::IValueConv
 };
 }
 }
-
-#endif

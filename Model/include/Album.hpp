@@ -1,14 +1,10 @@
 #pragma once
 
-#ifndef ALBUM_HPP
-#define ALBUM_HPP
-
-#include <memory>
-#include <string>
-#include <set>
-#include <vector>
-
 #include "boost\uuid\uuid.hpp"
+#include <memory>
+#include <set>
+#include <string>
+#include <vector>
 
 #include "Song.hpp"
 #include "Util.hpp"
@@ -40,5 +36,3 @@ class Album final {
 };
 }
 }
-
-#endif

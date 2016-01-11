@@ -1,3 +1,7 @@
+#pragma once
+
+#include "Box.hpp"
+
 /*
 *	Author: Jesse Tucker
 *	Date: December 30th 2012
@@ -11,11 +15,6 @@
 *	This defines the offset table that gives the index of each chunk
 *	in the containing file.
 */
-
-#ifndef STCO_HPP
-#define STCO_HPP
-
-#include "Box.hpp"
 
 namespace Arcusical {
 namespace MPEG4 {
@@ -40,5 +39,3 @@ class Stco : public Box {
 
 } /*namespace: MPEG4*/
 } /*namespace: Arcusical*/
-
-#endif

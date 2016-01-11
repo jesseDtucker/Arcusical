@@ -1,6 +1,4 @@
 #pragma once
-#ifndef PLAYLIST_HPP
-#define PLAYLIST_HPP
 
 #include <future>
 #include <memory>
@@ -35,6 +33,7 @@ class Playlist final {
   void PlayNext();
   void PlayPrevious(double goToStartThreshold =
                         5.0);  // if the song is beyond the threshold (in seconds) then just go to the start of the song
+  bool SkipTo(const Model::Song& song);
 
   void Clear();
 
@@ -73,5 +72,3 @@ void Playlist::Enqueue(const T& collection, bool startPlayback) {
 }
 }
 }
-
-#endif
