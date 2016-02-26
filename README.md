@@ -11,7 +11,11 @@ Gource visualization of progress as of Jan. 2016: https://www.youtube.com/watch?
 
 ## Build
 
-Requires Visual Studio 2015.
+Requirements:
+
+1. [Visual Studio 2015](https://www.visualstudio.com/en-us/downloads/download-visual-studio-vs.aspx), community edition is fine.
+2. [Cmake](https://cmake.org/), any recent version should suffice. The setup scripts assume this is in your path.
+3. [Ruby](http://rubyinstaller.org/), this is used in the build scripts and MUST be in your path.
 
 To build Arcusical follow these steps:
 ```
