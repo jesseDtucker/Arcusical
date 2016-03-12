@@ -28,7 +28,7 @@ WhatIsPlaying::WhatIsPlaying() : m_isShown(false) {
   m_animIn = safe_cast<Storyboard ^>(v_root->Resources->Lookup("slideInAnim"));
   m_animOut = safe_cast<Storyboard ^>(v_root->Resources->Lookup("slideOutAnim"));
 
-  m_whatIsPlayingSelectedEventSub = EventService<WhatIsPlayingSelectedEvent>::RegisterListener({[this](auto unused) {
+  m_whatIsPlayingSelectedEventSub = EventService<WhatIsPlayingSelectedEvent>::RegisterListener({[this](const WhatIsPlayingSelectedEvent& unused) {
     if (m_isShown) {
       this->Hide();
     } else {

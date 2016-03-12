@@ -17,7 +17,7 @@ WhatIsPlayingVM::WhatIsPlayingVM(Playlist& playlist, IPlayer& player, Background
     : m_playlist(playlist), m_worker(worker), m_player(player), m_musicProvider(musicProvider) {
   this->SongListControlVM = ref new ViewModel::SongListControlVM(playlist, worker);
   m_playlistChangedSub = playlist.PlaylistChanged += [this]() { this->OnPlaylistChanged(); };
-  m_songPlayingChangedSub = player.GetSongChanged() += [this](auto song) { this->OnSongChanged(song); };
+  m_songPlayingChangedSub = player.GetSongChanged() += [this](const boost::optional<Model::Song>& song) { this->OnSongChanged(song); };
 }
 
 void WhatIsPlayingVM::OnPlaylistChanged() {
