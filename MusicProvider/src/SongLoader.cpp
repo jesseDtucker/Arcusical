@@ -45,6 +45,7 @@ static Song DefaultSongLoad(const IFile& file, AudioFormat encoding = AudioForma
 static Song LoadMP3(const IFile& file);
 static Song LoadWav(const IFile& file);
 static Song LoadFlac(const IFile& file);
+static Song LoadWMA(const IFile& file);
 
 static Util::UUIDGenerator s_idGenerator;
 static const unsigned long long MIN_LENGTH = 5;  // minimum length of a song for it to be considered a song
@@ -55,7 +56,7 @@ static const unordered_map<MPEG4::Encoding, AudioFormat> MPEG4_TO_MODEL_MAPPING 
     {MPEG4::Encoding::UNKNOWN, AudioFormat::UNKNOWN}};
 
 static const unordered_map<wstring, function<Song(const IFile&)>> FILE_EX_TO_LOADER = {
-    {L"m4a", LoadMpeg4Song}, {L"mp3", LoadMP3}, {L"wav", LoadWav}, {L"flac", LoadFlac}};
+    {L"m4a", LoadMpeg4Song}, {L"mp3", LoadMP3}, {L"wav", LoadWav}, {L"flac", LoadFlac}, {L"wma", LoadWMA} };
 
 Song LoadSong(const IFile& file) {
   Song result;
@@ -174,6 +175,8 @@ Song LoadMP3(const IFile& file) { return DefaultSongLoad(file, AudioFormat::MP3,
 Song LoadWav(const IFile& file) { return DefaultSongLoad(file, AudioFormat::WAV, ContainerType::WAV); }
 
 Song LoadFlac(const IFile& file) { return DefaultSongLoad(file, AudioFormat::FLAC, ContainerType::FLAC); }
+
+Song LoadWMA(const IFile& file) { return DefaultSongLoad(file, AudioFormat::ASF, ContainerType::WMA); }
 
 vector<IFile*> GetNewFiles(const SongCollection& existingSongs, const vector<shared_ptr<IFile>>& files) {
   unordered_set<wstring> existingSongFiles;

@@ -12,6 +12,7 @@ enum Encoding
 	MP3 = 3;
 	FLAC = 4;
 	WAV = 5;
+	ASF = 6;
 }
 
 enum Container
@@ -21,6 +22,7 @@ enum Container
 	MPEG4_CONTAINER = 2;
 	FLAC_CONTAINER = 3;
 	WAV_CONTAINER = 4;
+	WMA_CONTAINER = 5;
 }
 
 message SongFile
