@@ -17,9 +17,9 @@ class IFile;
 
 namespace Arcusical {
 namespace Model {
-enum class AudioFormat { AAC, ALAC, FLAC, MP3, WAV, UNKNOWN };
+enum class AudioFormat { AAC, ALAC, FLAC, MP3, WAV, ASF, UNKNOWN };
 
-enum class ContainerType { MP4, MP3, FLAC, WAV, UNKNOWN };
+enum class ContainerType { MP4, MP3, FLAC, WAV, WMA, UNKNOWN };
 
 struct SongFile {
   unsigned int bitRate = 0;

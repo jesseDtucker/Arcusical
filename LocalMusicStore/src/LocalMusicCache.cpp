@@ -40,14 +40,16 @@ static const unordered_map<Encoding, AudioFormat> CACHE_ENCODING_TO_MODEL = {{UN
                                                                              {ALAC, AudioFormat::ALAC},
                                                                              {MP3, AudioFormat::MP3},
                                                                              {FLAC, AudioFormat::FLAC},
-                                                                             {WAV, AudioFormat::WAV}};
+                                                                             {WAV, AudioFormat::WAV},
+                                                                             {ASF, AudioFormat::ASF} };
 
 static const unordered_map<AudioFormat, Encoding> MODEL_ENCODING_TO_CACHE = {{AudioFormat::UNKNOWN, UNKNOWN_ENCODING},
                                                                              {AudioFormat::AAC, AAC},
                                                                              {AudioFormat::ALAC, ALAC},
                                                                              {AudioFormat::MP3, MP3},
                                                                              {AudioFormat::FLAC, FLAC},
-                                                                             {AudioFormat::WAV, WAV}};
+                                                                             {AudioFormat::WAV, WAV},
+                                                                             {AudioFormat::ASF, ASF} };
 
 static const unordered_map<Container, ContainerType> CACHE_CONTAINER_TO_MODEL = {
     {UNKNOWN_CONTAINER, ContainerType::UNKNOWN},

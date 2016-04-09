@@ -156,7 +156,7 @@ SongFile Song::DetermineBestFormat() {
   // try and select what I think the best format is likely to be
   // assuming lossless is best, followed by AAC followed by mp3
   static vector<AudioFormat> FORMATS = {AudioFormat::ALAC, AudioFormat::FLAC, AudioFormat::WAV, AudioFormat::AAC,
-                                        AudioFormat::MP3};
+                                        AudioFormat::MP3, AudioFormat::ASF};
 
   for (const auto audioFormat : FORMATS) {
     auto itr = find(begin(m_AvailableFormats), end(m_AvailableFormats), audioFormat);
